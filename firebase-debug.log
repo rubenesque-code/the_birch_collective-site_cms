@@ -1,0 +1,374 @@
+[debug] [2023-06-23T09:51:42.406Z] ----------------------------------------------------------------------
+[debug] [2023-06-23T09:51:42.408Z] Command:       /home/ruben/.nvm/versions/node/v18.16.0/bin/node /home/ruben/.nvm/versions/node/v18.16.0/bin/firebase emulators:start --import=./db-local-data --export-on-exit=./db-local-data
+[debug] [2023-06-23T09:51:42.408Z] CLI Version:   12.4.0
+[debug] [2023-06-23T09:51:42.408Z] Platform:      linux
+[debug] [2023-06-23T09:51:42.409Z] Node Version:  v18.16.0
+[debug] [2023-06-23T09:51:42.409Z] Time:          Fri Jun 23 2023 10:51:42 GMT+0100 (British Summer Time)
+[debug] [2023-06-23T09:51:42.409Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-06-23T09:51:42.473Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-06-23T09:51:42.473Z] > authorizing via signed-in user (a.ruben00001@gmail.com)
+[debug] [2023-06-23T09:51:42.624Z] java version "20.0.1" 2023-04-18
+
+[debug] [2023-06-23T09:51:42.625Z] Java(TM) SE Runtime Environment (build 20.0.1+9-29)
+Java HotSpot(TM) 64-Bit Server VM (build 20.0.1+9-29, mixed mode, sharing)
+
+[debug] [2023-06-23T09:51:42.640Z] Parsed Java major version: 20
+[info] i  emulators: Starting emulators: auth, functions, firestore, storage, extensions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, functions, firestore, storage, extensions"}}
+[debug] [2023-06-23T09:51:42.646Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/birch-collective-develop [none]
+[debug] [2023-06-23T09:51:42.948Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/birch-collective-develop 200
+[debug] [2023-06-23T09:51:42.948Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/birch-collective-develop {"projectId":"birch-collective-develop","projectNumber":"796296843255","displayName":"birch-collective-develop","name":"projects/birch-collective-develop","resources":{"hostingSite":"birch-collective-develop","storageBucket":"birch-collective-develop.appspot.com","locationId":"europe-west2"},"state":"ACTIVE","etag":"1_049e52ef-ff6f-4e6c-ae86-fa7717419de3"}
+[debug] [2023-06-23T09:51:42.958Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-06-23T09:51:42.959Z] assigned listening specs for emulators {"user":{"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8080}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}],"storage":[{"address":"127.0.0.1","family":"IPv4","port":9199}],"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2023-06-23T09:51:42.969Z] [hub] writing locator at /tmp/hub-birch-collective-develop.json
+[debug] [2023-06-23T09:51:42.978Z] [Extensions] Started Extensions emulator, this is a noop.
+[debug] [2023-06-23T09:51:42.979Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-06-23T09:51:42.979Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2023-06-23T09:51:42.979Z] late-assigned ports for functions and eventarc emulators {"user":{"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8080}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}],"storage":[{"address":"127.0.0.1","family":"IPv4","port":9199}],"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] ⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: database, hosting, pubsub {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mdatabase, hosting, pubsub\u001b[22m"}}
+[debug] [2023-06-23T09:51:42.981Z] defaultcredentials: writing to file /home/ruben/.config/firebase/a_ruben00001_gmail.com_application_default_credentials.json
+[debug] [2023-06-23T09:51:42.982Z] Setting GAC to /home/ruben/.config/firebase/a_ruben00001_gmail.com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to /home/ruben/.config/firebase/a_ruben00001_gmail.com_application_default_credentials.json"}}
+[debug] [2023-06-23T09:51:42.982Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/birch-collective-develop/adminSdkConfig [none]
+[debug] [2023-06-23T09:51:43.203Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/birch-collective-develop/adminSdkConfig 200
+[debug] [2023-06-23T09:51:43.203Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/birch-collective-develop/adminSdkConfig {"projectId":"birch-collective-develop","storageBucket":"birch-collective-develop.appspot.com","locationId":"europe-west2"}
+[info] i  firestore: Importing data from /home/ruben/Coding/website-builds/birch-collective/version-june_2023/cms/db-local-data/firestore_export/firestore_export.overall_export_metadata {"metadata":{"emulator":{"name":"firestore"},"message":"Importing data from /home/ruben/Coding/website-builds/birch-collective/version-june_2023/cms/db-local-data/firestore_export/firestore_export.overall_export_metadata"}}
+[debug] [2023-06-23T09:51:43.237Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2023-06-23T09:51:43.238Z] Ignoring unsupported arg: single_project_mode_error {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: single_project_mode_error"}}
+[debug] [2023-06-23T09:51:43.238Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","/home/ruben/.cache/firebase/emulators/cloud-firestore-emulator-v1.17.4.jar","--host","127.0.0.1","--port",8080,"--websocket_port",9150,"--project_id","birch-collective-develop","--seed_from_export","/home/ruben/Coding/website-builds/birch-collective/version-june_2023/cms/db-local-data/firestore_export/firestore_export.overall_export_metadata","--rules","/home/ruben/Coding/website-builds/birch-collective/version-june_2023/cms/firestore.rules","--single_project_mode",true,"--functions_emulator","127.0.0.1:5001"],"optionalArgs":["port","webchannel_port","host","rules","websocket_port","functions_emulator","seed_from_export","project_id","single_project_mode"],"joinArgs":false} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"/home/ruben/.cache/firebase/emulators/cloud-firestore-emulator-v1.17.4.jar\",\"--host\",\"127.0.0.1\",\"--port\",8080,\"--websocket_port\",9150,\"--project_id\",\"birch-collective-develop\",\"--seed_from_export\",\"/home/ruben/Coding/website-builds/birch-collective/version-june_2023/cms/db-local-data/firestore_export/firestore_export.overall_export_metadata\",\"--rules\",\"/home/ruben/Coding/website-builds/birch-collective/version-june_2023/cms/firestore.rules\",\"--single_project_mode\",true,\"--functions_emulator\",\"127.0.0.1:5001\"],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"websocket_port\",\"functions_emulator\",\"seed_from_export\",\"project_id\",\"single_project_mode\"],\"joinArgs\":false}"}}
+[info] i  firestore: Firestore Emulator logging to firestore-debug.log {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator logging to \u001b[1mfirestore-debug.log\u001b[22m"}}
+[debug] [2023-06-23T09:51:44.267Z] Jun 23, 2023 10:51:44 AM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start
+INFO: Started WebSocket server on ws://127.0.0.1:9150
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Jun 23, 2023 10:51:44 AM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start\nINFO: Started WebSocket server on ws://127.0.0.1:9150\n"}}
+[debug] [2023-06-23T09:51:44.285Z] API endpoint: http://127.0.0.1:8080
+ {"metadata":{"emulator":{"name":"firestore"},"message":"API endpoint: http://127.0.0.1:8080\n"}}
+[debug] [2023-06-23T09:51:44.286Z] If you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:
+
+   export FIRESTORE_EMULATOR_HOST=127.0.0.1:8080
+
+Dev App Server is now running.
+
+ {"metadata":{"emulator":{"name":"firestore"},"message":"If you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:\n\n   export FIRESTORE_EMULATOR_HOST=127.0.0.1:8080\n\nDev App Server is now running.\n\n"}}
+[info] ✔  firestore: Firestore Emulator UI websocket is running on 9150. {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator UI websocket is running on 9150."}}
+[info] i  auth: Importing config from /home/ruben/Coding/website-builds/birch-collective/version-june_2023/cms/db-local-data/auth_export/config.json {"metadata":{"emulator":{"name":"auth"},"message":"Importing config from /home/ruben/Coding/website-builds/birch-collective/version-june_2023/cms/db-local-data/auth_export/config.json"}}
+[info] i  auth: Importing accounts from /home/ruben/Coding/website-builds/birch-collective/version-june_2023/cms/db-local-data/auth_export/accounts.json {"metadata":{"emulator":{"name":"auth"},"message":"Importing accounts from /home/ruben/Coding/website-builds/birch-collective/version-june_2023/cms/db-local-data/auth_export/accounts.json"}}
+[debug] [2023-06-23T09:51:51.391Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"storage"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2023-06-23T09:51:52.105Z] Temp file directory for storage emulator: /tmp/firebase/storage/blobs {"metadata":{"emulator":{"name":"storage"},"message":"Temp file directory for storage emulator: /tmp/firebase/storage/blobs"}}
+[debug] [2023-06-23T09:51:52.143Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2023-06-23T09:51:52.143Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2023-06-23T09:51:52.143Z] Starting Emulator UI with command {"binary":"node","args":["/home/ruben/.cache/firebase/emulators/ui-v1.11.6/server/server.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"/home/ruben/.cache/firebase/emulators/ui-v1.11.6/server/server.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2023-06-23T09:51:52.251Z] Web / API server started at 127.0.0.1:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at 127.0.0.1:4000\n"}}
+[debug] [2023-06-23T09:51:52.408Z] [Extensions] Connecting Extensions emulator, this is a noop.
+[info] i  functions: Watching "/home/ruben/Coding/website-builds/birch-collective/version-june_2023/cms/functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"/home/ruben/Coding/website-builds/birch-collective/version-june_2023/cms/functions\" for Cloud Functions..."}}
+[debug] [2023-06-23T09:51:52.414Z] Validating nodejs source
+[debug] [2023-06-23T09:51:53.781Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2023-06-23T09:51:53.781Z] Building nodejs source
+[debug] [2023-06-23T09:51:53.781Z] Failed to find version of module node: reached end of search path /home/ruben/Coding/website-builds/birch-collective/version-june_2023/cms/functions/node_modules
+[info] ✔  functions: Using node@18 from host. 
+[debug] [2023-06-23T09:51:53.784Z] Could not find functions.yaml. Must use http discovery
+[debug] [2023-06-23T09:51:53.787Z] Found firebase-functions binary at '/home/ruben/Coding/website-builds/birch-collective/version-june_2023/cms/functions/node_modules/.bin/firebase-functions'
+[debug] [2023-06-23T09:51:53.970Z] Serving at port 8977
+
+[debug] [2023-06-23T09:51:54.121Z] Got response from /__/functions.yaml {"endpoints":{},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2023-06-23T09:51:54.127Z] shutdown requested via /__/quitquitquit
+
+[info] ✔  functions: Loaded functions definitions from source: . {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: ."}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬──────────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI              │
+├────────────────┼────────────────┼──────────────────────────────────┤
+│ Authentication │ 127.0.0.1:9099 │ http://127.0.0.1:4000/auth       │
+├────────────────┼────────────────┼──────────────────────────────────┤
+│ Functions      │ 127.0.0.1:5001 │ http://127.0.0.1:4000/functions  │
+├────────────────┼────────────────┼──────────────────────────────────┤
+│ Firestore      │ 127.0.0.1:8080 │ http://127.0.0.1:4000/firestore  │
+├────────────────┼────────────────┼──────────────────────────────────┤
+│ Storage        │ 127.0.0.1:9199 │ http://127.0.0.1:4000/storage    │
+├────────────────┼────────────────┼──────────────────────────────────┤
+│ Extensions     │ 127.0.0.1:5001 │ http://127.0.0.1:4000/extensions │
+└────────────────┴────────────────┴──────────────────────────────────┘
+  Emulator Hub running at 127.0.0.1:4400
+  Other reserved ports: 4500, 9150
+┌─────────────────────────┬───────────────┬─────────────────────┐
+│ Extension Instance Name │ Extension Ref │ View in Emulator UI │
+└─────────────────────────┴───────────────┴─────────────────────┘
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2023-06-23T09:51:57.324Z] Jun 23, 2023 10:51:57 AM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketChannelHandler initChannel
+INFO: Connected to new websocket client
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Jun 23, 2023 10:51:57 AM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketChannelHandler initChannel\nINFO: Connected to new websocket client\n"}}
+[debug] [2023-06-23T09:51:57.331Z] Jun 23, 2023 10:51:57 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Jun 23, 2023 10:51:57 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected non-HTTP/2 connection.\n"}}
+[debug] [2023-06-23T09:51:57.529Z] Jun 23, 2023 10:51:57 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Jun 23, 2023 10:51:57 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected HTTP/2 connection.\n"}}
+[debug] [2023-06-23T09:51:58.263Z] Jun 23, 2023 10:51:58 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Jun 23, 2023 10:51:58 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected non-HTTP/2 connection.\n"}}
+[debug] [2023-06-23T09:51:58.496Z] Jun 23, 2023 10:51:58 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Jun 23, 2023 10:51:58 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected non-HTTP/2 connection.\n"}}
+[debug] [2023-06-23T09:51:58.589Z] Jun 23, 2023 10:51:58 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Jun 23, 2023 10:51:58 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\nINFO: Detected non-HTTP/2 connection.\n"}}
+[debug] [2023-06-23T09:51:59.967Z] Jun 23, 2023 10:51:59 AM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketChannelHandler channelClosed
+INFO: Websocket client disconnected
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Jun 23, 2023 10:51:59 AM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketChannelHandler channelClosed\nINFO: Websocket client disconnected\n"}}
+[debug] [2023-06-23T11:31:17.460Z] Received signal SIGHUP 1
+[info]  
+[info] i  emulators: Received SIGHUP for the first time. Starting a clean shutdown. 
+[info] i  emulators: Please wait for a clean shutdown or send the SIGHUP signal again to stop right now. 
+[info] i  Automatically exporting data using --export-on-exit "./db-local-data" please wait for the export to finish... 
+[debug] [2023-06-23T11:31:17.645Z] >>> [apiv2][query] GET http://127.0.0.1:4400/ [none]
+[debug] [2023-06-23T11:31:17.703Z] Received signal SIGHUP 2
+[info]  
+[debug] [2023-06-23T11:31:17.703Z] Skipping clean onExit() and cleanShutdown()
+[warn] ⚠  emulators: Received SIGHUP 2 times. You have forced the Emulator Suite to exit without waiting for 2 subprocesses to finish. These processes may still be running on your machine:  
+[info] 
+┌────────────────────┬────────────────┬──────┐
+│ Emulator           │ Host:Port      │ PID  │
+├────────────────────┼────────────────┼──────┤
+│ Emulator UI        │ 127.0.0.1:4000 │ 7660 │
+├────────────────────┼────────────────┼──────┤
+│ Firestore Emulator │ 127.0.0.1:8080 │ 7589 │
+└────────────────────┴────────────────┴──────┘
+
+To force them to exit run:
+
+[info] kill 7660 7589
+
+[debug] [2023-06-23T11:31:17.762Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.763Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.763Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.763Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.764Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.764Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.765Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.765Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.766Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.766Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.767Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.822Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.826Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.826Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.827Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2023-06-23T11:31:17.827Z] Error: write EIO
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:930:11)
+    at Socket._write (node:net:942:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Writable.write (node:internal/streams/writable:337:10)
+    at Console.log (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston/lib/winston/transports/console.js:79:23)
+    at Console._write (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/winston-transport/index.js:103:17)
+    at doWrite (/home/ruben/.nvm/versions/node/v18.16.0/lib/node_modules/firebase-tools/node_modules/readable-stream/lib/_stream_writable.js:390:139)

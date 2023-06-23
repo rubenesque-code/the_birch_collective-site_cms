@@ -1,3 +1,5 @@
+const { default: plugin } = require("tailwindcss");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   important: true,
@@ -39,6 +41,12 @@ module.exports = {
         black: "rgb(51,51,51)",
         "black-rgba": "rgba(0, 0, 0, 0.3)",
         "bg-overlay-light": "rgba(237, 242, 247, 0.5)",
+        ["my-success"]: "hsl(154 61% 92%)",
+        ["my-success-content"]: "hsl(160 83.8% 33.9%)",
+        ["my-alert"]: "hsl(0 84% 91.1%)",
+        ["my-alert-content"]: "hsl(0 84% 63.1%)",
+        ["my-error"]: "hsl(28 94.4% 92.9%)",
+        ["my-error-content"]: "hsl(16 100% 56.1%)",
       },
       backgroundImage: {
         donate: "url('/images/fern.jpg')",
