@@ -1,8 +1,8 @@
 import { Fragment, type ReactElement } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { createPortal } from "react-dom";
 
 import { MyTransition } from "../MyTransition";
+import { Dialog, Transition } from "@headlessui/react";
+import { createPortal } from "react-dom";
 
 export type Props = {
   isOpen: boolean;
@@ -18,8 +18,12 @@ const MyModal = ({
   children: panelContent,
   styles,
   appear,
-}: Props) =>
-  createPortal(
+}: Props) => {
+  if (typeof window !== "object") {
+    return null;
+  }
+
+  return createPortal(
     <Transition show={isOpen} as={Fragment} appear={appear}>
       <Dialog as="div" onClose={closeModal} className="relative z-50">
         <MyTransition.Child.Opacity>
@@ -37,5 +41,6 @@ const MyModal = ({
     </Transition>,
     document.body,
   );
+};
 
 export default MyModal;

@@ -25,6 +25,7 @@ export const SelectOrUploadImageMenu = ({
           <ImageModalButton
             icon={<Icon.Upload />}
             onClick={uploadModal.open}
+            
             text="Upload new"
           />
         </MyMenu>
