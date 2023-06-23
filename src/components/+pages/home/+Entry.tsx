@@ -34,10 +34,10 @@ const BannerImage = () => {
 
 const BannerImageMenu = () => {
   return (
-    <div className="gap-sm py-xxs px-xs absolute right-1 top-1 z-20 flex items-center rounded-md bg-white opacity-0 shadow-lg transition-opacity duration-75 ease-in-out hover:!opacity-100 group-hover/bannerImage:opacity-50">
+    <div className="gap-sm py-xxs px-xs absolute right-1 top-1 z-20 flex items-center rounded-md bg-white opacity-40 shadow-lg transition-opacity duration-75 ease-in-out hover:!opacity-100 group-hover/bannerImage:opacity-40 ">
       <SelectOrUploadImageMenu
         button={
-          <div className="text-base-300 group-hover/bannerImage:text-base-content cursor-pointer rounded-md px-2 py-2 text-sm transition-all duration-75 ease-in-out hover:bg-gray-100 hover:brightness-90">
+          <div className="cursor-pointer rounded-md px-2 py-2 text-sm transition-all duration-75 ease-in-out hover:bg-gray-100 hover:opacity-100">
             <WithTooltip text="Update image" yOffset={15}>
               <span className="">
                 <Icon.Image />
@@ -45,6 +45,9 @@ const BannerImageMenu = () => {
             </WithTooltip>
           </div>
         }
+        styles={{
+          itemsWrapper: "right-0 -bottom-1 translate-y-full",
+        }}
       />
     </div>
   );

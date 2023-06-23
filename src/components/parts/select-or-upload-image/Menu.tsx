@@ -25,7 +25,6 @@ export const SelectOrUploadImageMenu = ({
           <ImageModalButton
             icon={<Icon.Upload />}
             onClick={uploadModal.open}
-            
             text="Upload new"
           />
         </MyMenu>
@@ -59,7 +58,7 @@ const ImageModalButton = ({
 }) => (
   <MyMenu.Item>
     <div
-      className={`pr-md hover:bg-base-200 group flex w-full cursor-pointer items-center gap-4 rounded-md px-2 py-2 text-sm`}
+      className={`pr-md group flex w-full cursor-pointer items-center gap-4 rounded-md px-2 py-2 text-sm hover:bg-gray-100`}
       onClick={onClick}
     >
       <div className="flex items-center gap-4">
