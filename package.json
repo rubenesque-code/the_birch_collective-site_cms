@@ -13,19 +13,24 @@
   "dependencies": {
     "@headlessui/react": "^1.7.15",
     "@phosphor-icons/react": "^2.0.10",
+    "dompurify": "^3.0.3",
     "firebase": "^9.22.2",
     "next": "13.4.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-popper-tooltip": "^4.4.2"
+    "react-popper-tooltip": "^4.4.2",
+    "react-use": "^17.4.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+    "@types/dompurify": "^3.0.2",
     "@types/eslint": "^8.40.2",
     "@types/node": "^20.3.1",
     "@types/prettier": "^2.7.3",
     "@types/react": "^18.2.13",
     "@types/react-dom": "^18.2.6",
+    "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.60.0",
     "autoprefixer": "^10.4.14",

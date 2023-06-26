@@ -2,6 +2,7 @@ import { type ChangeEvent, useState } from "react";
 
 import { Icon } from "~/components/icons";
 import { NextImage } from "~/components/next-image";
+import { createImage, uploadImage } from "~/my-firebase/storage/write";
 
 export type OnUploadImage = (arg0: {
   cloudinary_public_id: string;
@@ -55,15 +56,22 @@ const UploadFunctionality = ({
   // const toast = useToast();
 
   const handleCreateImage = async () => {
+    console.log("imageFile:", imageFile);
+    console.log("imageDimensions:", imageDimensions);
     if (!imageFile || !imageDimensions) {
       return;
     }
 
     try {
-      if (!onUploadImage) {
+      /*       if (!onUploadImage) {
         throw new Error("onUploadImage not provided");
-      }
+      } */
       setCreateImageStatus("pending");
+      console.log("PENDING");
+
+      // const uploadRes = await uploadImage(imageFile);
+      await createImage(imageFile);
+      // console.log("uploadRes:", uploadRes);
 
       /*       const uploadRes = await handleUploadImage({
         file: imageFile,
@@ -116,6 +124,7 @@ const UploadFunctionality = ({
               // !isAdmin ? "cursor-not-allowed" : ""
             }`} */
             // onClick={() => ifAdmin(() => void handleCreateImage())}
+            onClick={() => void handleCreateImage()}
             type="button"
           >
             Upload

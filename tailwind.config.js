@@ -92,19 +92,8 @@ module.exports = {
           "@apply border-gray-200 hover:bg-gray-100 border text-gray-500 hover:text-gray-600":
             {},
         },
-        ".btn-blue": {
-          backgroundColor: "#3490dc",
-          color: "#fff",
-          "&:hover": {
-            backgroundColor: "#2779bd",
-          },
-        },
-        ".btn-red": {
-          backgroundColor: "#e3342f",
-          color: "#fff",
-          "&:hover": {
-            backgroundColor: "#cc1f1a",
-          },
+        ".my-btn-action": {
+          "@apply bg-blue-500 text-white hover:bg-blue-600": {},
         },
       });
     }),
