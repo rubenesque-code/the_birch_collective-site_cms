@@ -1,4 +1,5 @@
-const { default: plugin } = require("tailwindcss");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const plugin = require("tailwindcss/plugin");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -81,5 +82,31 @@ module.exports = {
     // require("@tailwindcss/line-clamp"),
     // require("@tailwindcss/aspect-ratio"),
     // require("@tailwindcss/typography"),
+    plugin(function ({ addComponents }) {
+      addComponents({
+        ".my-btn": {
+          "@apply rounded-md border py-xxs px-[0.75rem] text-sm capitalize transition-colors duration-75 ease-in-out":
+            {},
+        },
+        ".my-btn-neutral": {
+          "@apply border-gray-200 hover:bg-gray-100 border text-gray-500 hover:text-gray-600":
+            {},
+        },
+        ".btn-blue": {
+          backgroundColor: "#3490dc",
+          color: "#fff",
+          "&:hover": {
+            backgroundColor: "#2779bd",
+          },
+        },
+        ".btn-red": {
+          backgroundColor: "#e3342f",
+          color: "#fff",
+          "&:hover": {
+            backgroundColor: "#cc1f1a",
+          },
+        },
+      });
+    }),
   ],
 };

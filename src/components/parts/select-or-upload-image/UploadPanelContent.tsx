@@ -16,7 +16,7 @@ export const UploadPanelContent = (props: {
   onUploadImage: OnUploadImage | null;
 }) => (
   <div className="relative w-[600px] max-w-[90vw] rounded-2xl bg-white p-6 text-left shadow-xl">
-    <h3 className="border-b-base-300 pb-sm text-base-content border-b leading-6">
+    <h3 className="border-b-base-300 text-base-content border-b pb-sm leading-6">
       Upload Image
     </h3>
     <div className="mt-md">
@@ -94,13 +94,13 @@ const UploadFunctionality = ({
 
   return (
     <div>
-      <div className="pr-xs max-h-[60vh] overflow-y-auto">
+      <div className="max-h-[60vh] overflow-y-auto pr-xs">
         {imageFile ? (
           <ImageFileDisplay file={imageFile} onLoad={setImageDimensions} />
         ) : null}
         <ImageFileInput isFile={Boolean(imageFile)} setFile={setImageFile} />
       </div>
-      <div className="mt-lg pt-sm flex items-center justify-between">
+      <div className="mt-lg flex items-center justify-between pt-sm">
         <button
           className="my-btn my-btn-neutral"
           type="button"
@@ -110,7 +110,8 @@ const UploadFunctionality = ({
         </button>
         {!imageFile ? null : (
           <button
-            className={`my-btn my-btn-action`}
+            className="my-btn my-btn-neutral"
+            // className={`my-btn my-btn-action`}
             /*             className={`my-btn my-btn-action ${
               // !isAdmin ? "cursor-not-allowed" : ""
             }`} */
@@ -232,7 +233,7 @@ const ImageFileInput = ({
   return (
     <div>
       <label
-        className="my-hover-bg border-base-300 px-sm group inline-flex cursor-pointer items-center gap-2 rounded-sm border py-1"
+        className="my-hover-bg border-base-300 group inline-flex cursor-pointer items-center gap-2 rounded-sm border px-sm py-1"
         htmlFor={uploadInputId}
       >
         <span className="text-base-300 group-hover:text-base-content">
