@@ -3,9 +3,7 @@
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { StorageImageWrapper } from "~/components/StorageImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { WithTooltip } from "~/components/WithTooltip";
-import { Icon } from "~/components/icons";
-import { SelectOrUploadImageMenu } from "~/components/parts/select-or-upload-image";
+import { ImageUploadAndLibrary } from "~/components/parts/select-or-upload-image";
 
 const HomePage = () => {
   return (
@@ -19,32 +17,28 @@ export default HomePage;
 
 const BannerImage = () => {
   return (
-    <div className="group/bannerImage relative aspect-[21/9]">
-      <UserSelectedImageWrapper storageId={""} placeholderText="banner image">
-        {({ storageId }) => (
-          <StorageImageWrapper storageId={storageId}>
-            {({ imgUrl }) => <CustomisableImage src={imgUrl} />}
-          </StorageImageWrapper>
-        )}
-      </UserSelectedImageWrapper>
-      <BannerImageMenu />
-    </div>
+    <ImageUploadAndLibrary.ModalsVisibilityContext.Provider>
+      <div className="group/bannerImage relative aspect-[21/9]">
+        <UserSelectedImageWrapper storageId={""} placeholderText="banner image">
+          {({ storageId }) => (
+            <StorageImageWrapper storageId={storageId}>
+              {({ imgUrl }) => <CustomisableImage src={imgUrl} />}
+            </StorageImageWrapper>
+          )}
+        </UserSelectedImageWrapper>
+        <BannerImageMenu />
+      </div>
+    </ImageUploadAndLibrary.ModalsVisibilityContext.Provider>
   );
 };
 
 const BannerImageMenu = () => {
+  const visibilityState = ImageUploadAndLibrary.ModalsVisibilityContext.use();
+
   return (
-    <div className="gap-sm py-xxs px-xs absolute right-1 top-1 z-20 flex items-center rounded-md bg-white opacity-40 shadow-lg transition-opacity duration-75 ease-in-out hover:!opacity-100 group-hover/bannerImage:opacity-40 ">
-      <SelectOrUploadImageMenu
-        button={
-          <div className="cursor-pointer rounded-md px-2 py-2 text-sm transition-all duration-75 ease-in-out hover:bg-gray-100 hover:opacity-100">
-            <WithTooltip text="Update image" yOffset={15}>
-              <span className="">
-                <Icon.Image />
-              </span>
-            </WithTooltip>
-          </div>
-        }
+    <div className="absolute right-1 top-1 z-20 flex items-center gap-sm rounded-md bg-white px-xs py-xxs opacity-0 shadow-lg transition-opacity duration-75 ease-in-out hover:!opacity-100 group-hover/bannerImage:opacity-40 ">
+      <ImageUploadAndLibrary.WithoutProvider
+        visibilityState={visibilityState}
         styles={{
           itemsWrapper: "right-0 -bottom-1 translate-y-full",
         }}

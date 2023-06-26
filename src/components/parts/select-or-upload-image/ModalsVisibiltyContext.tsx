@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, type ReactElement } from "react";
+import { type ReactElement, createContext, useContext, useState } from "react";
 
-type VisibilityState = {
+export type VisibilityState = {
   uploadedModal: {
     isOpen: boolean;
     open: () => void;
@@ -15,7 +15,7 @@ type VisibilityState = {
 
 const MyContext = createContext<VisibilityState | null>(null);
 
-export const ImageModalsVisibilityProvider = ({
+const ModalsVisibilityProvider = ({
   children,
 }: {
   children: ReactElement | ((args: VisibilityState) => ReactElement);
@@ -51,10 +51,19 @@ export const ImageModalsVisibilityProvider = ({
   );
 };
 
-export const useImageModalsVisibilityContext = () => {
+const useModalsVisibilityContext = () => {
   const value = useContext(MyContext);
   if (!value) {
     throw new Error("Missing Image Modals Visibility Provider");
   }
   return value;
 };
+
+export const ModalsVisibilityContext = () => {
+  throw new Error(
+    "ModalsVisibilityContext exists for naming purposes only and should not be used as a component",
+  );
+};
+
+ModalsVisibilityContext.Provider = ModalsVisibilityProvider;
+ModalsVisibilityContext.use = useModalsVisibilityContext;

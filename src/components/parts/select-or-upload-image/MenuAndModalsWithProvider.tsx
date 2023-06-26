@@ -1,22 +1,24 @@
 import { type ReactElement } from "react";
 
-import { ImageModalsVisibilityProvider } from "./ImageModalsVisibiltyContext";
+import { ModalsVisibilityContext } from "./ModalsVisibiltyContext";
 import { UploadPanelContent } from "./UploadPanelContent";
 import { UploadedPanelContent } from "./UploadedPanelContent";
+import { WithTooltip } from "~/components/WithTooltip";
 import { Icon } from "~/components/icons";
 import { MyMenu, MyModal } from "~/components/styled-bases";
 
-export const SelectOrUploadImageMenu = ({
-  button,
+export const MenuAndModalsWithProvider = ({
+  // button,
   styles,
 }: {
-  button: ReactElement | ((arg0: { isOpen: boolean }) => ReactElement);
-  styles?: { buttonWrapper?: string; itemsWrapper?: string };
+  // button: ReactElement | ((arg0: { isOpen: boolean }) => ReactElement);
+  styles?: { itemsWrapper?: string };
+  // styles?: { buttonWrapper?: string; itemsWrapper?: string };
 }) => (
-  <ImageModalsVisibilityProvider>
+  <ModalsVisibilityContext.Provider>
     {({ uploadModal, uploadedModal }) => (
       <>
-        <MyMenu button={button} styles={styles}>
+        <MyMenu button={MenuButton} styles={styles}>
           <ImageModalButton
             icon={<Icon.Image />}
             onClick={uploadedModal.open}
@@ -44,7 +46,17 @@ export const SelectOrUploadImageMenu = ({
         </MyModal.Default>
       </>
     )}
-  </ImageModalsVisibilityProvider>
+  </ModalsVisibilityContext.Provider>
+);
+
+const MenuButton = () => (
+  <div className="cursor-pointer rounded-md px-2 py-2 text-sm transition-all duration-75 ease-in-out hover:bg-gray-100 hover:opacity-100">
+    <WithTooltip text="Update image" yOffset={15}>
+      <span className="">
+        <Icon.Image />
+      </span>
+    </WithTooltip>
+  </div>
 );
 
 const ImageModalButton = ({
@@ -58,7 +70,7 @@ const ImageModalButton = ({
 }) => (
   <MyMenu.Item>
     <div
-      className={`pr-md group flex w-full cursor-pointer items-center gap-4 rounded-md px-2 py-2 text-sm hover:bg-gray-100`}
+      className={`group flex w-full cursor-pointer items-center gap-4 rounded-md px-2 py-2 pr-md text-sm hover:bg-gray-100`}
       onClick={onClick}
     >
       <div className="flex items-center gap-4">
