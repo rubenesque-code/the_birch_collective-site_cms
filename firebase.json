@@ -38,5 +38,7 @@
     },
     "singleProjectMode": true
   },
-  "extensions": {}
+  "extensions": {
+    "storage-resize-images": "firebase/storage-resize-images@0.1.37"
+  }
 }
