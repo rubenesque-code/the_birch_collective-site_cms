@@ -10,6 +10,6 @@ const ImageUploadAndLibrary = () => {
 
 export { ImageUploadAndLibrary };
 
-ImageUploadAndLibrary.WithProvider = MenuAndModalsWithProvider;
+ImageUploadAndLibrary.Complete = MenuAndModalsWithProvider;
 ImageUploadAndLibrary.WithoutProvider = MenuAndModals;
 ImageUploadAndLibrary.ModalsVisibilityContext = ModalsVisibilityContext;
