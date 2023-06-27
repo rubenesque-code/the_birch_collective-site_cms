@@ -1,8 +1,9 @@
-import { type ChangeEvent, useState } from "react";
+import { type ChangeEvent, useState, useMemo } from "react";
+import { useMutation } from "react-query";
 
 import { Icon } from "~/components/icons";
 import { NextImage } from "~/components/next-image";
-import { createImage, uploadImage } from "~/my-firebase/storage/write";
+import { myFirebaseTransactions } from "~/my-firebase/transactions";
 
 export type OnUploadImage = (arg0: {
   cloudinary_public_id: string;
@@ -42,63 +43,27 @@ const UploadFunctionality = ({
     naturalWidth: number;
   } | null>(null);
 
-  const [createImageStatus, setCreateImageStatus] = useState<
-    "idle" | "pending" | "error" | "success"
-  >("idle");
+  // TODO: try react query for the mutation
 
-  /*   const { refetch: fetchSignature } = api.image.createSignature.useQuery(
-    {
-      upload_preset: "signed",
-    },
-    { enabled: false },
-  ); */
-
-  // const toast = useToast();
+  const mutation = useMutation(
+    (
+      input: typeof myFirebaseTransactions.uploadImageToStorageAndCreateFirestoreImage,
+    ) => myFirebaseTransactions.uploadImageToStorageAndCreateFirestoreImage(),
+  );
 
   const handleCreateImage = async () => {
-    console.log("imageFile:", imageFile);
-    console.log("imageDimensions:", imageDimensions);
     if (!imageFile || !imageDimensions) {
       return;
     }
 
     try {
-      /*       if (!onUploadImage) {
-        throw new Error("onUploadImage not provided");
-      } */
-      setCreateImageStatus("pending");
-      console.log("PENDING");
-
-      // const uploadRes = await uploadImage(imageFile);
-      await createImage(imageFile);
-      // console.log("uploadRes:", uploadRes);
-
-      /*       const uploadRes = await handleUploadImage({
+      await myFirebaseTransactions.uploadImageToStorageAndCreateFirestoreImage({
+        aspectRatio:
+          imageDimensions.naturalWidth / imageDimensions.naturalHeight,
         file: imageFile,
-        signatureData,
       });
-
-      onUploadImage({
-        cloudinary_public_id: uploadRes.cloudinary_public_id,
-        naturalHeight: imageDimensions.naturalHeight,
-        naturalWidth: imageDimensions.naturalWidth,
-        tagIds,
-        onSuccess: () => {
-          setCreateImageStatus("success");
-
-          setTimeout(() => {
-            closeModal();
-
-            toast.success("uploaded image");
-          }, 500);
-        },
-      }); */
-    } catch (error) {
-      setCreateImageStatus("error");
-    }
+    } catch (error) {}
   };
-
-  // const { ifAdmin, isAdmin } = useAdmin();
 
   return (
     <div>
@@ -118,12 +83,7 @@ const UploadFunctionality = ({
         </button>
         {!imageFile ? null : (
           <button
-            className="my-btn my-btn-neutral"
-            // className={`my-btn my-btn-action`}
-            /*             className={`my-btn my-btn-action ${
-              // !isAdmin ? "cursor-not-allowed" : ""
-            }`} */
-            // onClick={() => ifAdmin(() => void handleCreateImage())}
+            className="my-btn my-btn-action"
             onClick={() => void handleCreateImage()}
             type="button"
           >
@@ -131,34 +91,6 @@ const UploadFunctionality = ({
           </button>
         )}
       </div>
-      {/* {createImageStatus === "pending" ||
-      createImageStatus === "success" ||
-      createImageStatus === "error" ? (
-        <div className="absolute left-0 top-0 z-10 grid h-full w-full place-items-center rounded-2xl bg-white bg-opacity-70">
-          <div className="gap-sm flex items-center">
-            {createImageStatus === "pending" ? (
-              <>
-                <MySpinner />
-                <p className="font-mono">Uploading image...</p>
-              </>
-            ) : createImageStatus === "success" ? (
-              <>
-                <span className="text-success">
-                  <TickIcon />
-                </span>
-                <p className="font-mono">Upload success</p>
-              </>
-            ) : (
-              <>
-                <span className="text-my-error-content">
-                  <ErrorIcon />
-                </span>
-                <p className="font-mono">Upload error</p>
-              </>
-            )}
-          </div>
-        </div>
-      ) : null} */}
     </div>
   );
 };
@@ -170,9 +102,7 @@ const ImageFileDisplay = ({
   file: File;
   onLoad: (arg0: { naturalHeight: number; naturalWidth: number }) => void;
 }) => {
-  // was a bug where onLoad was causing constant re-render of this component
-  const [isLoaded, setIsLoaded] = useState(false);
-  const imgSrc = URL.createObjectURL(file);
+  const imgSrc = useMemo(() => URL.createObjectURL(file), [file]);
 
   return (
     <div className="my-md gap-8">
@@ -183,16 +113,12 @@ const ImageFileDisplay = ({
           src={imgSrc}
           className="bg-gray-50"
           alt=""
-          onLoad={(e) => {
-            if (isLoaded) {
-              return;
-            }
-            setIsLoaded(true);
+          onLoadingComplete={(e) =>
             onLoad({
-              naturalHeight: e.currentTarget.naturalHeight,
-              naturalWidth: e.currentTarget.naturalWidth,
-            });
-          }}
+              naturalHeight: e.naturalHeight,
+              naturalWidth: e.naturalWidth,
+            })
+          }
         />
       </div>
       <p className="text-sm text-gray-400">{file.name}</p>

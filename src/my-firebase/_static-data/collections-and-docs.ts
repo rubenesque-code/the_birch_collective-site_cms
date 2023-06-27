@@ -1,13 +1,6 @@
 const collections = {
-  careers: "careers",
-  editable_elements: "editableElements",
-  image_swiper: "imageSwiper",
-  programmes: "programmes",
-  supporters: "supporters",
-  team: "team",
-  testimonials: "testimonials",
-  volunteer_roles: "volunteerRoles",
-  workshops: "workshops",
+  pages: "pages",
+  images: "images",
 };
 
 const editable_element_docs = {
@@ -29,10 +22,15 @@ const editable_element_docs = {
   workshops_page: "workshopsPage",
 };
 
+const pages = {
+  landing: "landing",
+};
+
 export const firestore_file_system_names = {
   collections,
   docs: {
     editable_elements: editable_element_docs,
+    pages,
   },
 };
 
