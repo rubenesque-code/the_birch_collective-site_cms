@@ -1,5 +1,6 @@
 import { type ChangeEvent, useState, useMemo } from "react";
 import { useMutation } from "react-query";
+import { AsyncOverlay } from "~/components/AsyncOverlay";
 
 import { Icon } from "~/components/icons";
 import { NextImage } from "~/components/next-image";
@@ -43,27 +44,24 @@ const UploadFunctionality = ({
     naturalWidth: number;
   } | null>(null);
 
-  // TODO: try react query for the mutation
+  // withTooltip on imagebutton on menu is on inner element rather than whole of it.
 
   const mutation = useMutation(
     (
-      input: typeof myFirebaseTransactions.uploadImageToStorageAndCreateFirestoreImage,
-    ) => myFirebaseTransactions.uploadImageToStorageAndCreateFirestoreImage(),
+      input: Parameters<
+        (typeof myFirebaseTransactions)["uploadImageToStorageAndCreateFirestoreImage"]
+      >[0],
+    ) =>
+      myFirebaseTransactions.uploadImageToStorageAndCreateFirestoreImage(input),
+    {
+      onSuccess(data, variables, context) {
+        console.log("SUCCESS");
+        console.log("data:", data);
+        console.log("variables:", variables);
+        console.log("context:", context);
+      },
+    },
   );
-
-  const handleCreateImage = async () => {
-    if (!imageFile || !imageDimensions) {
-      return;
-    }
-
-    try {
-      await myFirebaseTransactions.uploadImageToStorageAndCreateFirestoreImage({
-        aspectRatio:
-          imageDimensions.naturalWidth / imageDimensions.naturalHeight,
-        file: imageFile,
-      });
-    } catch (error) {}
-  };
 
   return (
     <div>
@@ -77,20 +75,37 @@ const UploadFunctionality = ({
         <button
           className="my-btn my-btn-neutral"
           type="button"
-          onClick={() => closeModal()}
+          onClick={closeModal}
         >
           {!imageFile ? "close" : "cancel"}
         </button>
         {!imageFile ? null : (
           <button
             className="my-btn my-btn-action"
-            onClick={() => void handleCreateImage()}
+            onClick={() => {
+              if (!imageFile || !imageDimensions) {
+                return;
+              }
+
+              mutation.mutate({
+                naturalDimensions: {
+                  height: imageDimensions.naturalHeight,
+                  width: imageDimensions.naturalWidth,
+                },
+                file: imageFile,
+              });
+            }}
+            // onClick={void handleCreateImage}
             type="button"
           >
             Upload
           </button>
         )}
       </div>
+      <AsyncOverlay
+        closeButton={{ onClick: closeModal }}
+        status={mutation.status}
+      />
     </div>
   );
 };

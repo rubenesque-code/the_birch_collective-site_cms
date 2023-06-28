@@ -9,13 +9,13 @@ import { wait } from "~/helpers/async";
 import { storage_file_system_names } from "~/my-firebase/_static-data/collections-and-docs";
 import { storage } from "~/my-firebase/client";
 
-const checkImageExists = async (ref: StorageReference) => {
-  try {
-    const res = await getDownloadURL(ref);
-    return Boolean(res);
-  } catch (_) {
-    return false;
-  }
+// · below throws an error on first try. Or does it? Code continues to work. May just be a logging issue.
+const checkImageExists = (ref: StorageReference): Promise<boolean> => {
+  const res = getDownloadURL(ref)
+    .then(() => true)
+    .catch(() => false);
+
+  return res;
 };
 
 const pollImageCreation = async (input: {

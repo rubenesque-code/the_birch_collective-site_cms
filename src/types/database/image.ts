@@ -1,6 +1,9 @@
 export type Image = {
   id: string;
-  aspectRatio: number;
+  naturalDimensions: {
+    width: number;
+    height: number;
+  };
   urls: {
     large: string;
     blur: string;

@@ -2,7 +2,10 @@ import { myDb } from "../firestore";
 import { myStorage } from "../storage/transactions";
 
 export const uploadImageToStorageAndCreateFirestoreImage = async (input: {
-  aspectRatio: number;
+  naturalDimensions: {
+    width: number;
+    height: number;
+  };
   file: File;
 }) => {
   const storageImage =
@@ -11,7 +14,7 @@ export const uploadImageToStorageAndCreateFirestoreImage = async (input: {
     );
 
   const firestoreImageRes = await myDb.image.create({
-    aspectRatio: input.aspectRatio,
+    naturalDimensions: input.naturalDimensions,
     storageIds: {
       blur: storageImage.blurImageId,
       large: storageImage.largeImageId,
