@@ -4,6 +4,8 @@ import {
   Upload,
   Check,
   WarningCircle,
+  Info,
+  Warning,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -19,3 +21,5 @@ Icon.Upload = Upload;
 Icon.FileImage = FileImage;
 Icon.Success = Check;
 Icon.Error = WarningCircle;
+Icon.Alert = Warning;
+Icon.Info = Info;
