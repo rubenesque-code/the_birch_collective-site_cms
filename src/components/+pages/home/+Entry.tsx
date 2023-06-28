@@ -43,7 +43,7 @@ const HomePage = () => {
   const landingData = useLandingStore((state) => state.state);
 
   return (
-    <div>
+    <div className="min-h-screen">
       <BannerImage />
       <OrgNameAndMotto />
       {JSON.stringify(landingData)}

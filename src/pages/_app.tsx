@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Slide, ToastContainer } from "react-toastify";
 import "~/styles/globals.css";
+import "react-toastify/dist/ReactToastify.css";
 
 const queryClient = new QueryClient();
 

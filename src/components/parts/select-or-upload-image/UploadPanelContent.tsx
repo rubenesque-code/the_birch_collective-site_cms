@@ -4,6 +4,8 @@ import { AsyncOverlay } from "~/components/AsyncOverlay";
 
 import { Icon } from "~/components/icons";
 import { NextImage } from "~/components/next-image";
+import { reactToast } from "~/components/react-toast";
+import { useToast } from "~/hooks";
 import { myFirebaseTransactions } from "~/my-firebase/transactions";
 
 export type OnUploadImage = (arg0: {
@@ -45,6 +47,7 @@ const UploadFunctionality = ({
   } | null>(null);
 
   // withTooltip on imagebutton on menu is on inner element rather than whole of it.
+  const toast = useToast();
 
   const mutation = useMutation(
     (
@@ -54,11 +57,16 @@ const UploadFunctionality = ({
     ) =>
       myFirebaseTransactions.uploadImageToStorageAndCreateFirestoreImage(input),
     {
-      onSuccess(data, variables, context) {
-        console.log("SUCCESS");
-        console.log("data:", data);
-        console.log("variables:", variables);
-        console.log("context:", context);
+      onMutate() {
+        toast.neutral("Uploading image...", "uploading-image");
+      },
+      onSuccess() {
+        reactToast.dismiss("uploading-image");
+        toast.success("Image uploaded");
+      },
+      onError() {
+        reactToast.dismiss("uploading-image");
+        toast.error("Image upload error");
       },
     },
   );

@@ -1,18 +1,21 @@
-import { toast } from "react-toastify";
+import { toast as reactToast } from "react-toastify";
 import { Toast } from "~/components/Toast";
 
 export const useToast = () => {
-  const myToast = {
+  const toast = {
+    neutral(text: string, toastId?: string) {
+      reactToast(<Toast type="neutral" text={text} />, { toastId });
+    },
     success(text: string) {
-      toast(<Toast type="success" text={text} />);
+      reactToast(<Toast type="success" text={text} />);
     },
     error(text: string) {
-      toast(<Toast type="error" text={text} />);
+      reactToast(<Toast type="error" text={text} />);
     },
     info(text: string) {
-      toast(<Toast type="info" text={text} />);
+      reactToast(<Toast type="info" text={text} />);
     },
   };
 
-  return myToast;
+  return toast;
 };

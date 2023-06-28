@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --toastify-color-light: #9ca3af !important;
+}
+
 @layer base {
   button,
   input,
