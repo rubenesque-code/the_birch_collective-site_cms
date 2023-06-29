@@ -15,7 +15,7 @@ const OrgNameAndMotto = () => {
           tooltip={{ text: "Click to edit title" }}
         />
       </div>
-      <button onClick={() => updateOrgName("UPDATED 4")}>Update Name</button>
+      <button onClick={() => updateOrgName("UPDATED 5")}>Update Name</button>
     </div>
   );
 };

@@ -6,6 +6,9 @@ import {
   WarningCircle,
   Info,
   Warning,
+  SignOut,
+  List,
+  FloppyDisk,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -23,3 +26,6 @@ Icon.Success = Check;
 Icon.Error = WarningCircle;
 Icon.Alert = Warning;
 Icon.Info = Info;
+Icon.SignOut = SignOut;
+Icon.HeaderMenu = List;
+Icon.Save = FloppyDisk;
