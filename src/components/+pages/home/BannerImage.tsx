@@ -1,7 +1,7 @@
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { StorageImageWrapper } from "~/components/StorageImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { ImageUploadAndLibrary } from "~/components/parts/select-or-upload-image";
+import { ImageUploadAndLibrary } from "~/components/parts/upload-image-and-library";
 
 const BannerImage = () => (
   <div className="group/bannerImage relative aspect-[21/9]">

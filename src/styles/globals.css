@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --toastify-color-light: #9ca3af !important;
-}
+} */
 
 @layer base {
   button,

@@ -8,45 +8,24 @@ import { reactToast } from "~/components/react-toast";
 import { useToast } from "~/hooks";
 import { myFirebaseTransactions } from "~/my-firebase/transactions";
 
-export type OnUploadImage = (arg0: {
-  cloudinary_public_id: string;
-  naturalHeight: number;
-  naturalWidth: number;
-  tagIds?: string[];
-  onSuccess: () => void;
-}) => void;
-
-export const UploadPanelContent = (props: {
-  closeModal: () => void;
-  onUploadImage: OnUploadImage | null;
-}) => (
+export const UploadImage = (props: { closeModal: () => void }) => (
   <div className="relative w-[600px] max-w-[90vw] rounded-2xl bg-white p-6 text-left shadow-xl">
     <h3 className="border-b-base-300 text-base-content border-b pb-sm leading-6">
       Upload Image
     </h3>
     <div className="mt-md">
-      <UploadFunctionality
-        closeModal={props.closeModal}
-        onUploadImage={props.onUploadImage}
-      />
+      <Form closeModal={props.closeModal} />
     </div>
   </div>
 );
 
-const UploadFunctionality = ({
-  onUploadImage,
-  closeModal,
-}: {
-  onUploadImage: OnUploadImage | null;
-  closeModal: () => void;
-}) => {
+const Form = ({ closeModal }: { closeModal: () => void }) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageDimensions, setImageDimensions] = useState<{
     naturalHeight: number;
     naturalWidth: number;
   } | null>(null);
 
-  // withTooltip on imagebutton on menu is on inner element rather than whole of it.
   const toast = useToast();
 
   const mutation = useMutation(
@@ -103,7 +82,6 @@ const UploadFunctionality = ({
                 file: imageFile,
               });
             }}
-            // onClick={void handleCreateImage}
             type="button"
           >
             Upload

@@ -7,7 +7,7 @@ export const Toast = ({
   text: string;
   type: "neutral" | "error" | "success" | "alert" | "info";
 }) => (
-  <div className="flex w-full max-w-xs items-center  text-white" role="alert">
+  <div className="flex w-full max-w-xs items-center text-gray-500" role="alert">
     {type !== "neutral" ? (
       <div
         className={`inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg `}

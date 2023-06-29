@@ -1,8 +1,8 @@
 import { type ReactElement } from "react";
 
 import { type VisibilityState } from "./ModalsVisibiltyContext";
-import { UploadPanelContent } from "./UploadPanelContent";
-import { UploadedPanelContent } from "./UploadedPanelContent";
+import { UploadImage } from "./UploadImage";
+import { UploadedPanelContent } from "./ImageLibrary";
 import { WithTooltip } from "~/components/WithTooltip";
 import { Icon } from "~/components/icons";
 import { MyMenu, MyModal } from "~/components/styled-bases";
@@ -32,7 +32,7 @@ export const MenuAndModals = ({
       isOpen={visibilityState.uploadModal.isOpen}
       closeModal={visibilityState.uploadModal.close}
     >
-      <UploadPanelContent closeModal={visibilityState.uploadModal.close} />
+      <UploadImage closeModal={visibilityState.uploadModal.close} />
     </MyModal.Default>
 
     <MyModal.Default
@@ -45,13 +45,13 @@ export const MenuAndModals = ({
 );
 
 const MenuButton = () => (
-  <div className="cursor-pointer rounded-md px-2 py-2 text-sm transition-all duration-75 ease-in-out hover:bg-gray-100 hover:opacity-100">
-    <WithTooltip text="Update image" yOffset={15}>
+  <WithTooltip text="Update image" yOffset={15}>
+    <div className="cursor-pointer rounded-md px-2 py-2 text-sm transition-all duration-75 ease-in-out hover:bg-gray-100 hover:opacity-100">
       <span className="">
         <Icon.Image />
       </span>
-    </WithTooltip>
-  </div>
+    </div>
+  </WithTooltip>
 );
 
 const ImageModalButton = ({
