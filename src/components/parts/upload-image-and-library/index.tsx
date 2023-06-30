@@ -1,6 +1,6 @@
 import { MenuAndModals } from "./MenuAndModals";
-import { MenuAndModalsWithProvider } from "./MenuAndModalsWithProvider";
-import { ModalsVisibilityContext } from "./ModalsVisibiltyContext";
+import { MenuAndModalsWithProviders } from "./MenuAndModalsWithProvider";
+import { ModalsVisibility } from "./_state/ModalsVisibiltyContext";
 
 const ImageUploadAndLibrary = () => {
   throw new Error(
@@ -10,6 +10,6 @@ const ImageUploadAndLibrary = () => {
 
 export { ImageUploadAndLibrary };
 
-ImageUploadAndLibrary.Complete = MenuAndModalsWithProvider;
+ImageUploadAndLibrary.Complete = MenuAndModalsWithProviders;
 ImageUploadAndLibrary.WithoutProvider = MenuAndModals;
-ImageUploadAndLibrary.ModalsVisibilityContext = ModalsVisibilityContext;
+ImageUploadAndLibrary.ModalsVisibilityContext = ModalsVisibility;

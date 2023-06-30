@@ -1,14 +1,14 @@
 import { MenuAndModals } from "./MenuAndModals";
-import { ModalsVisibilityContext } from "./ModalsVisibiltyContext";
+import {
+  ModalsVisibility,
+  ComponentAPI,
+  type ComponentAPIContextValue,
+} from "./_state";
 
-export const MenuAndModalsWithProvider = ({
-  styles,
-}: {
-  styles?: { itemsWrapper?: string };
-}) => (
-  <ModalsVisibilityContext.Provider>
-    {(visibilityState) => (
-      <MenuAndModals visibilityState={visibilityState} styles={styles} />
-    )}
-  </ModalsVisibilityContext.Provider>
+export const MenuAndModalsWithProviders = (props: ComponentAPIContextValue) => (
+  <ComponentAPI.Provider {...props}>
+    <ModalsVisibility.Provider>
+      <MenuAndModals />
+    </ModalsVisibility.Provider>
+  </ComponentAPI.Provider>
 );

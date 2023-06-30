@@ -1,48 +1,47 @@
 import { type ReactElement } from "react";
 
-import { type VisibilityState } from "./ModalsVisibiltyContext";
+import { ComponentAPI, ModalsVisibility } from "./_state";
 import { UploadImage } from "./UploadImage";
-import { UploadedPanelContent } from "./ImageLibrary";
+// import { UploadedPanelContent } from "./ImageLibrary";
 import { WithTooltip } from "~/components/WithTooltip";
 import { Icon } from "~/components/icons";
 import { MyMenu, MyModal } from "~/components/styled-bases";
 
-export const MenuAndModals = ({
-  styles,
-  visibilityState,
-}: {
-  styles?: { itemsWrapper?: string };
-  visibilityState: VisibilityState;
-}) => (
-  <>
-    <MyMenu button={MenuButton} styles={styles}>
-      <ImageModalButton
+export const MenuAndModals = () => {
+  const { styles } = ComponentAPI.use();
+  const { uploadModal } = ModalsVisibility.use();
+
+  return (
+    <>
+      <MyMenu button={MenuButton} styles={styles?.menu}>
+        {/*       <ImageModalButton
         icon={<Icon.Image />}
         onClick={visibilityState.uploadedModal.open}
         text="Use uploaded"
-      />
-      <ImageModalButton
-        icon={<Icon.Upload />}
-        onClick={visibilityState.uploadModal.open}
-        text="Upload new"
-      />
-    </MyMenu>
+      /> */}
+        <ImageModalButton
+          icon={<Icon.Upload />}
+          onClick={uploadModal.open}
+          text="Upload new"
+        />
+      </MyMenu>
 
-    <MyModal.Default
-      isOpen={visibilityState.uploadModal.isOpen}
-      closeModal={visibilityState.uploadModal.close}
-    >
-      <UploadImage closeModal={visibilityState.uploadModal.close} />
-    </MyModal.Default>
+      <MyModal.Default
+        isOpen={uploadModal.isOpen}
+        closeModal={uploadModal.close}
+      >
+        <UploadImage />
+      </MyModal.Default>
 
-    <MyModal.Default
+      {/* <MyModal.Default
       isOpen={visibilityState.uploadedModal.isOpen}
       closeModal={visibilityState.uploadedModal.close}
     >
       <UploadedPanelContent closeModal={visibilityState.uploadedModal.close} />
-    </MyModal.Default>
-  </>
-);
+    </MyModal.Default> */}
+    </>
+  );
+};
 
 const MenuButton = () => (
   <WithTooltip text="Update image" yOffset={15}>

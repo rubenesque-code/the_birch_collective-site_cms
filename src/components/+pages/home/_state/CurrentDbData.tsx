@@ -18,7 +18,6 @@ const Provider = ({
   initDbData: DbData;
 }) => {
   const [currentDbData, setCurrentDbData] = useState(initDbData);
-  console.log("currentDbData:", currentDbData);
 
   const overwrite = (updatedData: MyDb["pages"]["landing"]) =>
     setCurrentDbData(updatedData);

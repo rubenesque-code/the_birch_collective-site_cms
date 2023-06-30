@@ -16,7 +16,7 @@ import { UserEditableData } from "./_state";
 import { CurrentDbData } from "./_state/CurrentDbData";
 
 // □ need to have production values in env.local?
-// □ abstraction for react-query onMutate, etc.
+// □ abstraction for react-query onMutate, onSuccess, etc.
 // □ could use zod in saving to db
 
 const HomePage = () => {
@@ -59,7 +59,6 @@ const InitData = ({
   return children(query.data);
 };
 
-// TODO: with warning on undo
 // TODO: image upload and add to local state. Get to work with fetch first.
 
 const Header = () => {
@@ -98,13 +97,13 @@ const Header = () => {
     );
   };
 
-  const overwriteLocalData = UserEditableData.useAction("allData", "overwrite");
+  const userAction = UserEditableData.useAction();
 
   const undo = () => {
     if (!isChange) {
       return;
     }
-    overwriteLocalData(currentDbData.data);
+    userAction.allData.overwrite(currentDbData.data);
   };
 
   return (

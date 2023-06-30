@@ -7,24 +7,32 @@ import { NextImage } from "~/components/next-image";
 import { reactToast } from "~/components/react-toast";
 import { useToast } from "~/hooks";
 import { myFirebaseTransactions } from "~/my-firebase/transactions";
+import { ModalsVisibility } from "./_state";
 
-export const UploadImage = (props: { closeModal: () => void }) => (
+export const UploadImage = () => (
+  // export const UploadImage = (props: { closeModal: () => void }) => (
   <div className="relative w-[600px] max-w-[90vw] rounded-2xl bg-white p-6 text-left shadow-xl">
     <h3 className="border-b-base-300 text-base-content border-b pb-sm leading-6">
       Upload Image
     </h3>
     <div className="mt-md">
-      <Form closeModal={props.closeModal} />
+      <Form />
+      {/* <Form closeModal={props.closeModal} /> */}
     </div>
   </div>
 );
 
-const Form = ({ closeModal }: { closeModal: () => void }) => {
+const Form = () => {
+  // const Form = ({ closeModal }: { closeModal: () => void }) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageDimensions, setImageDimensions] = useState<{
     naturalHeight: number;
     naturalWidth: number;
   } | null>(null);
+
+  const {
+    uploadModal: { close: closeThisModal },
+  } = ModalsVisibility.use();
 
   const toast = useToast();
 
@@ -62,7 +70,7 @@ const Form = ({ closeModal }: { closeModal: () => void }) => {
         <button
           className="my-btn my-btn-neutral"
           type="button"
-          onClick={closeModal}
+          onClick={closeThisModal}
         >
           {!imageFile ? "close" : "cancel"}
         </button>
@@ -89,7 +97,7 @@ const Form = ({ closeModal }: { closeModal: () => void }) => {
         )}
       </div>
       <AsyncOverlay
-        closeButton={{ onClick: closeModal }}
+        closeButton={{ onClick: closeThisModal }}
         status={mutation.status}
       />
     </div>

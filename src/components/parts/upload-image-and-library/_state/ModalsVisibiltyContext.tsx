@@ -13,9 +13,9 @@ export type VisibilityState = {
   };
 };
 
-const MyContext = createContext<VisibilityState | null>(null);
+const Context = createContext<VisibilityState | null>(null);
 
-const ModalsVisibilityProvider = ({
+const Provider = ({
   children,
 }: {
   children: ReactElement | ((args: VisibilityState) => ReactElement);
@@ -45,25 +45,25 @@ const ModalsVisibilityProvider = ({
   };
 
   return (
-    <MyContext.Provider value={value}>
+    <Context.Provider value={value}>
       {typeof children === "function" ? children(value) : children}
-    </MyContext.Provider>
+    </Context.Provider>
   );
 };
 
-const useModalsVisibilityContext = () => {
-  const value = useContext(MyContext);
+const useThisContext = () => {
+  const value = useContext(Context);
   if (!value) {
     throw new Error("Missing Image Modals Visibility Provider");
   }
   return value;
 };
 
-export const ModalsVisibilityContext = () => {
+export const ModalsVisibility = () => {
   throw new Error(
-    "ModalsVisibilityContext exists for naming purposes only and should not be used as a component",
+    "ModalsVisibility exists for naming purposes only and should not be used as a component",
   );
 };
 
-ModalsVisibilityContext.Provider = ModalsVisibilityProvider;
-ModalsVisibilityContext.use = useModalsVisibilityContext;
+ModalsVisibility.Provider = Provider;
+ModalsVisibility.use = useThisContext;

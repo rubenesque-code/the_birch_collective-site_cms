@@ -8,10 +8,31 @@ import { produce } from "immer";
 // □ what is equalityFn for?
 
 type DbData = MyDb["pages"]["landing"];
+
+// □ will probably need to update the below since update isn't the only type of mutation
+
+type GenerateLandingDbActions<TData extends DbData> = {
+  [k in keyof TData]: TData[k] extends Record<string, unknown>
+    ? {
+        [k2 in keyof TData[k]]: TData[k][k2] extends Record<string, unknown>
+          ? {
+              [k3 in keyof TData[k][k2]]: TData[k][k2][k3] extends Record<
+                string,
+                unknown
+              >
+                ? never
+                : (updatedVal: NonNullable<TData[k][k2][k3]>) => void;
+            }
+          : (updatedVal: NonNullable<TData[k][k2]>) => void;
+      }
+    : (updatedVal: TData[k]) => void;
+};
+
+type DbActions = GenerateLandingDbActions<DbData>;
+
 type Actions = {
   allData: { overwrite: (updatedData: DbData) => void };
-  orgName: { update: (newValue: string) => void };
-};
+} & DbActions;
 type UserEditableDataState = { data: DbData; actions: Actions };
 
 const createUserEditableDataStore = (input: { dbData: DbData }) => {
@@ -26,14 +47,27 @@ const createUserEditableDataStore = (input: { dbData: DbData }) => {
             }),
           ),
       },
-      orgName: {
-        update(newValue) {
-          return set(
+      bannerImage: {
+        firestoreImageId: (newValue) =>
+          set(
             produce((state: UserEditableDataState) => {
-              state.data.orgNameAndByline.name = newValue;
+              state.data.bannerImage.firestoreImageId = newValue;
             }),
-          );
-        },
+          ),
+      },
+      orgNameAndByline: {
+        name: (updatedValue) =>
+          set(
+            produce((state: UserEditableDataState) => {
+              state.data.orgNameAndByline.name = updatedValue;
+            }),
+          ),
+        byline: (updatedValue) =>
+          set(
+            produce((state: UserEditableDataState) => {
+              state.data.orgNameAndByline.byline = updatedValue;
+            }),
+          ),
       },
     },
   }));
@@ -88,7 +122,13 @@ function useAllData() {
   return useStore(store, (state) => state.data);
 }
 
-function useAction<
+function useAction() {
+  const store = useContext(Context);
+  if (!store)
+    throw new Error("Missing UserEditableDataStore.Provider in the tree");
+  return useStore(store, (state) => state.actions);
+}
+/* function useAction<
   TDataName extends keyof UserEditableDataState["actions"],
   TMutationType extends keyof UserEditableDataState["actions"][TDataName],
 >(
@@ -100,6 +140,12 @@ function useAction<
     throw new Error("Missing UserEditableDataStore.Provider in the tree");
   return useStore(store, (state) => state.actions[dataName][mutationType]);
 }
+
+function UserEditableData() {
+  throw new Error(
+    "UserEditableStore exists for naming purposes only and should not be used as a component",
+  );
+ */
 
 function UserEditableData() {
   throw new Error(

@@ -13,3 +13,7 @@
     @apply outline-none focus:outline-none;
   }
 }
+
+.firebase-emulator-warning {
+  display: none !important;
+}

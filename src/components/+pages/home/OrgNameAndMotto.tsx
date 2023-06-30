@@ -3,7 +3,7 @@ import { UserEditableData } from "./_state";
 
 const OrgNameAndMotto = () => {
   const orgNameAndByLine = UserEditableData.useData("orgNameAndByline");
-  const updateOrgName = UserEditableData.useAction("orgName", "update");
+  const userAction = UserEditableData.useAction();
 
   return (
     <div className="flex flex-col items-center">
@@ -15,7 +15,9 @@ const OrgNameAndMotto = () => {
           tooltip={{ text: "Click to edit title" }}
         />
       </div>
-      <button onClick={() => updateOrgName("UPDATED 1")}>Update Name</button>
+      <button onClick={() => userAction.orgNameAndByline.name("UPDATED 3")}>
+        Update Name
+      </button>
     </div>
   );
 };
