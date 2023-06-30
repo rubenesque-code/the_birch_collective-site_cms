@@ -2,12 +2,12 @@ import { TextInputForm } from "~/components/forms";
 import { UserEditableData } from "./_state";
 
 const OrgNameAndMotto = () => {
-  const orgNameAndByLine = UserEditableData.useData("orgNameAndByline");
+  const allData = UserEditableData.useAllData();
   const userAction = UserEditableData.useAction();
 
   return (
     <div className="flex flex-col items-center">
-      {JSON.stringify(orgNameAndByLine)}
+      {JSON.stringify(allData)}
       <div className="font-display text-8xl font-bold text-orange">
         <TextInputForm
           input={{ initialValue: "hello", placeholder: "Organisation Name" }}

@@ -4,18 +4,18 @@ import { ImagePlaceholder } from "./ImagePlaceholder";
 
 type Props = {
   children: (arg0: { storageId: string }) => ReactElement;
-  storageId?: string;
+  firestoreImageId: string | null;
   placeholderText?: string;
 };
 
 export const UserSelectedImageWrapper = ({
   children,
-  storageId,
+  firestoreImageId,
   placeholderText,
 }: Props) => {
-  if (!storageId) {
+  if (!firestoreImageId) {
     return <ImagePlaceholder placeholderText={placeholderText} />;
   }
 
-  return children({ storageId });
+  return children({ storageId: firestoreImageId });
 };

@@ -1,14 +1,16 @@
 // move up-down, left-right. takes img url/id.
+import type { MyDb } from "~/types/database";
 import { NextImage } from "./next-image";
 
-type Props = {
-  src: string;
-};
+type Props = MyDb["image"]["urls"];
 
-export const CustomisableImage = ({ src }: Props) => {
-  return (
-    <div>
-      <NextImage alt="" fill src={src} style={{ objectFit: "cover" }} />
-    </div>
-  );
-};
+export const CustomisableImage = (urls: Props) => (
+  <NextImage
+    alt=""
+    fill
+    src={urls.large}
+    blurDataURL={urls.blur}
+    placeholder="blur"
+    style={{ objectFit: "cover" }}
+  />
+);

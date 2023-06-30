@@ -1,6 +1,6 @@
 import { createImage } from "./mutate/image";
 import { updateLandingPage } from "./mutate/landing";
-import { fetchLanding } from "./query";
+import { fetchLanding, fetchOneImage } from "./query";
 
 export const myDb = {
   pages: {
@@ -11,5 +11,6 @@ export const myDb = {
   },
   image: {
     create: createImage,
+    fetchOne: fetchOneImage,
   },
 };

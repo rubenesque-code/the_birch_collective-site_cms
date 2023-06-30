@@ -7,13 +7,15 @@ export const uploadImageToStorageAndCreateFirestoreImage = async (input: {
     height: number;
   };
   file: File;
+  firestoreId: string;
 }) => {
   const storageImage =
     await myStorage.transactions.uploadImageAndFetchResizedImageData(
       input.file,
     );
 
-  const firestoreImageRes = await myDb.image.create({
+  await myDb.image.create({
+    id: input.firestoreId,
     naturalDimensions: input.naturalDimensions,
     storageIds: {
       blur: storageImage.blurImageId,
@@ -24,6 +26,4 @@ export const uploadImageToStorageAndCreateFirestoreImage = async (input: {
       large: storageImage.largeImageURL,
     },
   });
-
-  return firestoreImageRes;
 };

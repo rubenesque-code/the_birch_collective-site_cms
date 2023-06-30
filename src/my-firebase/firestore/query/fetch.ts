@@ -15,3 +15,15 @@ export const fetchLanding = async () => {
 
   return data;
 };
+
+export const fetchOneImage = async (id: string) => {
+  const docRef = doc(
+    firestore,
+    firestore_file_system_names.collections.images,
+    id,
+  );
+  const docSnap = await getDoc(docRef);
+  const data = docSnap.data() as unknown as MyDb["image"];
+
+  return data;
+};

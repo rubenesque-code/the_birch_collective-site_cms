@@ -7,7 +7,8 @@ import { NextImage } from "~/components/next-image";
 import { reactToast } from "~/components/react-toast";
 import { useToast } from "~/hooks";
 import { myFirebaseTransactions } from "~/my-firebase/transactions";
-import { ModalsVisibility } from "./_state";
+import { ComponentAPI, ModalsVisibility } from "./_state";
+import { generateUid } from "~/lib/external-packages-namespace";
 
 export const UploadImage = () => (
   // export const UploadImage = (props: { closeModal: () => void }) => (
@@ -30,13 +31,15 @@ const Form = () => {
     naturalWidth: number;
   } | null>(null);
 
+  const { onUpload } = ComponentAPI.use();
+
   const {
     uploadModal: { close: closeThisModal },
   } = ModalsVisibility.use();
 
   const toast = useToast();
 
-  const mutation = useMutation(
+  const uploadMutation = useMutation(
     (
       input: Parameters<
         (typeof myFirebaseTransactions)["uploadImageToStorageAndCreateFirestoreImage"]
@@ -49,6 +52,7 @@ const Form = () => {
       },
       onSuccess() {
         reactToast.dismiss("uploading-image");
+
         toast.success("Image uploaded");
       },
       onError() {
@@ -82,13 +86,23 @@ const Form = () => {
                 return;
               }
 
-              mutation.mutate({
-                naturalDimensions: {
-                  height: imageDimensions.naturalHeight,
-                  width: imageDimensions.naturalWidth,
+              const firestoreId = generateUid();
+
+              uploadMutation.mutate(
+                {
+                  firestoreId,
+                  naturalDimensions: {
+                    height: imageDimensions.naturalHeight,
+                    width: imageDimensions.naturalWidth,
+                  },
+                  file: imageFile,
                 },
-                file: imageFile,
-              });
+                {
+                  onSuccess() {
+                    onUpload({ firestoreImageId: firestoreId });
+                  },
+                },
+              );
             }}
             type="button"
           >
@@ -98,7 +112,7 @@ const Form = () => {
       </div>
       <AsyncOverlay
         closeButton={{ onClick: closeThisModal }}
-        status={mutation.status}
+        status={uploadMutation.status}
       />
     </div>
   );
