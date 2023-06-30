@@ -10,12 +10,12 @@ const Loading = () => (
 );
 
 const MyError = () => (
-  <div className="my-screen-center">
-    <div className="max-w-xl">
+  <div className="fixed inset-0 grid place-items-center">
+    <div className="max-w-lg">
       <h3 className="font-medium">Something went wrong fetching the data.</h3>
       <p className="mt-xs text-gray-600">
-        Try refreshing the page. If the problem persists and it&apos;s not to do
-        with the internet, contact the developer.
+        Try refreshing the page. If the problem persists, please contact the
+        developer.
       </p>
     </div>
   </div>
