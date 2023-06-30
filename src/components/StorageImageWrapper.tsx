@@ -12,7 +12,6 @@ type Props = {
 };
 
 export const StorageImageWrapper = ({ children, firestoreId }: Props) => {
-  console.log("firestoreId:", firestoreId);
   const query = useQuery(
     ["banner-image", firestoreId],
     async () => await myDb.image.fetchOne(firestoreId),

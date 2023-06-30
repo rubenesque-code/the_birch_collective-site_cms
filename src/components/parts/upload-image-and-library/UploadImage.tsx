@@ -4,7 +4,6 @@ import { AsyncOverlay } from "~/components/AsyncOverlay";
 
 import { Icon } from "~/components/icons";
 import { NextImage } from "~/components/next-image";
-import { reactToast } from "~/components/react-toast";
 import { useToast } from "~/hooks";
 import { myFirebaseTransactions } from "~/my-firebase/transactions";
 import { ComponentAPI, ModalsVisibility } from "./_state";
@@ -46,21 +45,39 @@ const Form = () => {
       >[0],
     ) =>
       myFirebaseTransactions.uploadImageToStorageAndCreateFirestoreImage(input),
-    {
-      onMutate() {
-        toast.neutral("Uploading image...", "uploading-image");
-      },
-      onSuccess() {
-        reactToast.dismiss("uploading-image");
-
-        toast.success("Image uploaded");
-      },
-      onError() {
-        reactToast.dismiss("uploading-image");
-        toast.error("Image upload error");
-      },
-    },
   );
+
+  const upload = () => {
+    if (!imageFile || !imageDimensions) {
+      return;
+    }
+
+    const firestoreId = generateUid();
+
+    toast.promise(
+      () =>
+        uploadMutation.mutateAsync(
+          {
+            firestoreId,
+            naturalDimensions: {
+              height: imageDimensions.naturalHeight,
+              width: imageDimensions.naturalWidth,
+            },
+            file: imageFile,
+          },
+          {
+            onSuccess() {
+              onUpload({ firestoreImageId: firestoreId });
+            },
+          },
+        ),
+      {
+        pending: "uploading image",
+        error: "image upload error",
+        success: "image uploaded",
+      },
+    );
+  };
 
   return (
     <div>
@@ -81,29 +98,7 @@ const Form = () => {
         {!imageFile ? null : (
           <button
             className="my-btn my-btn-action"
-            onClick={() => {
-              if (!imageFile || !imageDimensions) {
-                return;
-              }
-
-              const firestoreId = generateUid();
-
-              uploadMutation.mutate(
-                {
-                  firestoreId,
-                  naturalDimensions: {
-                    height: imageDimensions.naturalHeight,
-                    width: imageDimensions.naturalWidth,
-                  },
-                  file: imageFile,
-                },
-                {
-                  onSuccess() {
-                    onUpload({ firestoreImageId: firestoreId });
-                  },
-                },
-              );
-            }}
+            onClick={upload}
             type="button"
           >
             Upload

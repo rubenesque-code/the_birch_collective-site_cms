@@ -18,6 +18,7 @@ import { CurrentDbData } from "./_state/CurrentDbData";
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, onSuccess, etc.
 // □ could use zod in saving to db
+// □ image blur up works?
 // □ how to handle undo, save, etc., after upload
 
 const HomePage = () => {

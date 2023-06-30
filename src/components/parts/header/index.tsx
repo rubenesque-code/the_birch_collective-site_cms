@@ -1,5 +1,3 @@
-// import { signOut, useSession } from "next-auth/react";
-
 import { MyMenu } from "~/components/styled-bases";
 import { SideBarMenu } from "./SideBarMenu";
 import { WithTooltip } from "~/components/WithTooltip";
@@ -11,7 +9,6 @@ const Header = () => (
     <SideBarMenu />
     <div className="flex items-center gap-2xl">
       <UserStatusMenu />
-      {/* <DeployModal /> */}
       <Revision />
     </div>
   </div>
@@ -20,12 +17,6 @@ const Header = () => (
 export default Header;
 
 const UserStatusMenu = () => {
-  /*   const { data } = useSession();
-
-  if (!data) {
-    return null;
-  } */
-
   return (
     <div className="relative">
       <MyMenu
@@ -39,11 +30,6 @@ const UserStatusMenu = () => {
 };
 
 const UserStatusButton = () => {
-  // const { data } = useSession();
-
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  // const role = data!.user.role;
-
   return (
     <WithTooltip text="user menu">
       <div className="cursor-pointer">
@@ -58,10 +44,7 @@ const StatusMenuContent = () => {
     <div className="bg-white p-6">
       <h3>Admin</h3>
       <div className="ml-[20px] mt-6 flex flex-col gap-4">
-        <div
-          className="flex cursor-pointer items-center gap-7 rounded-lg px-4 py-1 hover:bg-gray-100"
-          // onClick={() => void signOut()}
-        >
+        <div className="flex cursor-pointer items-center gap-7 rounded-lg px-4 py-1 hover:bg-gray-100">
           <div className="text-2xl text-gray-400">
             <Icon.SignOut />
           </div>
