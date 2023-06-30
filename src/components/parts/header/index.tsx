@@ -4,22 +4,22 @@ import { MyMenu } from "~/components/styled-bases";
 import { SideBarMenu } from "./SideBarMenu";
 import { WithTooltip } from "~/components/WithTooltip";
 import { Icon } from "~/components/icons";
-import { SaveContext } from "./_state";
+import { Revision } from "./Revision";
 
 const Header = () => (
   <div className="flex items-center justify-between border-b bg-gray-50 px-md py-sm">
     <SideBarMenu />
-    <div className="flex items-center gap-12">
-      <StatusMenu />
+    <div className="flex items-center gap-2xl">
+      <UserStatusMenu />
       {/* <DeployModal /> */}
-      <SaveUndoButtons />
+      <Revision />
     </div>
   </div>
 );
 
 export default Header;
 
-const StatusMenu = () => {
+const UserStatusMenu = () => {
   /*   const { data } = useSession();
 
   if (!data) {
@@ -29,7 +29,7 @@ const StatusMenu = () => {
   return (
     <div className="relative">
       <MyMenu
-        button={<StatusButton />}
+        button={<UserStatusButton />}
         styles={{ itemsWrapper: "absolute -bottom-1 right-0 translate-y-full" }}
       >
         <StatusMenuContent />
@@ -38,7 +38,7 @@ const StatusMenu = () => {
   );
 };
 
-const StatusButton = () => {
+const UserStatusButton = () => {
   // const { data } = useSession();
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -70,41 +70,6 @@ const StatusMenuContent = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-const SaveUndoButtons = () => {
-  const {
-    actions: { save },
-    data: { isChange },
-  } = SaveContext.use();
-
-  return (
-    <div className="flex items-center gap-sm">
-      <WithTooltip text={isChange ? "save" : "nothing to save"}>
-        <button
-          className={`relative text-2xl transition-colors ease-in-out ${
-            !isChange
-              ? "cursor-auto text-gray-200 hover:text-gray-300"
-              : "cursor-pointer text-gray-400 hover:text-gray-500"
-          }`}
-          onClick={() => {
-            if (!isChange) {
-              return;
-            }
-            save();
-          }}
-          type="button"
-        >
-          <Icon.Save weight="light" />
-          {isChange ? (
-            <span
-              className={`absolute -left-[1px] -top-[1px] h-[8px] w-[8px] rounded-full bg-green-active`}
-            />
-          ) : null}
-        </button>
-      </WithTooltip>
     </div>
   );
 };

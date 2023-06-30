@@ -1,19 +1,19 @@
 // logo, org name - not editable
 // banner image + title needn't be movable
-import { useMemo, type ReactElement } from "react";
+import { type ReactElement } from "react";
 import { useMutation, useQuery } from "react-query";
-import lodash from "lodash";
 
+import { PageDataFetch } from "~/components/PageDataFetch";
+import Header_ from "~/components/parts/header";
+import { SaveContext } from "~/components/parts/header/_state";
+import { useToast } from "~/hooks";
+import { useSaveData } from "~/hooks/useSaveData";
 import { myDb } from "~/my-firebase/firestore";
 import type { MyDb } from "~/types/database";
 import BannerImage from "./BannerImage";
 import OrgNameAndMotto from "./OrgNameAndMotto";
-import { UserEditableDataStore } from "./_state";
-import { useToast } from "~/hooks";
-import { PageDataFetch } from "~/components/PageDataFetch";
-import { useSaveData } from "~/hooks/useSaveData";
-import Header_ from "~/components/parts/header";
-import { SaveContext } from "~/components/parts/header/_state";
+import { UserEditableData } from "./_state";
+import { CurrentDbData } from "./_state/CurrentDbData";
 
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, etc.
@@ -22,14 +22,16 @@ import { SaveContext } from "~/components/parts/header/_state";
 const HomePage = () => {
   return (
     <InitData>
-      {(dbData) => (
-        <UserEditableDataStore.Provider dbData={dbData}>
-          <Header />
-          <div className="min-h-screen">
-            <BannerImage />
-            <OrgNameAndMotto />
-          </div>
-        </UserEditableDataStore.Provider>
+      {(initDbData) => (
+        <CurrentDbData.Provider initDbData={initDbData}>
+          <UserEditableData.Provider initDbData={initDbData}>
+            <Header />
+            <div className="min-h-screen">
+              <BannerImage />
+              <OrgNameAndMotto />
+            </div>
+          </UserEditableData.Provider>
+        </CurrentDbData.Provider>
       )}
     </InitData>
   );
@@ -57,11 +59,17 @@ const InitData = ({
   return children(query.data);
 };
 
-const Header = () => {
-  const initData = UserEditableDataStore.useInitDbData();
-  const currData = UserEditableDataStore.useAllData();
+// TODO: with warning on undo
+// TODO: image upload and add to local state. Get to work with fetch first.
 
-  const { saveData, isChange } = useSaveData({ currData, initData });
+const Header = () => {
+  const currentDbData = CurrentDbData.use();
+  const localData = UserEditableData.useAllData();
+
+  const { saveData, isChange } = useSaveData({
+    dbData: currentDbData.data,
+    localData,
+  });
 
   const toast = useToast();
 
@@ -70,31 +78,44 @@ const Header = () => {
       myDb.pages.landing.update(input),
   );
 
+  const save = () => {
+    if (!isChange) {
+      return;
+    }
+
+    toast.promise(
+      () =>
+        saveMutation.mutateAsync(saveData, {
+          onSuccess() {
+            currentDbData.overwrite(localData);
+          },
+        }),
+      {
+        pending: "saving",
+        error: "save error",
+        success: "saved",
+      },
+    );
+  };
+
+  const overwriteLocalData = UserEditableData.useAction("allData", "overwrite");
+
+  const undo = () => {
+    if (!isChange) {
+      return;
+    }
+    overwriteLocalData(currentDbData.data);
+  };
+
   return (
     <SaveContext.Provider
       actions={{
-        save: () =>
-          toast.promise(() => saveMutation.mutateAsync(saveData), {
-            pending: "saving",
-            error: "save error",
-            success: "saved",
-          }),
-        undo: () => console.log("UNDO"),
+        save,
+        undo,
       }}
       data={{ isChange }}
     >
       <Header_ />
-      <button
-        onClick={() =>
-          toast.promise(() => saveMutation.mutateAsync(saveData), {
-            pending: "saving",
-            error: "save error",
-            success: "saved",
-          })
-        }
-      >
-        SAVE
-      </button>
     </SaveContext.Provider>
   );
 };

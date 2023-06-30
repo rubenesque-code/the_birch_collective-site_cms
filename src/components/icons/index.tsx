@@ -9,6 +9,7 @@ import {
   SignOut,
   List,
   FloppyDisk,
+  ArrowCounterClockwise,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -29,3 +30,4 @@ Icon.Info = Info;
 Icon.SignOut = SignOut;
 Icon.HeaderMenu = List;
 Icon.Save = FloppyDisk;
+Icon.Undo = ArrowCounterClockwise;

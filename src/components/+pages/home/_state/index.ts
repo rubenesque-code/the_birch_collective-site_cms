@@ -1,1 +1,1 @@
-export * from "./UserEditableDataStore";
+export * from "./UserEditableData";

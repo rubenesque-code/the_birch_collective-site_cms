@@ -9,6 +9,7 @@ import { produce } from "immer";
 
 type DbData = MyDb["pages"]["landing"];
 type Actions = {
+  allData: { overwrite: (updatedData: DbData) => void };
   orgName: { update: (newValue: string) => void };
 };
 type UserEditableDataState = { data: DbData; actions: Actions };
@@ -17,6 +18,14 @@ const createUserEditableDataStore = (input: { dbData: DbData }) => {
   return createStore<UserEditableDataState>()((set) => ({
     data: input.dbData,
     actions: {
+      allData: {
+        overwrite: (updatedData) =>
+          set(
+            produce((state: UserEditableDataState) => {
+              state.data = updatedData;
+            }),
+          ),
+      },
       orgName: {
         update(newValue) {
           return set(
@@ -30,25 +39,27 @@ const createUserEditableDataStore = (input: { dbData: DbData }) => {
   }));
 };
 
-type UserEditableDataStore = ReturnType<typeof createUserEditableDataStore>;
-type ContextValue = UserEditableDataStore & { initDbData: DbData };
+type UserEditableData = ReturnType<typeof createUserEditableDataStore>;
+type ContextValue = UserEditableData;
 
 const Context = createContext<ContextValue | null>(null);
 
 function Provider({
   children,
-  dbData: initDbData,
+  initDbData,
 }: {
   children: ReactNode | ((args: ContextValue) => ReactNode);
-  dbData: DbData;
+  initDbData: DbData;
 }) {
-  const storeRef = useRef<UserEditableDataStore>();
+  const storeRef = useRef<UserEditableData>();
 
   if (!storeRef.current) {
     storeRef.current = createUserEditableDataStore({ dbData: initDbData });
   }
 
-  const value: ContextValue = { ...storeRef.current, initDbData: initDbData };
+  const value: ContextValue = {
+    ...storeRef.current,
+  };
 
   return (
     <Context.Provider value={value}>
@@ -79,7 +90,7 @@ function useAllData() {
 
 function useAction<
   TDataName extends keyof UserEditableDataState["actions"],
-  TMutationType extends "update",
+  TMutationType extends keyof UserEditableDataState["actions"][TDataName],
 >(
   dataName: TDataName,
   mutationType: TMutationType,
@@ -90,23 +101,34 @@ function useAction<
   return useStore(store, (state) => state.actions[dataName][mutationType]);
 }
 
-function useInitDbData() {
-  const store = useContext(Context);
-  if (!store)
-    throw new Error("Missing UserEditableDataStore.Provider in the tree");
-  return store.initDbData;
-}
-
-function UserEditableDataStore() {
+function UserEditableData() {
   throw new Error(
     "UserEditableStore exists for naming purposes only and should not be used as a component",
   );
 }
 
-export { UserEditableDataStore };
+export { UserEditableData };
 
-UserEditableDataStore.Provider = Provider;
-UserEditableDataStore.useData = useData;
-UserEditableDataStore.useAllData = useAllData;
-UserEditableDataStore.useAction = useAction;
-UserEditableDataStore.useInitDbData = useInitDbData;
+UserEditableData.Provider = Provider;
+UserEditableData.useData = useData;
+UserEditableData.useAllData = useAllData;
+UserEditableData.useAction = useAction;
+
+/* type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
+
+type A = { a: { a: string }; b: { b: string; c: string } };
+
+type First = keyof A;
+type FE = Expand<First>;
+
+// type Second = keyof First
+type Second<TFirst extends keyof A> = keyof A[TFirst];
+type SE = Expand<Second<"b">>;
+
+function Test<TFirstLevelProp extends keyof A>(
+  firstLevelProp: TFirstLevelProp,
+  secondLevelProp: keyof A[TFirstLevelProp],
+) {
+  console.log("hello");
+}
+ */
