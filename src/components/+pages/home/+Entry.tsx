@@ -19,7 +19,8 @@ import { CurrentDbData } from "./_state/CurrentDbData";
 // □ abstraction for react-query onMutate, onSuccess, etc.
 // □ could use zod in saving to db
 // □ image blur up works?
-// □ how to handle undo, save, etc., after upload
+
+// □ reposition image
 
 const HomePage = () => {
   return (

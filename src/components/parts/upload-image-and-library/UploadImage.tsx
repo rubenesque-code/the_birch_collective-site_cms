@@ -6,24 +6,21 @@ import { Icon } from "~/components/icons";
 import { NextImage } from "~/components/next-image";
 import { useToast } from "~/hooks";
 import { myFirebaseTransactions } from "~/my-firebase/transactions";
-import { ComponentAPI, ModalsVisibility } from "./_state";
+import { ComponentAPI, ModalsVisibilityContext } from "./_state";
 import { generateUid } from "~/lib/external-packages-namespace";
 
 export const UploadImage = () => (
-  // export const UploadImage = (props: { closeModal: () => void }) => (
   <div className="relative w-[600px] max-w-[90vw] rounded-2xl bg-white p-6 text-left shadow-xl">
     <h3 className="border-b-base-300 text-base-content border-b pb-sm leading-6">
       Upload Image
     </h3>
     <div className="mt-md">
       <Form />
-      {/* <Form closeModal={props.closeModal} /> */}
     </div>
   </div>
 );
 
 const Form = () => {
-  // const Form = ({ closeModal }: { closeModal: () => void }) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageDimensions, setImageDimensions] = useState<{
     naturalHeight: number;
@@ -34,7 +31,7 @@ const Form = () => {
 
   const {
     uploadModal: { close: closeThisModal },
-  } = ModalsVisibility.use();
+  } = ModalsVisibilityContext.use();
 
   const toast = useToast();
 

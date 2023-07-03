@@ -59,11 +59,11 @@ const useThisContext = () => {
   return value;
 };
 
-export const ModalsVisibility = () => {
+export const ModalsVisibilityContext = () => {
   throw new Error(
     "ModalsVisibility exists for naming purposes only and should not be used as a component",
   );
 };
 
-ModalsVisibility.Provider = Provider;
-ModalsVisibility.use = useThisContext;
+ModalsVisibilityContext.Provider = Provider;
+ModalsVisibilityContext.use = useThisContext;

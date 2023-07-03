@@ -1,19 +1,18 @@
 import { type ReactElement } from "react";
 
-import { ComponentAPI, ModalsVisibility } from "./_state";
+import { ComponentAPI, ModalsVisibilityContext } from "./_state";
 import { UploadImage } from "./UploadImage";
 // import { UploadedPanelContent } from "./ImageLibrary";
-import { WithTooltip } from "~/components/WithTooltip";
 import { Icon } from "~/components/icons";
 import { MyMenu, MyModal } from "~/components/styled-bases";
 
 export const MenuAndModals = () => {
-  const { styles } = ComponentAPI.use();
-  const { uploadModal } = ModalsVisibility.use();
+  const { styles, menuButton } = ComponentAPI.use();
+  const { uploadModal } = ModalsVisibilityContext.use();
 
   return (
     <>
-      <MyMenu button={MenuButton} styles={styles?.menu}>
+      <MyMenu button={menuButton} styles={styles?.menu}>
         {/*       <ImageModalButton
         icon={<Icon.Image />}
         onClick={visibilityState.uploadedModal.open}
@@ -42,16 +41,6 @@ export const MenuAndModals = () => {
     </>
   );
 };
-
-const MenuButton = () => (
-  <WithTooltip text="Update image" yOffset={15}>
-    <div className="cursor-pointer rounded-md px-2 py-2 text-sm transition-all duration-75 ease-in-out hover:bg-gray-100 hover:opacity-100">
-      <span className="">
-        <Icon.Image />
-      </span>
-    </div>
-  </WithTooltip>
-);
 
 const ImageModalButton = ({
   onClick,

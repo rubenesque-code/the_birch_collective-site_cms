@@ -11,7 +11,7 @@ type Props = {
   firestoreId: string;
 };
 
-export const StorageImageWrapper = ({ children, firestoreId }: Props) => {
+export const FirestoreImageWrapper = ({ children, firestoreId }: Props) => {
   const query = useQuery(
     ["banner-image", firestoreId],
     async () => await myDb.image.fetchOne(firestoreId),
@@ -35,17 +35,16 @@ export const StorageImageWrapper = ({ children, firestoreId }: Props) => {
 };
 
 const UnfoundFirestoreImage = () => (
-  <div className="relative grid h-full place-items-center rounded-md bg-my-alert">
+  <div className="relative grid h-full place-items-center rounded-md border-2 border-my-alert-content bg-gray-50">
     <div className="grid place-items-center">
       <div className="text-5xl text-gray-500">
         <Icon.Image weight="light" />
       </div>
       <div className="mt-4 text-center text-my-alert-content">
-        <p className="mt-1">Could not find image.</p>
+        <p className="mt-1">Error - could not find image.</p>
       </div>
-      <div className="mt-4 max-w-[400px] text-center text-gray-600">
-        Coul not find image. The image may have been deleted. You can try
-        uploading again.
+      <div className="mt-4 max-w-[400px] text-center text-gray-500">
+        It may have been deleted. Try uploading the image again.
       </div>
     </div>
   </div>

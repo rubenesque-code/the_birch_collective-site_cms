@@ -1,6 +1,6 @@
 import { MenuAndModals } from "./MenuAndModals";
 import { MenuAndModalsWithProviders } from "./MenuAndModalsWithProvider";
-import { ModalsVisibility } from "./_state/ModalsVisibiltyContext";
+import { ModalsVisibilityContext, type ComponentAPIProps } from "./_state";
 
 const ImageUploadAndLibrary = () => {
   throw new Error(
@@ -8,8 +8,8 @@ const ImageUploadAndLibrary = () => {
   );
 };
 
-export { ImageUploadAndLibrary };
+export { ImageUploadAndLibrary, type ComponentAPIProps as ComponentProps };
 
 ImageUploadAndLibrary.Complete = MenuAndModalsWithProviders;
 ImageUploadAndLibrary.WithoutProvider = MenuAndModals;
-ImageUploadAndLibrary.ModalsVisibilityContext = ModalsVisibility;
+ImageUploadAndLibrary.ModalsVisibilityContext = ModalsVisibilityContext;

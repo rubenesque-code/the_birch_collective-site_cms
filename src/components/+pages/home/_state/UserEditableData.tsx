@@ -54,7 +54,22 @@ const createUserEditableDataStore = (input: { dbData: DbData }) => {
               state.data.bannerImage.firestoreImageId = newValue;
             }),
           ),
+        position: {
+          x: (newValue) =>
+            set(
+              produce((state: UserEditableDataState) => {
+                state.data.bannerImage.position.x = newValue;
+              }),
+            ),
+          y: (newValue) =>
+            set(
+              produce((state: UserEditableDataState) => {
+                state.data.bannerImage.position.y = newValue;
+              }),
+            ),
+        },
       },
+
       orgNameAndByline: {
         name: (updatedValue) =>
           set(

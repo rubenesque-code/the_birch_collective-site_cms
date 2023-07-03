@@ -1,10 +1,10 @@
 type Landing = {
   bannerImage: {
     firestoreImageId: string | null;
-    /*     position: {
+    position: {
       x: number;
       y: number;
-    }; */
+    };
   };
   orgNameAndByline: {
     name: string;

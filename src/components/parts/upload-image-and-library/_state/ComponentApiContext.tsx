@@ -1,8 +1,9 @@
 import { createContext, useContext, type ReactElement } from "react";
 
-export type ComponentAPIContextValue = {
+type ComponentAPIContextValue = {
   styles?: { menu?: { itemsWrapper?: string } };
   onUpload: (arg0: { firestoreImageId: string }) => void;
+  menuButton: ReactElement;
 };
 
 const Context = createContext<ComponentAPIContextValue | null>(null);
@@ -30,11 +31,13 @@ const useThisContext = () => {
   return value;
 };
 
-export const ComponentAPI = () => {
+const ComponentAPI = () => {
   throw new Error(
     "ComponentAPI exists for naming purposes only and should not be used as a component",
   );
 };
+
+export { ComponentAPI, type ComponentAPIContextValue as ComponentAPIProps };
 
 ComponentAPI.Provider = Provider;
 ComponentAPI.use = useThisContext;

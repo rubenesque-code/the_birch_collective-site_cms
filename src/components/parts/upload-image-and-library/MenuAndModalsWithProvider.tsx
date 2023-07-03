@@ -1,14 +1,14 @@
 import { MenuAndModals } from "./MenuAndModals";
 import {
-  ModalsVisibility,
+  ModalsVisibilityContext,
   ComponentAPI,
-  type ComponentAPIContextValue,
+  type ComponentAPIProps,
 } from "./_state";
 
-export const MenuAndModalsWithProviders = (props: ComponentAPIContextValue) => (
+export const MenuAndModalsWithProviders = (props: ComponentAPIProps) => (
   <ComponentAPI.Provider {...props}>
-    <ModalsVisibility.Provider>
+    <ModalsVisibilityContext.Provider>
       <MenuAndModals />
-    </ModalsVisibility.Provider>
+    </ModalsVisibilityContext.Provider>
   </ComponentAPI.Provider>
 );

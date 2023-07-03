@@ -33,7 +33,7 @@ const UserStatusButton = () => {
   return (
     <WithTooltip text="user menu">
       <div className="cursor-pointer">
-        <div className="text-blue-400">Admin</div>
+        <div className="text-blue-300">Admin</div>
       </div>
     </WithTooltip>
   );
