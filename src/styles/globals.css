@@ -5,6 +5,10 @@
 /* :root {
   --toastify-color-light: #9ca3af !important;
 } */
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
 
 @layer base {
   button,

@@ -1,51 +1,38 @@
-import { useRef, useState } from "react";
-
-import { type TooltipProps, WithTooltip } from "../WithTooltip";
 import DOMPurify from "dompurify";
+import { useRef, useState } from "react";
 import { useMeasure } from "react-use";
-import { type MyOmit } from "~/types/utilities";
 
-export const TextInputForm = ({
-  onSubmit,
-  tooltip,
-  input: { initialValue = "", minWidth, placeholder = "Write here" },
-}: {
-  onSubmit: (arg0: { inputValue: string; onSuccess: () => void }) => void;
-  tooltip: MyOmit<TooltipProps, "children">;
-  input: {
-    initialValue?: string | null;
-    minWidth?: number;
-    placeholder?: string;
-  };
+import type { MyPick } from "~/types/utilities";
+import { WithTooltip } from "../WithTooltip";
+
+export const TextInputForm = (props: {
+  initialValue: string | null;
+  input: MyPick<
+    InputProps,
+    "autoFocus" | "minWidth" | "placeholder" | "styles"
+  >;
+  onSubmit: (arg0: { inputValue: string }) => void;
+  tooltip?: string;
 }) => {
-  const [inputValue, setInputValue] = useState(initialValue || "");
+  const [inputValue, setInputValue] = useState(props.initialValue || "");
   const [inputIsFocused, setInputIsFocused] = useState(false);
 
-  const prevValueRef = useRef(inputValue);
-  const prevValueValue = prevValueRef.current;
-  const isChange = prevValueValue !== inputValue;
-
   const handleSubmit = () => {
-    if (!isChange || !inputValue.length) {
+    if (!inputValue.length) {
       return;
     }
 
     const clean = DOMPurify.sanitize(inputValue);
 
-    onSubmit({
+    props.onSubmit({
       inputValue: clean,
-      onSuccess() {
-        prevValueRef.current = inputValue;
-      },
     });
   };
 
-  const containerRef = useRef<HTMLFormElement>(null);
-
   return (
     <WithTooltip
-      {...tooltip}
-      isDisabled={!tooltip.text || inputIsFocused}
+      text={props.tooltip || ""}
+      isDisabled={!props.tooltip?.length || inputIsFocused}
       placement="top"
     >
       <form
@@ -55,17 +42,15 @@ export const TextInputForm = ({
 
           handleSubmit();
         }}
-        ref={containerRef}
+        onBlur={handleSubmit}
       >
         <div className="form-control">
-          <TextInput
+          <Input
+            isFocused={inputIsFocused}
+            setIsFocused={setInputIsFocused}
             setValue={setInputValue}
             value={inputValue}
-            placeholder={placeholder}
-            isChange={isChange}
-            minWidth={minWidth}
-            setIsFocused={setInputIsFocused}
-            isFocused={inputIsFocused}
+            {...props.input}
           />
         </div>
       </form>
@@ -73,51 +58,52 @@ export const TextInputForm = ({
   );
 };
 
-const TextInput = ({
-  setValue,
-  value,
-  placeholder,
-  isChange,
-  minWidth = 50,
-  trailingSpace = 20,
-  autoFocus = false,
-  setIsFocused,
-  isFocused,
-}: {
-  value: string;
-  setValue: (value: string) => void;
-  setIsFocused: (value: boolean) => void;
-  placeholder?: string;
-  isChange: boolean;
-  minWidth?: number;
-  trailingSpace?: number;
+type InputProps = {
   autoFocus?: boolean;
   isFocused: boolean;
-}) => {
+  minWidth?: number;
+  placeholder?: string;
+  setIsFocused: (value: boolean) => void;
+  setValue: (value: string) => void;
+  trailingSpace?: number;
+  value: string;
+  styles?: string;
+};
+
+const Input = ({
+  autoFocus = false,
+  isFocused,
+  minWidth = 50,
+  placeholder,
+  setIsFocused,
+  setValue,
+  styles = "",
+  trailingSpace = 20,
+  value,
+}: InputProps) => {
   const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
     useState(false);
 
   const [dummyInputRef, { width: dummyInputWidth }] =
     useMeasure<HTMLParagraphElement>();
 
-  const inputWidth = dummyInputWidth + trailingSpace;
+  const inputWidth = dummyInputWidth + (isFocused ? trailingSpace : 0);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   return (
     <>
       <div
-        className={`focus-within:border-base-300 relative z-10 box-content flex h-full items-stretch rounded-sm border pr-xs transition-colors duration-75 ease-in-out focus-within:bg-gray-50 ${
-          isChange ? "border-yellow-300" : "border-transparent"
-        } ${isChange || isFocused ? "mb-1 py-1" : ""}`}
+        className={`relative h-full rounded-sm transition-colors duration-75 ease-in-out focus-within:bg-gray-100`}
       >
-        <p className="invisible absolute whitespace-nowrap" ref={dummyInputRef}>
+        <p
+          className={`invisible absolute whitespace-nowrap ${styles}`}
+          ref={dummyInputRef}
+        >
           {value.length ? value : placeholder}
         </p>
         <input
-          className={`z-10 bg-transparent pr-xs outline-none transition-transform duration-100 ease-in-out focus:translate-x-2  ${
-            isChange ? "translate-x-2" : ""
-          }`}
+          className={`z-10 bg-transparent outline-none ${styles}`}
           value={value}
           onChange={(e) => {
             setValue(e.target.value);
@@ -142,11 +128,6 @@ const TextInput = ({
           ref={inputRef}
         />
       </div>
-      {isChange ? (
-        <div className="mb-xxs rounded-sm px-xs font-sans">
-          <p className="text-xs text-gray-400">Press enter to save</p>
-        </div>
-      ) : null}
     </>
   );
 };

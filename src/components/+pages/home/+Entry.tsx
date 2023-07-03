@@ -14,6 +14,7 @@ import BannerImage from "./BannerImage";
 import OrgNameAndMotto from "./OrgNameAndMotto";
 import { UserEditableData } from "./_state";
 import { CurrentDbData } from "./_state/CurrentDbData";
+import { TestimonialSlides } from "./testimonial-slides";
 
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, onSuccess, etc.
@@ -21,7 +22,8 @@ import { CurrentDbData } from "./_state/CurrentDbData";
 // □ image blur up works?
 // □ change image x pos working?
 
-// □ reposition image
+// □ sort out x overflow. also, max w for inputs
+// □ banner image info widget
 
 const HomePage = () => {
   return (
@@ -30,9 +32,10 @@ const HomePage = () => {
         <CurrentDbData.Provider initDbData={initDbData}>
           <UserEditableData.Provider initDbData={initDbData}>
             <Header />
-            <div className="min-h-screen">
+            <div className="min-h-screen w-screen overflow-hidden">
               <BannerImage />
               <OrgNameAndMotto />
+              <TestimonialSlides />
             </div>
           </UserEditableData.Provider>
         </CurrentDbData.Provider>

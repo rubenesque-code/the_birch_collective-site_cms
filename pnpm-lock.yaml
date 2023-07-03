@@ -40,6 +40,9 @@ dependencies:
   react-use:
     specifier: ^17.4.0
     version: 17.4.0(react-dom@18.2.0)(react@18.2.0)
+  swiper:
+    specifier: ^10.0.2
+    version: 10.0.2
   uuid:
     specifier: ^9.0.0
     version: 9.0.0
@@ -3920,6 +3923,11 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
     dev: true
+
+  /swiper@10.0.2:
+    resolution: {integrity: sha512-b/3L+Z+88vWXt4d32tup9w+otQEHCwW/qas+C7WKimv5GGGMi3HHeLNp2fPt8BeaP9Th17itujmjKXONben6AA==}
+    engines: {node: '>= 4.7.0'}
+    dev: false
 
   /synckit@0.8.5:
     resolution: {integrity: sha512-L1dapNV6vu2s/4Sputv8xGsCdAVlb5nRDMFU/E27D44l5U6cw1g0dGd45uLc+OXjNMmF4ntiMdCimzcjFKQI8Q==}
