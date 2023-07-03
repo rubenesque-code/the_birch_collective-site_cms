@@ -1,39 +1,73 @@
 import "swiper/css";
 
-import { type ReactElement, useState } from "react";
+import { useState, type ReactElement, useEffect } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import { useMeasure } from "react-use";
 
-export const Slides = ({ slides }: { slides: ReactElement[] }) => {
+export const Slides = ({
+  numSlidesTotal,
+  slides,
+}: {
+  numSlidesTotal: number;
+  slides: (arg0: { leftMost: number; rightMost: number }) => ReactElement[];
+}) => {
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
-
-  const navButtonsFuncs = {
-    swipeLeft: () => swiper?.slidePrev(),
-    swipeRight: () => swiper?.slideNext(),
-  };
+  const [hoveredSlide, setHoveredSlide] = useState<number | null>(null);
+  const [leftMostIndex, setLeftMostIndex] = useState(0);
 
   return (
     <MeasureWidth>
       {(containerWidth) => {
-        const numSlidesPerView = containerWidth > 900 ? 3 : 2;
-        const navigationIsShowing = swiper && slides.length > numSlidesPerView;
+        const numSlidesInView = containerWidth > 900 ? 3 : 2;
+        const navigationIsShowing = swiper && numSlidesTotal > numSlidesInView;
 
         return (
           <Swiper
             spaceBetween={0}
-            slidesPerView={numSlidesPerView}
+            slidesPerView={numSlidesInView}
             onSwiper={(swiper) => setSwiper(swiper)}
+            style={{
+              paddingTop: 50,
+              paddingBottom: 50,
+            }}
           >
-            {slides.map((slide, i) => (
-              // `SwiperSlide`, as it's imported from swiper/react, needs to be a direct child of `Swiper`; can't be within another component.
-              <SwiperSlide key={i}>
-                <div className={`h-full border-r p-sm`}>{slide}</div>
-              </SwiperSlide>
-            ))}
-            {navigationIsShowing ? <Navigation_ {...navButtonsFuncs} /> : null}
+            {slides({
+              leftMost: leftMostIndex,
+              rightMost: leftMostIndex + numSlidesInView,
+            }).map((slide, i) => {
+              console.log("i:", i);
+              return (
+                // · `SwiperSlide`, as it's imported from swiper/react, needs to be a direct child of `Swiper`; can't be within another component.
+                <SwiperSlide
+                  key={i}
+                  style={{
+                    zIndex: i === hoveredSlide ? 10 : 0,
+                  }}
+                >
+                  <SlideWrapper
+                    onMouseEnter={() => setHoveredSlide(i)}
+                    onMouseLeave={() => setHoveredSlide(null)}
+                  >
+                    {slide}
+                  </SlideWrapper>
+                </SwiperSlide>
+              );
+            })}
+            {navigationIsShowing ? (
+              <Navigation
+                swipeLeft={() => {
+                  swiper?.slidePrev();
+                  setLeftMostIndex(leftMostIndex - 1);
+                }}
+                swipeRight={() => {
+                  swiper?.slideNext();
+                  setLeftMostIndex(leftMostIndex + 1);
+                }}
+              />
+            ) : null}
           </Swiper>
         );
       }}
@@ -41,7 +75,15 @@ export const Slides = ({ slides }: { slides: ReactElement[] }) => {
   );
 };
 
-const Navigation_ = ({
+const SlideWrapper = (props: {
+  children: ReactElement;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+}) => {
+  return <div className={`h-full pr-sm`} {...props} />;
+};
+
+const Navigation = ({
   swipeLeft,
   swipeRight,
 }: {
