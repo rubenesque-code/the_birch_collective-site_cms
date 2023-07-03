@@ -13,6 +13,10 @@ import {
   Trash,
   ArrowLineDown,
   ArrowLineUp,
+  ArrowLineLeft,
+  ArrowLineRight,
+  ArrowsOutCardinal,
+  XSquare,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -37,3 +41,7 @@ Icon.Undo = ArrowCounterClockwise;
 Icon.Delete = Trash;
 Icon.PosDown = ArrowLineDown;
 Icon.PosUp = ArrowLineUp;
+Icon.PosRight = ArrowLineRight;
+Icon.PosLeft = ArrowLineLeft;
+Icon.ChangePos = ArrowsOutCardinal;
+Icon.HideExpandable = XSquare;

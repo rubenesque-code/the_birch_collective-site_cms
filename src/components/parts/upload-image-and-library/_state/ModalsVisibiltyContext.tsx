@@ -1,7 +1,7 @@
 import { type ReactElement, createContext, useContext, useState } from "react";
 
 export type VisibilityState = {
-  uploadedModal: {
+  imageLibrary: {
     isOpen: boolean;
     open: () => void;
     close: () => void;
@@ -20,17 +20,17 @@ const Provider = ({
 }: {
   children: ReactElement | ((args: VisibilityState) => ReactElement);
 }) => {
-  const [uploadedIsOpen, setUploadedIsOpen] = useState(false);
+  const [imageLibraryIsOpen, setImageLibraryIsOpen] = useState(false);
   const [uploadIsOpen, setUploadIsOpen] = useState(false);
 
   const value: VisibilityState = {
-    uploadedModal: {
-      isOpen: uploadedIsOpen,
+    imageLibrary: {
+      isOpen: imageLibraryIsOpen,
       close() {
-        setUploadedIsOpen(false);
+        setImageLibraryIsOpen(false);
       },
       open() {
-        setUploadedIsOpen(true);
+        setImageLibraryIsOpen(true);
       },
     },
     uploadModal: {

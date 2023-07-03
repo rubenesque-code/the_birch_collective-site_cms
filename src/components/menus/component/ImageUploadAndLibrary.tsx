@@ -6,7 +6,7 @@ import { type MyPick } from "~/types/utilities";
 import { Button } from "./Button";
 
 export const ComponentMenuImageUploadAndLibrary = (
-  props: MyPick<ComponentProps, "onUpload" | "styles">,
+  props: MyPick<ComponentProps, "onUploadOrSelect" | "styles">,
 ) => {
   return (
     <ImageUploadAndLibrary.Complete menuButton={<Button.Image />} {...props} />

@@ -3,11 +3,10 @@ import { useMutation } from "react-query";
 import { AsyncOverlay } from "~/components/AsyncOverlay";
 
 import { Icon } from "~/components/icons";
-import { NextImage } from "~/components/next-image";
 import { useToast } from "~/hooks";
 import { myFirebaseTransactions } from "~/my-firebase/transactions";
 import { ComponentAPI, ModalsVisibilityContext } from "./_state";
-import { generateUid } from "~/lib/external-packages-namespace";
+import { NextImage, generateUid } from "~/lib/external-packages-rename";
 
 export const UploadImage = () => (
   <div className="relative w-[600px] max-w-[90vw] rounded-2xl bg-white p-6 text-left shadow-xl">
@@ -27,7 +26,7 @@ const Form = () => {
     naturalWidth: number;
   } | null>(null);
 
-  const { onUpload } = ComponentAPI.use();
+  const { onUploadOrSelect: onUpload } = ComponentAPI.use();
 
   const {
     uploadModal: { close: closeThisModal },

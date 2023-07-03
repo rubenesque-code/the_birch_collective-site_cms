@@ -22,7 +22,7 @@ const Button = ({
 }: ButtonProps) => (
   <WithTooltip text={tooltip} yOffset={15}>
     <button
-      className={`rounded-full px-2 py-2 text-sm transition-all duration-75 ease-in-out hover:bg-gray-100 active:bg-white ${
+      className={`rounded-full p-2 text-sm transition-all duration-75 ease-in-out hover:bg-gray-100 active:bg-white ${
         isDisabled ? "cursor-auto opacity-40" : ""
       } ${styles?.button || ""}`}
       onClick={onClick}

@@ -1,4 +1,10 @@
-import { doc, getDoc } from "firebase/firestore/lite";
+import {
+  type DocumentData,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+} from "firebase/firestore/lite";
 
 import { firestore_file_system_names } from "../../_static-data/collections-and-docs";
 import { firestore } from "~/my-firebase/client";
@@ -26,4 +32,21 @@ export const fetchOneImage = async (id: string) => {
   const data = docSnap.data() as unknown as MyDb["image"];
 
   return data;
+};
+
+export const fetchImages = async () => {
+  const collectionRef = collection(
+    firestore,
+    firestore_file_system_names.collections.images,
+  );
+
+  const querySnapshot = await getDocs(collectionRef);
+
+  const data: DocumentData[] = [];
+  querySnapshot.forEach((doc) => {
+    const d = doc.data();
+    data.push(d);
+  });
+
+  return data as unknown as MyDb["image"][];
 };

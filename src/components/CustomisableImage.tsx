@@ -1,6 +1,6 @@
 // move up-down, left-right. takes img url/id.
+import { NextImage } from "~/lib/external-packages-rename";
 import type { MyDb } from "~/types/database";
-import { NextImage } from "./next-image";
 
 type Props = { urls: MyDb["image"]["urls"] } & {
   position?: {
