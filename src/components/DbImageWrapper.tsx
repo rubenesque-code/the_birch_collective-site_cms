@@ -8,13 +8,13 @@ import type { MyDb } from "~/types/database";
 
 type Props = {
   children: (arg0: { urls: MyDb["image"]["urls"] }) => ReactElement;
-  firestoreId: string;
+  dbImageId: string;
 };
 
-export const FirestoreImageWrapper = ({ children, firestoreId }: Props) => {
+export const DbImageWrapper = ({ children, dbImageId: dbImageId }: Props) => {
   const query = useQuery(
-    ["banner-image", firestoreId],
-    async () => await myDb.image.fetchOne(firestoreId),
+    ["banner-image", dbImageId],
+    async () => await myDb.image.fetchOne(dbImageId),
     {},
   );
 

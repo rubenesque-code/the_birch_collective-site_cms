@@ -1,1 +1,1 @@
-export * from "./UserEditableData";
+export * from "./user-editable-data";

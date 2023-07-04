@@ -1,29 +1,26 @@
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { FirestoreImageWrapper } from "~/components/FirestoreImageWrapper";
+import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { UserEditableData } from "./_state";
 import { useState } from "react";
 
-// Todo: lazy fetch images - matters? Images lazy loaded anyway?
-
 const BannerImage = () => {
-  const { firestoreImageId, position } =
-    UserEditableData.useData("bannerImage");
+  const { dbConnections, position } = UserEditableData.useData("bannerImage");
 
   return (
     <div className="group/bannerImage relative aspect-[21/9]">
       <UserSelectedImageWrapper
-        firestoreImageId={firestoreImageId}
+        dbImageId={dbConnections.imageId}
         placeholderText="banner image"
       >
-        {({ storageId }) => (
-          <FirestoreImageWrapper firestoreId={storageId}>
+        {({ dbImageId }) => (
+          <DbImageWrapper dbImageId={dbImageId}>
             {({ urls }) => (
               <CustomisableImage urls={urls} position={position} />
             )}
-          </FirestoreImageWrapper>
+          </DbImageWrapper>
         )}
       </UserSelectedImageWrapper>
       <BannerImageMenu />
@@ -34,19 +31,21 @@ const BannerImage = () => {
 export default BannerImage;
 
 const BannerImageMenu = () => {
-  const userAction = UserEditableData.useAction();
+  const {
+    bannerImage: { dbConnections, position },
+  } = UserEditableData.useAction();
 
   return (
-    <div className="absolute right-1 top-1 z-20 flex items-center gap-sm rounded-md bg-white px-xs py-xxs opacity-0 shadow-lg transition-opacity duration-75 ease-in-out hover:!opacity-100 group-hover/bannerImage:opacity-40 ">
+    <div className="absolute right-1 top-1 z-20 flex items-center gap-sm rounded-md bg-white px-xs py-xxs opacity-0 shadow-lg transition-opacity duration-75 ease-in-out group-hover/bannerImage:opacity-40 hover:!opacity-100 ">
       <PositionButtons />
 
       <ComponentMenu.Divider />
 
       <ComponentMenu.Image
-        onUploadOrSelect={({ firestoreImageId }) => {
-          userAction.bannerImage.firestoreImageId(firestoreImageId);
-          userAction.bannerImage.position.x(50);
-          userAction.bannerImage.position.y(50);
+        onUploadOrSelect={({ dbImageId }) => {
+          dbConnections.imageId.update(dbImageId);
+          position.x.update(50);
+          position.y.update(50);
         }}
         styles={{
           menu: { itemsWrapper: "right-0 -bottom-1 translate-y-full" },
@@ -79,7 +78,7 @@ const PositionButtons = () => {
                 return;
               }
               const newPosition = position.x - 10;
-              userAction.bannerImage.position.x(newPosition);
+              userAction.bannerImage.position.x.update(newPosition);
             }}
             tooltip="move image focus to the left"
             isDisabled={position.x === 0}
@@ -92,7 +91,7 @@ const PositionButtons = () => {
                 return;
               }
               const newPosition = position.x + 10;
-              userAction.bannerImage.position.x(newPosition);
+              userAction.bannerImage.position.x.update(newPosition);
             }}
             tooltip="move image focus to the right"
             isDisabled={position.x === 100}
@@ -106,7 +105,7 @@ const PositionButtons = () => {
                 return;
               }
               const newPosition = position.y - 10;
-              userAction.bannerImage.position.y(newPosition);
+              userAction.bannerImage.position.y.update(newPosition);
             }}
             tooltip="show higher part of the image"
             isDisabled={position.y === 0}
@@ -119,7 +118,7 @@ const PositionButtons = () => {
                 return;
               }
               const newPosition = position.y + 10;
-              userAction.bannerImage.position.y(newPosition);
+              userAction.bannerImage.position.y.update(newPosition);
             }}
             tooltip="show lower part of the image"
             isDisabled={position.y === 100}

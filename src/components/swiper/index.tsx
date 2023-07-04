@@ -1,6 +1,6 @@
 import "swiper/css";
 
-import { useState, type ReactElement, useEffect } from "react";
+import { useState, type ReactElement } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -22,7 +22,8 @@ export const Slides = ({
     <MeasureWidth>
       {(containerWidth) => {
         const numSlidesInView = containerWidth > 900 ? 3 : 2;
-        const navigationIsShowing = swiper && numSlidesTotal > numSlidesInView;
+        const navigationIsShowing = true;
+        // const navigationIsShowing = swiper && numSlidesTotal > numSlidesInView;
 
         return (
           <Swiper
@@ -38,7 +39,6 @@ export const Slides = ({
               leftMost: leftMostIndex,
               rightMost: leftMostIndex + numSlidesInView,
             }).map((slide, i) => {
-              console.log("i:", i);
               return (
                 // · `SwiperSlide`, as it's imported from swiper/react, needs to be a direct child of `Swiper`; can't be within another component.
                 <SwiperSlide
@@ -60,11 +60,15 @@ export const Slides = ({
               <Navigation
                 swipeLeft={() => {
                   swiper?.slidePrev();
-                  setLeftMostIndex(leftMostIndex - 1);
+                  if (leftMostIndex > 0) {
+                    setLeftMostIndex(leftMostIndex - 1);
+                  }
                 }}
                 swipeRight={() => {
                   swiper?.slideNext();
-                  setLeftMostIndex(leftMostIndex + 1);
+                  if (leftMostIndex < numSlidesTotal) {
+                    setLeftMostIndex(leftMostIndex + 1);
+                  }
                 }}
               />
             ) : null}

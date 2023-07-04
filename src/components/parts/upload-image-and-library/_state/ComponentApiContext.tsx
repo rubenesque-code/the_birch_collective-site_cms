@@ -2,7 +2,7 @@ import { createContext, useContext, type ReactElement } from "react";
 
 type ComponentAPIContextValue = {
   styles?: { menu?: { itemsWrapper?: string } };
-  onUploadOrSelect: (arg0: { firestoreImageId: string }) => void;
+  onUploadOrSelect: (arg0: { dbImageId: string }) => void;
   menuButton: ReactElement;
 };
 

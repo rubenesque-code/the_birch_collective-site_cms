@@ -21,14 +21,14 @@ const Button = ({
   isDisabled,
 }: ButtonProps) => (
   <WithTooltip text={tooltip} yOffset={15}>
-    <button
+    <div
       className={`rounded-full p-2 text-sm transition-all duration-75 ease-in-out hover:bg-gray-100 active:bg-white ${
-        isDisabled ? "cursor-auto opacity-40" : ""
+        isDisabled ? "cursor-auto opacity-40" : "cursor-pointer"
       } ${styles?.button || ""}`}
       onClick={onClick}
     >
       {children}
-    </button>
+    </div>
   </WithTooltip>
 );
 

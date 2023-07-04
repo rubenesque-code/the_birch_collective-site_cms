@@ -1,6 +1,6 @@
 import type { ReactElement, ReactNode } from "react";
 import { WithTooltip } from "~/components/WithTooltip";
-import { SaveContext } from "./_state";
+import { ComponentApiCx } from "./_state";
 
 export const Button = ({
   children,
@@ -13,7 +13,7 @@ export const Button = ({
 }) => {
   const {
     data: { isChange },
-  } = SaveContext.use();
+  } = ComponentApiCx.use();
 
   return (
     <WithTooltip text={input.tooltip(isChange)}>

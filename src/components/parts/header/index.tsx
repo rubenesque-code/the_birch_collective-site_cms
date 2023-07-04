@@ -3,15 +3,18 @@ import { SideBarMenu } from "./SideBarMenu";
 import { WithTooltip } from "~/components/WithTooltip";
 import { Icon } from "~/components/icons";
 import { Revision } from "./Revision";
+import { ComponentApiCx, type ContextApiCxProps } from "./_state";
 
-const Header = () => (
-  <div className="flex items-center justify-between border-b bg-gray-50 px-md py-sm">
-    <SideBarMenu />
-    <div className="flex items-center gap-2xl">
-      <UserStatusMenu />
-      <Revision />
+const Header = (props: ContextApiCxProps) => (
+  <ComponentApiCx.Provider {...props}>
+    <div className="flex items-center justify-between border-b bg-gray-50 px-md py-sm">
+      <SideBarMenu />
+      <div className="flex items-center gap-2xl">
+        <UserStatusMenu />
+        <Revision />
+      </div>
     </div>
-  </div>
+  </ComponentApiCx.Provider>
 );
 
 export default Header;

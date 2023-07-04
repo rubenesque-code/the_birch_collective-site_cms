@@ -6,7 +6,7 @@ import type { MyPick } from "~/types/utilities";
 import { WithTooltip } from "../WithTooltip";
 
 export const TextInputForm = (props: {
-  initialValue: string | null;
+  localStateValue: string | null;
   input: MyPick<
     InputProps,
     "autoFocus" | "minWidth" | "placeholder" | "styles"
@@ -14,7 +14,7 @@ export const TextInputForm = (props: {
   onSubmit: (arg0: { inputValue: string }) => void;
   tooltip?: string;
 }) => {
-  const [inputValue, setInputValue] = useState(props.initialValue || "");
+  const [inputValue, setInputValue] = useState(props.localStateValue || "");
   const [inputIsFocused, setInputIsFocused] = useState(false);
 
   const handleSubmit = () => {

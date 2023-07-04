@@ -63,7 +63,7 @@ const Form = () => {
           },
           {
             onSuccess() {
-              onUpload({ firestoreImageId: firestoreId });
+              onUpload({ dbImageId: firestoreId });
             },
           },
         ),

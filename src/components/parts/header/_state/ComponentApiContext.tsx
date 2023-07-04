@@ -32,19 +32,19 @@ const useThisContext = () => {
   const context = useContext(Context);
 
   if (!context) {
-    throw new Error("useEntityIdContext must be used within its provider!");
+    throw new Error("useSaveContext must be used within its provider!");
   }
 
   return context;
 };
 
-function SaveContext() {
+function ComponentApiCx() {
   throw new Error(
     "SaveContext exists for naming purposes only and should not be used as a component",
   );
 }
 
-export { SaveContext };
+export { ComponentApiCx, type ContextValue as ContextApiCxProps };
 
-SaveContext.Provider = Provider;
-SaveContext.use = useThisContext;
+ComponentApiCx.Provider = Provider;
+ComponentApiCx.use = useThisContext;

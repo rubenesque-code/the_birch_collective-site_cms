@@ -50,3 +50,15 @@ export const fetchImages = async () => {
 
   return data as unknown as MyDb["image"][];
 };
+
+export const fetchOneTestimonial = async (id: string) => {
+  const docRef = doc(
+    firestore,
+    firestore_file_system_names.collections.testimonials,
+    id,
+  );
+  const docSnap = await getDoc(docRef);
+  const data = docSnap.data() as unknown as MyDb["testimonial"];
+
+  return data;
+};

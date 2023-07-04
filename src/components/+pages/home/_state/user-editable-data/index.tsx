@@ -1,7 +1,8 @@
-import { createStore, useStore } from "zustand";
-import { createContext, useContext, useRef, type ReactNode } from "react";
-import { type MyDb } from "~/types/database";
 import { produce } from "immer";
+import { createContext, useContext, useRef, type ReactNode } from "react";
+import { createStore, useStore } from "zustand";
+import { type MyDb } from "~/types/database";
+import type { Actions } from "./user-actions";
 
 // □ Create type for action. {[dataName]: {[mutationType]: () => ...}}
 // □ Sure it's okay to create multiple hooks returning different instances of useStore?
@@ -9,80 +10,68 @@ import { produce } from "immer";
 
 type DbData = MyDb["pages"]["landing"];
 
-// □ will probably need to update the below since update isn't the only type of mutation
-
-type GenerateLandingDbActions<TData extends DbData> = {
-  [k in keyof TData]: TData[k] extends Record<string, unknown>
-    ? {
-        [k2 in keyof TData[k]]: TData[k][k2] extends Record<string, unknown>
-          ? {
-              [k3 in keyof TData[k][k2]]: TData[k][k2][k3] extends Record<
-                string,
-                unknown
-              >
-                ? never
-                : (updatedVal: NonNullable<TData[k][k2][k3]>) => void;
-            }
-          : (updatedVal: NonNullable<TData[k][k2]>) => void;
-      }
-    : (updatedVal: TData[k]) => void;
-};
-
-type DbActions = GenerateLandingDbActions<DbData>;
-
-type Actions = {
-  allData: { overwrite: (updatedData: DbData) => void };
-} & DbActions;
 type UserEditableDataState = { data: DbData; actions: Actions };
 
 const createUserEditableDataStore = (input: { dbData: DbData }) => {
   return createStore<UserEditableDataState>()((set) => ({
     data: input.dbData,
     actions: {
-      allData: {
-        overwrite: (updatedData) =>
-          set(
-            produce((state: UserEditableDataState) => {
-              state.data = updatedData;
-            }),
-          ),
-      },
+      undo: (updatedData) =>
+        set(
+          produce((state: UserEditableDataState) => {
+            state.data = updatedData;
+          }),
+        ),
       bannerImage: {
-        firestoreImageId: (newValue) =>
-          set(
-            produce((state: UserEditableDataState) => {
-              state.data.bannerImage.firestoreImageId = newValue;
-            }),
-          ),
+        dbConnections: {
+          imageId: {
+            update: (newValue) =>
+              set(
+                produce((state: UserEditableDataState) => {
+                  state.data.bannerImage.dbConnections.imageId = newValue;
+                }),
+              ),
+          },
+        },
         position: {
-          x: (newValue) =>
+          x: {
+            update: (newValue) =>
+              set(
+                produce((state: UserEditableDataState) => {
+                  state.data.bannerImage.position.x = newValue;
+                }),
+              ),
+          },
+          y: {
+            update: (newValue) =>
+              set(
+                produce((state: UserEditableDataState) => {
+                  state.data.bannerImage.position.y = newValue;
+                }),
+              ),
+          },
+        },
+      },
+      orgHeadings: {
+        name: {
+          update: (updatedValue) =>
             set(
               produce((state: UserEditableDataState) => {
-                state.data.bannerImage.position.x = newValue;
+                state.data.orgHeadings.name = updatedValue;
               }),
             ),
-          y: (newValue) =>
+        },
+        byline: {
+          update: (updatedValue) =>
             set(
               produce((state: UserEditableDataState) => {
-                state.data.bannerImage.position.y = newValue;
+                state.data.orgHeadings.byline = updatedValue;
               }),
             ),
         },
       },
-
-      orgNameAndByline: {
-        name: (updatedValue) =>
-          set(
-            produce((state: UserEditableDataState) => {
-              state.data.orgNameAndByline.name = updatedValue;
-            }),
-          ),
-        byline: (updatedValue) =>
-          set(
-            produce((state: UserEditableDataState) => {
-              state.data.orgNameAndByline.byline = updatedValue;
-            }),
-          ),
+      testimonials: {
+        order: { update: () => null },
       },
     },
   }));

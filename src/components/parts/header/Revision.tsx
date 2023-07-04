@@ -1,9 +1,9 @@
-import { MyModal } from "~/components/styled-bases";
-import { Button } from "./Button";
-import { SaveContext } from "./_state";
-import { Icon } from "~/components/icons";
 import { WarningPanel } from "~/components/WarningPanel";
+import { Icon } from "~/components/icons";
+import { MyModal } from "~/components/styled-bases";
 import { useToast } from "~/hooks";
+import { Button } from "./Button";
+import { ComponentApiCx } from "./_state";
 
 // □ ideally, a delay on undone toast
 
@@ -18,7 +18,7 @@ const Undo = () => {
   const {
     actions: { undo },
     data: { isChange },
-  } = SaveContext.use();
+  } = ComponentApiCx.use();
 
   const toast = useToast();
 
@@ -55,7 +55,7 @@ const Save = () => {
   const {
     actions: { save },
     data: { isChange },
-  } = SaveContext.use();
+  } = ComponentApiCx.use();
 
   return (
     <Button

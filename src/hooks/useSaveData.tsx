@@ -12,5 +12,7 @@ export function useSaveData<TObj extends Record<string, unknown>>(input: {
     [input.localData, input.dbData],
   );
 
-  return { saveData: diff, isChange: checkObjectHasField(diff) };
+  const isChange = checkObjectHasField(diff);
+
+  return { saveData: diff, isChange };
 }

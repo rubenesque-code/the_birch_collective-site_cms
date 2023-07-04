@@ -1,15 +1,23 @@
 type Landing = {
   bannerImage: {
-    firestoreImageId: string | null;
+    dbConnections: {
+      imageId: string | null;
+    };
+    // firestoreImageId: string | null;
     position: {
       x: number;
       y: number;
     };
   };
-  orgNameAndByline: {
+  orgHeadings: {
     name: string;
     byline: string;
   };
+  testimonials: {
+    id: string;
+    dbConnections: { testimonialId: string | null };
+    order: number;
+  }[];
 };
 
 export type Pages = {

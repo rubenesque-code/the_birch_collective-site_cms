@@ -84,7 +84,7 @@ const Image = ({ image }: { image: MyDb["image"] }) => {
     <div
       className={`border-base-200 flex aspect-square cursor-pointer flex-col rounded-lg border p-sm hover:bg-gray-100`}
       onClick={() => {
-        onUploadOrSelect({ firestoreImageId: image.id });
+        onUploadOrSelect({ dbImageId: image.id });
         toast.neutral("updated image");
         imageLibrary.close();
       }}
