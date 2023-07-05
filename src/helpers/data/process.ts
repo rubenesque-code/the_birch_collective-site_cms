@@ -1,3 +1,4 @@
+import { produce } from "immer";
 import lodash from "lodash";
 
 // todo: should exclude id from below. Make explicitly about docs, i.e. {id: string}
@@ -15,4 +16,8 @@ export function compareUpdatedObjAndCreateNewByDiffVals<
   }
 
   return newObj as Partial<TObj>;
+}
+
+export function deepSortByIndex<TDoc extends { index: number }>(docs: TDoc[]) {
+  return produce(docs, (draft) => draft.sort((a, b) => a.index - b.index));
 }

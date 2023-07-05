@@ -39,10 +39,12 @@ function Provider({
     dbData: currentDbData.page,
     userEditedData: userEditableData.page,
   });
+  console.log("pageSave:", pageSave);
   const testimonialsSave = useDocsSaveData({
     dbData: currentDbData.testimonials,
     userEditedData: userEditableData.testimonials,
   });
+  console.log("testimonialsSave:", testimonialsSave);
 
   const isChange = pageSave.isChange || testimonialsSave.isChange;
 

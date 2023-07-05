@@ -1,5 +1,7 @@
 import type { MyDb } from "~/types/database";
 
+// □ Rename DbData to reflect user edited store date?
+
 type DbData = {
   page: MyDb["pages"]["landing"];
   testimonials: MyDb["testimonial"][];
@@ -20,9 +22,22 @@ type Actions = {
       byline: { update: (newVal: string) => void };
     };
     testimonials: {
+      create: (arg0: DbData["page"]["testimonials"][number]) => void;
       order: {
         update: (arg0: { activeId: string; overId: string }) => void;
       };
+    };
+  };
+  testimonial: {
+    create: (arg0: DbData["testimonials"][number]) => void;
+    text: {
+      update: (arg0: { id: string; newVal: string }) => void;
+    };
+    endorserName: {
+      update: (arg0: { id: string; newVal: string }) => void;
+    };
+    order: {
+      update: (arg0: { id: string; newVal: number }) => void;
     };
   };
 };

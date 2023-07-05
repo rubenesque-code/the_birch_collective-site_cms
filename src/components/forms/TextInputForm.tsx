@@ -7,7 +7,7 @@ import { WithTooltip } from "../WithTooltip";
 
 export const TextInputForm = (props: {
   localStateValue: string | null;
-  input: MyPick<
+  input?: MyPick<
     InputProps,
     "autoFocus" | "minWidth" | "placeholder" | "styles"
   >;
@@ -59,14 +59,14 @@ export const TextInputForm = (props: {
 };
 
 type InputProps = {
+  setIsFocused: (value: boolean) => void;
+  setValue: (value: string) => void;
+  value: string;
   autoFocus?: boolean;
   isFocused: boolean;
   minWidth?: number;
   placeholder?: string;
-  setIsFocused: (value: boolean) => void;
-  setValue: (value: string) => void;
   trailingSpace?: number;
-  value: string;
   styles?: string;
 };
 
@@ -74,7 +74,7 @@ const Input = ({
   autoFocus = false,
   isFocused,
   minWidth = 50,
-  placeholder,
+  placeholder = "write here",
   setIsFocused,
   setValue,
   styles = "",
@@ -103,7 +103,9 @@ const Input = ({
           {value.length ? value : placeholder}
         </p>
         <input
-          className={`z-10 bg-transparent outline-none ${styles}`}
+          className={`z-10 bg-transparent outline-none ${styles} ${
+            isFocused ? "text-gray-800" : ""
+          }`}
           value={value}
           onChange={(e) => {
             setValue(e.target.value);

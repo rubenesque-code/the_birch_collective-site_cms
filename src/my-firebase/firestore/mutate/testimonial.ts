@@ -6,14 +6,14 @@ import {
   deleteDoc,
 } from "firebase/firestore/lite";
 import { firestore_file_system_names } from "~/my-firebase/_static-data/collections-and-docs";
-import type { DocPartialWithId } from "~/types/database/_type-helpers";
 import { firestore } from "~/my-firebase/client";
 import type { MyDb } from "~/types/database";
+import type { DocPartialWithId } from "~/types/database/_helpers";
 
 export const createTestimonial = async (input: MyDb["testimonial"]) => {
   const docRef = doc(
     firestore,
-    firestore_file_system_names.collections.pages,
+    firestore_file_system_names.collections.testimonials,
     input.id,
   );
 
@@ -26,7 +26,7 @@ export const batchCreateTestimonial = (
 ) => {
   const docRef = doc(
     firestore,
-    firestore_file_system_names.collections.pages,
+    firestore_file_system_names.collections.testimonials,
     input.id,
   );
 
@@ -38,7 +38,7 @@ export const updateTestimonial = async (
 ) => {
   const docRef = doc(
     firestore,
-    firestore_file_system_names.collections.pages,
+    firestore_file_system_names.collections.testimonials,
     input.id,
   );
 
@@ -51,7 +51,7 @@ export const batchUpdateTestimonial = (
 ) => {
   const docRef = doc(
     firestore,
-    firestore_file_system_names.collections.pages,
+    firestore_file_system_names.collections.testimonials,
     input.id,
   );
 
@@ -61,7 +61,7 @@ export const batchUpdateTestimonial = (
 export const deleteTestimonial = async (id: string) => {
   const docRef = doc(
     firestore,
-    firestore_file_system_names.collections.pages,
+    firestore_file_system_names.collections.testimonials,
     id,
   );
 
@@ -71,7 +71,7 @@ export const deleteTestimonial = async (id: string) => {
 export const batchDeleteTestimonial = (id: string, batch: WriteBatch) => {
   const docRef = doc(
     firestore,
-    firestore_file_system_names.collections.pages,
+    firestore_file_system_names.collections.testimonials,
     id,
   );
 

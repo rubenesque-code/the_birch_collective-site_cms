@@ -1,4 +1,5 @@
 import lodash from "lodash";
+import { checkObjectHasField } from "~/helpers/queryObject";
 
 // □ need to memoise?
 
@@ -62,6 +63,11 @@ function processUpdatedDoc<
     changedFields[key] = updatedValue;
   }
 
+  const isChange = checkObjectHasField(changedFields);
+  if (!isChange) {
+    return null;
+  }
+
   const docWithChangedFields = {
     id: input.original.id,
     ...changedFields,
@@ -72,9 +78,9 @@ function processUpdatedDoc<
 function processUpdatedDocs<TDoc extends { id: string }>(
   pairs: [TDoc, TDoc][],
 ) {
-  return pairs.map(([original, updated]) =>
-    processUpdatedDoc({ original, updated }),
-  );
+  return pairs
+    .map(([original, updated]) => processUpdatedDoc({ original, updated }))
+    .flatMap((doc) => (doc ? doc : []));
 }
 
 export function useDocsSaveData<TDoc extends { id: string }>(input: {

@@ -1,6 +1,7 @@
 import { produce } from "immer";
 import { createContext, useContext, useRef, type ReactNode } from "react";
 import { createStore, useStore } from "zustand";
+
 import type { UserEditableDbData, UserEditableDataStore } from "./store-types";
 
 // □ Create type for action. {[dataName]: {[mutationType]: () => ...}}
@@ -68,7 +69,57 @@ const createUserEditableDataStore = (input: { dbData: UserEditableDbData }) => {
           },
         },
         testimonials: {
+          create: (newTestimonial) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                state.data.page.testimonials.push(newTestimonial);
+              }),
+            ),
           order: { update: () => null },
+        },
+      },
+      testimonial: {
+        create: (newTestimonial) =>
+          set(
+            produce((state: UserEditableDataStore) => {
+              state.data.testimonials.push(newTestimonial);
+            }),
+          ),
+        endorserName: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                const index = state.data.testimonials.findIndex(
+                  (t) => t.id === input.id,
+                );
+                if (index !== -1)
+                  state.data.testimonials[index].endorserName = input.newVal;
+              }),
+            ),
+        },
+        order: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                const index = state.data.testimonials.findIndex(
+                  (t) => t.id === input.id,
+                );
+                if (index !== -1)
+                  state.data.testimonials[index].index = input.newVal;
+              }),
+            ),
+        },
+        text: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                const index = state.data.testimonials.findIndex(
+                  (t) => t.id === input.id,
+                );
+                if (index !== -1)
+                  state.data.testimonials[index].text = input.newVal;
+              }),
+            ),
         },
       },
     },

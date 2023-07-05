@@ -16,7 +16,7 @@ type Landing = {
   testimonials: {
     id: string;
     dbConnections: { testimonialId: string | null };
-    order: number;
+    index: number;
   }[];
 };
 
