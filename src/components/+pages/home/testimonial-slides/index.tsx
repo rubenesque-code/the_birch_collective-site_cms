@@ -2,9 +2,9 @@ import { Slides } from "~/components/swiper";
 import { useHovered } from "~/hooks";
 import { NextImage, generateUid } from "~/lib/external-packages-rename";
 import { dummyData } from "~/static-data";
-import { UserEditableData } from "../_state";
+import { UserEditableDataCx } from "../_state";
 import type { MyDb } from "~/types/database";
-import { ReactElement } from "react";
+import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 import { myDb } from "~/my-firebase/firestore";
 
@@ -19,8 +19,7 @@ const createDummyTestimonial = (input: {
 });
 
 export const TestimonialSlides = () => {
-  const localStateLandingTestimonials =
-    UserEditableData.useData("testimonials");
+  const allTestimonials = UserEditableDataCx.useData("testimonials");
 
   const landingTestimonials = localStateLandingTestimonials
     .sort((a, b) => a.order - b.order)

@@ -1,84 +1,82 @@
 import { produce } from "immer";
 import { createContext, useContext, useRef, type ReactNode } from "react";
 import { createStore, useStore } from "zustand";
-import { type MyDb } from "~/types/database";
-import type { Actions } from "./user-actions";
+import type { UserEditableDbData, UserEditableDataStore } from "./store-types";
 
 // □ Create type for action. {[dataName]: {[mutationType]: () => ...}}
 // □ Sure it's okay to create multiple hooks returning different instances of useStore?
 // □ what is equalityFn for?
 
-type DbData = MyDb["pages"]["landing"];
-
-type UserEditableDataState = { data: DbData; actions: Actions };
-
-const createUserEditableDataStore = (input: { dbData: DbData }) => {
-  return createStore<UserEditableDataState>()((set) => ({
+const createUserEditableDataStore = (input: { dbData: UserEditableDbData }) => {
+  return createStore<UserEditableDataStore>()((set) => ({
     data: input.dbData,
     actions: {
       undo: (updatedData) =>
         set(
-          produce((state: UserEditableDataState) => {
+          produce((state: UserEditableDataStore) => {
             state.data = updatedData;
           }),
         ),
-      bannerImage: {
-        dbConnections: {
-          imageId: {
-            update: (newValue) =>
+      page: {
+        bannerImage: {
+          dbConnections: {
+            imageId: {
+              update: (newValue) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.page.bannerImage.dbConnections.imageId =
+                      newValue;
+                  }),
+                ),
+            },
+          },
+          position: {
+            x: {
+              update: (newValue) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.page.bannerImage.position.x = newValue;
+                  }),
+                ),
+            },
+            y: {
+              update: (newValue) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.page.bannerImage.position.y = newValue;
+                  }),
+                ),
+            },
+          },
+        },
+        orgHeadings: {
+          name: {
+            update: (updatedValue) =>
               set(
-                produce((state: UserEditableDataState) => {
-                  state.data.bannerImage.dbConnections.imageId = newValue;
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.orgHeadings.name = updatedValue;
+                }),
+              ),
+          },
+          byline: {
+            update: (updatedValue) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.orgHeadings.byline = updatedValue;
                 }),
               ),
           },
         },
-        position: {
-          x: {
-            update: (newValue) =>
-              set(
-                produce((state: UserEditableDataState) => {
-                  state.data.bannerImage.position.x = newValue;
-                }),
-              ),
-          },
-          y: {
-            update: (newValue) =>
-              set(
-                produce((state: UserEditableDataState) => {
-                  state.data.bannerImage.position.y = newValue;
-                }),
-              ),
-          },
+        testimonials: {
+          order: { update: () => null },
         },
-      },
-      orgHeadings: {
-        name: {
-          update: (updatedValue) =>
-            set(
-              produce((state: UserEditableDataState) => {
-                state.data.orgHeadings.name = updatedValue;
-              }),
-            ),
-        },
-        byline: {
-          update: (updatedValue) =>
-            set(
-              produce((state: UserEditableDataState) => {
-                state.data.orgHeadings.byline = updatedValue;
-              }),
-            ),
-        },
-      },
-      testimonials: {
-        order: { update: () => null },
       },
     },
   }));
 };
 
-type UserEditableData = ReturnType<typeof createUserEditableDataStore>;
-type ContextValue = UserEditableData;
+type UserEditableDataCx = ReturnType<typeof createUserEditableDataStore>;
+type ContextValue = UserEditableDataCx;
 
 const Context = createContext<ContextValue | null>(null);
 
@@ -87,9 +85,9 @@ function Provider({
   initDbData,
 }: {
   children: ReactNode | ((args: ContextValue) => ReactNode);
-  initDbData: DbData;
+  initDbData: UserEditableDbData;
 }) {
-  const storeRef = useRef<UserEditableData>();
+  const storeRef = useRef<UserEditableDataCx>();
 
   if (!storeRef.current) {
     storeRef.current = createUserEditableDataStore({ dbData: initDbData });
@@ -106,10 +104,10 @@ function Provider({
   );
 }
 
-function useData<TDataKey extends keyof UserEditableDataState["data"]>(
+function useData<TDataKey extends keyof UserEditableDataStore["data"]>(
   key: TDataKey,
   // equalityFn?: (left: T, right: T) => boolean,
-): UserEditableDataState["data"][TDataKey] {
+): UserEditableDataStore["data"][TDataKey] {
   const store = useContext(Context);
   if (!store)
     throw new Error("Missing UserEditableDataStore.Provider in the tree");
@@ -151,18 +149,18 @@ function UserEditableData() {
   );
  */
 
-function UserEditableData() {
+function UserEditableDataCx() {
   throw new Error(
     "UserEditableStore exists for naming purposes only and should not be used as a component",
   );
 }
 
-export { UserEditableData };
+export { UserEditableDataCx };
 
-UserEditableData.Provider = Provider;
-UserEditableData.useData = useData;
-UserEditableData.useAllData = useAllData;
-UserEditableData.useAction = useAction;
+UserEditableDataCx.Provider = Provider;
+UserEditableDataCx.useData = useData;
+UserEditableDataCx.useAllData = useAllData;
+UserEditableDataCx.useAction = useAction;
 
 /* type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
 

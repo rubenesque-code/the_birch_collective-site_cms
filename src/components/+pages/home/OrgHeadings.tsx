@@ -1,11 +1,14 @@
 import { TextInputForm } from "~/components/forms";
-import { UserEditableData } from "./_state";
+import { UserEditableDataCx } from "./_state";
 import { RevisionContext } from "./_state/RevisionContext";
 
 const OrgHeadings = () => {
-  const allData = UserEditableData.useAllData();
-  const { byline, name } = UserEditableData.useData("orgHeadings");
-  const userAction = UserEditableData.useAction();
+  const allData = UserEditableDataCx.useAllData();
+  const {
+    orgHeadings: { byline, name },
+  } = UserEditableDataCx.useData("page");
+  const userAction = UserEditableDataCx.useAction();
+
   const {
     data: { undoKey },
   } = RevisionContext.use();
@@ -18,7 +21,7 @@ const OrgHeadings = () => {
           localStateValue={name}
           input={{ placeholder: "Organisation name" }}
           onSubmit={({ inputValue }) => {
-            userAction.orgHeadings.name.update(inputValue);
+            userAction.page.orgHeadings.name.update(inputValue);
           }}
           tooltip="Click to edit title"
           key={undoKey}
@@ -32,7 +35,7 @@ const OrgHeadings = () => {
             styles: "upppercase tracking-wide",
           }}
           onSubmit={({ inputValue }) => {
-            userAction.orgHeadings.byline.update(inputValue);
+            userAction.page.orgHeadings.byline.update(inputValue);
           }}
           tooltip="Click to edit byline"
           key={undoKey}

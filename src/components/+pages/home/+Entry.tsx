@@ -6,11 +6,9 @@ import { useQuery } from "react-query";
 import { PageDataFetch } from "~/components/PageDataFetch";
 import Header from "~/components/parts/header";
 import { myDb } from "~/my-firebase/firestore";
-import type { MyDb } from "~/types/database";
 import BannerImage from "./BannerImage";
 import OrgHeadings from "./OrgHeadings";
-import { UserEditableData } from "./_state";
-import { CurrentDbData } from "./_state/CurrentDbData";
+import { UserEditableDataCx, type UserEditableDbData } from "./_state";
 import { RevisionContext } from "./_state/RevisionContext";
 import { TestimonialSlides } from "./testimonial-slides";
 
@@ -23,30 +21,26 @@ import { TestimonialSlides } from "./testimonial-slides";
 // □ sort out x overflow. also, max w for inputs
 // □ banner image info widget
 // □ save context is correct? Should be in header?
+// □ scrollbar needn't go up to header
 
 const HomePage = () => {
   return (
     <InitData>
       {(initDbData) => (
-        <CurrentDbData.Provider initDbData={initDbData}>
-          <UserEditableData.Provider initDbData={initDbData}>
-            <RevisionContext.Provider>
-              {({ actions, data }) => (
-                <>
-                  <Header
-                    actions={actions}
-                    data={{ isChange: data.isChange }}
-                  />
-                  <div className="min-h-screen w-screen overflow-hidden">
-                    <BannerImage />
-                    <OrgHeadings />
-                    <TestimonialSlides />
-                  </div>
-                </>
-              )}
-            </RevisionContext.Provider>
-          </UserEditableData.Provider>
-        </CurrentDbData.Provider>
+        <UserEditableDataCx.Provider initDbData={initDbData}>
+          <RevisionContext.Provider initDbData={initDbData}>
+            {({ actions, data }) => (
+              <>
+                <Header actions={actions} data={{ isChange: data.isChange }} />
+                <div className="min-h-screen w-screen overflow-hidden">
+                  <BannerImage />
+                  <OrgHeadings />
+                  <TestimonialSlides />
+                </div>
+              </>
+            )}
+          </RevisionContext.Provider>
+        </UserEditableDataCx.Provider>
       )}
     </InitData>
   );
@@ -54,22 +48,29 @@ const HomePage = () => {
 
 export default HomePage;
 
-type DbData = MyDb["pages"]["landing"];
-
 const InitData = ({
   children,
 }: {
-  children: (data: DbData) => ReactElement;
+  children: (data: UserEditableDbData) => ReactElement;
 }) => {
-  const query = useQuery("landing", myDb.pages.landing.fetch);
+  const landingQuery = useQuery("landing", myDb.pages.landing.fetch);
+  const testimonialsQuery = useQuery("testimonials", myDb.testimonial.fetchAll);
 
-  if (query.isLoading) {
+  if (landingQuery.isLoading || testimonialsQuery.isLoading) {
     return <PageDataFetch.Loading />;
   }
 
-  if (query.isError || !query.data) {
+  if (
+    landingQuery.isError ||
+    !landingQuery.data ||
+    testimonialsQuery.isError ||
+    !testimonialsQuery.data
+  ) {
     return <PageDataFetch.Error />;
   }
 
-  return children(query.data);
+  return children({
+    page: landingQuery.data,
+    testimonials: testimonialsQuery.data,
+  });
 };

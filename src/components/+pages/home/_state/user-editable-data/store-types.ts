@@ -1,28 +1,35 @@
 import type { MyDb } from "~/types/database";
 
-type DbData = MyDb["pages"]["landing"];
+type DbData = {
+  page: MyDb["pages"]["landing"];
+  testimonials: MyDb["testimonial"][];
+};
 
 type Actions = {
   undo: (updatedData: DbData) => void;
-  bannerImage: {
-    dbConnections: { imageId: { update: (newVal: string) => void } };
-    position: {
-      x: { update: (newVal: number) => void };
-      y: { update: (newVal: number) => void };
+  page: {
+    bannerImage: {
+      dbConnections: { imageId: { update: (newVal: string) => void } };
+      position: {
+        x: { update: (newVal: number) => void };
+        y: { update: (newVal: number) => void };
+      };
     };
-  };
-  orgHeadings: {
-    name: { update: (newVal: string) => void };
-    byline: { update: (newVal: string) => void };
-  };
-  testimonials: {
-    order: {
-      update: (arg0: { activeId: string; overId: string }) => void;
+    orgHeadings: {
+      name: { update: (newVal: string) => void };
+      byline: { update: (newVal: string) => void };
+    };
+    testimonials: {
+      order: {
+        update: (arg0: { activeId: string; overId: string }) => void;
+      };
     };
   };
 };
 
-export { type Actions };
+type UserEditableDataStore = { data: DbData; actions: Actions };
+
+export type { UserEditableDataStore, DbData as UserEditableDbData };
 
 /* type GenerateLandingDbActions<TData extends DbData> = {
   [k in keyof TData]: TData[k] extends Record<string, unknown>

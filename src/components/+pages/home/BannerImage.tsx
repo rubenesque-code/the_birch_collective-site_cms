@@ -3,11 +3,13 @@ import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
-import { UserEditableData } from "./_state";
+import { UserEditableDataCx } from "./_state";
 import { useState } from "react";
 
 const BannerImage = () => {
-  const { dbConnections, position } = UserEditableData.useData("bannerImage");
+  const {
+    bannerImage: { dbConnections, position },
+  } = UserEditableDataCx.useData("page");
 
   return (
     <div className="group/bannerImage relative aspect-[21/9]">
@@ -31,9 +33,7 @@ const BannerImage = () => {
 export default BannerImage;
 
 const BannerImageMenu = () => {
-  const {
-    bannerImage: { dbConnections, position },
-  } = UserEditableData.useAction();
+  const userAction = UserEditableDataCx.useAction();
 
   return (
     <div className="absolute right-1 top-1 z-20 flex items-center gap-sm rounded-md bg-white px-xs py-xxs opacity-0 shadow-lg transition-opacity duration-75 ease-in-out group-hover/bannerImage:opacity-40 hover:!opacity-100 ">
@@ -43,9 +43,9 @@ const BannerImageMenu = () => {
 
       <ComponentMenu.Image
         onUploadOrSelect={({ dbImageId }) => {
-          dbConnections.imageId.update(dbImageId);
-          position.x.update(50);
-          position.y.update(50);
+          userAction.page.bannerImage.dbConnections.imageId.update(dbImageId);
+          userAction.page.bannerImage.position.x.update(50);
+          userAction.page.bannerImage.position.y.update(50);
         }}
         styles={{
           menu: { itemsWrapper: "right-0 -bottom-1 translate-y-full" },
@@ -58,8 +58,10 @@ const BannerImageMenu = () => {
 const PositionButtons = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const userAction = UserEditableData.useAction();
-  const { position } = UserEditableData.useData("bannerImage");
+  const userAction = UserEditableDataCx.useAction();
+  const {
+    bannerImage: { position },
+  } = UserEditableDataCx.useData("page");
 
   return (
     <div className="flex items-center gap-sm">
@@ -78,7 +80,7 @@ const PositionButtons = () => {
                 return;
               }
               const newPosition = position.x - 10;
-              userAction.bannerImage.position.x.update(newPosition);
+              userAction.page.bannerImage.position.x.update(newPosition);
             }}
             tooltip="move image focus to the left"
             isDisabled={position.x === 0}
@@ -91,7 +93,7 @@ const PositionButtons = () => {
                 return;
               }
               const newPosition = position.x + 10;
-              userAction.bannerImage.position.x.update(newPosition);
+              userAction.page.bannerImage.position.x.update(newPosition);
             }}
             tooltip="move image focus to the right"
             isDisabled={position.x === 100}
@@ -105,7 +107,7 @@ const PositionButtons = () => {
                 return;
               }
               const newPosition = position.y - 10;
-              userAction.bannerImage.position.y.update(newPosition);
+              userAction.page.bannerImage.position.y.update(newPosition);
             }}
             tooltip="show higher part of the image"
             isDisabled={position.y === 0}
@@ -118,7 +120,7 @@ const PositionButtons = () => {
                 return;
               }
               const newPosition = position.y + 10;
-              userAction.bannerImage.position.y.update(newPosition);
+              userAction.page.bannerImage.position.y.update(newPosition);
             }}
             tooltip="show lower part of the image"
             isDisabled={position.y === 100}

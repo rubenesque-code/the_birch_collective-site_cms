@@ -1,10 +1,14 @@
 import { createContext, useContext, type ReactNode, useState } from "react";
-import { useSaveData, useToast } from "~/hooks";
-import { CurrentDbData } from "./CurrentDbData";
-import { UserEditableData } from "./user-editable-data";
+import { useDocSaveData, useToast } from "~/hooks";
+// import { CurrentDbData } from "./CurrentDbData";
+import {
+  UserEditableDataCx,
+  type UserEditableDbData,
+} from "./user-editable-data";
 import { useMutation } from "react-query";
 import { myDb } from "~/my-firebase/firestore";
 import { generateUid } from "~/lib/external-packages-rename";
+import { useDocsSaveData } from "~/hooks/useDocsSaveData";
 
 type ContextValue = {
   data: {
@@ -21,18 +25,26 @@ const Context = createContext<ContextValue | null>(null);
 
 function Provider({
   children,
+  initDbData,
 }: {
   children: ReactNode | ((args: ContextValue) => ReactNode);
+  initDbData: UserEditableDbData;
 }) {
+  const [currentDbData, setCurrentDbData] = useState(initDbData);
   const [undoKey, setUndoKey] = useState(generateUid());
 
-  const currentDbData = CurrentDbData.use();
-  const localData = UserEditableData.useAllData();
+  const userEditableData = UserEditableDataCx.useAllData();
 
-  const { saveData, isChange } = useSaveData({
-    dbData: currentDbData.data,
-    localData,
+  const pageSave = useDocSaveData({
+    dbData: currentDbData.page,
+    userEditedData: userEditableData.page,
   });
+  const testimonialsSave = useDocsSaveData({
+    dbData: currentDbData.testimonials,
+    userEditedData: userEditableData.testimonials,
+  });
+
+  const isChange = pageSave.isChange || testimonialsSave.isChange;
 
   const ifChange = (arg0: () => void) => {
     if (!isChange) {
@@ -43,20 +55,26 @@ function Provider({
 
   const toast = useToast();
 
-  const saveMutation = useMutation(
-    (input: Parameters<typeof myDb.pages.landing.update>[0]) =>
-      myDb.pages.landing.update(input),
+  const landingSaveMutation = useMutation(
+    (input: Parameters<(typeof myDb)["transactions"]["pages"]["landing"]>[0]) =>
+      myDb.transactions.pages.landing(input),
   );
 
   const save = () =>
     ifChange(() =>
       toast.promise(
         () =>
-          saveMutation.mutateAsync(saveData, {
-            onSuccess() {
-              currentDbData.overwrite(localData);
+          landingSaveMutation.mutateAsync(
+            {
+              page: pageSave.saveData,
+              testimonials: testimonialsSave.saveData,
             },
-          }),
+            {
+              onSuccess() {
+                setCurrentDbData(userEditableData);
+              },
+            },
+          ),
         {
           pending: "saving",
           error: "save error",
@@ -65,11 +83,11 @@ function Provider({
       ),
     );
 
-  const userAction = UserEditableData.useAction();
+  const userAction = UserEditableDataCx.useAction();
 
   const undo = () =>
     ifChange(() => {
-      userAction.undo(currentDbData.data);
+      userAction.undo(currentDbData);
       setUndoKey(generateUid());
     });
 

@@ -62,3 +62,20 @@ export const fetchOneTestimonial = async (id: string) => {
 
   return data;
 };
+
+export const fetchTestimonials = async () => {
+  const collectionRef = collection(
+    firestore,
+    firestore_file_system_names.collections.testimonials,
+  );
+
+  const querySnapshot = await getDocs(collectionRef);
+
+  const data: DocumentData[] = [];
+  querySnapshot.forEach((doc) => {
+    const d = doc.data();
+    data.push(d);
+  });
+
+  return data as unknown as MyDb["testimonial"][];
+};
