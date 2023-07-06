@@ -1,14 +1,14 @@
 import DOMPurify from "dompurify";
-import { useRef, useState } from "react";
-import { useMeasure } from "react-use";
+import { useState } from "react";
+import ReactTextareaAutosize from "react-textarea-autosize";
 
 import type { MyPick } from "~/types/utilities";
 import { WithTooltip } from "../WithTooltip";
 
-export const TextInputForm = (props: {
+export const TextAreaForm = (props: {
   localStateValue: string | null;
   input?: MyPick<
-    InputProps,
+    TextAreaProps,
     "autoFocus" | "minWidth" | "placeholder" | "styles"
   >;
   onSubmit: (arg0: { inputValue: string }) => void;
@@ -36,7 +36,7 @@ export const TextInputForm = (props: {
       placement="top"
     >
       <form
-        className="relative inline-block max-w-full"
+        className="relative inline-block w-full max-w-full"
         onSubmit={(e) => {
           e.preventDefault();
 
@@ -45,7 +45,7 @@ export const TextInputForm = (props: {
         onBlur={handleSubmit}
       >
         <div className="form-control">
-          <Input
+          <TextArea
             isFocused={inputIsFocused}
             setIsFocused={setInputIsFocused}
             setValue={setInputValue}
@@ -58,7 +58,7 @@ export const TextInputForm = (props: {
   );
 };
 
-type InputProps = {
+type TextAreaProps = {
   setIsFocused: (value: boolean) => void;
   setValue: (value: string) => void;
   value: string;
@@ -70,40 +70,25 @@ type InputProps = {
   styles?: string;
 };
 
-const Input = ({
+const TextArea = ({
   autoFocus = false,
   isFocused,
-  minWidth = 50,
   placeholder = "write here",
   setIsFocused,
   setValue,
   styles = "",
-  trailingSpace = 20,
   value,
-}: InputProps) => {
+}: TextAreaProps) => {
   const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
     useState(false);
-
-  const [dummyInputRef, { width: dummyInputWidth }] =
-    useMeasure<HTMLParagraphElement>();
-
-  const inputWidth = dummyInputWidth + (isFocused ? trailingSpace : 0);
-
-  const inputRef = useRef<HTMLInputElement | null>(null);
 
   return (
     <>
       <div
-        className={`relative h-full rounded-sm transition-colors duration-75 ease-in-out focus-within:bg-gray-100`}
+        className={`relative h-full w-full rounded-sm transition-colors duration-75 ease-in-out focus-within:bg-gray-100`}
       >
-        <p
-          className={`invisible absolute whitespace-nowrap ${styles}`}
-          ref={dummyInputRef}
-        >
-          {value.length ? value : placeholder}
-        </p>
-        <input
-          className={`z-10 bg-transparent outline-none ${styles} ${
+        <ReactTextareaAutosize
+          className={`z-10 w-full resize-none bg-transparent outline-none ${styles} ${
             isFocused ? "pl-1 text-gray-800" : ""
           }`}
           value={value}
@@ -111,7 +96,6 @@ const Input = ({
             setValue(e.target.value);
           }}
           placeholder={placeholder}
-          type="text"
           autoComplete="off"
           onFocus={(e) => {
             if (!autoFocus && !isBlurredOnInitialRender) {
@@ -124,10 +108,6 @@ const Input = ({
           onBlur={() => {
             setIsFocused(false);
           }}
-          style={{
-            width: inputWidth > minWidth ? inputWidth : minWidth,
-          }}
-          ref={inputRef}
         />
       </div>
     </>

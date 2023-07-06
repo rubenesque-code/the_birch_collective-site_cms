@@ -11,7 +11,7 @@ type Props = {
   dbImageId: string;
 };
 
-export const DbImageWrapper = ({ children, dbImageId: dbImageId }: Props) => {
+export const DbImageWrapper = ({ children, dbImageId }: Props) => {
   const query = useQuery(
     ["banner-image", dbImageId],
     async () => await myDb.image.fetchOne(dbImageId),

@@ -1,6 +1,6 @@
 import { WarningPanel } from "~/components/WarningPanel";
 import { Icon } from "~/components/icons";
-import { MyModal } from "~/components/styled-bases";
+import { Modal } from "~/components/styled-bases";
 import { useToast } from "~/hooks";
 import { Button } from "./Button";
 import { ComponentApiCx } from "./_state";
@@ -23,7 +23,7 @@ const Undo = () => {
   const toast = useToast();
 
   return (
-    <MyModal.DefaultButtonAndPanel
+    <Modal.WithVisibilityProvider
       button={({ openModal }) => (
         <Button
           icon={<Icon.Undo weight="light" />}

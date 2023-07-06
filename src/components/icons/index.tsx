@@ -17,6 +17,8 @@ import {
   ArrowLineRight,
   ArrowsOutCardinal,
   XSquare,
+  GearSix,
+  Plus,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -45,3 +47,5 @@ Icon.PosRight = ArrowLineRight;
 Icon.PosLeft = ArrowLineLeft;
 Icon.ChangePos = ArrowsOutCardinal;
 Icon.HideExpandable = XSquare;
+Icon.Configure = GearSix;
+Icon.Create = Plus;

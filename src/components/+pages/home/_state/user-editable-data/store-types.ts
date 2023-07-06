@@ -21,12 +21,6 @@ type Actions = {
       name: { update: (newVal: string) => void };
       byline: { update: (newVal: string) => void };
     };
-    testimonials: {
-      create: (arg0: DbData["page"]["testimonials"][number]) => void;
-      order: {
-        update: (arg0: { activeId: string; overId: string }) => void;
-      };
-    };
   };
   testimonial: {
     create: (arg0: DbData["testimonials"][number]) => void;
@@ -38,6 +32,15 @@ type Actions = {
     };
     order: {
       update: (arg0: { id: string; newVal: number }) => void;
+    };
+    image: {
+      dbConnect: {
+        imageId: { update: (arg0: { id: string; newVal: string }) => void };
+      };
+      position: {
+        x: { update: (arg0: { id: string; newVal: number }) => void };
+        y: { update: (arg0: { id: string; newVal: number }) => void };
+      };
     };
   };
 };

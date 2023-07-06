@@ -1,11 +1,14 @@
-import { TextInputForm } from "~/components/forms";
+import { ImagePlaceholder } from "~/components/ImagePlaceholder";
 import { Slides } from "~/components/swiper";
+import { deepSortByIndex } from "~/helpers/data/process";
 import { useHovered } from "~/hooks";
-import { NextImage, generateUid } from "~/lib/external-packages-rename";
+import { NextImage } from "~/lib/external-packages-rename";
 import { dummyData } from "~/static-data";
 import type { MyDb } from "~/types/database";
 import { UserEditableDataCx } from "../_state";
-import { deepSortByIndex } from "~/helpers/data/process";
+import { EditModal } from "./edit/+Entry";
+import { ComponentMenu } from "~/components/menus";
+import { Icon } from "~/components/icons";
 
 // □ testimonial endorser name not saving (seems updating okay)
 // □ max width. move nav buttons to right.
@@ -20,67 +23,56 @@ import { deepSortByIndex } from "~/helpers/data/process";
 }); */
 
 export const TestimonialSlides = () => {
-  const pageData = UserEditableDataCx.useData("page");
+  const testimonials = UserEditableDataCx.useData("testimonials");
 
   const slidesInitData = [
-    ...deepSortByIndex(pageData.testimonials),
-    ...(Array(
-      pageData.testimonials.length >= 4 ? 0 : 4 - pageData.testimonials.length,
-    ).fill("dummy") as "dummy"[]),
+    ...deepSortByIndex(testimonials),
+    ...(Array(testimonials.length >= 4 ? 0 : 4 - testimonials.length).fill(
+      "dummy",
+    ) as "dummy"[]),
   ];
 
-  /*   const landingTestimonials = localStateLandingTestimonials
-    .sort((a, b) => a.order - b.order)
-    .map((t) => t.id);
-
-  const numDummy =
-    landingTestimonials.length >= 4 ? 0 : 4 - landingTestimonials.length;
-
-  const x: "dummy"[] = [];
-
-  for (let i = 0; i < numDummy; i++) {
-    x.push("dummy");
-  } */
-
   return (
-    <div>
+    <div className="group/testimonials relative">
       <Slides
         numSlidesTotal={4}
         slides={({ leftMost, rightMost }) =>
           slidesInitData.map((landingData, i) => (
             <Testimonial
               slidesView={{ isFirst: i === leftMost, isLast: i === rightMost }}
-              landingData={landingData}
+              testimonial={landingData}
               key={i}
             />
           ))
         }
       />
+      <ComponentMenu styles="group-hover/testimonials:opacity-40">
+        <EditModal
+          button={({ openModal }) => (
+            <ComponentMenu.Button
+              tooltip="edit testimonials"
+              onClick={openModal}
+            >
+              <Icon.Configure />
+            </ComponentMenu.Button>
+          )}
+        />
+      </ComponentMenu>
     </div>
   );
 };
 
 const Testimonial = ({
-  landingData,
+  testimonial,
   slidesView,
 }: {
   slidesView: {
     isFirst?: boolean;
     isLast?: boolean;
   };
-  landingData: MyDb["pages"]["landing"]["testimonials"][number] | "dummy";
+  testimonial: MyDb["testimonial"] | "dummy";
 }) => {
   const [isHovered, { hoverHandlers }] = useHovered();
-
-  const allTestimonials = UserEditableDataCx.useData("testimonials");
-
-  const testimonialData =
-    landingData === "dummy"
-      ? "dummy"
-      : allTestimonials.find(
-          (testimonial) =>
-            testimonial.id === landingData.dbConnections.testimonialId,
-        );
 
   return (
     <div
@@ -95,31 +87,37 @@ const Testimonial = ({
       }`}
       {...hoverHandlers}
     >
-      {!testimonialData ? (
-        <TestimonialErrorContent />
+      {testimonial === "dummy" ? (
+        <TestimonialDummy />
       ) : (
-        <TestimonialContent data={testimonialData} />
+        <TestimonialActual data={testimonial} />
       )}
     </div>
   );
 };
 
-const TestimonialErrorContent = () => (
-  <div className="grid h-full place-items-center">
-    <h4>Error</h4>
-    <p>Could not find testimonial. It may have been deleted</p>
-  </div>
+const TestimonialDummy = () => (
+  <>
+    <div className="absolute h-full w-full">
+      <ImagePlaceholder placeholderText="" />
+    </div>
+    <div className="absolute bottom-0 z-10 flex h-4/5 w-full flex-col justify-end gap-sm rounded-b-md bg-gradient-to-t from-black to-transparent p-sm text-center text-lg text-white">
+      <div className="overflow-auto scrollbar-hide">
+        <p className="">
+          Herald sad and trumpet be, To this troop come thou not near! To
+          themselves yet either neither, Beauty brag, but tis not she; If what
+          parts can so remain...
+        </p>
+      </div>
+      <div className="shrink-0 font-medium">
+        <p>Person Name</p>
+      </div>
+    </div>
+  </>
 );
 
 // TODO: should seperate dummy and actual
-const TestimonialContent = ({
-  data,
-}: {
-  data: MyDb["testimonial"] | "dummy";
-}) => {
-  const userAction = UserEditableDataCx.useAction();
-  const pageData = UserEditableDataCx.useData("page");
-
+const TestimonialActual = ({ data }: { data: MyDb["testimonial"] }) => {
   return (
     <>
       <NextImage
@@ -132,17 +130,21 @@ const TestimonialContent = ({
           objectFit: "cover",
         }}
       />
-      <div className="absolute bottom-0 z-10 flex h-4/5 w-full flex-col justify-end gap-sm bg-gradient-to-t from-black to-transparent p-sm text-center text-lg text-white">
+      <div className="absolute bottom-0 z-10 flex h-4/5 w-full flex-col justify-end gap-sm rounded-b-md bg-gradient-to-t from-black to-transparent p-sm text-center text-lg text-white">
         <div className="overflow-auto scrollbar-hide">
-          The time I got to spend with others on the camp was just something so
-          magical and wonderful and beautiful I can&apos;t fully describe it. If
-          you find interacting with others difficult or intimidating, or if
-          you&apos;re struggling with your mental health, please consider giving
-          it a go. It was absolutely worth it and I am incredibly thankful I got
-          to go.
+          {data.text.length ? data.text : "Testimonial"}
         </div>
         <div className="shrink-0 font-medium">
-          <TextInputForm
+          <p>
+            {data.endorserName.length ? data.endorserName : "Endorser name"}
+          </p>
+        </div>
+      </div>
+    </>
+  );
+};
+
+/*           <TextInputForm
             input={{ placeholder: "Endorser name" }}
             localStateValue={data === "dummy" ? "" : data.endorserName}
             onSubmit={({ inputValue }) => {
@@ -168,9 +170,4 @@ const TestimonialContent = ({
                 });
               }
             }}
-          />
-        </div>
-      </div>
-    </>
-  );
-};
+          /> */

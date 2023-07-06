@@ -16,7 +16,7 @@ import { TestimonialSlides } from "./testimonial-slides";
 // □ abstraction for react-query onMutate, onSuccess, etc.
 // □ could use zod in saving to db
 // □ image blur up works?
-// □ change image x pos working?
+// □ should be able to work out by aspect ratio of image container and aspect ratio of image natural dimensions whether can move up/down and/or left/right
 
 // □ sort out x overflow. also, max w for inputs
 // □ banner image info widget

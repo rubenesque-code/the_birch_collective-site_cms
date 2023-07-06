@@ -4,7 +4,7 @@ import { ComponentAPI, ModalsVisibilityContext } from "./_state";
 import { UploadImage } from "./UploadImage";
 import { ImageLibrary } from "./image-library";
 import { Icon } from "~/components/icons";
-import { MyMenu, MyModal } from "~/components/styled-bases";
+import { MyMenu, Modal } from "~/components/styled-bases";
 
 export const MenuAndModals = () => {
   const { styles, menuButton } = ComponentAPI.use();
@@ -26,19 +26,19 @@ export const MenuAndModals = () => {
         />
       </MyMenu>
 
-      <MyModal.Default
+      <Modal.OverlayAndPanelWrapper
         isOpen={uploadModal.isOpen}
-        closeModal={uploadModal.close}
+        onClickOutside={uploadModal.close}
       >
         <UploadImage />
-      </MyModal.Default>
+      </Modal.OverlayAndPanelWrapper>
 
-      <MyModal.Default
+      <Modal.OverlayAndPanelWrapper
         isOpen={imageLibraryModal.isOpen}
-        closeModal={imageLibraryModal.close}
+        onClickOutside={imageLibraryModal.close}
       >
         <ImageLibrary closeModal={imageLibraryModal.close} />
-      </MyModal.Default>
+      </Modal.OverlayAndPanelWrapper>
     </>
   );
 };

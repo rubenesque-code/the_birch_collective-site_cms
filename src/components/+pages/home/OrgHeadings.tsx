@@ -1,4 +1,4 @@
-import { TextInputForm } from "~/components/forms";
+import { TextAreaForm } from "~/components/forms";
 import { UserEditableDataCx } from "./_state";
 import { RevisionContext } from "./_state/RevisionContext";
 
@@ -17,7 +17,7 @@ const OrgHeadings = () => {
     <div className="flex flex-col items-center">
       {JSON.stringify(allData)}
       <div className="font-display text-8xl font-bold text-brandOrange">
-        <TextInputForm
+        <TextAreaForm
           localStateValue={name}
           input={{ placeholder: "Organisation name" }}
           onSubmit={({ inputValue }) => {
@@ -28,7 +28,7 @@ const OrgHeadings = () => {
         />
       </div>
       <div className="mt-4 text-base uppercase tracking-wide text-brandOrange xs:text-xl sm:text-2xl md:mt-8 md:text-3xl lg:text-4xl">
-        <TextInputForm
+        <TextAreaForm
           localStateValue={byline}
           input={{
             placeholder: "Organisation byline",

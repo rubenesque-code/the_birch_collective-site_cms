@@ -6,33 +6,33 @@ import { createPortal } from "react-dom";
 
 export type Props = {
   isOpen: boolean;
-  closeModal: () => void;
-  children: ReactElement;
-  styles?: { parentPanel?: string };
-  appear?: boolean;
+  onClickOutside: () => void;
+  panelContent: ReactElement;
+  styles?: { panelWrapper?: string };
+  showOnInitMount?: boolean;
 };
 
-const MyModal = ({
-  closeModal,
+const OverlayAndPanelWrapper = ({
+  onClickOutside,
   isOpen,
-  children: panelContent,
+  panelContent,
   styles,
-  appear,
+  showOnInitMount,
 }: Props) => {
   if (typeof window !== "object") {
     return null;
   }
 
   return createPortal(
-    <Transition show={isOpen} as={Fragment} appear={appear}>
-      <Dialog as="div" onClose={closeModal} className="relative z-50">
+    <Transition show={isOpen} as={Fragment} appear={showOnInitMount}>
+      <Dialog as="div" onClose={onClickOutside} className="relative z-50">
         <MyTransition.Child.Opacity>
           <div className="fixed inset-0 bg-gray-50/70" aria-hidden="true" />
         </MyTransition.Child.Opacity>
 
         <div className="fixed inset-0 grid place-items-center p-4">
           <MyTransition.Child.ScaleAndOpacity>
-            <Dialog.Panel className={`${styles?.parentPanel || ""}`}>
+            <Dialog.Panel className={`${styles?.panelWrapper || ""}`}>
               {panelContent}
             </Dialog.Panel>
           </MyTransition.Child.ScaleAndOpacity>
@@ -43,4 +43,4 @@ const MyModal = ({
   );
 };
 
-export default MyModal;
+export default OverlayAndPanelWrapper;

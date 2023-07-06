@@ -8,7 +8,7 @@ type VisibilityState = {
 
 const MyContext = createContext<VisibilityState | null>(null);
 
-export const ModalVisibilityProvider = ({
+const Provider = ({
   children,
 }: {
   children: ReactElement | ((args: VisibilityState) => ReactElement);
@@ -32,10 +32,21 @@ export const ModalVisibilityProvider = ({
   );
 };
 
-export const useModalVisibilityContext = () => {
+const useCx = () => {
   const value = useContext(MyContext);
   if (!value) {
-    throw new Error("Missing Modal Visibility Provider");
+    throw new Error("Missing Modal.Visibility Provider");
   }
   return value;
 };
+
+function VisibilityCx() {
+  throw new Error(
+    "UserEditableStore exists for naming purposes only and should not be used as a component",
+  );
+}
+
+export { VisibilityCx };
+
+VisibilityCx.Provider = Provider;
+VisibilityCx.use = useCx;

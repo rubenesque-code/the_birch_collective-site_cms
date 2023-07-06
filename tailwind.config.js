@@ -95,6 +95,9 @@ module.exports = {
           "@apply border-gray-200 hover:bg-gray-100 border text-gray-500 hover:text-gray-600":
             {},
         },
+        ".my-btn-create": {
+          "@apply bg-blue-400 text-white hover:bg-blue-500": {},
+        },
         ".my-btn-action": {
           "@apply bg-blue-500 text-white hover:bg-blue-600": {},
         },

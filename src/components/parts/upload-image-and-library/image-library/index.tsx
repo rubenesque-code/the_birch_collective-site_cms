@@ -38,7 +38,6 @@ export const ImageLibrary = ({ closeModal }: { closeModal: () => void }) => (
 
 const ImagesQueryWrapper = ({ children }: { children: ReactElement }) => {
   const query = useQuery("images", myDb.image.fetchAll);
-  console.log("query:", query);
 
   return (
     <div>

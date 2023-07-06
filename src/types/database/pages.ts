@@ -13,11 +13,6 @@ type Landing = {
     name: string;
     byline: string;
   };
-  testimonials: {
-    id: string;
-    dbConnections: { testimonialId: string | null };
-    index: number;
-  }[];
 };
 
 export type Pages = {
