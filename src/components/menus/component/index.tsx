@@ -23,4 +23,4 @@ const Divider = () => <span className="h-[16px] w-[0.5px] bg-gray-200" />;
 
 ComponentMenu.Button = Button;
 ComponentMenu.Divider = Divider;
-ComponentMenu.Image = ComponentMenuImageUploadAndLibrary;
+ComponentMenu.ImageModal = ComponentMenuImageUploadAndLibrary;

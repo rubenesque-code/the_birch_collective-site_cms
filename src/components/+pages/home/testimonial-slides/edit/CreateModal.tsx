@@ -8,6 +8,7 @@ import { Modal } from "~/components/styled-bases";
 import { UserEditableDataCx } from "../../_state";
 import { NewTestimonialCx, createInitData } from "./_state/NewTestimonialCx";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
+import { WarningPanel } from "~/components/WarningPanel";
 
 // todo: need to reset on click outside?
 export const CreateModal = () => {
@@ -15,42 +16,70 @@ export const CreateModal = () => {
 
   return (
     <NewTestimonialCx.Provider newTestimonial={{ index: testimonials.length }}>
-      {({ isUserEntry, actions }) => {
-        console.log("isUserEntry:", isUserEntry);
+      {(newTestimonialCx) => {
         return (
           <Modal.VisibilityCx.Provider>
             {(newTestimonialModal) => (
               <>
-                <button
-                  className={`group my-btn-create mb-sm flex items-center gap-xs rounded-md px-sm py-1.5 text-white`}
-                  onClick={newTestimonialModal.openModal}
-                  type="button"
-                >
-                  <span className="text-sm">
-                    <Icon.Create />
-                  </span>
-                  <span className="text-sm font-medium">Add new</span>
-                </button>
+                <Modal.VisibilityCx.Provider>
+                  {(warningModal) => (
+                    <>
+                      <button
+                        className={`group my-btn-create mb-sm flex items-center gap-xs rounded-md px-sm py-1.5 text-white`}
+                        onClick={warningModal.openModal}
+                        type="button"
+                      >
+                        <span className="text-sm">
+                          <Icon.Create />
+                        </span>
+                        <span className="text-sm font-medium">Add new</span>
+                      </button>
 
-                <Modal.OverlayAndPanelWrapper
-                  onClickOutside={() => {
-                    if (isUserEntry) {
-                      return;
-                    }
-                    newTestimonialModal.closeModal();
-                  }}
-                  isOpen={newTestimonialModal.isOpen}
-                  panelContent={
-                    <Content
-                      closeModal={() => {
-                        actions.resetData(
-                          createInitData({ index: testimonials.length }),
-                        );
-                        newTestimonialModal.closeModal();
-                      }}
-                    />
-                  }
-                />
+                      <Modal.OverlayAndPanelWrapper
+                        onClickOutside={() => {
+                          if (newTestimonialCx.isUserEntry) {
+                            newTestimonialModal.openModal();
+                            return;
+                          }
+                          warningModal.closeModal();
+                        }}
+                        isOpen={warningModal.isOpen}
+                        panelContent={
+                          <Content
+                            closeModal={() => {
+                              if (newTestimonialCx.isUserEntry) {
+                                newTestimonialModal.openModal();
+                                return;
+                              }
+                              warningModal.closeModal();
+                            }}
+                          />
+                        }
+                      />
+
+                      <Modal.OverlayAndPanelWrapper
+                        onClickOutside={newTestimonialModal.closeModal}
+                        isOpen={newTestimonialModal.isOpen}
+                        panelContent={
+                          <WarningPanel
+                            callback={() => {
+                              newTestimonialCx.actions.resetData(
+                                createInitData({ index: testimonials.length }),
+                              );
+                              newTestimonialModal.closeModal();
+                              warningModal.closeModal();
+                            }}
+                            closeModal={newTestimonialModal.closeModal}
+                            text={{
+                              title: "Close testimonial creation?",
+                              body: "Changes made will be lost.",
+                            }}
+                          />
+                        }
+                      />
+                    </>
+                  )}
+                </Modal.VisibilityCx.Provider>
               </>
             )}
           </Modal.VisibilityCx.Provider>
@@ -141,22 +170,22 @@ const NewTestimonial = () => {
 };
 
 const Menu = () => {
-  const newTestimonialStore = NewTestimonialCx.use();
+  const newTestimonialCx = NewTestimonialCx.use();
 
   return (
     <div className="absolute right-1 top-1 z-20 flex items-center gap-sm rounded-md bg-white px-xs py-xxs opacity-30 shadow-lg transition-opacity duration-75 ease-in-out group-hover/testimonialImage:opacity-40 hover:!opacity-100 ">
-      {newTestimonialStore.data.image.dbConnect.imageId ? (
+      {newTestimonialCx.data.image.dbConnect.imageId ? (
         <>
           <PositionButtons />
 
           <ComponentMenu.Divider />
         </>
       ) : null}
-      <ComponentMenu.Image
+      <ComponentMenu.ImageModal
         onUploadOrSelect={({ dbImageId }) => {
-          newTestimonialStore.actions.image.dbConnect.imageId.update(dbImageId);
-          newTestimonialStore.actions.image.position.x.update(50);
-          newTestimonialStore.actions.image.position.y.update(50);
+          newTestimonialCx.actions.image.dbConnect.imageId.update(dbImageId);
+          newTestimonialCx.actions.image.position.x.update(50);
+          newTestimonialCx.actions.image.position.y.update(50);
         }}
         styles={{
           menu: { itemsWrapper: "right-0 -bottom-1 translate-y-full" },

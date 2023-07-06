@@ -41,7 +41,7 @@ const BannerImageMenu = () => {
 
       <ComponentMenu.Divider />
 
-      <ComponentMenu.Image
+      <ComponentMenu.ImageModal
         onUploadOrSelect={({ dbImageId }) => {
           userAction.page.bannerImage.dbConnections.imageId.update(dbImageId);
           userAction.page.bannerImage.position.x.update(50);

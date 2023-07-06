@@ -29,16 +29,14 @@ export const MenuAndModals = () => {
       <Modal.OverlayAndPanelWrapper
         isOpen={uploadModal.isOpen}
         onClickOutside={uploadModal.close}
-      >
-        <UploadImage />
-      </Modal.OverlayAndPanelWrapper>
+        panelContent={<UploadImage />}
+      />
 
       <Modal.OverlayAndPanelWrapper
         isOpen={imageLibraryModal.isOpen}
         onClickOutside={imageLibraryModal.close}
-      >
-        <ImageLibrary closeModal={imageLibraryModal.close} />
-      </Modal.OverlayAndPanelWrapper>
+        panelContent={<ImageLibrary closeModal={imageLibraryModal.close} />}
+      />
     </>
   );
 };
