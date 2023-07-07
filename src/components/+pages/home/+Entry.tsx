@@ -22,6 +22,7 @@ import { TestimonialSlides } from "./testimonial-slides";
 // □ banner image info widget
 // □ save context is correct? Should be in header?
 // □ scrollbar needn't go up to header
+// □ UserEditableDataCx should be renamed - have other editable Cx e.g. new testimonial. Rename to e.g. page editable cx
 
 const HomePage = () => {
   return (

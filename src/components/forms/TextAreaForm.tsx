@@ -7,10 +7,7 @@ import { WithTooltip } from "../WithTooltip";
 
 export const TextAreaForm = (props: {
   localStateValue: string | null;
-  input?: MyPick<
-    TextAreaProps,
-    "autoFocus" | "minWidth" | "placeholder" | "styles"
-  >;
+  input?: MyPick<TextAreaProps, "minWidth" | "placeholder" | "styles">;
   onSubmit: (arg0: { inputValue: string }) => void;
   tooltip?: string;
 }) => {
@@ -62,7 +59,7 @@ type TextAreaProps = {
   setIsFocused: (value: boolean) => void;
   setValue: (value: string) => void;
   value: string;
-  autoFocus?: boolean;
+  // autoFocus?: boolean;
   isFocused: boolean;
   minWidth?: number;
   placeholder?: string;
@@ -71,7 +68,7 @@ type TextAreaProps = {
 };
 
 const TextArea = ({
-  autoFocus = false,
+  // autoFocus = false,
   isFocused,
   placeholder = "write here",
   setIsFocused,
@@ -79,8 +76,8 @@ const TextArea = ({
   styles = "",
   value,
 }: TextAreaProps) => {
-  const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
-    useState(false);
+  /*   const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
+    useState(false); */
 
   return (
     <>
@@ -97,11 +94,11 @@ const TextArea = ({
           }}
           placeholder={placeholder}
           autoComplete="off"
-          onFocus={(e) => {
-            if (!autoFocus && !isBlurredOnInitialRender) {
+          onFocus={() => {
+            /*             if (!autoFocus && !isBlurredOnInitialRender) {
               e.currentTarget.blur();
               setIsBlurredOnInitialRender(true);
-            }
+            } */
 
             setIsFocused(true);
           }}

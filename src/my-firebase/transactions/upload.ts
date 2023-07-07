@@ -1,5 +1,5 @@
 import { myDb } from "../firestore";
-import { myStorage } from "../storage/transactions";
+import { myStorage } from "../storage";
 
 export const uploadImageToStorageAndCreateFirestoreImage = async (input: {
   naturalDimensions: {

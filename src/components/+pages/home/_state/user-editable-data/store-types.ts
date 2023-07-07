@@ -24,6 +24,7 @@ type Actions = {
   };
   testimonial: {
     create: (arg0: DbData["testimonials"][number]) => void;
+    delete: (arg0: { id: string }) => void;
     text: {
       update: (arg0: { id: string; newVal: string }) => void;
     };

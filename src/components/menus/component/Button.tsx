@@ -32,8 +32,10 @@ const Button = ({
   </WithTooltip>
 );
 
-const DeleteButton = (props: MyPick<ButtonProps, "onClick" | "styles">) => (
-  <Button {...props} tooltip="" styles={{ button: "hover:bg-my-alert" }}>
+const DeleteButton = (
+  props: MyPick<ButtonProps, "onClick" | "styles" | "tooltip">,
+) => (
+  <Button {...props} styles={{ button: "hover:bg-my-alert" }}>
     <span className="text-my-alert-content">
       <Icon.Delete />
     </span>

@@ -1,7 +1,5 @@
 import { uploadImageAndFetchResizedImageData } from "./upload";
 
-export const myStorage = {
-  transactions: {
-    uploadImageAndFetchResizedImageData,
-  },
+export const transactions = {
+  uploadImageAndFetchResizedImageData,
 };

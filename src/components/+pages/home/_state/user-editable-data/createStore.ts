@@ -73,6 +73,15 @@ export const createUserEditableDataStore = (input: {
               state.data.testimonials.push(newTestimonial);
             }),
           ),
+        delete: (input) =>
+          set(
+            produce((state: UserEditableDataStore) => {
+              const index = state.data.testimonials.findIndex(
+                (t) => t.id === input.id,
+              );
+              if (index !== -1) state.data.testimonials.splice(index, 1);
+            }),
+          ),
         endorserName: {
           update: (input) =>
             set(

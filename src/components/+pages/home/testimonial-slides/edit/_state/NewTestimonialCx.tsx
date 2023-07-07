@@ -140,7 +140,6 @@ function Provider({
   }
 
   const store = useStore(storeRef.current, (state) => state);
-  console.log("store:", store.data);
 
   const isUserEntry = Boolean(
     store.data.endorserName.length ||

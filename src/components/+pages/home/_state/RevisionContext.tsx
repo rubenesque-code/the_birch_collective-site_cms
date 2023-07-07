@@ -13,6 +13,7 @@ import { useDocsSaveData } from "~/hooks/useDocsSaveData";
 type ContextValue = {
   data: {
     isChange: boolean;
+    isTestimonialsChange: boolean;
     undoKey: string;
   };
   actions: {
@@ -93,7 +94,11 @@ function Provider({
 
   const value: ContextValue = {
     actions: { undo, save },
-    data: { isChange, undoKey },
+    data: {
+      isChange,
+      undoKey,
+      isTestimonialsChange: testimonialsSave.isChange,
+    },
   };
 
   return (

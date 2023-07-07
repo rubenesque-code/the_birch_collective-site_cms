@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
@@ -9,87 +10,101 @@ import { UserEditableDataCx } from "../../_state";
 import { NewTestimonialCx, createInitData } from "./_state/NewTestimonialCx";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { WarningPanel } from "~/components/WarningPanel";
+import { useToast } from "~/hooks";
 
-// todo: need to reset on click outside?
+// □ refactor
+
 export const CreateModal = () => {
   const { testimonials } = UserEditableDataCx.useAllData();
 
   return (
     <NewTestimonialCx.Provider newTestimonial={{ index: testimonials.length }}>
-      {(newTestimonialCx) => {
-        return (
-          <Modal.VisibilityCx.Provider>
-            {(newTestimonialModal) => (
-              <>
-                <Modal.VisibilityCx.Provider>
-                  {(warningModal) => (
-                    <>
-                      <button
-                        className={`group my-btn-create mb-sm flex items-center gap-xs rounded-md px-sm py-1.5 text-white`}
-                        onClick={warningModal.openModal}
-                        type="button"
-                      >
-                        <span className="text-sm">
-                          <Icon.Create />
-                        </span>
-                        <span className="text-sm font-medium">Add new</span>
-                      </button>
+      {(newTestimonialCx) => (
+        <Modal.VisibilityCx.Provider>
+          {(newTestimonialModal) => (
+            <Modal.VisibilityCx.Provider>
+              {(warningModal) => {
+                const handleCloseNewTestimonial = () => {
+                  if (newTestimonialCx.isUserEntry) {
+                    warningModal.openModal();
+                    return;
+                  }
+                  newTestimonialModal.closeModal();
+                };
 
-                      <Modal.OverlayAndPanelWrapper
-                        onClickOutside={() => {
-                          if (newTestimonialCx.isUserEntry) {
-                            newTestimonialModal.openModal();
-                            return;
+                return (
+                  <>
+                    <button
+                      className={`group my-btn-create mb-sm flex items-center gap-xs rounded-md px-sm py-1.5 text-white`}
+                      onClick={newTestimonialModal.openModal}
+                      type="button"
+                    >
+                      <span className="text-sm">
+                        <Icon.Create />
+                      </span>
+                      <span className="text-sm font-medium">Add new</span>
+                    </button>
+
+                    <Modal.OverlayAndPanelWrapper
+                      onClickOutside={handleCloseNewTestimonial}
+                      isOpen={newTestimonialModal.isOpen}
+                      panelContent={
+                        <NewTestimonialModalContent
+                          onClose={handleCloseNewTestimonial}
+                          closeNewTestimonialModal={
+                            newTestimonialModal.closeModal
                           }
-                          warningModal.closeModal();
-                        }}
-                        isOpen={warningModal.isOpen}
-                        panelContent={
-                          <Content
-                            closeModal={() => {
-                              if (newTestimonialCx.isUserEntry) {
-                                newTestimonialModal.openModal();
-                                return;
-                              }
-                              warningModal.closeModal();
-                            }}
-                          />
-                        }
-                      />
+                        />
+                      }
+                    />
 
-                      <Modal.OverlayAndPanelWrapper
-                        onClickOutside={newTestimonialModal.closeModal}
-                        isOpen={newTestimonialModal.isOpen}
-                        panelContent={
-                          <WarningPanel
-                            callback={() => {
-                              newTestimonialCx.actions.resetData(
-                                createInitData({ index: testimonials.length }),
-                              );
-                              newTestimonialModal.closeModal();
-                              warningModal.closeModal();
-                            }}
-                            closeModal={newTestimonialModal.closeModal}
-                            text={{
-                              title: "Close testimonial creation?",
-                              body: "Changes made will be lost.",
-                            }}
-                          />
-                        }
-                      />
-                    </>
-                  )}
-                </Modal.VisibilityCx.Provider>
-              </>
-            )}
-          </Modal.VisibilityCx.Provider>
-        );
-      }}
+                    <Modal.OverlayAndPanelWrapper
+                      onClickOutside={warningModal.closeModal}
+                      isOpen={warningModal.isOpen}
+                      panelContent={
+                        <WarningPanel
+                          callback={() => {
+                            newTestimonialCx.actions.resetData(
+                              createInitData({ index: testimonials.length }),
+                            );
+                            newTestimonialModal.closeModal();
+                            warningModal.closeModal();
+                          }}
+                          closeModal={warningModal.closeModal}
+                          text={{
+                            title: "Close testimonial creation?",
+                            body: "Changes made will be lost.",
+                          }}
+                        />
+                      }
+                    />
+                  </>
+                );
+              }}
+            </Modal.VisibilityCx.Provider>
+          )}
+        </Modal.VisibilityCx.Provider>
+      )}
     </NewTestimonialCx.Provider>
   );
 };
 
-const Content = ({ closeModal }: { closeModal: () => void }) => {
+const NewTestimonialModalContent = ({
+  onClose,
+  closeNewTestimonialModal,
+}: {
+  onClose: () => void;
+  closeNewTestimonialModal: () => void;
+}) => {
+  const [showIncompleteErrorMessage, setShowIncompleteErrorMessage] =
+    useState(false);
+
+  const { testimonial } = UserEditableDataCx.useAction();
+  const { testimonials } = UserEditableDataCx.useAllData();
+  const newTestimonialCx = NewTestimonialCx.use();
+
+  const toast = useToast();
+
   return (
     <div className="relative flex flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
       <div className="flex items-center justify-between border-b border-b-gray-200 pb-sm">
@@ -100,18 +115,54 @@ const Content = ({ closeModal }: { closeModal: () => void }) => {
         <NewTestimonial />
       </div>
 
-      <div className="mt-xl flex items-center justify-between">
+      {showIncompleteErrorMessage ? (
+        <div className="mt-sm w-[346px] text-sm">
+          <p className="text-my-error-content">
+            Can&apos;t create testimonial. Requirements: image, text and
+            endorser name.
+          </p>
+        </div>
+      ) : null}
+
+      <div
+        className={`flex items-center justify-between ${
+          showIncompleteErrorMessage ? "mt-md" : "mt-xl"
+        }`}
+      >
         <button
           className="my-btn my-btn-neutral"
           type="button"
-          onClick={() => closeModal()}
+          onClick={onClose}
         >
           close
         </button>
         <button
           className="my-btn my-btn-action"
           type="button"
-          onClick={() => closeModal()}
+          onClick={() => {
+            const formIsComplete = Boolean(
+              newTestimonialCx.data.endorserName.length &&
+                newTestimonialCx.data.image.dbConnect.imageId &&
+                newTestimonialCx.data.text.length,
+            );
+
+            if (!formIsComplete) {
+              setShowIncompleteErrorMessage(true);
+              setTimeout(() => {
+                setShowIncompleteErrorMessage(false);
+              }, 7000);
+              return;
+            }
+
+            testimonial.create(newTestimonialCx.data);
+            toast.neutral("Added testimonial");
+            closeNewTestimonialModal();
+            setTimeout(() => {
+              newTestimonialCx.actions.resetData(
+                createInitData({ index: testimonials.length + 1 }),
+              );
+            }, 200);
+          }}
         >
           create
         </button>
@@ -126,7 +177,7 @@ const NewTestimonial = () => {
   const newTestimonialStore = NewTestimonialCx.use();
 
   return (
-    <div className="relative aspect-[3/4] h-[465px]">
+    <div className="relative h-[465px] w-[346px]">
       <div className="group/testimonialImage absolute h-full w-full">
         <UserSelectedImageWrapper
           dbImageId={newTestimonialStore.data.image.dbConnect.imageId}
@@ -172,6 +223,7 @@ const NewTestimonial = () => {
 const Menu = () => {
   const newTestimonialCx = NewTestimonialCx.use();
 
+  // todo: change wrapper to ComponentMenu
   return (
     <div className="absolute right-1 top-1 z-20 flex items-center gap-sm rounded-md bg-white px-xs py-xxs opacity-30 shadow-lg transition-opacity duration-75 ease-in-out group-hover/testimonialImage:opacity-40 hover:!opacity-100 ">
       {newTestimonialCx.data.image.dbConnect.imageId ? (
@@ -277,145 +329,3 @@ const PositionButtons = () => {
     </div>
   );
 };
-
-// □ ideally, don't want to show position buttons if there's an image error (unfound image) either. Would need to recomposoe image state or equivalent.
-
-/* const Menu = ({
-  testimonialId,
-  isConnectedImage,
-}: {
-  testimonialId: string;
-  isConnectedImage: boolean;
-}) => {
-  const userAction = UserEditableDataCx.useAction();
-
-  return (
-    <div className="absolute right-1 top-1 z-20 flex items-center gap-sm rounded-md bg-white px-xs py-xxs opacity-0 shadow-lg transition-opacity duration-75 ease-in-out group-hover/testimonialImage:opacity-40 hover:!opacity-100 ">
-      {isConnectedImage ? (
-        <>
-          <PositionButtons testimonialId={testimonialId} />
-
-          <ComponentMenu.Divider />
-        </>
-      ) : null}
-      <ComponentMenu.Image
-        onUploadOrSelect={({ dbImageId }) => {
-          userAction.testimonial.image.dbConnect.imageId.update({
-            id: testimonialId,
-            newVal: dbImageId,
-          });
-          userAction.testimonial.image.position.x.update({
-            id: testimonialId,
-            newVal: 50,
-          });
-          userAction.testimonial.image.position.y.update({
-            id: testimonialId,
-            newVal: 50,
-          });
-        }}
-        styles={{
-          menu: { itemsWrapper: "right-0 -bottom-1 translate-y-full" },
-        }}
-      />
-    </div>
-  );
-};
-
-const PositionButtons = ({ testimonialId }: { testimonialId: string }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const userAction = UserEditableDataCx.useAction();
-  const {
-    bannerImage: { position },
-  } = UserEditableDataCx.useData("page");
-
-  return (
-    <div className="flex items-center gap-sm">
-      {!isOpen ? (
-        <ComponentMenu.Button
-          onClick={() => setIsOpen(true)}
-          tooltip="show position controls"
-        >
-          <Icon.ChangePos />
-        </ComponentMenu.Button>
-      ) : (
-        <>
-          <ComponentMenu.Button
-            onClick={() => {
-              if (position.x === 0) {
-                return;
-              }
-              const newPosition = position.x - 10;
-              userAction.testimonial.image.position.x.update({
-                id: testimonialId,
-                newVal: newPosition,
-              });
-            }}
-            tooltip="move image focus to the left"
-            isDisabled={position.x === 0}
-          >
-            <Icon.PosLeft />
-          </ComponentMenu.Button>
-          <ComponentMenu.Button
-            onClick={() => {
-              if (position.x === 100) {
-                return;
-              }
-              const newPosition = position.x + 10;
-              userAction.testimonial.image.position.x.update({
-                id: testimonialId,
-                newVal: newPosition,
-              });
-            }}
-            tooltip="move image focus to the right"
-            isDisabled={position.x === 100}
-          >
-            <Icon.PosRight />
-          </ComponentMenu.Button>
-
-          <ComponentMenu.Button
-            onClick={() => {
-              if (position.y === 0) {
-                return;
-              }
-              const newPosition = position.y - 10;
-              userAction.testimonial.image.position.y.update({
-                id: testimonialId,
-                newVal: newPosition,
-              });
-            }}
-            tooltip="show higher part of the image"
-            isDisabled={position.y === 0}
-          >
-            <Icon.PosDown />
-          </ComponentMenu.Button>
-          <ComponentMenu.Button
-            onClick={() => {
-              if (position.y === 100) {
-                return;
-              }
-              const newPosition = position.y + 10;
-              userAction.testimonial.image.position.y.update({
-                id: testimonialId,
-                newVal: newPosition,
-              });
-            }}
-            tooltip="show lower part of the image"
-            isDisabled={position.y === 100}
-          >
-            <Icon.PosUp />
-          </ComponentMenu.Button>
-
-          <ComponentMenu.Button
-            onClick={() => setIsOpen(false)}
-            tooltip="hide position controls"
-            styles={{ button: "text-xs p-1 text-blue-300" }}
-          >
-            <Icon.HideExpandable />
-          </ComponentMenu.Button>
-        </>
-      )}
-    </div>
-  );
-};
- */

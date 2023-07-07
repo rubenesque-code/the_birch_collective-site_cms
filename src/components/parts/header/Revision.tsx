@@ -29,7 +29,7 @@ const Undo = () => {
           icon={<Icon.Undo weight="light" />}
           onClick={() => isChange && openModal()}
           tooltip={(isChange) =>
-            isChange ? "undo all changes since last save" : "nothing to undo"
+            isChange ? "undo changes" : "nothing to undo"
           }
         />
       )}
@@ -61,7 +61,7 @@ const Save = () => {
     <Button
       icon={<Icon.Save weight="light" />}
       onClick={save}
-      tooltip={(isChange) => (isChange ? "save" : "nothing to save")}
+      tooltip={(isChange) => (isChange ? "save changes" : "nothing to save")}
     >
       <span
         className={`absolute left-[2.5px] top-[2.5px] h-[8px] w-[8px] rounded-full bg-green-active transition-opacity ease-in-out ${
