@@ -1,20 +1,20 @@
 // change order. Edit each slide. create new. delete.
 
-import { Modal } from "~/components/styled-bases";
-import { UserEditableDataCx } from "../../_state";
-import { useState, type ReactElement, useMemo } from "react";
-import { CreateModal } from "./CreateModal";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { ComponentMenu } from "~/components/menus";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { useMemo, type ReactElement } from "react";
 import { CustomisableImage } from "~/components/CustomisableImage";
+import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { WarningPanel } from "~/components/WarningPanel";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
-import type { MyDb } from "~/types/database";
+import { ComponentMenu } from "~/components/menus";
+import { Modal, MyMenu } from "~/components/styled-bases";
 import { deepSortByIndex } from "~/helpers/data/process";
-import { RevisionContext } from "../../_state/RevisionContext";
-import { WarningPanel } from "~/components/WarningPanel";
 import { useToast } from "~/hooks";
+import { UserEditableDataCx } from "../../_state";
+import { RevisionContext } from "../../_state/RevisionContext";
+import { CreateModal } from "./CreateModal";
+import { TestimonialCx } from "./_state";
 
 // □ abstraction for image library modal content + below
 // □ mymodal, provider, useVisibility context, etc. could be better structured
@@ -73,14 +73,20 @@ const Testimonials = () => {
   const { testimonials } = UserEditableDataCx.useAllData();
 
   const {
-    data: { isTestimonialsChange },
+    data: { testimonialsRevisionData },
   } = RevisionContext.use();
+  // console.log('isTestimonialsChange:', isTestimonialsChange)
 
   const sorted = useMemo(
     () => deepSortByIndex(testimonials),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isTestimonialsChange],
+    [testimonialsRevisionData.changeKey],
   );
+  /*   console.log(
+    "testimonialsRevisionData.changeKey:",
+    testimonialsRevisionData.changeKey,
+  ); */
+  // console.log("sorted:", sorted[0]);
 
   return (
     <div>
@@ -88,14 +94,13 @@ const Testimonials = () => {
         <p className="">No testimonials yet.</p>
       ) : (
         <div className="grid grid-cols-3 gap-sm pr-sm">
-          {sorted.map((testimonial) => (
-            <div key={testimonial.id}>
-              {testimonial.text.length ? (
-                <Testimonial testimonial={testimonial} />
-              ) : (
-                "no text yet"
-              )}
-            </div>
+          {[sorted[0]].map((testimonial) => (
+            <TestimonialCx.Provider
+              testimonial={testimonial}
+              key={testimonial.id}
+            >
+              <Testimonial />
+            </TestimonialCx.Provider>
           ))}
         </div>
       )}
@@ -103,16 +108,13 @@ const Testimonials = () => {
   );
 };
 
-const Testimonial = ({
-  testimonial: { image, endorserName, id, text },
-}: {
-  testimonial: MyDb["testimonial"];
-}) => {
+const Testimonial = () => {
+  const { endorserName, image, id, text } = TestimonialCx.use();
   const userAction = UserEditableDataCx.useAction();
 
   return (
-    <div className="relative aspect-[3/4]">
-      <div className="group/testimonialImage absolute h-full w-full">
+    <div className="group/testimonialImage relative aspect-[3/4]">
+      <div className=" absolute h-full w-full">
         <UserSelectedImageWrapper
           dbImageId={image.dbConnect.imageId}
           placeholderText="background image"
@@ -125,7 +127,7 @@ const Testimonial = ({
             </DbImageWrapper>
           )}
         </UserSelectedImageWrapper>
-        <Menu connectedImageId={image.dbConnect.imageId} testimonialId={id} />
+        <Menu />
       </div>
       <div className="absolute bottom-0 z-20 flex h-3/5 w-full flex-col justify-end gap-sm rounded-b-md bg-gradient-to-t from-black to-transparent p-sm text-center text-lg text-white">
         <div className="overflow-y-auto scrollbar-hide">
@@ -154,22 +156,17 @@ const Testimonial = ({
   );
 };
 
-const Menu = ({
-  testimonialId,
-  connectedImageId,
-}: {
-  testimonialId: string;
-  connectedImageId: string | null;
-}) => {
+const Menu = () => {
+  const { image, id } = TestimonialCx.use();
   const userAction = UserEditableDataCx.useAction();
 
   const toast = useToast();
 
   return (
-    <div className="absolute right-1 top-1 z-20 flex items-center gap-sm rounded-md bg-white px-xs py-xxs opacity-0 shadow-lg transition-opacity duration-75 ease-in-out group-hover/testimonialImage:opacity-40 hover:!opacity-100 ">
-      {connectedImageId ? (
+    <ComponentMenu styles="group-hover/testimonialImage:opacity-60">
+      {image.dbConnect.imageId ? (
         <>
-          <PositionButtons testimonialId={testimonialId} />
+          <PositionButtonsMenu />
 
           <ComponentMenu.Divider />
         </>
@@ -177,15 +174,15 @@ const Menu = ({
       <ComponentMenu.ImageModal
         onUploadOrSelect={({ dbImageId }) => {
           userAction.testimonial.image.dbConnect.imageId.update({
-            id: testimonialId,
+            id,
             newVal: dbImageId,
           });
           userAction.testimonial.image.position.x.update({
-            id: testimonialId,
+            id,
             newVal: 50,
           });
           userAction.testimonial.image.position.y.update({
-            id: testimonialId,
+            id,
             newVal: 50,
           });
         }}
@@ -205,7 +202,7 @@ const Menu = ({
         panelContent={({ closeModal }) => (
           <WarningPanel
             callback={() => {
-              userAction.testimonial.delete({ id: testimonialId });
+              userAction.testimonial.delete({ id });
               closeModal();
               toast.neutral("deleted testimonial");
             }}
@@ -217,104 +214,112 @@ const Menu = ({
           />
         )}
       />
-    </div>
+    </ComponentMenu>
   );
 };
 
-const PositionButtons = ({ testimonialId }: { testimonialId: string }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const userAction = UserEditableDataCx.useAction();
+const PositionButtonsMenu = () => {
   const {
-    bannerImage: { position },
-  } = UserEditableDataCx.useData("page");
+    image: { position },
+    id,
+  } = TestimonialCx.use();
+  const userAction = UserEditableDataCx.useAction();
+  console.log("position:", position);
 
   return (
-    <div className="flex items-center gap-sm">
-      {!isOpen ? (
-        <ComponentMenu.Button
-          onClick={() => setIsOpen(true)}
-          tooltip="show position controls"
-        >
+    // <div className="relative inline-block">
+    <MyMenu
+      button={
+        <ComponentMenu.Button tooltip="show position controls">
           <Icon.ChangePos />
         </ComponentMenu.Button>
-      ) : (
+      }
+      styles={{
+        itemsWrapper: "right-0 top-0 origin-center",
+      }}
+    >
+      {({ close: closeMenu }) => (
         <>
-          <ComponentMenu.Button
-            onClick={() => {
-              if (position.x === 0) {
-                return;
-              }
-              const newPosition = position.x - 10;
-              userAction.testimonial.image.position.x.update({
-                id: testimonialId,
-                newVal: newPosition,
-              });
-            }}
-            tooltip="move image focus to the left"
-            isDisabled={position.x === 0}
-          >
-            <Icon.PosLeft />
-          </ComponentMenu.Button>
-          <ComponentMenu.Button
-            onClick={() => {
-              if (position.x === 100) {
-                return;
-              }
-              const newPosition = position.x + 10;
-              userAction.testimonial.image.position.x.update({
-                id: testimonialId,
-                newVal: newPosition,
-              });
-            }}
-            tooltip="move image focus to the right"
-            isDisabled={position.x === 100}
-          >
-            <Icon.PosRight />
-          </ComponentMenu.Button>
+          <ComponentMenu styles="opacity-100">
+            <ComponentMenu.Button
+              onClick={() => {
+                if (position.x === 0) {
+                  return;
+                }
+                const newPosition = position.x - 10;
+                userAction.testimonial.image.position.x.update({
+                  id,
+                  newVal: newPosition,
+                });
+              }}
+              tooltip="move image focus to the left"
+              isDisabled={position.x === 0}
+            >
+              <Icon.PosLeft />
+            </ComponentMenu.Button>
+            <ComponentMenu.Button
+              onClick={() => {
+                if (position.x === 100) {
+                  return;
+                }
+                const newPosition = position.x + 10;
+                userAction.testimonial.image.position.x.update({
+                  id,
+                  newVal: newPosition,
+                });
+              }}
+              tooltip="move image focus to the right"
+              isDisabled={position.x === 100}
+            >
+              <Icon.PosRight />
+            </ComponentMenu.Button>
 
-          <ComponentMenu.Button
-            onClick={() => {
-              if (position.y === 0) {
-                return;
-              }
-              const newPosition = position.y - 10;
-              userAction.testimonial.image.position.y.update({
-                id: testimonialId,
-                newVal: newPosition,
-              });
-            }}
-            tooltip="show higher part of the image"
-            isDisabled={position.y === 0}
-          >
-            <Icon.PosDown />
-          </ComponentMenu.Button>
-          <ComponentMenu.Button
-            onClick={() => {
-              if (position.y === 100) {
-                return;
-              }
-              const newPosition = position.y + 10;
-              userAction.testimonial.image.position.y.update({
-                id: testimonialId,
-                newVal: newPosition,
-              });
-            }}
-            tooltip="show lower part of the image"
-            isDisabled={position.y === 100}
-          >
-            <Icon.PosUp />
-          </ComponentMenu.Button>
+            <ComponentMenu.Button
+              onClick={() => {
+                if (position.y === 0) {
+                  return;
+                }
+                const newPosition = position.y - 10;
+                userAction.testimonial.image.position.y.update({
+                  id,
+                  newVal: newPosition,
+                });
+              }}
+              tooltip="show higher part of the image"
+              isDisabled={position.y === 0}
+            >
+              <Icon.PosDown />
+            </ComponentMenu.Button>
+            <ComponentMenu.Button
+              onClick={() => {
+                if (position.y === 100) {
+                  return;
+                }
+                const newPosition = position.y + 10;
+                userAction.testimonial.image.position.y.update({
+                  id,
+                  newVal: newPosition,
+                });
+              }}
+              tooltip="show lower part of the image"
+              isDisabled={position.y === 100}
+            >
+              <Icon.PosUp />
+            </ComponentMenu.Button>
 
-          <ComponentMenu.Button
-            onClick={() => setIsOpen(false)}
-            tooltip="hide position controls"
-            styles={{ button: "text-xs p-1 text-blue-300" }}
-          >
-            <Icon.HideExpandable />
-          </ComponentMenu.Button>
+            <ComponentMenu.Divider />
+
+            <ComponentMenu.Button
+              onClick={closeMenu}
+              tooltip="close position controls"
+              styles={{ button: "text-gray-600" }}
+            >
+              <Icon.HideExpandable />
+            </ComponentMenu.Button>
+          </ComponentMenu>
         </>
       )}
-    </div>
+    </MyMenu>
+    // </div>
   );
 };

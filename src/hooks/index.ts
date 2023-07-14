@@ -1,3 +1,4 @@
 export * from "./useToast";
-export * from "./useDocSaveData";
+export * from "./useDocRevisionData";
+export * from "./useDocsRevisionData";
 export * from "./useHovered";

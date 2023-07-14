@@ -1,6 +1,5 @@
 import { createContext, useContext, type ReactNode, useState } from "react";
-import { useDocSaveData, useToast } from "~/hooks";
-// import { CurrentDbData } from "./CurrentDbData";
+
 import {
   UserEditableDataCx,
   type UserEditableDbData,
@@ -8,13 +7,15 @@ import {
 import { useMutation } from "react-query";
 import { myDb } from "~/my-firebase/firestore";
 import { generateUid } from "~/lib/external-packages-rename";
-import { useDocsSaveData } from "~/hooks/useDocsSaveData";
+import { useDocRevisionData, useDocsRevisionData, useToast } from "~/hooks";
 
 type ContextValue = {
   data: {
     isChange: boolean;
-    isTestimonialsChange: boolean;
+    // isTestimonialsChange: boolean;
     undoKey: string;
+    pageRevisionData: ReturnType<typeof useDocRevisionData>;
+    testimonialsRevisionData: ReturnType<typeof useDocsRevisionData>;
   };
   actions: {
     save: () => void;
@@ -36,16 +37,21 @@ function Provider({
 
   const userEditableData = UserEditableDataCx.useAllData();
 
-  const pageSave = useDocSaveData({
+  const pageRevisionData = useDocRevisionData({
     dbData: currentDbData.page,
     userEditedData: userEditableData.page,
   });
-  const testimonialsSave = useDocsSaveData({
+  const testimonialsRevisionData = useDocsRevisionData({
     dbData: currentDbData.testimonials,
     userEditedData: userEditableData.testimonials,
   });
+  console.log(
+    "testimonialsRevisionData.changeKey:",
+    testimonialsRevisionData.changeKey,
+  );
 
-  const isChange = pageSave.isChange || testimonialsSave.isChange;
+  const isChange =
+    pageRevisionData.isChange || testimonialsRevisionData.isChange;
 
   const ifChange = (arg0: () => void) => {
     if (!isChange) {
@@ -67,8 +73,8 @@ function Provider({
         () =>
           landingSaveMutation.mutateAsync(
             {
-              page: pageSave.saveData,
-              testimonials: testimonialsSave.saveData,
+              page: pageRevisionData.saveData,
+              testimonials: testimonialsRevisionData.saveData,
             },
             {
               onSuccess() {
@@ -97,7 +103,9 @@ function Provider({
     data: {
       isChange,
       undoKey,
-      isTestimonialsChange: testimonialsSave.isChange,
+      pageRevisionData,
+      testimonialsRevisionData,
+      // isTestimonialsChange: testimonialsRevisionData.isChange,
     },
   };
 

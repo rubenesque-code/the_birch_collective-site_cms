@@ -139,12 +139,17 @@ export const createUserEditableDataStore = (input: {
               update: (input) =>
                 set(
                   produce((state: UserEditableDataStore) => {
+                    console.log("updating...");
+
                     const index = state.data.testimonials.findIndex(
                       (t) => t.id === input.id,
                     );
-                    if (index !== -1)
+                    if (index !== -1) {
+                      console.log("found testimonial");
+
                       state.data.testimonials[index].image.position.x =
                         input.newVal;
+                    }
                   }),
                 ),
             },

@@ -5,7 +5,7 @@ import {
 import { type MyPick } from "~/types/utilities";
 import { Button } from "./Button";
 
-export const ComponentMenuImageUploadAndLibrary = (
+export const ImageModal = (
   props: MyPick<ComponentProps, "onUploadOrSelect" | "styles">,
 ) => {
   return (

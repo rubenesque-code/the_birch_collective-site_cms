@@ -1,5 +1,7 @@
 import lodash from "lodash";
+import { useEffect, useState } from "react";
 import { checkObjectHasField } from "~/helpers/queryObject";
+import { generateUid } from "~/lib/external-packages-rename";
 
 // □ need to memoise?
 
@@ -46,6 +48,14 @@ function getArrayUnion<TDoc extends { id: string }>(
   return pairs;
 }
 
+/* function processUpdatedDoc<
+  TDoc extends { id: string } & Record<string, unknown>,
+>(input: { original: TDoc; updated: TDoc }) {
+  const diff = jsondiffpatch.diff(input.original, input.updated) as TDoc;
+  console.log("diff:", diff);
+
+  return diff;
+} */
 function processUpdatedDoc<
   TDoc extends { id: string } & Record<string, unknown>,
 >(input: { original: TDoc; updated: TDoc }) {
@@ -83,10 +93,11 @@ function processUpdatedDocs<TDoc extends { id: string }>(
     .flatMap((doc) => (doc ? doc : []));
 }
 
-export function useDocsSaveData<TDoc extends { id: string }>(input: {
+export function useDocsRevisionData<TDoc extends { id: string }>(input: {
   dbData: TDoc[];
   userEditedData: TDoc[];
 }) {
+  const [changeKey, setChangeKey] = useState(generateUid());
   // new
   const created = arrayDivergence(input.userEditedData, input.dbData);
 
@@ -96,12 +107,24 @@ export function useDocsSaveData<TDoc extends { id: string }>(input: {
   // map docs. return partial of each changed doc - fields that have changed + id.
   const updated = processUpdatedDocs(persistedPairs);
 
+  const isChange = Boolean(created.length || deleted.length || updated.length);
+
+  useEffect(() => {
+    if (!isChange) {
+      return;
+    }
+    console.log("updating key...");
+
+    setChangeKey(generateUid());
+  }, [isChange]);
+
   return {
     saveData: {
       created,
       deleted,
       updated,
     },
-    isChange: Boolean(created.length || deleted.length || updated.length),
+    isChange,
+    changeKey,
   };
 }
