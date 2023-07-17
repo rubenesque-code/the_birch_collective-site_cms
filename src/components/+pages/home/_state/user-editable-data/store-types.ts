@@ -32,7 +32,7 @@ type Actions = {
       update: (arg0: { id: string; newVal: string }) => void;
     };
     order: {
-      update: (arg0: { id: string; newVal: number }) => void;
+      update: (arg0: { activeId: string; overId: string }) => void;
     };
     image: {
       dbConnect: {

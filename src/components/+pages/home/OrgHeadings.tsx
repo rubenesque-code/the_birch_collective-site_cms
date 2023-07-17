@@ -1,6 +1,6 @@
 import { TextAreaForm } from "~/components/forms";
 import { UserEditableDataCx } from "./_state";
-import { RevisionContext } from "./_state/RevisionContext";
+import { RevisionCx } from "./_state/RevisionCx";
 
 const OrgHeadings = () => {
   const allData = UserEditableDataCx.useAllData();
@@ -11,7 +11,7 @@ const OrgHeadings = () => {
 
   const {
     data: { undoKey },
-  } = RevisionContext.use();
+  } = RevisionCx.use();
 
   return (
     <div className="flex flex-col items-center">

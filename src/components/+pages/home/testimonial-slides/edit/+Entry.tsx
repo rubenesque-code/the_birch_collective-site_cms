@@ -1,6 +1,5 @@
-// change order. Edit each slide. create new. delete.
-
 import { useMemo, type ReactElement } from "react";
+
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
@@ -12,15 +11,18 @@ import { Modal, MyMenu } from "~/components/styled-bases";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { useToast } from "~/hooks";
 import { UserEditableDataCx } from "../../_state";
-import { RevisionContext } from "../../_state/RevisionContext";
 import { CreateModal } from "./CreateModal";
 import { TestimonialCx } from "./_state";
+import { DndKit } from "~/components/dnd-kit";
+import { getIds } from "~/helpers/data/query";
+import { RevisionCx } from "../../_state/RevisionCx";
 
 // □ abstraction for image library modal content + below
 // □ mymodal, provider, useVisibility context, etc. could be better structured
 // □ how does memoisation with array as dependency work? Should calc isChange myself?
 // □ ideally, don't want to show position buttons if there's an image error (unfound image) either. Would need to recomposoe image state or equivalent.
 // □ should probs derive e.g. testimonial type from state used rather than db
+// □ update testimonial index on delete
 
 export const EditModal = ({
   button,
@@ -46,7 +48,7 @@ export const EditModal = ({
 
 const Content = ({ closeModal }: { closeModal: () => void }) => {
   return (
-    <div className="relative flex h-[700px] max-h-[70vh] w-[90vw] max-w-[1200px] flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
+    <div className="relative flex h-[1200px] max-h-[70vh] w-[90vw] max-w-[1200px] flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
       <div className="flex items-center justify-between border-b border-b-gray-200 pb-sm">
         <h3 className="leading-6">Testimonials</h3>
       </div>
@@ -72,21 +74,10 @@ const Content = ({ closeModal }: { closeModal: () => void }) => {
 const Testimonials = () => {
   const { testimonials } = UserEditableDataCx.useAllData();
 
-  const {
-    data: { testimonialsRevisionData },
-  } = RevisionContext.use();
-  // console.log('isTestimonialsChange:', isTestimonialsChange)
+  const sorted = useMemo(() => deepSortByIndex(testimonials), [testimonials]);
+  console.log("sorted:", sorted);
 
-  const sorted = useMemo(
-    () => deepSortByIndex(testimonials),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [testimonialsRevisionData.changeKey],
-  );
-  /*   console.log(
-    "testimonialsRevisionData.changeKey:",
-    testimonialsRevisionData.changeKey,
-  ); */
-  // console.log("sorted:", sorted[0]);
+  const userActions = UserEditableDataCx.useAction();
 
   return (
     <div>
@@ -94,14 +85,24 @@ const Testimonials = () => {
         <p className="">No testimonials yet.</p>
       ) : (
         <div className="grid grid-cols-3 gap-sm pr-sm">
-          {[sorted[0]].map((testimonial) => (
-            <TestimonialCx.Provider
-              testimonial={testimonial}
-              key={testimonial.id}
-            >
-              <Testimonial />
-            </TestimonialCx.Provider>
-          ))}
+          <DndKit.Context
+            elementIds={getIds(sorted)}
+            onReorder={({ activeId, overId }) =>
+              userActions.testimonial.order.update({ activeId, overId })
+            }
+          >
+            {sorted.map((testimonial) => (
+              <DndKit.Element
+                elementId={testimonial.id}
+                styles={{ handle: "bg-white" }}
+                key={testimonial.id}
+              >
+                <TestimonialCx.Provider testimonial={testimonial}>
+                  <Testimonial />
+                </TestimonialCx.Provider>
+              </DndKit.Element>
+            ))}
+          </DndKit.Context>
         </div>
       )}
     </div>
@@ -224,10 +225,8 @@ const PositionButtonsMenu = () => {
     id,
   } = TestimonialCx.use();
   const userAction = UserEditableDataCx.useAction();
-  console.log("position:", position);
 
   return (
-    // <div className="relative inline-block">
     <MyMenu
       button={
         <ComponentMenu.Button tooltip="show position controls">
@@ -320,6 +319,5 @@ const PositionButtonsMenu = () => {
         </>
       )}
     </MyMenu>
-    // </div>
   );
 };

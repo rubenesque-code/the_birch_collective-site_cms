@@ -1,10 +1,10 @@
 import { createContext, useContext, type ReactNode, useState } from "react";
+import { useMutation } from "react-query";
 
 import {
   UserEditableDataCx,
   type UserEditableDbData,
 } from "./user-editable-data";
-import { useMutation } from "react-query";
 import { myDb } from "~/my-firebase/firestore";
 import { generateUid } from "~/lib/external-packages-rename";
 import { useDocRevisionData, useDocsRevisionData, useToast } from "~/hooks";
@@ -14,8 +14,8 @@ type ContextValue = {
     isChange: boolean;
     // isTestimonialsChange: boolean;
     undoKey: string;
-    pageRevisionData: ReturnType<typeof useDocRevisionData>;
-    testimonialsRevisionData: ReturnType<typeof useDocsRevisionData>;
+    page: ReturnType<typeof useDocRevisionData>;
+    testimonials: ReturnType<typeof useDocsRevisionData>;
   };
   actions: {
     save: () => void;
@@ -45,10 +45,6 @@ function Provider({
     dbData: currentDbData.testimonials,
     userEditedData: userEditableData.testimonials,
   });
-  console.log(
-    "testimonialsRevisionData.changeKey:",
-    testimonialsRevisionData.changeKey,
-  );
 
   const isChange =
     pageRevisionData.isChange || testimonialsRevisionData.isChange;
@@ -103,8 +99,8 @@ function Provider({
     data: {
       isChange,
       undoKey,
-      pageRevisionData,
-      testimonialsRevisionData,
+      page: pageRevisionData,
+      testimonials: testimonialsRevisionData,
       // isTestimonialsChange: testimonialsRevisionData.isChange,
     },
   };
@@ -127,13 +123,13 @@ const useThisContext = () => {
   return context;
 };
 
-function RevisionContext() {
+function RevisionCx() {
   throw new Error(
     "RevisionContext exists for naming purposes only and should not be used as a component",
   );
 }
 
-export { RevisionContext };
+export { RevisionCx };
 
-RevisionContext.Provider = Provider;
-RevisionContext.use = useThisContext;
+RevisionCx.Provider = Provider;
+RevisionCx.use = useThisContext;

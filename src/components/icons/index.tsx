@@ -19,6 +19,7 @@ import {
   XSquare,
   GearSix,
   Plus,
+  DotsSixVertical,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -49,3 +50,4 @@ Icon.ChangePos = ArrowsOutCardinal;
 Icon.HideExpandable = XSquare;
 Icon.Configure = GearSix;
 Icon.Create = Plus;
+Icon.DndHandle = DotsSixVertical;

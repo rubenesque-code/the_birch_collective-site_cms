@@ -9,7 +9,7 @@ import { myDb } from "~/my-firebase/firestore";
 import BannerImage from "./BannerImage";
 import OrgHeadings from "./OrgHeadings";
 import { UserEditableDataCx, type UserEditableDbData } from "./_state";
-import { RevisionContext } from "./_state/RevisionContext";
+import { RevisionCx } from "./_state/RevisionCx";
 import { TestimonialSlides } from "./testimonial-slides";
 
 // □ need to have production values in env.local?
@@ -29,18 +29,18 @@ const HomePage = () => {
     <InitData>
       {(initDbData) => (
         <UserEditableDataCx.Provider initDbData={initDbData}>
-          <RevisionContext.Provider initDbData={initDbData}>
+          <RevisionCx.Provider initDbData={initDbData}>
             {({ actions, data }) => (
               <>
                 <Header actions={actions} data={{ isChange: data.isChange }} />
                 <div className="min-h-screen w-screen overflow-hidden">
-                  <BannerImage />
-                  <OrgHeadings />
+                  {/* <BannerImage /> */}
+                  {/* <OrgHeadings /> */}
                   <TestimonialSlides />
                 </div>
               </>
             )}
-          </RevisionContext.Provider>
+          </RevisionCx.Provider>
         </UserEditableDataCx.Provider>
       )}
     </InitData>

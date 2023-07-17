@@ -1,5 +1,6 @@
 import lodash from "lodash";
 import { useEffect, useState } from "react";
+import { getIds } from "~/helpers/data/query";
 import { checkObjectHasField } from "~/helpers/queryObject";
 import { generateUid } from "~/lib/external-packages-rename";
 
@@ -33,8 +34,8 @@ function getArrayUnion<TDoc extends { id: string }>(
   items1: TDoc[],
   items2: TDoc[],
 ) {
-  const ids1 = items1.map((item) => item.id);
-  const ids2 = items2.map((item) => item.id);
+  const ids1 = getIds(items1);
+  const ids2 = getIds(items2);
 
   const idsInBoth = ids1.filter((id1) => ids2.includes(id1));
 
@@ -48,14 +49,7 @@ function getArrayUnion<TDoc extends { id: string }>(
   return pairs;
 }
 
-/* function processUpdatedDoc<
-  TDoc extends { id: string } & Record<string, unknown>,
->(input: { original: TDoc; updated: TDoc }) {
-  const diff = jsondiffpatch.diff(input.original, input.updated) as TDoc;
-  console.log("diff:", diff);
-
-  return diff;
-} */
+// only calcs for one field deep because that's how firestore works
 function processUpdatedDoc<
   TDoc extends { id: string } & Record<string, unknown>,
 >(input: { original: TDoc; updated: TDoc }) {
@@ -103,7 +97,7 @@ export function useDocsRevisionData<TDoc extends { id: string }>(input: {
 
   const deleted = arrayDivergenceByIds(input.dbData, input.userEditedData);
 
-  const persistedPairs = getArrayUnion(input.userEditedData, input.dbData);
+  const persistedPairs = getArrayUnion(input.dbData, input.userEditedData);
   // map docs. return partial of each changed doc - fields that have changed + id.
   const updated = processUpdatedDocs(persistedPairs);
 
@@ -113,7 +107,6 @@ export function useDocsRevisionData<TDoc extends { id: string }>(input: {
     if (!isChange) {
       return;
     }
-    console.log("updating key...");
 
     setChangeKey(generateUid());
   }, [isChange]);

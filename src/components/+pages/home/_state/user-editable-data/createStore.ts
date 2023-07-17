@@ -2,6 +2,7 @@ import { produce } from "immer";
 import { createStore } from "zustand";
 
 import type { UserEditableDataStore, UserEditableDbData } from "./store-types";
+import { getReorderedEntities, sortByIndex } from "~/helpers/data/process";
 
 export const createUserEditableDataStore = (input: {
   dbData: UserEditableDbData;
@@ -76,10 +77,23 @@ export const createUserEditableDataStore = (input: {
         delete: (input) =>
           set(
             produce((state: UserEditableDataStore) => {
-              const index = state.data.testimonials.findIndex(
+              const entityToDeleteIndex = state.data.testimonials.findIndex(
                 (t) => t.id === input.id,
               );
-              if (index !== -1) state.data.testimonials.splice(index, 1);
+              if (entityToDeleteIndex === -1) return;
+
+              const testimonialsSorted =
+                state.data.testimonials.sort(sortByIndex);
+
+              for (
+                let i = entityToDeleteIndex + 1;
+                i < testimonialsSorted.length;
+                i++
+              ) {
+                testimonialsSorted[i].index = testimonialsSorted[i].index - 1;
+              }
+
+              state.data.testimonials.splice(entityToDeleteIndex, 1);
             }),
           ),
         endorserName: {
@@ -98,11 +112,31 @@ export const createUserEditableDataStore = (input: {
           update: (input) =>
             set(
               produce((state: UserEditableDataStore) => {
-                const index = state.data.testimonials.findIndex(
-                  (t) => t.id === input.id,
+                const active = state.data.testimonials.find(
+                  (t) => t.id === input.activeId,
                 );
-                if (index !== -1)
-                  state.data.testimonials[index].index = input.newVal;
+                const over = state.data.testimonials.find(
+                  (t) => t.id === input.overId,
+                );
+
+                if (!active || !over) {
+                  return;
+                }
+
+                const updatedTestimonials = getReorderedEntities({
+                  active,
+                  over,
+                  entities: state.data.testimonials,
+                });
+
+                updatedTestimonials.forEach((updatedTestimonial) => {
+                  const index = state.data.testimonials.findIndex(
+                    (t) => t.id === updatedTestimonial.id,
+                  );
+                  if (index !== -1)
+                    state.data.testimonials[index].index =
+                      updatedTestimonial.newIndex;
+                });
               }),
             ),
         },
@@ -145,7 +179,7 @@ export const createUserEditableDataStore = (input: {
                       (t) => t.id === input.id,
                     );
                     if (index !== -1) {
-                      console.log("found testimonial");
+                      console.log("found testimonial", input);
 
                       state.data.testimonials[index].image.position.x =
                         input.newVal;

@@ -11,6 +11,10 @@
     "kill-firebase-ports": "fuser -k 9099/tcp 8080/tcp 9199/tcp 4000/tcp"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.0.8",
+    "@dnd-kit/modifiers": "^6.0.1",
+    "@dnd-kit/sortable": "^7.0.2",
+    "@dnd-kit/utilities": "^3.2.1",
     "@headlessui/react": "^1.7.15",
     "@phosphor-icons/react": "^2.0.10",
     "dompurify": "^3.0.3",
