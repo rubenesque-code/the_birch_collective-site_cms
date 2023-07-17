@@ -6,7 +6,14 @@ import { Icon } from "~/components/icons";
 import { UserEditableDataCx } from "../_state";
 import { generateUid } from "~/lib/external-packages-rename";
 import type { MyDb } from "~/types/database";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { DndKit } from "~/components/dnd-kit";
+import { getIds } from "~/helpers/data/query";
+import { deepSortByIndex } from "~/helpers/data/process";
+import { Button } from "~/components/menus/component/Button";
+import { Modal } from "~/components/styled-bases";
+import { WarningPanel } from "~/components/WarningPanel";
+import { useToast } from "~/hooks";
 
 const AboutUs = () => {
   const {
@@ -14,6 +21,14 @@ const AboutUs = () => {
       aboutUs: { entries },
     },
   } = UserEditableDataCx.useAllData();
+  const {
+    page: {
+      aboutUs: { entry },
+    },
+  } = UserEditableDataCx.useAction();
+
+  const sorted = useMemo(() => deepSortByIndex(entries), [entries]);
+  console.log("sorted:", sorted);
 
   return (
     <div>
@@ -23,10 +38,17 @@ const AboutUs = () => {
           <p className="">No about us entries yet.</p>
         </div>
       ) : (
-        <div className="mt-md">
-          {entries.map((aboutUsEntry) => (
-            <Entry {...aboutUsEntry} key={aboutUsEntry.id} />
-          ))}
+        <div className="mt-md grid grid-cols-1 gap-sm">
+          <DndKit.Context
+            elementIds={getIds(sorted)}
+            onReorder={entry.order.update}
+          >
+            {sorted.map((aboutUsEntry) => (
+              <DndKit.Element elementId={aboutUsEntry.id} key={aboutUsEntry.id}>
+                <Entry {...aboutUsEntry} />
+              </DndKit.Element>
+            ))}
+          </DndKit.Context>
         </div>
       )}
       <div className="mt-xs">
@@ -72,6 +94,7 @@ const AddEntryForm = () => {
 
   return (
     <div className="flex gap-sm">
+      <span />
       <div className="text-brandGreen">
         <Icon.AboutUs size="xl" />
       </div>
@@ -118,8 +141,31 @@ const Entry = (
     page: { aboutUs },
   } = UserEditableDataCx.useAction();
 
+  const toast = useToast();
+
   return (
-    <div className="flex gap-sm">
+    <div className="group/entry flex gap-sm">
+      <Modal.WithVisibilityProvider
+        button={({ openModal }) => (
+          <div className="w-0 opacity-0 transition-all duration-150 ease-in-out group-hover/entry:w-[30px] group-hover/entry:opacity-60 hover:!opacity-100">
+            <Button.Delete tooltip="delete entry" onClick={openModal} />
+          </div>
+        )}
+        panelContent={({ closeModal }) => (
+          <WarningPanel
+            callback={() => {
+              aboutUs.entry.delete({ id: props.id });
+              closeModal();
+              toast.neutral("deleted entry");
+            }}
+            closeModal={closeModal}
+            text={{
+              title: "Delete entry",
+              body: "Are you sure?",
+            }}
+          />
+        )}
+      />
       <div className="text-brandGreen">
         <Icon.AboutUs size="2xl" />
       </div>
