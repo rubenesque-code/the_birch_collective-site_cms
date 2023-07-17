@@ -10,7 +10,8 @@ import BannerImage from "./BannerImage";
 import OrgHeadings from "./OrgHeadings";
 import { UserEditableDataCx, type UserEditableDbData } from "./_state";
 import { RevisionCx } from "./_state/RevisionCx";
-import { TestimonialSlides } from "./testimonial-slides";
+import TestimonialSlides from "./testimonial-slides/+Entry";
+import AboutUs from "./about-us/+Entry";
 
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, onSuccess, etc.
@@ -20,7 +21,6 @@ import { TestimonialSlides } from "./testimonial-slides";
 
 // □ sort out x overflow. also, max w for inputs
 // □ banner image info widget
-// □ save context is correct? Should be in header?
 // □ scrollbar needn't go up to header
 // □ UserEditableDataCx should be renamed - have other editable Cx e.g. new testimonial. Rename to e.g. page editable cx
 
@@ -31,14 +31,17 @@ const HomePage = () => {
         <UserEditableDataCx.Provider initDbData={initDbData}>
           <RevisionCx.Provider initDbData={initDbData}>
             {({ actions, data }) => (
-              <>
+              <div className="flex h-screen w-screen flex-col overflow-hidden">
                 <Header actions={actions} data={{ isChange: data.isChange }} />
-                <div className="min-h-screen w-screen overflow-hidden">
-                  {/* <BannerImage /> */}
-                  {/* <OrgHeadings /> */}
-                  <TestimonialSlides />
+                <div className="flex-grow overflow-y-auto bg-gray-100 p-sm scrollbar-thin">
+                  <div className="bg-white">
+                    {/* <BannerImage /> */}
+                    {/* <OrgHeadings /> */}
+                    <TestimonialSlides />
+                    <AboutUs />
+                  </div>
                 </div>
-              </>
+              </div>
             )}
           </RevisionCx.Provider>
         </UserEditableDataCx.Provider>

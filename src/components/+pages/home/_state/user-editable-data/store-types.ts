@@ -21,10 +21,22 @@ type Actions = {
       name: { update: (newVal: string) => void };
       byline: { update: (newVal: string) => void };
     };
+    aboutUs: {
+      heading: { update: (newVal: string) => void };
+      buttonText: { update: (newVal: string) => void };
+      entry: {
+        create: (arg0: DbData["page"]["aboutUs"]["entries"][number]) => void;
+        delete: (arg0: { id: string }) => void;
+        updateText: (arg0: { id: string; newVal: string }) => void;
+        order: {
+          update: (arg0: { activeId: string; overId: string }) => void;
+        };
+      };
+    };
   };
   testimonial: {
     create: (arg0: DbData["testimonials"][number]) => void;
-    delete: (arg0: { id: string }) => void;
+    delete: (arg0: { id: string; index: number }) => void;
     text: {
       update: (arg0: { id: string; newVal: string }) => void;
     };

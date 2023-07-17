@@ -7,7 +7,7 @@ import { ComponentApiCx } from "./_state";
 
 // □ ideally, a delay on undone toast
 
-export const Revision = () => (
+export const RevisionButtons = () => (
   <div className="flex items-center gap-md">
     <Undo />
     <Save />

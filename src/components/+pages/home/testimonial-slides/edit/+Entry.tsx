@@ -15,14 +15,13 @@ import { CreateModal } from "./CreateModal";
 import { TestimonialCx } from "./_state";
 import { DndKit } from "~/components/dnd-kit";
 import { getIds } from "~/helpers/data/query";
-import { RevisionCx } from "../../_state/RevisionCx";
 
 // □ abstraction for image library modal content + below
 // □ mymodal, provider, useVisibility context, etc. could be better structured
 // □ how does memoisation with array as dependency work? Should calc isChange myself?
 // □ ideally, don't want to show position buttons if there's an image error (unfound image) either. Would need to recomposoe image state or equivalent.
 // □ should probs derive e.g. testimonial type from state used rather than db
-// □ update testimonial index on delete
+// □ update testimonial index on delete seems to be working. Might be unreliable.
 
 export const EditModal = ({
   button,
@@ -38,7 +37,7 @@ export const EditModal = ({
           <Modal.OverlayAndPanelWrapper
             onClickOutside={closeModal}
             isOpen={isOpen}
-            panelContent={<Content closeModal={closeModal} />}
+            panelContent={<Content />}
           />
         </>
       )}
@@ -46,7 +45,9 @@ export const EditModal = ({
   );
 };
 
-const Content = ({ closeModal }: { closeModal: () => void }) => {
+const Content = () => {
+  const { closeModal } = Modal.VisibilityCx.use();
+
   return (
     <div className="relative flex h-[1200px] max-h-[70vh] w-[90vw] max-w-[1200px] flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
       <div className="flex items-center justify-between border-b border-b-gray-200 pb-sm">
@@ -75,7 +76,6 @@ const Testimonials = () => {
   const { testimonials } = UserEditableDataCx.useAllData();
 
   const sorted = useMemo(() => deepSortByIndex(testimonials), [testimonials]);
-  console.log("sorted:", sorted);
 
   const userActions = UserEditableDataCx.useAction();
 
@@ -87,9 +87,7 @@ const Testimonials = () => {
         <div className="grid grid-cols-3 gap-sm pr-sm">
           <DndKit.Context
             elementIds={getIds(sorted)}
-            onReorder={({ activeId, overId }) =>
-              userActions.testimonial.order.update({ activeId, overId })
-            }
+            onReorder={userActions.testimonial.order.update}
           >
             {sorted.map((testimonial) => (
               <DndKit.Element
@@ -111,7 +109,7 @@ const Testimonials = () => {
 
 const Testimonial = () => {
   const { endorserName, image, id, text } = TestimonialCx.use();
-  const userAction = UserEditableDataCx.useAction();
+  const action = UserEditableDataCx.useAction();
 
   return (
     <div className="group/testimonialImage relative aspect-[3/4]">
@@ -135,16 +133,16 @@ const Testimonial = () => {
           <TextAreaForm
             localStateValue={text}
             onSubmit={({ inputValue }) =>
-              userAction.testimonial.text.update({ id, newVal: inputValue })
+              action.testimonial.text.update({ id, newVal: inputValue })
             }
-            input={{ placeholder: "Testimonial text..." }}
+            textArea={{ placeholder: "Testimonial text..." }}
           />
         </div>
         <div className="shrink-0 font-medium">
           <TextInputForm
             localStateValue={endorserName}
             onSubmit={({ inputValue }) =>
-              userAction.testimonial.endorserName.update({
+              action.testimonial.endorserName.update({
                 id,
                 newVal: inputValue,
               })
@@ -158,7 +156,7 @@ const Testimonial = () => {
 };
 
 const Menu = () => {
-  const { image, id } = TestimonialCx.use();
+  const { image, id, index } = TestimonialCx.use();
   const userAction = UserEditableDataCx.useAction();
 
   const toast = useToast();
@@ -203,7 +201,7 @@ const Menu = () => {
         panelContent={({ closeModal }) => (
           <WarningPanel
             callback={() => {
-              userAction.testimonial.delete({ id });
+              userAction.testimonial.delete({ id, index });
               closeModal();
               toast.neutral("deleted testimonial");
             }}

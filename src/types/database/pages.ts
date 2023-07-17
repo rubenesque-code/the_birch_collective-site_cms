@@ -3,7 +3,6 @@ type Landing = {
     dbConnections: {
       imageId: string | null;
     };
-    // firestoreImageId: string | null;
     position: {
       x: number;
       y: number;
@@ -12,6 +11,11 @@ type Landing = {
   orgHeadings: {
     name: string;
     byline: string;
+  };
+  aboutUs: {
+    heading: string;
+    buttonText: string;
+    entries: { id: string; text: string; index: number }[];
   };
 };
 

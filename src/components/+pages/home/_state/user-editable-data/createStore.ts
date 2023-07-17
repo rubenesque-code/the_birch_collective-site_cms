@@ -1,8 +1,8 @@
 import { produce } from "immer";
 import { createStore } from "zustand";
 
-import type { UserEditableDataStore, UserEditableDbData } from "./store-types";
 import { getReorderedEntities, sortByIndex } from "~/helpers/data/process";
+import type { UserEditableDataStore, UserEditableDbData } from "./store-types";
 
 export const createUserEditableDataStore = (input: {
   dbData: UserEditableDbData;
@@ -66,6 +66,99 @@ export const createUserEditableDataStore = (input: {
               ),
           },
         },
+        aboutUs: {
+          heading: {
+            update: (updatedValue) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.aboutUs.heading = updatedValue;
+                }),
+              ),
+          },
+          buttonText: {
+            update: (updatedValue) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.aboutUs.buttonText = updatedValue;
+                }),
+              ),
+          },
+          entry: {
+            create: (newEntry) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.aboutUs.entries.push(newEntry);
+                }),
+              ),
+            delete: (input) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  const entriesOrdered =
+                    state.data.page.aboutUs.entries.sort(sortByIndex);
+
+                  const entityToDeleteIndex = entriesOrdered.findIndex(
+                    (t) => t.id === input.id,
+                  );
+                  if (entityToDeleteIndex === -1) return;
+
+                  entriesOrdered.splice(entityToDeleteIndex, 1);
+
+                  for (
+                    let i = entityToDeleteIndex;
+                    i < entriesOrdered.length;
+                    i++
+                  ) {
+                    entriesOrdered[i].index = entriesOrdered[i].index - 1;
+                  }
+                }),
+              ),
+            updateText: (input) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  const index = state.data.page.aboutUs.entries.findIndex(
+                    (t) => t.id === input.id,
+                  );
+                  if (index !== -1)
+                    state.data.page.aboutUs.entries[index].text = input.newVal;
+                }),
+              ),
+            order: {
+              update: (input) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    const entriesOrdered =
+                      state.data.page.aboutUs.entries.sort(sortByIndex);
+
+                    const active = entriesOrdered.find(
+                      (t) => t.id === input.activeId,
+                    );
+                    const over = entriesOrdered.find(
+                      (t) => t.id === input.overId,
+                    );
+
+                    if (!active || !over) {
+                      return;
+                    }
+
+                    const updatedEntries = getReorderedEntities({
+                      active,
+                      over,
+                      entities: entriesOrdered,
+                    });
+
+                    updatedEntries.forEach((updatedEntry) => {
+                      const index = state.data.page.aboutUs.entries.findIndex(
+                        (t) => t.id === updatedEntry.id,
+                      );
+                      if (index !== -1)
+                        state.data.page.aboutUs.entries[index].index =
+                          updatedEntry.newIndex;
+                    });
+                  }),
+                ),
+            },
+          },
+        },
       },
       testimonial: {
         create: (newTestimonial) =>
@@ -77,23 +170,23 @@ export const createUserEditableDataStore = (input: {
         delete: (input) =>
           set(
             produce((state: UserEditableDataStore) => {
-              const entityToDeleteIndex = state.data.testimonials.findIndex(
+              const testimonialsOrdered =
+                state.data.testimonials.sort(sortByIndex);
+
+              const entityToDeleteIndex = testimonialsOrdered.findIndex(
                 (t) => t.id === input.id,
               );
               if (entityToDeleteIndex === -1) return;
 
-              const testimonialsSorted =
-                state.data.testimonials.sort(sortByIndex);
+              testimonialsOrdered.splice(entityToDeleteIndex, 1);
 
               for (
-                let i = entityToDeleteIndex + 1;
-                i < testimonialsSorted.length;
+                let i = entityToDeleteIndex;
+                i < testimonialsOrdered.length;
                 i++
               ) {
-                testimonialsSorted[i].index = testimonialsSorted[i].index - 1;
+                testimonialsOrdered[i].index = testimonialsOrdered[i].index - 1;
               }
-
-              state.data.testimonials.splice(entityToDeleteIndex, 1);
             }),
           ),
         endorserName: {
@@ -112,10 +205,13 @@ export const createUserEditableDataStore = (input: {
           update: (input) =>
             set(
               produce((state: UserEditableDataStore) => {
-                const active = state.data.testimonials.find(
+                const testimonialsOrdered =
+                  state.data.testimonials.sort(sortByIndex);
+
+                const active = testimonialsOrdered.find(
                   (t) => t.id === input.activeId,
                 );
-                const over = state.data.testimonials.find(
+                const over = testimonialsOrdered.find(
                   (t) => t.id === input.overId,
                 );
 
@@ -126,7 +222,7 @@ export const createUserEditableDataStore = (input: {
                 const updatedTestimonials = getReorderedEntities({
                   active,
                   over,
-                  entities: state.data.testimonials,
+                  entities: testimonialsOrdered,
                 });
 
                 updatedTestimonials.forEach((updatedTestimonial) => {
@@ -173,14 +269,10 @@ export const createUserEditableDataStore = (input: {
               update: (input) =>
                 set(
                   produce((state: UserEditableDataStore) => {
-                    console.log("updating...");
-
                     const index = state.data.testimonials.findIndex(
                       (t) => t.id === input.id,
                     );
                     if (index !== -1) {
-                      console.log("found testimonial", input);
-
                       state.data.testimonials[index].image.position.x =
                         input.newVal;
                     }

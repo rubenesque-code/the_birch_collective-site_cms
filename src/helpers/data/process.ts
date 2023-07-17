@@ -23,7 +23,7 @@ export function deepSortByIndex<TDoc extends { index: number }>(docs: TDoc[]) {
 }
 
 /** return slice of arr including start and end indices */
-function sliceEntities<TArr extends { id: string }[]>(
+export function sliceEntities<TArr extends { id: string }[]>(
   entities: TArr,
   start: number,
   end: number,

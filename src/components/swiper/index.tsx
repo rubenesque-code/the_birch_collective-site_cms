@@ -23,7 +23,6 @@ export const Slides = ({
       {(containerWidth) => {
         const numSlidesInView = containerWidth > 900 ? 3 : 2;
         const navigationIsShowing = true;
-        // const navigationIsShowing = swiper && numSlidesTotal > numSlidesInView;
 
         return (
           <Swiper
@@ -37,7 +36,7 @@ export const Slides = ({
           >
             {slides({
               leftMost: leftMostIndex,
-              rightMost: leftMostIndex + numSlidesInView,
+              rightMost: leftMostIndex + numSlidesInView - 1,
             }).map((slide, i) => {
               return (
                 // · `SwiperSlide`, as it's imported from swiper/react, needs to be a direct child of `Swiper`; can't be within another component.
@@ -66,7 +65,7 @@ export const Slides = ({
                 }}
                 swipeRight={() => {
                   swiper?.slideNext();
-                  if (leftMostIndex < numSlidesTotal) {
+                  if (leftMostIndex < numSlidesTotal - numSlidesInView) {
                     setLeftMostIndex(leftMostIndex + 1);
                   }
                 }}

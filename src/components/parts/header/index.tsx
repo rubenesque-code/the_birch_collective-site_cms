@@ -2,7 +2,7 @@ import { MyMenu } from "~/components/styled-bases";
 import { SideBarMenu } from "./SideBarMenu";
 import { WithTooltip } from "~/components/WithTooltip";
 import { Icon } from "~/components/icons";
-import { Revision } from "./Revision";
+import { RevisionButtons } from "./RevisionButtons";
 import { ComponentApiCx, type ContextApiCxProps } from "./_state";
 
 const Header = (props: ContextApiCxProps) => (
@@ -11,7 +11,7 @@ const Header = (props: ContextApiCxProps) => (
       <SideBarMenu />
       <div className="flex items-center gap-2xl">
         <UserStatusMenu />
-        <Revision />
+        <RevisionButtons />
       </div>
     </div>
   </ComponentApiCx.Provider>

@@ -1,14 +1,15 @@
+import { CustomisableImage } from "~/components/CustomisableImage";
+import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { ImagePlaceholder } from "~/components/ImagePlaceholder";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { Icon } from "~/components/icons";
+import { ComponentMenu } from "~/components/menus";
 import { Slides } from "~/components/swiper";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { useHovered } from "~/hooks";
-import { NextImage } from "~/lib/external-packages-rename";
-import { dummyData } from "~/static-data";
 import type { MyDb } from "~/types/database";
 import { UserEditableDataCx } from "../_state";
 import { EditModal } from "./edit/+Entry";
-import { ComponentMenu } from "~/components/menus";
-import { Icon } from "~/components/icons";
 
 // □ testimonial endorser name not saving (seems updating okay)
 // □ max width. move nav buttons to right.
@@ -22,8 +23,8 @@ import { Icon } from "~/components/icons";
   text: "",
 }); */
 
-export const TestimonialSlides = () => {
-  const testimonials = UserEditableDataCx.useData("testimonials");
+const TestimonialSlides = () => {
+  const { testimonials } = UserEditableDataCx.useAllData();
 
   const slidesInitData = [
     ...deepSortByIndex(testimonials),
@@ -35,7 +36,7 @@ export const TestimonialSlides = () => {
   return (
     <div className="group/testimonials relative">
       <Slides
-        numSlidesTotal={4}
+        numSlidesTotal={testimonials.length}
         slides={({ leftMost, rightMost }) =>
           slidesInitData.map((landingData, i) => (
             <Testimonial
@@ -61,6 +62,8 @@ export const TestimonialSlides = () => {
     </div>
   );
 };
+
+export default TestimonialSlides;
 
 const Testimonial = ({
   testimonial,
@@ -116,20 +119,23 @@ const TestimonialDummy = () => (
   </>
 );
 
-// TODO: should seperate dummy and actual
 const TestimonialActual = ({ data }: { data: MyDb["testimonial"] }) => {
   return (
     <>
-      <NextImage
-        alt=""
-        className="absolute h-full w-full"
-        fill
-        src={dummyData.imageSrc}
-        // src={data === 'dummy' ? dummyData.imageSrc : data.}
-        style={{
-          objectFit: "cover",
-        }}
-      />
+      <div className=" absolute h-full w-full">
+        <UserSelectedImageWrapper
+          dbImageId={data.image.dbConnect.imageId}
+          placeholderText="background image"
+        >
+          {({ dbImageId }) => (
+            <DbImageWrapper dbImageId={dbImageId}>
+              {({ urls }) => (
+                <CustomisableImage urls={urls} position={data.image.position} />
+              )}
+            </DbImageWrapper>
+          )}
+        </UserSelectedImageWrapper>
+      </div>
       <div className="absolute bottom-0 z-10 flex h-4/5 w-full flex-col justify-end gap-sm rounded-b-md bg-gradient-to-t from-black to-transparent p-sm text-center text-lg text-white">
         <div className="overflow-auto scrollbar-hide">
           {data.text.length ? data.text : "Testimonial"}
@@ -143,31 +149,3 @@ const TestimonialActual = ({ data }: { data: MyDb["testimonial"] }) => {
     </>
   );
 };
-
-/*           <TextInputForm
-            input={{ placeholder: "Endorser name" }}
-            localStateValue={data === "dummy" ? "" : data.endorserName}
-            onSubmit={({ inputValue }) => {
-              if (data === "dummy") {
-                const newTestimonialId = generateUid();
-                const newTestimonialOrder = pageData.testimonials.length;
-                userAction.testimonial.create({
-                  dbConnections: { imageId: null },
-                  endorserName: inputValue,
-                  id: newTestimonialId,
-                  index: newTestimonialOrder,
-                  text: "",
-                });
-                userAction.page.testimonials.create({
-                  dbConnections: { testimonialId: newTestimonialId },
-                  id: generateUid(),
-                  index: newTestimonialOrder,
-                });
-              } else {
-                userAction.testimonial.endorserName.update({
-                  id: data.id,
-                  newVal: inputValue,
-                });
-              }
-            }}
-          /> */

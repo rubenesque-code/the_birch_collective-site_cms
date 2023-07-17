@@ -51,3 +51,14 @@ Icon.HideExpandable = XSquare;
 Icon.Configure = GearSix;
 Icon.Create = Plus;
 Icon.DndHandle = DotsSixVertical;
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";
+import type { MyOmit } from "~/types/utilities";
+import type { ComponentProps } from "react";
+
+const AboutUsIcon = (
+  props: MyOmit<ComponentProps<typeof FontAwesomeIcon>, "icon">,
+) => <FontAwesomeIcon icon={faCottonBureau} {...props} />;
+
+Icon.AboutUs = AboutUsIcon;

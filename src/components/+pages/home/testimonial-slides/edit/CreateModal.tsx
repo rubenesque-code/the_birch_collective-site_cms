@@ -154,7 +154,10 @@ const NewTestimonialModalContent = ({
               return;
             }
 
-            testimonial.create(newTestimonialCx.data);
+            testimonial.create({
+              ...newTestimonialCx.data,
+              index: testimonials.length,
+            });
             toast.neutral("Added testimonial");
             closeNewTestimonialModal();
             setTimeout(() => {
@@ -203,7 +206,7 @@ const NewTestimonial = () => {
             onSubmit={({ inputValue }) =>
               newTestimonialStore.actions.text.update(inputValue)
             }
-            input={{ placeholder: "Testimonial text..." }}
+            textArea={{ placeholder: "Testimonial text..." }}
           />
         </div>
         <div className="shrink-0 font-medium">

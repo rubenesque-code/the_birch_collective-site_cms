@@ -7,9 +7,10 @@ import { WithTooltip } from "../WithTooltip";
 
 export const TextAreaForm = (props: {
   localStateValue: string | null;
-  input?: MyPick<TextAreaProps, "minWidth" | "placeholder" | "styles">;
+  textArea?: MyPick<TextAreaProps, "minWidth" | "placeholder" | "styles">;
   onSubmit: (arg0: { inputValue: string }) => void;
   tooltip?: string;
+  submitOnBlur?: boolean;
 }) => {
   const [inputValue, setInputValue] = useState(props.localStateValue || "");
   const [inputIsFocused, setInputIsFocused] = useState(false);
@@ -47,7 +48,7 @@ export const TextAreaForm = (props: {
             setIsFocused={setInputIsFocused}
             setValue={setInputValue}
             value={inputValue}
-            {...props.input}
+            {...props.textArea}
           />
         </div>
       </form>
@@ -59,7 +60,6 @@ type TextAreaProps = {
   setIsFocused: (value: boolean) => void;
   setValue: (value: string) => void;
   value: string;
-  // autoFocus?: boolean;
   isFocused: boolean;
   minWidth?: number;
   placeholder?: string;
@@ -68,7 +68,6 @@ type TextAreaProps = {
 };
 
 const TextArea = ({
-  // autoFocus = false,
   isFocused,
   placeholder = "write here",
   setIsFocused,
@@ -76,9 +75,6 @@ const TextArea = ({
   styles = "",
   value,
 }: TextAreaProps) => {
-  /*   const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
-    useState(false); */
-
   return (
     <>
       <div
@@ -95,11 +91,6 @@ const TextArea = ({
           placeholder={placeholder}
           autoComplete="off"
           onFocus={() => {
-            /*             if (!autoFocus && !isBlurredOnInitialRender) {
-              e.currentTarget.blur();
-              setIsBlurredOnInitialRender(true);
-            } */
-
             setIsFocused(true);
           }}
           onBlur={() => {
