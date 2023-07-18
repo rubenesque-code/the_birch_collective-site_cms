@@ -12,6 +12,7 @@ import { UserEditableDataCx, type UserEditableDbData } from "./_state";
 import { RevisionCx } from "./_state/RevisionCx";
 import TestimonialSlides from "./testimonial-slides/+Entry";
 import AboutUs from "./about-us/+Entry";
+import PageLayout from "~/components/layouts/Page";
 
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, onSuccess, etc.
@@ -33,14 +34,20 @@ const HomePage = () => {
             {({ actions, data }) => (
               <div className="flex h-screen w-screen flex-col overflow-hidden">
                 <Header actions={actions} data={{ isChange: data.isChange }} />
-                <div className="flex-grow overflow-y-auto bg-gray-100 p-sm scrollbar-thin">
-                  <div className="bg-white">
-                    {/* <BannerImage /> */}
-                    {/* <OrgHeadings /> */}
-                    <TestimonialSlides />
-                    <AboutUs />
+                <PageLayout.Body>
+                  <div className="flex-grow overflow-y-auto bg-gray-100 p-sm scrollbar-thin">
+                    <div className="bg-white">
+                      {/* <BannerImage /> */}
+                      {/* <OrgHeadings /> */}
+                      <PageLayout.Section.Default>
+                        <TestimonialSlides />
+                      </PageLayout.Section.Default>
+                      <PageLayout.Section.Default>
+                        <AboutUs />
+                      </PageLayout.Section.Default>
+                    </div>
                   </div>
-                </div>
+                </PageLayout.Body>
               </div>
             )}
           </RevisionCx.Provider>
