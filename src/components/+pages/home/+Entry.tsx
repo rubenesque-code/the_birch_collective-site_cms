@@ -13,17 +13,14 @@ import { RevisionCx } from "./_state/RevisionCx";
 import TestimonialSlides from "./testimonial-slides/+Entry";
 import AboutUs from "./about-us/+Entry";
 import PageLayout from "~/components/layouts/Page";
+import Workshops from "./workshops/+Entry";
 
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, onSuccess, etc.
-// □ could use zod in saving to db
-// □ image blur up works?
-// □ should be able to work out by aspect ratio of image container and aspect ratio of image natural dimensions whether can move up/down and/or left/right
-
-// □ sort out x overflow. also, max w for inputs
-// □ banner image info widget
-// □ image abstraction?
-// □ scrollbar needn't go up to header
+// □ use zod in saving to db?
+// □ check image blur up works.
+// □ should be able to work out by aspect ratio of image container and aspect ratio of image natural dimensions whether can move up/down and/or left/right.
+// □ maybe do image abstraction.
 // □ UserEditableDataCx should be renamed - have other editable Cx e.g. new testimonial. Rename to e.g. page editable cx
 
 const HomePage = () => {
@@ -43,7 +40,7 @@ const HomePage = () => {
                   }}
                 >
                   <div className="bg-white">
-                    <BannerImage />
+                    {/*                     <BannerImage />
                     <PageLayout.Section.Default>
                       <OrgHeadings />
                     </PageLayout.Section.Default>
@@ -52,6 +49,9 @@ const HomePage = () => {
                     </PageLayout.Section.Default>
                     <PageLayout.Section.Default>
                       <AboutUs />
+                    </PageLayout.Section.Default> */}
+                    <PageLayout.Section.Default>
+                      <Workshops />
                     </PageLayout.Section.Default>
                   </div>
                 </PageLayout.Body>

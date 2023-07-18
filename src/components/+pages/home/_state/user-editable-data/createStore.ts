@@ -47,6 +47,16 @@ export const createUserEditableDataStore = (input: {
                 ),
             },
           },
+          infoPopover: {
+            text: {
+              update: (newValue) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.page.bannerImage.infoPopover.text = newValue;
+                  }),
+                ),
+            },
+          },
         },
         orgHeadings: {
           name: {
@@ -154,6 +164,57 @@ export const createUserEditableDataStore = (input: {
                         state.data.page.aboutUs.entries[index].index =
                           updatedEntry.newIndex;
                     });
+                  }),
+                ),
+            },
+          },
+        },
+        workshops: {
+          image: {
+            dbConnections: {
+              imageId: {
+                update: (newValue) =>
+                  set(
+                    produce((state: UserEditableDataStore) => {
+                      state.data.page.workshops.image.dbConnections.imageId =
+                        newValue;
+                    }),
+                  ),
+              },
+            },
+            position: {
+              x: {
+                update: (newValue) =>
+                  set(
+                    produce((state: UserEditableDataStore) => {
+                      state.data.page.workshops.image.position.x = newValue;
+                    }),
+                  ),
+              },
+              y: {
+                update: (newValue) =>
+                  set(
+                    produce((state: UserEditableDataStore) => {
+                      state.data.page.workshops.image.position.y = newValue;
+                    }),
+                  ),
+              },
+            },
+          },
+          textOverlay: {
+            heading: {
+              update: (newValue) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.page.workshops.textOverlay.heading = newValue;
+                  }),
+                ),
+            },
+            body: {
+              update: (newValue) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.page.workshops.textOverlay.body = newValue;
                   }),
                 ),
             },

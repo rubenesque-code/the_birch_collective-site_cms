@@ -7,6 +7,7 @@ import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { ComponentMenu } from "~/components/menus";
 import { Icon } from "~/components/icons";
+import { TextInputForm } from "~/components/forms";
 
 const BannerImage = () => {
   const {
@@ -36,32 +37,38 @@ const BannerImage = () => {
 export default BannerImage;
 
 const Menu = () => {
-  const userAction = UserEditableDataCx.useAction();
+  const {
+    page: { bannerImage: bannerImageAction },
+  } = UserEditableDataCx.useAction();
 
   const {
-    bannerImage: { position },
+    bannerImage: { position, dbConnections },
   } = UserEditableDataCx.useData("page");
 
   return (
     <ComponentMenu styles="left-1 top-1 group-hover/bannerImage:opacity-40">
-      <ComponentMenu.Image.PositionMenu
-        position={position}
-        updateX={(newValue) =>
-          userAction.page.bannerImage.position.x.update(newValue)
-        }
-        updateY={(newValue) =>
-          userAction.page.bannerImage.position.y.update(newValue)
-        }
-        styles={{ wrapper: "left-0 top-0" }}
-      />
+      {dbConnections.imageId ? (
+        <>
+          <ComponentMenu.Image.PositionMenu
+            position={position}
+            updateX={(newValue) =>
+              bannerImageAction.position.x.update(newValue)
+            }
+            updateY={(newValue) =>
+              bannerImageAction.position.y.update(newValue)
+            }
+            styles={{ wrapper: "left-0 top-0" }}
+          />
 
-      <ComponentMenu.Divider />
+          <ComponentMenu.Divider />
+        </>
+      ) : null}
 
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
-          userAction.page.bannerImage.dbConnections.imageId.update(dbImageId);
-          userAction.page.bannerImage.position.x.update(50);
-          userAction.page.bannerImage.position.y.update(50);
+          bannerImageAction.dbConnections.imageId.update(dbImageId);
+          bannerImageAction.position.x.update(50);
+          bannerImageAction.position.y.update(50);
         }}
         styles={{
           menu: { itemsWrapper: "left-0 -bottom-1 translate-y-full" },
@@ -72,6 +79,17 @@ const Menu = () => {
 };
 
 const ImageInfo = () => {
+  const {
+    bannerImage: {
+      infoPopover: { text },
+    },
+  } = UserEditableDataCx.useData("page");
+  const {
+    page: {
+      bannerImage: { infoPopover },
+    },
+  } = UserEditableDataCx.useAction();
+
   return (
     <Popover className="absolute right-sm top-sm z-10">
       <Popover.Button>
@@ -80,8 +98,17 @@ const ImageInfo = () => {
         </div>
       </Popover.Button>
 
-      <Popover.Panel className="absolute -left-xs top-0 z-10 -translate-x-full border">
-        <div className="">TEHEHototeuoehtu</div>
+      <Popover.Panel
+        className={`absolute -left-xs top-0 z-10 -translate-x-full text-white ${
+          text.length ? "bg-black" : "border"
+        }`}
+      >
+        <TextInputForm
+          localStateValue={text}
+          onSubmit={({ inputValue }) => infoPopover.text.update(inputValue)}
+          input={{ placeholder: "Enter image info" }}
+          tooltip="image info"
+        />
       </Popover.Panel>
     </Popover>
   );

@@ -14,14 +14,6 @@ import { EditModal } from "./edit/+Entry";
 // □ testimonial endorser name not saving (seems updating okay)
 // □ max width. move nav buttons to right.
 // □ will probably need to reset mydb.testimonials order at points
-/* const createDummyTestimonial = (input: {
-  order: number;
-}): MyDb["testimonial"] => ({
-  endorserName: "",
-  id: generateUid(),
-  order: input.order,
-  text: "",
-}); */
 
 const TestimonialSlides = () => {
   const { testimonials } = UserEditableDataCx.useAllData();

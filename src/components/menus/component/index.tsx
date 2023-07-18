@@ -3,16 +3,19 @@ import type { ReactNode } from "react";
 import { Button } from "./Button";
 import { ImageSelectModal } from "./ImageSelectModal";
 import { ImagePositionMenu } from "./ImagePositionMenu";
+import React from "react";
 
 const ComponentMenu = ({
   children,
-  styles = "",
+  styles,
 }: {
   children: ReactNode;
-  styles?: string;
+  styles: string;
 }) => (
   <div
-    className={`absolute z-20 flex items-center gap-sm rounded-md bg-white px-xs py-xxs opacity-0 shadow-lg transition-opacity duration-75 ease-in-out hover:!opacity-100 ${styles}`}
+    className={`absolute z-20 flex items-center gap-sm rounded-md bg-white px-xs py-xxs opacity-0 shadow-lg transition-opacity duration-75 ease-in-out hover:!opacity-100 ${
+      styles || ""
+    }`}
   >
     {children}
   </div>

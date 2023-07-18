@@ -61,6 +61,7 @@
     "tailwind-scrollbar": "^3.0.4",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss": "^3.3.2",
+    "tailwindest": "^2.1.1",
     "typescript": "^5.1.3"
   }
 }

@@ -18,7 +18,10 @@ const OrgHeadings = () => {
         <div className="w-full font-display text-8xl font-bold text-brandOrange">
           <TextAreaForm
             localStateValue={name}
-            textArea={{ placeholder: "Organisation name" }}
+            textArea={{
+              placeholder: "Organisation name",
+              styles: "text-center",
+            }}
             onSubmit={({ inputValue }) => {
               action.page.orgHeadings.name.update(inputValue);
             }}

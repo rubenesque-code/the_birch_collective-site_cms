@@ -32,6 +32,8 @@ const Button = ({
   </WithTooltip>
 );
 
+export { Button };
+
 const DeleteButton = (
   props: MyPick<ButtonProps, "onClick" | "styles" | "tooltip">,
 ) => (
@@ -54,8 +56,6 @@ const ImageButton = () => (
   ); 
   
 } */
-
-export { Button };
 
 Button.Image = ImageButton;
 Button.Delete = DeleteButton;

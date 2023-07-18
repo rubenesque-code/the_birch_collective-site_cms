@@ -24,7 +24,7 @@ export const MyMenu = ({
         </Menu.Button>
         <MyTransition.ScaleAndOpacity>
           <Menu.Items
-            className={`absolute z-50 origin-top-right rounded-md bg-white shadow-xl focus:outline-none ${
+            className={`absolute z-50  rounded-md bg-white shadow-xl focus:outline-none ${
               styles?.itemsWrapper || ""
             }`}
           >

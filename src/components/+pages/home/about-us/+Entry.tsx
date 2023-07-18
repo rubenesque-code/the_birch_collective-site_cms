@@ -3,9 +3,9 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 import { useMemo, useState } from "react";
 import { WarningPanel } from "~/components/WarningPanel";
 import { DndKit } from "~/components/dnd-kit";
-import { TextAreaForm } from "~/components/forms";
+import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
-import { Button } from "~/components/menus/component/Button";
+import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
 import { AboutUsEntryCx } from "~/context/entities";
 import { deepSortByIndex } from "~/helpers/data/process";
@@ -28,7 +28,6 @@ const AboutUs = () => {
   } = UserEditableDataCx.useAction();
 
   const sorted = useMemo(() => deepSortByIndex(entries), [entries]);
-  console.log("sorted:", sorted);
 
   return (
     <div className="flex flex-col items-center">
@@ -38,7 +37,7 @@ const AboutUs = () => {
           <p className="">No about us entries yet.</p>
         </div>
       ) : (
-        <div className="mt-md grid w-full grid-cols-1 gap-sm">
+        <div className="mt-xl grid w-full grid-cols-1 gap-sm">
           <DndKit.Context
             elementIds={getIds(sorted)}
             onReorder={entry.order.update}
@@ -55,6 +54,9 @@ const AboutUs = () => {
       )}
       <div className="mt-sm w-full">
         <AddEntryForm />
+      </div>
+      <div className="mt-xl">
+        <GoToPageButton />
       </div>
     </div>
   );
@@ -155,7 +157,7 @@ const Entry = () => {
               newVal: inputValue,
             });
           }}
-          tooltip="Click to edit about us heading"
+          tooltip="Click to edit entry"
           key={undoKey}
         />
       </div>
@@ -176,7 +178,10 @@ const EntryMenu = () => {
     <div className="left-0 right-auto opacity-0 group-hover/entry:opacity-60">
       <Modal.WithVisibilityProvider
         button={({ openModal }) => (
-          <Button.Delete tooltip="delete entry" onClick={openModal} />
+          <ComponentMenu.Button.Delete
+            tooltip="delete entry"
+            onClick={openModal}
+          />
         )}
         panelContent={({ closeModal }) => (
           <WarningPanel
@@ -193,6 +198,36 @@ const EntryMenu = () => {
           />
         )}
       />
+    </div>
+  );
+};
+
+const GoToPageButton = () => {
+  const {
+    page: {
+      aboutUs: { buttonText },
+    },
+  } = UserEditableDataCx.useAllData();
+
+  const {
+    page: { aboutUs },
+  } = UserEditableDataCx.useAction();
+
+  return (
+    <div
+      className="flex cursor-pointer items-center gap-sm rounded-sm bg-brandGreen
+    px-4 py-2 text-lg font-bold uppercase tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl
+    "
+    >
+      <TextInputForm
+        localStateValue={buttonText}
+        onSubmit={({ inputValue }) => aboutUs.buttonText.update(inputValue)}
+        input={{ placeholder: "Button text", styles: "uppercase" }}
+        tooltip="Go to about us page"
+      />
+      <div className="">
+        <Icon.ArrowRight />
+      </div>
     </div>
   );
 };

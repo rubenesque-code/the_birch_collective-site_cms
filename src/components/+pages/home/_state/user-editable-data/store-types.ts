@@ -16,6 +16,11 @@ type Actions = {
         x: { update: (newVal: number) => void };
         y: { update: (newVal: number) => void };
       };
+      infoPopover: {
+        text: {
+          update: (newValue: string) => void;
+        };
+      };
     };
     orgHeadings: {
       name: { update: (newVal: string) => void };
@@ -31,6 +36,19 @@ type Actions = {
         order: {
           update: (arg0: { activeId: string; overId: string }) => void;
         };
+      };
+    };
+    workshops: {
+      image: {
+        dbConnections: { imageId: { update: (newVal: string) => void } };
+        position: {
+          x: { update: (newVal: number) => void };
+          y: { update: (newVal: number) => void };
+        };
+      };
+      textOverlay: {
+        heading: { update: (newVal: string) => void };
+        body: { update: (newVal: string) => void };
       };
     };
   };

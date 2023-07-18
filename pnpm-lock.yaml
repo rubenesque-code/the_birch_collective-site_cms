@@ -147,6 +147,9 @@ devDependencies:
   tailwindcss:
     specifier: ^3.3.2
     version: 3.3.2
+  tailwindest:
+    specifier: ^2.1.1
+    version: 2.1.1
   typescript:
     specifier: ^5.1.3
     version: 5.1.3
@@ -4166,6 +4169,10 @@ packages:
       sucrase: 3.32.0
     transitivePeerDependencies:
       - ts-node
+    dev: true
+
+  /tailwindest@2.1.1:
+    resolution: {integrity: sha512-i+F681xH30KOAIH9WSVnaUq1uLULfBkqvOHd58YYpYdxw7qKsu2LNGAjdyu8SD1/F2Kuox4z5rIsQvoXzWfsKw==}
     dev: true
 
   /tapable@2.2.1:

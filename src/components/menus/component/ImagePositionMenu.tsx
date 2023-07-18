@@ -12,7 +12,7 @@ const ImagePositionMenu = ({
   position: { x: number; y: number };
   updateX: (newPosition: number) => void;
   updateY: (newPosition: number) => void;
-  styles?: { wrapper?: string };
+  styles?: { wrapper?: string; menuItemsWrapper?: string };
 }) => {
   return (
     <MyMenu
@@ -22,12 +22,14 @@ const ImagePositionMenu = ({
         </ComponentMenu.Button>
       }
       styles={{
-        itemsWrapper: styles?.wrapper,
+        itemsWrapper: `${styles?.wrapper || ""}`,
       }}
     >
       {({ close: closeMenu }) => (
         <>
-          <ComponentMenu styles="opacity-100">
+          <ComponentMenu
+            styles={`opacity-100 ${styles?.menuItemsWrapper || ""}`}
+          >
             <ComponentMenu.Button
               onClick={() => {
                 if (position.x === 0) {
@@ -84,7 +86,7 @@ const ImagePositionMenu = ({
 
             <ComponentMenu.Divider />
 
-            <WithTooltip text="The position of the image won't necessarily change - it depends on its natural aspect ratio against the aspect ratio of its container.">
+            <WithTooltip text="Image focus won't necessarily change - it depends on its aspect ratio against that of its container.">
               <div className="cursor-help text-gray-400">
                 <Icon.Info />
               </div>

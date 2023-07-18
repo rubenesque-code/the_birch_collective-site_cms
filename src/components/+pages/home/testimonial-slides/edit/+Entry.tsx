@@ -170,7 +170,7 @@ const Menu = () => {
           <ComponentMenu.Divider />
         </>
       ) : null}
-      <ComponentMenu.ImageUploadAndLibraryModal
+      <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
           userAction.testimonial.image.dbConnect.imageId.update({
             id,

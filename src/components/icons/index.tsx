@@ -20,6 +20,7 @@ import {
   GearSix,
   Plus,
   DotsSixVertical,
+  ArrowRight,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -51,6 +52,7 @@ Icon.HideExpandable = XSquare;
 Icon.Configure = GearSix;
 Icon.Create = Plus;
 Icon.DndHandle = DotsSixVertical;
+Icon.ArrowRight = ArrowRight;
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";

@@ -7,6 +7,9 @@ type Landing = {
       x: number;
       y: number;
     };
+    infoPopover: {
+      text: string;
+    };
   };
   orgHeadings: {
     name: string;
@@ -16,6 +19,21 @@ type Landing = {
     heading: string;
     buttonText: string;
     entries: { id: string; text: string; index: number }[];
+  };
+  workshops: {
+    image: {
+      dbConnections: {
+        imageId: string | null;
+      };
+      position: {
+        x: number;
+        y: number;
+      };
+    };
+    textOverlay: {
+      heading: string;
+      body: string;
+    };
   };
 };
 
