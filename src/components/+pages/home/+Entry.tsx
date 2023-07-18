@@ -40,7 +40,7 @@ const HomePage = () => {
                   }}
                 >
                   <div className="bg-white">
-                    {/*                     <BannerImage />
+                    <BannerImage />
                     <PageLayout.Section.Default>
                       <OrgHeadings />
                     </PageLayout.Section.Default>
@@ -49,7 +49,7 @@ const HomePage = () => {
                     </PageLayout.Section.Default>
                     <PageLayout.Section.Default>
                       <AboutUs />
-                    </PageLayout.Section.Default> */}
+                    </PageLayout.Section.Default>
                     <PageLayout.Section.Default>
                       <Workshops />
                     </PageLayout.Section.Default>

@@ -220,6 +220,91 @@ export const createUserEditableDataStore = (input: {
             },
           },
         },
+        programmes: {
+          heading: {
+            update: (newValue) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.programmes.heading = newValue;
+                }),
+              ),
+          },
+          subheading: {
+            update: (newValue) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.programmes.subheading = newValue;
+                }),
+              ),
+          },
+
+          entry: {
+            create: (newEntry) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.programmes.entries.push(newEntry);
+                }),
+              ),
+            delete: (input) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  const entriesOrdered =
+                    state.data.page.programmes.entries.sort(sortByIndex);
+
+                  const entityToDeleteIndex = entriesOrdered.findIndex(
+                    (t) => t.id === input.id,
+                  );
+                  if (entityToDeleteIndex === -1) return;
+
+                  entriesOrdered.splice(entityToDeleteIndex, 1);
+
+                  for (
+                    let i = entityToDeleteIndex;
+                    i < entriesOrdered.length;
+                    i++
+                  ) {
+                    entriesOrdered[i].index = entriesOrdered[i].index - 1;
+                  }
+                }),
+              ),
+            order: {
+              update: (input) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    const entriesOrdered =
+                      state.data.page.programmes.entries.sort(sortByIndex);
+
+                    const active = entriesOrdered.find(
+                      (t) => t.id === input.activeId,
+                    );
+                    const over = entriesOrdered.find(
+                      (t) => t.id === input.overId,
+                    );
+
+                    if (!active || !over) {
+                      return;
+                    }
+
+                    const updatedEntries = getReorderedEntities({
+                      active,
+                      over,
+                      entities: entriesOrdered,
+                    });
+
+                    updatedEntries.forEach((updatedEntry) => {
+                      const index =
+                        state.data.page.programmes.entries.findIndex(
+                          (t) => t.id === updatedEntry.id,
+                        );
+                      if (index !== -1)
+                        state.data.page.programmes.entries[index].index =
+                          updatedEntry.newIndex;
+                    });
+                  }),
+                ),
+            },
+          },
+        },
       },
       testimonial: {
         create: (newTestimonial) =>

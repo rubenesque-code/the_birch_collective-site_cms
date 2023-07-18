@@ -35,6 +35,15 @@ type Landing = {
       body: string;
     };
   };
+  programmes: {
+    heading: string;
+    subheading: string;
+    entries: {
+      id: string;
+      index: number;
+      dbConnections: { programmeId: string };
+    }[];
+  };
 };
 
 export type Pages = {

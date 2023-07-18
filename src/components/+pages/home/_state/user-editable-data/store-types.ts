@@ -51,6 +51,17 @@ type Actions = {
         body: { update: (newVal: string) => void };
       };
     };
+    programmes: {
+      heading: { update: (newVal: string) => void };
+      subheading: { update: (newVal: string) => void };
+      entry: {
+        create: (arg0: DbData["page"]["programmes"]["entries"][number]) => void;
+        delete: (arg0: { id: string }) => void;
+        order: {
+          update: (arg0: { activeId: string; overId: string }) => void;
+        };
+      };
+    };
   };
   testimonial: {
     create: (arg0: DbData["testimonials"][number]) => void;
