@@ -35,6 +35,18 @@ const TestimonialSlides = () => {
 
   return (
     <div className="group/testimonials relative">
+      <ComponentMenu styles="right-1 top-1 group-hover/testimonials:opacity-40">
+        <EditModal
+          button={({ openModal }) => (
+            <ComponentMenu.Button
+              tooltip="edit testimonials"
+              onClick={openModal}
+            >
+              <Icon.Configure />
+            </ComponentMenu.Button>
+          )}
+        />
+      </ComponentMenu>
       <Slides
         numSlidesTotal={testimonials.length}
         slides={({ leftMost, rightMost }) =>
@@ -47,18 +59,6 @@ const TestimonialSlides = () => {
           ))
         }
       />
-      <ComponentMenu styles="group-hover/testimonials:opacity-40">
-        <EditModal
-          button={({ openModal }) => (
-            <ComponentMenu.Button
-              tooltip="edit testimonials"
-              onClick={openModal}
-            >
-              <Icon.Configure />
-            </ComponentMenu.Button>
-          )}
-        />
-      </ComponentMenu>
     </div>
   );
 };

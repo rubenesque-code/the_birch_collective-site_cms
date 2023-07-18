@@ -31,7 +31,7 @@ const OrgHeadings = () => {
             localStateValue={byline}
             textArea={{
               placeholder: "Organisation byline",
-              styles: "upppercase tracking-wide",
+              styles: "upppercase tracking-wide text-center",
             }}
             onSubmit={({ inputValue }) => {
               action.page.orgHeadings.byline.update(inputValue);

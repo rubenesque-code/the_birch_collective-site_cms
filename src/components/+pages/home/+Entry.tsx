@@ -22,6 +22,7 @@ import PageLayout from "~/components/layouts/Page";
 
 // □ sort out x overflow. also, max w for inputs
 // □ banner image info widget
+// □ image abstraction?
 // □ scrollbar needn't go up to header
 // □ UserEditableDataCx should be renamed - have other editable Cx e.g. new testimonial. Rename to e.g. page editable cx
 
@@ -34,18 +35,24 @@ const HomePage = () => {
             {({ actions, data }) => (
               <div className="flex h-screen w-screen flex-col overflow-hidden">
                 <Header actions={actions} data={{ isChange: data.isChange }} />
-                <PageLayout.Body>
-                  <div className="flex-grow overflow-y-auto bg-gray-100 p-sm scrollbar-thin">
-                    <div className="bg-white">
-                      {/* <BannerImage /> */}
-                      {/* <OrgHeadings /> */}
-                      <PageLayout.Section.Default>
-                        <TestimonialSlides />
-                      </PageLayout.Section.Default>
-                      <PageLayout.Section.Default>
-                        <AboutUs />
-                      </PageLayout.Section.Default>
-                    </div>
+                <PageLayout.Body
+                  styles={{
+                    outer:
+                      "h-full flex-grow overflow-y-auto overflow-x-hidden bg-gray-100 scrollbar-thin ",
+                    inner: "p-sm pr-md",
+                  }}
+                >
+                  <div className="bg-white">
+                    <BannerImage />
+                    <PageLayout.Section.Default>
+                      <OrgHeadings />
+                    </PageLayout.Section.Default>
+                    <PageLayout.Section.Default>
+                      <TestimonialSlides />
+                    </PageLayout.Section.Default>
+                    <PageLayout.Section.Default>
+                      <AboutUs />
+                    </PageLayout.Section.Default>
                   </div>
                 </PageLayout.Body>
               </div>

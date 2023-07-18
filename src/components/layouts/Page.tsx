@@ -8,9 +8,24 @@ function PageLayout() {
 
 export default PageLayout;
 
-const Body = ({ children }: { children: ReactNode }) => (
-  <div className="grid place-items-center">
-    <div className="div w-screen max-w-[1200px] items-center">{children}</div>
+const Body = ({
+  children,
+  styles,
+}: {
+  children: ReactNode;
+  styles?: {
+    outer?: string;
+    inner?: string;
+  };
+}) => (
+  <div className={`grid place-items-center ${styles?.outer || ""}`}>
+    <div
+      className={`div w-screen max-w-[1200px] items-center ${
+        styles?.inner || ""
+      }`}
+    >
+      {children}
+    </div>
   </div>
 );
 

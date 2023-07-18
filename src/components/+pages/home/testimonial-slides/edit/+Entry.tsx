@@ -162,7 +162,7 @@ const Menu = () => {
   const toast = useToast();
 
   return (
-    <ComponentMenu styles="group-hover/testimonialImage:opacity-60">
+    <ComponentMenu styles="left-1 top-1 group-hover/testimonialImage:opacity-60">
       {image.dbConnect.imageId ? (
         <>
           <PositionButtonsMenu />
@@ -170,7 +170,7 @@ const Menu = () => {
           <ComponentMenu.Divider />
         </>
       ) : null}
-      <ComponentMenu.ImageModal
+      <ComponentMenu.ImageUploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
           userAction.testimonial.image.dbConnect.imageId.update({
             id,
@@ -232,7 +232,7 @@ const PositionButtonsMenu = () => {
         </ComponentMenu.Button>
       }
       styles={{
-        itemsWrapper: "right-0 top-0 origin-center",
+        itemsWrapper: "left-0 top-0",
       }}
     >
       {({ close: closeMenu }) => (

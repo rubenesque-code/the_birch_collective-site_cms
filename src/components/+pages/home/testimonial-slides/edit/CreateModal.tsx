@@ -236,7 +236,7 @@ const Menu = () => {
           <ComponentMenu.Divider />
         </>
       ) : null}
-      <ComponentMenu.ImageModal
+      <ComponentMenu.ImageUploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
           newTestimonialCx.actions.image.dbConnect.imageId.update(dbImageId);
           newTestimonialCx.actions.image.position.x.update(50);
