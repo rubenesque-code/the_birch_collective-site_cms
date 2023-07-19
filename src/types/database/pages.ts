@@ -44,6 +44,17 @@ type Landing = {
     }[];
     buttonText: string;
   };
+  photoAlbum: {
+    heading: string;
+    images: {
+      id: string;
+      dbConnections: { imageId: string };
+      position: {
+        x: number;
+        y: number;
+      };
+    }[];
+  };
 };
 
 export type Pages = {

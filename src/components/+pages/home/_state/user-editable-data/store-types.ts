@@ -64,6 +64,20 @@ type Actions = {
       };
       buttonText: { update: (newVal: string) => void };
     };
+    photoAlbum: {
+      heading: {
+        update: (newVal: string) => void;
+      };
+      image: {
+        dbConnections: {
+          imageId: { update: (arg0: { id: string; newVal: string }) => void };
+        };
+        position: {
+          x: { update: (arg0: { id: string; newVal: number }) => void };
+          y: { update: (arg0: { id: string; newVal: number }) => void };
+        };
+      };
+    };
   };
   testimonial: {
     create: (arg0: DbData["testimonials"][number]) => void;
@@ -78,7 +92,7 @@ type Actions = {
       update: (arg0: { activeId: string; overId: string }) => void;
     };
     image: {
-      dbConnect: {
+      dbConnections: {
         imageId: { update: (arg0: { id: string; newVal: string }) => void };
       };
       position: {

@@ -10,11 +10,12 @@ import BannerImage from "./BannerImage";
 import OrgHeadings from "./OrgHeadings";
 import { UserEditableDataCx, type UserEditableDbData } from "./_state";
 import { RevisionCx } from "./_state/RevisionCx";
-import TestimonialSlides from "./testimonial-slides/+Entry";
+import TestimonialSlides from "./testimonials/+Entry";
 import AboutUs from "./about-us/+Entry";
 import PageLayout from "~/components/layouts/Page";
 import Workshops from "./workshops/+Entry";
 import Programmes from "./programmes/+Entry";
+import PhotoAlbum from "./photo-album/+Entry";
 
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, onSuccess, etc.
@@ -44,22 +45,25 @@ const HomePage = () => {
                   }}
                 >
                   <div className="bg-white">
-                    <BannerImage />
+                    {/*                     <BannerImage />
                     <PageLayout.Section.Default>
                       <OrgHeadings />
-                    </PageLayout.Section.Default>
+                    </PageLayout.Section.Default> */}
                     <PageLayout.Section.Default>
                       <TestimonialSlides />
                     </PageLayout.Section.Default>
-                    <PageLayout.Section.Default>
+                    {/*                     <PageLayout.Section.Default>
                       <AboutUs />
                     </PageLayout.Section.Default>
                     <PageLayout.Section.Default>
                       <Workshops />
-                    </PageLayout.Section.Default>
-                    <PageLayout.Section.Default>
+                    </PageLayout.Section.Default> */}
+                    {/*                     <PageLayout.Section.Default>
                       <Programmes />
-                    </PageLayout.Section.Default>
+                    </PageLayout.Section.Default> */}
+                    <PageLayout.Section.Spacing.Vertical>
+                      <PhotoAlbum />
+                    </PageLayout.Section.Spacing.Vertical>
                   </div>
                 </PageLayout.Body>
               </div>

@@ -272,6 +272,10 @@ const GoToPageButton = () => {
     page: { programmes: programmesAction },
   } = UserEditableDataCx.useAction();
 
+  const {
+    data: { undoKey },
+  } = RevisionCx.use();
+
   return (
     <div
       className="flex cursor-pointer items-center gap-sm rounded-sm bg-brandOrange
@@ -285,6 +289,7 @@ const GoToPageButton = () => {
         }
         input={{ placeholder: "Button text", styles: "uppercase" }}
         tooltip="Click to edit button text"
+        key={undoKey}
       />
       <div className="">
         <Icon.ArrowRight />

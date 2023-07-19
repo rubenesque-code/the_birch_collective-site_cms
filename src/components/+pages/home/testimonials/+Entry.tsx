@@ -4,7 +4,7 @@ import { ImagePlaceholder } from "~/components/ImagePlaceholder";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
-import { Slides } from "~/components/swiper";
+import { Slides } from "./slides/+Entry";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { useHovered } from "~/hooks";
 import type { MyDb } from "~/types/database";

@@ -172,7 +172,7 @@ const Menu = () => {
       ) : null}
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
-          userAction.testimonial.image.dbConnect.imageId.update({
+          userAction.testimonial.image.dbConnections.imageId.update({
             id,
             newVal: dbImageId,
           });

@@ -276,6 +276,64 @@ export const createUserEditableDataStore = (input: {
               ),
           },
         },
+
+        photoAlbum: {
+          heading: {
+            update: (updatedValue) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.photoAlbum.heading = updatedValue;
+                }),
+              ),
+          },
+          image: {
+            dbConnections: {
+              imageId: {
+                update: (input) =>
+                  set(
+                    produce((state: UserEditableDataStore) => {
+                      const index = state.data.page.photoAlbum.images.findIndex(
+                        (t) => t.id === input.id,
+                      );
+                      if (index !== -1)
+                        state.data.page.photoAlbum.images[
+                          index
+                        ].dbConnections.imageId = input.newVal;
+                    }),
+                  ),
+              },
+            },
+            position: {
+              x: {
+                update: (input) =>
+                  set(
+                    produce((state: UserEditableDataStore) => {
+                      const index = state.data.page.photoAlbum.images.findIndex(
+                        (t) => t.id === input.id,
+                      );
+                      if (index !== -1) {
+                        state.data.page.photoAlbum.images[index].position.x =
+                          input.newVal;
+                      }
+                    }),
+                  ),
+              },
+              y: {
+                update: (input) =>
+                  set(
+                    produce((state: UserEditableDataStore) => {
+                      const index = state.data.testimonials.findIndex(
+                        (t) => t.id === input.id,
+                      );
+                      if (index !== -1)
+                        state.data.page.photoAlbum.images[index].position.y =
+                          input.newVal;
+                    }),
+                  ),
+              },
+            },
+          },
+        },
       },
 
       testimonial: {
@@ -367,7 +425,7 @@ export const createUserEditableDataStore = (input: {
             ),
         },
         image: {
-          dbConnect: {
+          dbConnections: {
             imageId: {
               update: (input) =>
                 set(
