@@ -22,6 +22,7 @@ import {
   DotsSixVertical,
   ArrowRight,
   CaretRight,
+  Minus,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -55,6 +56,7 @@ Icon.Create = Plus;
 Icon.DndHandle = DotsSixVertical;
 Icon.ArrowRight = ArrowRight;
 Icon.CaretRight = CaretRight;
+Icon.Remove = Minus;
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";

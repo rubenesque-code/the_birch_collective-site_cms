@@ -62,6 +62,7 @@ type Actions = {
         }) => void;
         remove: (arg0: { id: string }) => void;
       };
+      buttonText: { update: (newVal: string) => void };
     };
   };
   testimonial: {

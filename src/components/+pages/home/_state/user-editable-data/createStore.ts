@@ -267,6 +267,14 @@ export const createUserEditableDataStore = (input: {
                 }),
               ),
           },
+          buttonText: {
+            update: (newValue) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.programmes.buttonText = newValue;
+                }),
+              ),
+          },
         },
       },
 

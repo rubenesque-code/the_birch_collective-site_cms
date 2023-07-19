@@ -42,6 +42,7 @@ type Landing = {
       id: string;
       dbConnections: { programmeId: string };
     }[];
+    buttonText: string;
   };
 };
 

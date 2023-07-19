@@ -156,7 +156,7 @@ const Testimonial = () => {
 };
 
 const Menu = () => {
-  const { image, id, index } = TestimonialCx.use();
+  const { image, id } = TestimonialCx.use();
   const userAction = UserEditableDataCx.useAction();
 
   const toast = useToast();
@@ -201,7 +201,7 @@ const Menu = () => {
         panelContent={({ closeModal }) => (
           <WarningPanel
             callback={() => {
-              userAction.testimonial.delete({ id, index });
+              userAction.testimonial.delete({ id });
               closeModal();
               toast.neutral("deleted testimonial");
             }}

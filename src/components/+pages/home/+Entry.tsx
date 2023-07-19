@@ -39,16 +39,16 @@ const HomePage = () => {
                 <PageLayout.Body
                   styles={{
                     outer:
-                      "h-full flex-grow overflow-y-auto overflow-x-hidden bg-gray-100 scrollbar-thin ",
+                      "h-full flex-grow overflow-y-auto overflow-x-hidden bg-gray-100 scrollbar-thin",
                     inner: "p-sm pr-md",
                   }}
                 >
                   <div className="bg-white">
-                    {/* <BannerImage /> */}
-                    {/*                     <PageLayout.Section.Default>
+                    <BannerImage />
+                    <PageLayout.Section.Default>
                       <OrgHeadings />
-                    </PageLayout.Section.Default> */}
-                    {/*                     <PageLayout.Section.Default>
+                    </PageLayout.Section.Default>
+                    <PageLayout.Section.Default>
                       <TestimonialSlides />
                     </PageLayout.Section.Default>
                     <PageLayout.Section.Default>
@@ -56,7 +56,7 @@ const HomePage = () => {
                     </PageLayout.Section.Default>
                     <PageLayout.Section.Default>
                       <Workshops />
-                    </PageLayout.Section.Default> */}
+                    </PageLayout.Section.Default>
                     <PageLayout.Section.Default>
                       <Programmes />
                     </PageLayout.Section.Default>

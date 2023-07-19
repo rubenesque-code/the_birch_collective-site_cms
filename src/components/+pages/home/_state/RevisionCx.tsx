@@ -45,9 +45,15 @@ function Provider({
     dbData: currentDbData.testimonials,
     userEditedData: userEditableData.testimonials,
   });
+  const programmesRevisionData = useDocsRevisionData({
+    dbData: currentDbData.programmes,
+    userEditedData: userEditableData.programmes,
+  });
 
   const isChange =
-    pageRevisionData.isChange || testimonialsRevisionData.isChange;
+    pageRevisionData.isChange ||
+    testimonialsRevisionData.isChange ||
+    programmesRevisionData.isChange;
 
   const ifChange = (arg0: () => void) => {
     if (!isChange) {
@@ -71,6 +77,7 @@ function Provider({
             {
               page: pageRevisionData.saveData,
               testimonials: testimonialsRevisionData.saveData,
+              programmes: programmesRevisionData.saveData,
             },
             {
               onSuccess() {

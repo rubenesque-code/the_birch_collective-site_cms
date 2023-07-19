@@ -32,28 +32,33 @@ const AboutUs = () => {
   return (
     <div className="flex flex-col items-center">
       <Heading />
-      {!entries.length ? (
-        <div className="mb-sm">
-          <p className="">No about us entries yet.</p>
+      <div className="flex w-full flex-col items-center pl-2xl">
+        {!entries.length ? (
+          <div className="mb-sm">
+            <p className="">No about us entries yet.</p>
+          </div>
+        ) : (
+          <div className="mt-xl grid w-full grid-cols-1 gap-sm">
+            <DndKit.Context
+              elementIds={getIds(sorted)}
+              onReorder={entry.order.update}
+            >
+              {sorted.map((aboutUsEntry) => (
+                <DndKit.Element
+                  elementId={aboutUsEntry.id}
+                  key={aboutUsEntry.id}
+                >
+                  <AboutUsEntryCx.Provider aboutUsEntry={aboutUsEntry}>
+                    <Entry />
+                  </AboutUsEntryCx.Provider>
+                </DndKit.Element>
+              ))}
+            </DndKit.Context>
+          </div>
+        )}
+        <div className="mt-sm w-full">
+          <AddEntryForm />
         </div>
-      ) : (
-        <div className="mt-xl grid w-full grid-cols-1 gap-sm">
-          <DndKit.Context
-            elementIds={getIds(sorted)}
-            onReorder={entry.order.update}
-          >
-            {sorted.map((aboutUsEntry) => (
-              <DndKit.Element elementId={aboutUsEntry.id} key={aboutUsEntry.id}>
-                <AboutUsEntryCx.Provider aboutUsEntry={aboutUsEntry}>
-                  <Entry />
-                </AboutUsEntryCx.Provider>
-              </DndKit.Element>
-            ))}
-          </DndKit.Context>
-        </div>
-      )}
-      <div className="mt-sm w-full">
-        <AddEntryForm />
       </div>
       <div className="mt-xl">
         <GoToPageButton />
@@ -72,10 +77,13 @@ const Heading = () => {
   const action = UserEditableDataCx.useAction();
 
   return (
-    <div className="w-full font-display text-6xl font-bold text-brandGreen">
+    <div className="w-full text-center font-display text-6xl font-bold text-brandGreen">
       <TextAreaForm
         localStateValue={page.aboutUs.heading}
-        textArea={{ placeholder: "About us heading", styles: "uppercase" }}
+        textArea={{
+          placeholder: "About us heading",
+          styles: "uppercase text-center",
+        }}
         onSubmit={({ inputValue }) => {
           action.page.aboutUs.heading.update(inputValue);
         }}
@@ -97,38 +105,42 @@ const AddEntryForm = () => {
   const action = UserEditableDataCx.useAction();
 
   return (
-    <form
-      className="flex w-full items-center gap-sm pl-2xl pr-xl text-base"
-      onSubmit={(e) => {
-        e.preventDefault();
+    <div className="pl-xl">
+      <div className="rounded-md border border-dashed px-4 py-2">
+        <form
+          className="flex w-full items-center gap-sm text-sm"
+          onSubmit={(e) => {
+            e.preventDefault();
 
-        action.page.aboutUs.entry.create({
-          id: generateUid(),
-          index: entries.length,
-          text,
-        });
+            action.page.aboutUs.entry.create({
+              id: generateUid(),
+              index: entries.length,
+              text,
+            });
 
-        setText("");
-      }}
-    >
-      <div className="text-gray-400">
-        <Icon.Create />
+            setText("");
+          }}
+        >
+          <div className="text-gray-400">
+            <Icon.Create />
+          </div>
+          <ReactTextareaAutosize
+            className={`z-10 w-full resize-none bg-transparent outline-none`}
+            value={text}
+            onChange={(e) => {
+              setText(e.target.value);
+            }}
+            placeholder="Add Entry"
+            autoComplete="off"
+          />
+          {text.length ? (
+            <button className="my-btn my-btn-neutral" type="submit">
+              Submit
+            </button>
+          ) : null}
+        </form>
       </div>
-      <ReactTextareaAutosize
-        className={`z-10 w-full resize-none bg-transparent outline-none`}
-        value={text}
-        onChange={(e) => {
-          setText(e.target.value);
-        }}
-        placeholder="Add new about us entry"
-        autoComplete="off"
-      />
-      {text.length ? (
-        <button className="my-btn my-btn-neutral" type="submit">
-          Add
-        </button>
-      ) : null}
-    </form>
+    </div>
   );
 };
 
@@ -142,7 +154,7 @@ const Entry = () => {
   const aboutUsEntry = AboutUsEntryCx.use();
 
   return (
-    <div className="group/entry relative mx-xl flex w-full gap-sm hover:border-b">
+    <div className="group/entry relative flex w-full gap-sm hover:border-b">
       <EntryMenu />
       <div className="text-brandGreen">
         <Icon.AboutUs size="2xl" />
@@ -223,7 +235,7 @@ const GoToPageButton = () => {
         localStateValue={buttonText}
         onSubmit={({ inputValue }) => aboutUs.buttonText.update(inputValue)}
         input={{ placeholder: "Button text", styles: "uppercase" }}
-        tooltip="Go to about us page"
+        tooltip="Click to edit button text"
       />
       <div className="">
         <Icon.ArrowRight />

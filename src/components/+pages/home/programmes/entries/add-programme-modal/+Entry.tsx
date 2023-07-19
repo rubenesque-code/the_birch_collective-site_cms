@@ -1,23 +1,24 @@
 import Markdown from "markdown-to-jsx";
 
+import { useMemo, type ReactElement } from "react";
 import { Icon } from "~/components/icons";
-import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
-import { UserEditableDataCx } from "../../../_state";
 import { ProgrammeCx } from "~/context/entities";
-import { strArrayDivergence } from "~/helpers/query-arr";
-import { getIds } from "~/helpers/data/query";
-import { useMemo } from "react";
 import { deepSortByIndex } from "~/helpers/data/process";
+import { getIds } from "~/helpers/data/query";
+import { strArrayDivergence } from "~/helpers/query-arr";
+import { UserEditableDataCx } from "../../../_state";
+import { WithTooltip } from "~/components/WithTooltip";
+import { useToast } from "~/hooks";
 
-const AddProgrammeModal = () => {
+const AddProgrammeModal = ({
+  button,
+}: {
+  button: (arg0: { openModal: () => void }) => ReactElement;
+}) => {
   return (
     <Modal.WithVisibilityProvider
-      button={({ openModal }) => (
-        <ComponentMenu.Button onClick={openModal} tooltip="add programme">
-          <Icon.Configure />
-        </ComponentMenu.Button>
-      )}
+      button={({ openModal }) => button({ openModal })}
       panelContent={<Content />}
     />
   );
@@ -36,7 +37,7 @@ const Content = () => {
           <span className="text-gray-400">
             <Icon.Info />
           </span>
-          Create, delete and edit programmes at the programmes page.
+          Create, delete and edit in depth on the programmes page.
         </h5>
       </div>
 
@@ -83,7 +84,7 @@ const Programmes = () => {
       ) : !unusedProgrammes.length ? (
         <div className="text-gray-600">No unused programmes.</div>
       ) : (
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-3 gap-sm">
           {unusedProgrammesSorted.map((programme) => (
             <ProgrammeCx.Provider programme={programme} key={programme.id}>
               <ProgrammeSummary />
@@ -106,16 +107,26 @@ const ProgrammeSummary = () => {
     },
   } = UserEditableDataCx.useAction();
 
+  const toast = useToast();
+
+  const { closeModal } = Modal.VisibilityCx.use();
+
   return (
-    <div
-      className="cursor-pointer rounded-lg border p-sm"
-      onClick={() => add({ dbConnect: { programmeId: id } })}
-    >
-      <div className="uppercase">{title}</div>
-      <div className="mt-xs text-lg">{subtitle}</div>
-      <div className="mt-xs text-gray-800">
-        <Markdown>{summary}</Markdown>
+    <WithTooltip text="add to landing">
+      <div
+        className="cursor-pointer rounded-lg border p-sm hover:bg-gray-100"
+        onClick={() => {
+          add({ dbConnect: { programmeId: id } });
+          toast.neutral("programme added to landing");
+          closeModal();
+        }}
+      >
+        <div className="uppercase">{title}</div>
+        <div className="mt-xs text-lg">{subtitle}</div>
+        <div className="mt-xs text-gray-800">
+          <Markdown>{summary}</Markdown>
+        </div>
       </div>
-    </div>
+    </WithTooltip>
   );
 };
