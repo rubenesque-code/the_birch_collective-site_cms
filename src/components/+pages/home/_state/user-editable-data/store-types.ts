@@ -5,6 +5,7 @@ import type { MyDb } from "~/types/database";
 type DbData = {
   page: MyDb["pages"]["landing"];
   testimonials: MyDb["testimonial"][];
+  programmes: MyDb["programme"][];
 };
 
 type Actions = {
@@ -55,17 +56,17 @@ type Actions = {
       heading: { update: (newVal: string) => void };
       subheading: { update: (newVal: string) => void };
       entry: {
-        create: (arg0: DbData["page"]["programmes"]["entries"][number]) => void;
-        delete: (arg0: { id: string }) => void;
-        order: {
-          update: (arg0: { activeId: string; overId: string }) => void;
-        };
+        add: (arg0: {
+          dbConnect: { programmeId: string };
+          id?: string;
+        }) => void;
+        remove: (arg0: { id: string }) => void;
       };
     };
   };
   testimonial: {
     create: (arg0: DbData["testimonials"][number]) => void;
-    delete: (arg0: { id: string; index: number }) => void;
+    delete: (arg0: { id: string }) => void;
     text: {
       update: (arg0: { id: string; newVal: string }) => void;
     };
@@ -83,6 +84,22 @@ type Actions = {
         x: { update: (arg0: { id: string; newVal: number }) => void };
         y: { update: (arg0: { id: string; newVal: number }) => void };
       };
+    };
+  };
+  programme: {
+    create: (arg0: DbData["programmes"][number]) => void;
+    delete: (arg0: { id: string }) => void;
+    order: {
+      update: (arg0: { activeId: string; overId: string }) => void;
+    };
+    summary: {
+      update: (arg0: { id: string; newVal: string }) => void;
+    };
+    title: {
+      update: (arg0: { id: string; newVal: string }) => void;
+    };
+    subtitle: {
+      update: (arg0: { id: string; newVal: string }) => void;
     };
   };
 };

@@ -1,15 +1,20 @@
-import type { MyDb } from "~/types/database";
-import { myDb } from "../..";
-import type { DocPartialWithId } from "~/types/database/_helpers";
-import { firestore } from "~/my-firebase/client";
 import { writeBatch } from "firebase/firestore/lite";
 
-// TODO: batchWrite
+import type { MyDb } from "~/types/database";
+import type { DocPartialWithId } from "~/types/database/_helpers";
+import { firestore } from "~/my-firebase/client";
+import { myDb } from "../..";
+
 export const landingPageTransaction = async (input: {
   page: Partial<MyDb["pages"]["landing"]> | null;
   testimonials: {
     updated: DocPartialWithId<MyDb["testimonial"]>[];
     created: MyDb["testimonial"][];
+    deleted: string[];
+  };
+  programmes: {
+    updated: DocPartialWithId<MyDb["programme"]>[];
+    created: MyDb["programme"][];
     deleted: string[];
   };
 }) => {
@@ -31,6 +36,22 @@ export const landingPageTransaction = async (input: {
   if (input.testimonials.deleted.length) {
     input.testimonials.deleted.forEach((id) =>
       myDb.testimonial.batch.delete(id, batch),
+    );
+  }
+
+  if (input.programmes.created.length) {
+    input.programmes.created.forEach((programme) =>
+      myDb.programme.batch.create(programme, batch),
+    );
+  }
+  if (input.programmes.updated.length) {
+    input.programmes.updated.forEach((programme) =>
+      myDb.programme.batch.update(programme, batch),
+    );
+  }
+  if (input.programmes.deleted.length) {
+    input.programmes.deleted.forEach((id) =>
+      myDb.programme.batch.delete(id, batch),
     );
   }
 

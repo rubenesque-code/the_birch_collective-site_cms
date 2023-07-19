@@ -13,8 +13,8 @@ const OrgHeadings = () => {
   } = RevisionCx.use();
 
   return (
-    <div className="flex justify-center ">
-      <div className="max-w-[96%] ">
+    <div className="flex justify-center">
+      <div className="">
         <div className="w-full font-display text-8xl font-bold text-brandOrange">
           <TextAreaForm
             localStateValue={name}

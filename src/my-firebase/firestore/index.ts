@@ -6,7 +6,17 @@ import {
   batchUpdateTestimonial,
   createTestimonial,
   updateTestimonial,
+  deleteTestimonial,
 } from "./mutate/testimonial";
+import {
+  batchCreateProgramme,
+  batchDeleteProgramme,
+  batchUpdateProgramme,
+  createProgramme,
+  deleteProgramme,
+  updateProgramme,
+} from "./mutate/programme";
+
 import { landingPageTransaction } from "./mutate/transactions/landingPage";
 import {
   fetchImages,
@@ -14,6 +24,8 @@ import {
   fetchOneImage,
   fetchOneTestimonial,
   fetchTestimonials,
+  fetchOneProgramme,
+  fetchProgrammes,
 } from "./query";
 
 export const myDb = {
@@ -36,10 +48,23 @@ export const myDb = {
     fetchAll: fetchTestimonials,
     create: createTestimonial,
     update: updateTestimonial,
+    delete: deleteTestimonial,
     batch: {
       create: batchCreateTestimonial,
       update: batchUpdateTestimonial,
       delete: batchDeleteTestimonial,
+    },
+  },
+  programme: {
+    fetchOne: fetchOneProgramme,
+    fetchAll: fetchProgrammes,
+    create: createProgramme,
+    update: updateProgramme,
+    delete: deleteProgramme,
+    batch: {
+      create: batchCreateProgramme,
+      update: batchUpdateProgramme,
+      delete: batchDeleteProgramme,
     },
   },
   transactions: {

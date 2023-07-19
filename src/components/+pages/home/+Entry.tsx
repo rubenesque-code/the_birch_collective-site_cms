@@ -14,6 +14,7 @@ import TestimonialSlides from "./testimonial-slides/+Entry";
 import AboutUs from "./about-us/+Entry";
 import PageLayout from "~/components/layouts/Page";
 import Workshops from "./workshops/+Entry";
+import Programmes from "./programmes/+Entry";
 
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, onSuccess, etc.
@@ -22,6 +23,9 @@ import Workshops from "./workshops/+Entry";
 // □ should be able to work out by aspect ratio of image container and aspect ratio of image natural dimensions whether can move up/down and/or left/right.
 // □ maybe do image abstraction.
 // □ UserEditableDataCx should be renamed - have other editable Cx e.g. new testimonial. Rename to e.g. page editable cx
+
+// □ Should have a subtle emboss of section name in each section? Maybe only if one/more text elements have no text
+// □ All inputs should have undo key
 
 const HomePage = () => {
   return (
@@ -40,11 +44,11 @@ const HomePage = () => {
                   }}
                 >
                   <div className="bg-white">
-                    <BannerImage />
-                    <PageLayout.Section.Default>
+                    {/* <BannerImage /> */}
+                    {/*                     <PageLayout.Section.Default>
                       <OrgHeadings />
-                    </PageLayout.Section.Default>
-                    <PageLayout.Section.Default>
+                    </PageLayout.Section.Default> */}
+                    {/*                     <PageLayout.Section.Default>
                       <TestimonialSlides />
                     </PageLayout.Section.Default>
                     <PageLayout.Section.Default>
@@ -52,6 +56,9 @@ const HomePage = () => {
                     </PageLayout.Section.Default>
                     <PageLayout.Section.Default>
                       <Workshops />
+                    </PageLayout.Section.Default> */}
+                    <PageLayout.Section.Default>
+                      <Programmes />
                     </PageLayout.Section.Default>
                   </div>
                 </PageLayout.Body>
@@ -73,8 +80,13 @@ const InitData = ({
 }) => {
   const landingQuery = useQuery("landing", myDb.pages.landing.fetch);
   const testimonialsQuery = useQuery("testimonials", myDb.testimonial.fetchAll);
+  const programmesQuery = useQuery("programmes", myDb.programme.fetchAll);
 
-  if (landingQuery.isLoading || testimonialsQuery.isLoading) {
+  if (
+    landingQuery.isLoading ||
+    testimonialsQuery.isLoading ||
+    programmesQuery.isLoading
+  ) {
     return <PageDataFetch.Loading />;
   }
 
@@ -82,7 +94,9 @@ const InitData = ({
     landingQuery.isError ||
     !landingQuery.data ||
     testimonialsQuery.isError ||
-    !testimonialsQuery.data
+    !testimonialsQuery.data ||
+    programmesQuery.isError ||
+    !programmesQuery.data
   ) {
     return <PageDataFetch.Error />;
   }
@@ -90,5 +104,6 @@ const InitData = ({
   return children({
     page: landingQuery.data,
     testimonials: testimonialsQuery.data,
+    programmes: programmesQuery.data,
   });
 };

@@ -2,6 +2,7 @@ const collections = {
   pages: "pages",
   images: "images",
   testimonials: "testimonials",
+  programmes: "programmes",
 };
 
 const pages = {

@@ -3,6 +3,7 @@ import { createStore } from "zustand";
 
 import { getReorderedEntities, sortByIndex } from "~/helpers/data/process";
 import type { UserEditableDataStore, UserEditableDbData } from "./store-types";
+import { generateUid } from "~/lib/external-packages-rename";
 
 export const createUserEditableDataStore = (input: {
   dbData: UserEditableDbData;
@@ -58,6 +59,7 @@ export const createUserEditableDataStore = (input: {
             },
           },
         },
+
         orgHeadings: {
           name: {
             update: (updatedValue) =>
@@ -76,6 +78,7 @@ export const createUserEditableDataStore = (input: {
               ),
           },
         },
+
         aboutUs: {
           heading: {
             update: (updatedValue) =>
@@ -169,6 +172,7 @@ export const createUserEditableDataStore = (input: {
             },
           },
         },
+
         workshops: {
           image: {
             dbConnections: {
@@ -220,6 +224,7 @@ export const createUserEditableDataStore = (input: {
             },
           },
         },
+
         programmes: {
           heading: {
             update: (newValue) =>
@@ -237,75 +242,34 @@ export const createUserEditableDataStore = (input: {
                 }),
               ),
           },
-
           entry: {
-            create: (newEntry) =>
+            add: (input) =>
               set(
                 produce((state: UserEditableDataStore) => {
-                  state.data.page.programmes.entries.push(newEntry);
+                  state.data.page.programmes.entries.push({
+                    dbConnections: { programmeId: input.dbConnect.programmeId },
+                    id: input.id || generateUid(),
+                  });
                 }),
               ),
-            delete: (input) =>
+            remove: (input) =>
               set(
                 produce((state: UserEditableDataStore) => {
-                  const entriesOrdered =
-                    state.data.page.programmes.entries.sort(sortByIndex);
-
-                  const entityToDeleteIndex = entriesOrdered.findIndex(
-                    (t) => t.id === input.id,
-                  );
-                  if (entityToDeleteIndex === -1) return;
-
-                  entriesOrdered.splice(entityToDeleteIndex, 1);
-
-                  for (
-                    let i = entityToDeleteIndex;
-                    i < entriesOrdered.length;
-                    i++
-                  ) {
-                    entriesOrdered[i].index = entriesOrdered[i].index - 1;
-                  }
+                  const entityToRemoveIndex =
+                    state.data.page.programmes.entries.findIndex(
+                      (p) => p.id === input.id,
+                    );
+                  if (entityToRemoveIndex !== -1)
+                    state.data.page.programmes.entries.splice(
+                      entityToRemoveIndex,
+                      1,
+                    );
                 }),
               ),
-            order: {
-              update: (input) =>
-                set(
-                  produce((state: UserEditableDataStore) => {
-                    const entriesOrdered =
-                      state.data.page.programmes.entries.sort(sortByIndex);
-
-                    const active = entriesOrdered.find(
-                      (t) => t.id === input.activeId,
-                    );
-                    const over = entriesOrdered.find(
-                      (t) => t.id === input.overId,
-                    );
-
-                    if (!active || !over) {
-                      return;
-                    }
-
-                    const updatedEntries = getReorderedEntities({
-                      active,
-                      over,
-                      entities: entriesOrdered,
-                    });
-
-                    updatedEntries.forEach((updatedEntry) => {
-                      const index =
-                        state.data.page.programmes.entries.findIndex(
-                          (t) => t.id === updatedEntry.id,
-                        );
-                      if (index !== -1)
-                        state.data.page.programmes.entries[index].index =
-                          updatedEntry.newIndex;
-                    });
-                  }),
-                ),
-            },
           },
         },
       },
+
       testimonial: {
         create: (newTestimonial) =>
           set(
@@ -439,6 +403,107 @@ export const createUserEditableDataStore = (input: {
                 ),
             },
           },
+        },
+      },
+
+      programme: {
+        create: (input) =>
+          set(
+            produce((state: UserEditableDataStore) => {
+              state.data.programmes.push(input);
+            }),
+          ),
+        delete: (input) =>
+          set(
+            produce((state: UserEditableDataStore) => {
+              const programmesOrdered = state.data.programmes.sort(sortByIndex);
+
+              const entityToDeleteIndex = programmesOrdered.findIndex(
+                (t) => t.id === input.id,
+              );
+              if (entityToDeleteIndex === -1) return;
+
+              programmesOrdered.splice(entityToDeleteIndex, 1);
+
+              for (
+                let i = entityToDeleteIndex;
+                i < programmesOrdered.length;
+                i++
+              ) {
+                programmesOrdered[i].index = programmesOrdered[i].index - 1;
+              }
+            }),
+          ),
+        order: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                const programmesOrdered =
+                  state.data.programmes.sort(sortByIndex);
+
+                const active = programmesOrdered.find(
+                  (t) => t.id === input.activeId,
+                );
+                const over = programmesOrdered.find(
+                  (t) => t.id === input.overId,
+                );
+
+                if (!active || !over) {
+                  return;
+                }
+
+                const updatedProgrammes = getReorderedEntities({
+                  active,
+                  over,
+                  entities: programmesOrdered,
+                });
+
+                updatedProgrammes.forEach((updatedProgramme) => {
+                  const index = state.data.programmes.findIndex(
+                    (t) => t.id === updatedProgramme.id,
+                  );
+                  if (index !== -1)
+                    state.data.programmes[index].index =
+                      updatedProgramme.newIndex;
+                });
+              }),
+            ),
+        },
+        summary: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                const index = state.data.programmes.findIndex(
+                  (t) => t.id === input.id,
+                );
+                if (index !== -1)
+                  state.data.programmes[index].summary = input.newVal;
+              }),
+            ),
+        },
+        title: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                const index = state.data.programmes.findIndex(
+                  (t) => t.id === input.id,
+                );
+                if (index !== -1)
+                  state.data.programmes[index].title = input.newVal;
+              }),
+            ),
+        },
+        subtitle: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                const index = state.data.programmes.findIndex(
+                  (t) => t.id === input.id,
+                );
+                if (index !== -1)
+                  state.data.programmes[index].subtitle = input.newVal;
+              }),
+            ),
         },
       },
     },

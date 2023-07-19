@@ -40,7 +40,6 @@ type Landing = {
     subheading: string;
     entries: {
       id: string;
-      index: number;
       dbConnections: { programmeId: string };
     }[];
   };
