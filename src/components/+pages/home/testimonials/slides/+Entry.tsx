@@ -4,8 +4,8 @@ import { useState, type ReactElement } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import { useMeasure } from "react-use";
+import { Icon } from "~/components/icons";
 
 export const Slides = ({
   numSlidesTotal,
@@ -103,14 +103,14 @@ const Navigation = ({
           onClick={swipeLeft}
           type="button"
         >
-          <CaretLeft />
+          <Icon.CaretLeft />
         </button>
         <button
           onClick={swipeRight}
           className={`bg-white p-xs text-3xl`}
           type="button"
         >
-          <CaretRight />
+          <Icon.CaretRight />
         </button>
       </div>
     </div>

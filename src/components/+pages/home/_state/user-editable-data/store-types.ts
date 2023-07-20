@@ -68,13 +68,20 @@ type Actions = {
       heading: {
         update: (newVal: string) => void;
       };
-      image: {
-        dbConnections: {
-          imageId: { update: (arg0: { id: string; newVal: string }) => void };
+      entry: {
+        create: (arg0: DbData["page"]["photoAlbum"]["entries"][number]) => void;
+        delete: (arg0: { id: string }) => void;
+        image: {
+          dbConnections: {
+            imageId: { update: (arg0: { id: string; newVal: string }) => void };
+          };
+          position: {
+            x: { update: (arg0: { id: string; newVal: number }) => void };
+            y: { update: (arg0: { id: string; newVal: number }) => void };
+          };
         };
-        position: {
-          x: { update: (arg0: { id: string; newVal: number }) => void };
-          y: { update: (arg0: { id: string; newVal: number }) => void };
+        order: {
+          update: (arg0: { activeId: string; overId: string }) => void;
         };
       };
     };

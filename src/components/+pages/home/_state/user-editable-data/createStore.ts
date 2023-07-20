@@ -286,51 +286,116 @@ export const createUserEditableDataStore = (input: {
                 }),
               ),
           },
-          image: {
-            dbConnections: {
-              imageId: {
-                update: (input) =>
-                  set(
-                    produce((state: UserEditableDataStore) => {
-                      const index = state.data.page.photoAlbum.images.findIndex(
-                        (t) => t.id === input.id,
-                      );
-                      if (index !== -1)
-                        state.data.page.photoAlbum.images[
-                          index
-                        ].dbConnections.imageId = input.newVal;
-                    }),
-                  ),
+          entry: {
+            create: (input) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.photoAlbum.entries.push(input);
+                }),
+              ),
+            delete: (input) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  const entityToRemoveIndex =
+                    state.data.page.photoAlbum.entries.findIndex(
+                      (p) => p.id === input.id,
+                    );
+                  if (entityToRemoveIndex !== -1)
+                    state.data.page.photoAlbum.entries.splice(
+                      entityToRemoveIndex,
+                      1,
+                    );
+                }),
+              ),
+
+            image: {
+              dbConnections: {
+                imageId: {
+                  update: (input) =>
+                    set(
+                      produce((state: UserEditableDataStore) => {
+                        const index =
+                          state.data.page.photoAlbum.entries.findIndex(
+                            (t) => t.id === input.id,
+                          );
+                        if (index !== -1)
+                          state.data.page.photoAlbum.entries[
+                            index
+                          ].image.dbConnections.imageId = input.newVal;
+                      }),
+                    ),
+                },
+              },
+              position: {
+                x: {
+                  update: (input) =>
+                    set(
+                      produce((state: UserEditableDataStore) => {
+                        const index =
+                          state.data.page.photoAlbum.entries.findIndex(
+                            (t) => t.id === input.id,
+                          );
+                        if (index !== -1) {
+                          state.data.page.photoAlbum.entries[
+                            index
+                          ].image.position.x = input.newVal;
+                        }
+                      }),
+                    ),
+                },
+                y: {
+                  update: (input) =>
+                    set(
+                      produce((state: UserEditableDataStore) => {
+                        const index =
+                          state.data.page.photoAlbum.entries.findIndex(
+                            (t) => t.id === input.id,
+                          );
+                        if (index !== -1)
+                          state.data.page.photoAlbum.entries[
+                            index
+                          ].image.position.y = input.newVal;
+                      }),
+                    ),
+                },
               },
             },
-            position: {
-              x: {
-                update: (input) =>
-                  set(
-                    produce((state: UserEditableDataStore) => {
-                      const index = state.data.page.photoAlbum.images.findIndex(
-                        (t) => t.id === input.id,
-                      );
-                      if (index !== -1) {
-                        state.data.page.photoAlbum.images[index].position.x =
-                          input.newVal;
-                      }
-                    }),
-                  ),
-              },
-              y: {
-                update: (input) =>
-                  set(
-                    produce((state: UserEditableDataStore) => {
-                      const index = state.data.testimonials.findIndex(
-                        (t) => t.id === input.id,
-                      );
+
+            order: {
+              update: (input) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    const entriesOrdered =
+                      state.data.page.photoAlbum.entries.sort(sortByIndex);
+
+                    const active = entriesOrdered.find(
+                      (t) => t.id === input.activeId,
+                    );
+                    const over = entriesOrdered.find(
+                      (t) => t.id === input.overId,
+                    );
+
+                    if (!active || !over) {
+                      return;
+                    }
+
+                    const updatedEntries = getReorderedEntities({
+                      active,
+                      over,
+                      entities: entriesOrdered,
+                    });
+
+                    updatedEntries.forEach((updatedEntry) => {
+                      const index =
+                        state.data.page.photoAlbum.entries.findIndex(
+                          (t) => t.id === updatedEntry.id,
+                        );
                       if (index !== -1)
-                        state.data.page.photoAlbum.images[index].position.y =
-                          input.newVal;
-                    }),
-                  ),
-              },
+                        state.data.page.photoAlbum.entries[index].index =
+                          updatedEntry.newIndex;
+                    });
+                  }),
+                ),
             },
           },
         },

@@ -7,11 +7,13 @@ import { EditModal } from "./slides/edit/+Entry";
 import { ComponentMenu } from "~/components/menus";
 
 const PhotoAlbum = () => {
+  // const { page } = UserEditableDataCx.useAllData();
+  // console.log("page:", page);
   return (
     <div className="group/photo-album flex justify-end">
       <div className="w-3/4">
         <Heading />
-        <Images />
+        <Entries />
       </div>
     </div>
   );
@@ -50,9 +52,9 @@ const Heading = () => {
   );
 };
 
-const Images = () => {
+const Entries = () => {
   return (
-    <div className="relative aspect-video bg-red-300">
+    <div className="relative aspect-video overflow-visible bg-red-300">
       <ComponentMenu styles="top-1 right-1 group-hover/photo-album:opacity-40">
         <EditModal
           button={({ openModal }) => (

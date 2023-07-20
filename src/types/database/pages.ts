@@ -46,13 +46,16 @@ type Landing = {
   };
   photoAlbum: {
     heading: string;
-    images: {
-      id: string;
-      dbConnections: { imageId: string };
-      position: {
-        x: number;
-        y: number;
+    entries: {
+      image: {
+        dbConnections: { imageId: string };
+        position: {
+          x: number;
+          y: number;
+        };
       };
+      id: string;
+      index: number;
     }[];
   };
 };

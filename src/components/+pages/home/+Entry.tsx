@@ -16,6 +16,7 @@ import PageLayout from "~/components/layouts/Page";
 import Workshops from "./workshops/+Entry";
 import Programmes from "./programmes/+Entry";
 import PhotoAlbum from "./photo-album/+Entry";
+import { seedData } from "./_state/user-editable-data/seed-data";
 
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, onSuccess, etc.
@@ -105,8 +106,10 @@ const InitData = ({
     return <PageDataFetch.Error />;
   }
 
+  const page = Object.assign(seedData.page, landingQuery.data);
+
   return children({
-    page: landingQuery.data,
+    page,
     testimonials: testimonialsQuery.data,
     programmes: programmesQuery.data,
   });
