@@ -8,7 +8,7 @@ import { ComponentMenu } from "~/components/menus";
 
 const SupportUs = () => {
   return (
-    <div className="group/support-us">
+    <div className="">
       <Heading />
       <div className="mt-xl grid grid-cols-2 gap-md">
         <Donate />

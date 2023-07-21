@@ -3,6 +3,7 @@ const collections = {
   images: "images",
   testimonials: "testimonials",
   programmes: "programmes",
+  supporters: "supporters",
 };
 
 const pages = {

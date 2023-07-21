@@ -87,6 +87,14 @@ type Landing = {
       };
     };
   };
+  supporters: {
+    heading: string;
+    subheading: string;
+    entries: {
+      id: string;
+      dbConnections: { supporterId: string };
+    }[];
+  };
 };
 
 export type Pages = {

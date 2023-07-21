@@ -398,6 +398,7 @@ export const createUserEditableDataStore = (input: {
             },
           },
         },
+
         supportUs: {
           heading: {
             update: (updatedValue) =>
@@ -510,6 +511,52 @@ export const createUserEditableDataStore = (input: {
                 },
               },
             },
+          },
+        },
+
+        supporters: {
+          heading: {
+            update: (updatedValue) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.supporters.heading = updatedValue;
+                }),
+              ),
+          },
+          subheading: {
+            update: (updatedValue) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.supporters.subheading = updatedValue;
+                }),
+              ),
+          },
+          entry: {
+            add: (input) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.supporters.entries.push({
+                    dbConnections: {
+                      supporterId: input.dbConnections.supporterId,
+                    },
+                    id: generateUid(),
+                  });
+                }),
+              ),
+            remove: (input) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  const entityToRemoveIndex =
+                    state.data.page.supporters.entries.findIndex(
+                      (p) => p.id === input.id,
+                    );
+                  if (entityToRemoveIndex !== -1)
+                    state.data.page.supporters.entries.splice(
+                      entityToRemoveIndex,
+                      1,
+                    );
+                }),
+              ),
           },
         },
       },
@@ -748,6 +795,107 @@ export const createUserEditableDataStore = (input: {
                   state.data.programmes[index].subtitle = input.newVal;
               }),
             ),
+        },
+      },
+
+      supporter: {
+        create: (newSupporter) =>
+          set(
+            produce((state: UserEditableDataStore) => {
+              state.data.supporters.push(newSupporter);
+            }),
+          ),
+        delete: (input) =>
+          set(
+            produce((state: UserEditableDataStore) => {
+              const supportersOrdered = state.data.supporters.sort(sortByIndex);
+
+              const entityToDeleteIndex = supportersOrdered.findIndex(
+                (t) => t.id === input.id,
+              );
+              if (entityToDeleteIndex === -1) return;
+
+              supportersOrdered.splice(entityToDeleteIndex, 1);
+
+              for (
+                let i = entityToDeleteIndex;
+                i < supportersOrdered.length;
+                i++
+              ) {
+                supportersOrdered[i].index = supportersOrdered[i].index - 1;
+              }
+            }),
+          ),
+        order: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                const ordered = state.data.supporters.sort(sortByIndex);
+
+                const active = ordered.find((t) => t.id === input.activeId);
+                const over = ordered.find((t) => t.id === input.overId);
+
+                if (!active || !over) {
+                  return;
+                }
+
+                const updated = getReorderedEntities({
+                  active,
+                  over,
+                  entities: ordered,
+                });
+
+                updated.forEach((updatedSupporter) => {
+                  const index = state.data.supporters.findIndex(
+                    (t) => t.id === updatedSupporter.id,
+                  );
+                  if (index !== -1)
+                    state.data.supporters[index].index =
+                      updatedSupporter.newIndex;
+                });
+              }),
+            ),
+        },
+        title: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                const index = state.data.supporters.findIndex(
+                  (t) => t.id === input.id,
+                );
+                if (index !== -1)
+                  state.data.supporters[index].title = input.newVal;
+              }),
+            ),
+        },
+        url: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                const index = state.data.supporters.findIndex(
+                  (t) => t.id === input.id,
+                );
+                if (index !== -1)
+                  state.data.supporters[index].title = input.newVal;
+              }),
+            ),
+        },
+        image: {
+          dbConnections: {
+            imageId: {
+              update: (input) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    const index = state.data.supporters.findIndex(
+                      (t) => t.id === input.id,
+                    );
+                    if (index !== -1)
+                      state.data.supporters[index].image.dbConnections.imageId =
+                        input.newVal;
+                  }),
+                ),
+            },
+          },
         },
       },
     },

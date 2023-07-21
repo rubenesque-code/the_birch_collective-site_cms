@@ -14,8 +14,8 @@ type ContextValue = {
     isChange: boolean;
     // isTestimonialsChange: boolean;
     undoKey: string;
-    page: ReturnType<typeof useDocRevisionData>;
-    testimonials: ReturnType<typeof useDocsRevisionData>;
+    // page: ReturnType<typeof useDocRevisionData>;
+    // testimonials: ReturnType<typeof useDocsRevisionData>;
   };
   actions: {
     save: () => void;
@@ -49,11 +49,16 @@ function Provider({
     dbData: currentDbData.programmes,
     userEditedData: userEditableData.programmes,
   });
+  const supportersRevisionData = useDocsRevisionData({
+    dbData: currentDbData.supporters,
+    userEditedData: userEditableData.supporters,
+  });
 
   const isChange =
     pageRevisionData.isChange ||
     testimonialsRevisionData.isChange ||
-    programmesRevisionData.isChange;
+    programmesRevisionData.isChange ||
+    supportersRevisionData.isChange;
 
   const ifChange = (arg0: () => void) => {
     if (!isChange) {
@@ -78,6 +83,7 @@ function Provider({
               page: pageRevisionData.saveData,
               testimonials: testimonialsRevisionData.saveData,
               programmes: programmesRevisionData.saveData,
+              supporters: supportersRevisionData.saveData,
             },
             {
               onSuccess() {
@@ -106,9 +112,8 @@ function Provider({
     data: {
       isChange,
       undoKey,
-      page: pageRevisionData,
-      testimonials: testimonialsRevisionData,
-      // isTestimonialsChange: testimonialsRevisionData.isChange,
+      // page: pageRevisionData,
+      // testimonials: testimonialsRevisionData,
     },
   };
 

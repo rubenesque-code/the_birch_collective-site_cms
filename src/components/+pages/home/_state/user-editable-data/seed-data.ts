@@ -77,5 +77,10 @@ export const seedData: { page: MyDb["pages"]["landing"] } = {
         },
       },
     },
+    supporters: {
+      entries: [],
+      heading: "",
+      subheading: "",
+    },
   },
 };

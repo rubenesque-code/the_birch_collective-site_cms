@@ -16,6 +16,14 @@ import {
   deleteProgramme,
   updateProgramme,
 } from "./mutate/programme";
+import {
+  batchCreateSupporter,
+  batchDeleteSupporter,
+  batchUpdateSupporter,
+  createSupporter,
+  deleteSupporter,
+  updateSupporter,
+} from "./mutate/supporter";
 
 import { landingPageTransaction } from "./mutate/transactions/landingPage";
 import {
@@ -26,6 +34,8 @@ import {
   fetchTestimonials,
   fetchOneProgramme,
   fetchProgrammes,
+  fetchOneSupporter,
+  fetchSupporters,
 } from "./query";
 
 export const myDb = {
@@ -65,6 +75,18 @@ export const myDb = {
       create: batchCreateProgramme,
       update: batchUpdateProgramme,
       delete: batchDeleteProgramme,
+    },
+  },
+  supporter: {
+    fetchOne: fetchOneSupporter,
+    fetchAll: fetchSupporters,
+    create: createSupporter,
+    update: updateSupporter,
+    delete: deleteSupporter,
+    batch: {
+      create: batchCreateSupporter,
+      update: batchUpdateSupporter,
+      delete: batchDeleteSupporter,
     },
   },
   transactions: {

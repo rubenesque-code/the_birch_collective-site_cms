@@ -107,3 +107,32 @@ export const fetchProgrammes = async () => {
 
   return data as unknown as MyDb["programme"][];
 };
+
+export const fetchOneSupporter = async (id: string) => {
+  const docRef = doc(
+    firestore,
+    firestore_file_system_names.collections.supporters,
+    id,
+  );
+  const docSnap = await getDoc(docRef);
+  const data = docSnap.data() as unknown as MyDb["supporter"];
+
+  return data;
+};
+
+export const fetchSupporters = async () => {
+  const collectionRef = collection(
+    firestore,
+    firestore_file_system_names.collections.supporters,
+  );
+
+  const querySnapshot = await getDocs(collectionRef);
+
+  const data: DocumentData[] = [];
+  querySnapshot.forEach((doc) => {
+    const d = doc.data();
+    data.push(d);
+  });
+
+  return data as unknown as MyDb["supporter"][];
+};

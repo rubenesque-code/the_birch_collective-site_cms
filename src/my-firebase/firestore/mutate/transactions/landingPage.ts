@@ -17,6 +17,11 @@ export const landingPageTransaction = async (input: {
     created: MyDb["programme"][];
     deleted: string[];
   };
+  supporters: {
+    updated: DocPartialWithId<MyDb["supporter"]>[];
+    created: MyDb["supporter"][];
+    deleted: string[];
+  };
 }) => {
   const batch = writeBatch(firestore);
 
@@ -52,6 +57,22 @@ export const landingPageTransaction = async (input: {
   if (input.programmes.deleted.length) {
     input.programmes.deleted.forEach((id) =>
       myDb.programme.batch.delete(id, batch),
+    );
+  }
+
+  if (input.supporters.created.length) {
+    input.supporters.created.forEach((supporter) =>
+      myDb.supporter.batch.create(supporter, batch),
+    );
+  }
+  if (input.supporters.updated.length) {
+    input.supporters.updated.forEach((supporter) =>
+      myDb.supporter.batch.update(supporter, batch),
+    );
+  }
+  if (input.supporters.deleted.length) {
+    input.supporters.deleted.forEach((id) =>
+      myDb.supporter.batch.delete(id, batch),
     );
   }
 

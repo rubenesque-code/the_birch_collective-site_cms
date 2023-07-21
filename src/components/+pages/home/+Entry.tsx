@@ -18,6 +18,7 @@ import Programmes from "./programmes/+Entry";
 import PhotoAlbum from "./photo-album/+Entry";
 import { seedData } from "./_state/user-editable-data/seed-data";
 import SupportUs from "./support-us/+Entry";
+import { isDevMode } from "~/helpers/environment";
 
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, onSuccess, etc.
@@ -25,6 +26,7 @@ import SupportUs from "./support-us/+Entry";
 // □ check image blur up works.
 // □ should be able to work out by aspect ratio of image container and aspect ratio of image natural dimensions whether can move up/down and/or left/right.
 // □ maybe do image abstraction.
+// □ in revision.cx, on save success should use func input to update 'current db data'
 // □ UserEditableDataCx should be renamed - have other editable Cx e.g. new testimonial. Rename to e.g. page editable cx
 
 // □ Should have a subtle emboss of section name in each section? Maybe only if one/more text elements have no text
@@ -90,11 +92,13 @@ const InitData = ({
   const landingQuery = useQuery("landing", myDb.pages.landing.fetch);
   const testimonialsQuery = useQuery("testimonials", myDb.testimonial.fetchAll);
   const programmesQuery = useQuery("programmes", myDb.programme.fetchAll);
+  const supportersQuery = useQuery("supporters", myDb.supporter.fetchAll);
 
   if (
     landingQuery.isLoading ||
     testimonialsQuery.isLoading ||
-    programmesQuery.isLoading
+    programmesQuery.isLoading ||
+    supportersQuery.isLoading
   ) {
     return <PageDataFetch.Loading />;
   }
@@ -105,16 +109,21 @@ const InitData = ({
     testimonialsQuery.isError ||
     !testimonialsQuery.data ||
     programmesQuery.isError ||
-    !programmesQuery.data
+    !programmesQuery.data ||
+    supportersQuery.isError ||
+    !supportersQuery.data
   ) {
     return <PageDataFetch.Error />;
   }
 
-  const page = Object.assign(seedData.page, landingQuery.data);
+  const page = isDevMode
+    ? Object.assign(seedData.page, landingQuery.data)
+    : landingQuery.data;
 
   return children({
     page,
     testimonials: testimonialsQuery.data,
     programmes: programmesQuery.data,
+    supporters: supportersQuery.data,
   });
 };

@@ -6,6 +6,7 @@ type DbData = {
   page: MyDb["pages"]["landing"];
   testimonials: MyDb["testimonial"][];
   programmes: MyDb["programme"][];
+  supporters: MyDb["supporter"][];
 };
 
 type Actions = {
@@ -85,6 +86,7 @@ type Actions = {
         };
       };
     };
+
     supportUs: {
       heading: {
         update: (newVal: string) => void;
@@ -124,6 +126,19 @@ type Actions = {
         };
       };
     };
+
+    supporters: {
+      heading: {
+        update: (newVal: string) => void;
+      };
+      subheading: {
+        update: (newVal: string) => void;
+      };
+      entry: {
+        add: (arg0: { dbConnections: { supporterId: string } }) => void;
+        remove: (arg0: { id: string }) => void;
+      };
+    };
   };
   testimonial: {
     create: (arg0: DbData["testimonials"][number]) => void;
@@ -161,6 +176,24 @@ type Actions = {
     };
     subtitle: {
       update: (arg0: { id: string; newVal: string }) => void;
+    };
+  };
+  supporter: {
+    create: (arg0: DbData["supporters"][number]) => void;
+    delete: (arg0: { id: string }) => void;
+    order: {
+      update: (arg0: { activeId: string; overId: string }) => void;
+    };
+    title: {
+      update: (arg0: { id: string; newVal: string }) => void;
+    };
+    url: {
+      update: (arg0: { id: string; newVal: string }) => void;
+    };
+    image: {
+      dbConnections: {
+        imageId: { update: (arg0: { id: string; newVal: string }) => void };
+      };
     };
   };
 };
