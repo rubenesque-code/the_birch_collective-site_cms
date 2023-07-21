@@ -1,18 +1,24 @@
-import { type ReactElement } from "react";
+import React, { type ReactElement } from "react";
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { WithTooltip } from "~/components/WithTooltip";
 import { Modal } from "~/components/styled-bases";
 import { SupporterCx } from "~/context/entities";
+import { deepSortByIndex } from "~/helpers/data/process";
+import { getIds } from "~/helpers/data/query";
+import { useToast } from "~/hooks";
 import { UserEditableDataCx } from "../+pages/home/_state";
+import { RevisionCx } from "../+pages/home/_state/RevisionCx";
+import { WarningPanel } from "../WarningPanel";
+import { DndKit } from "../dnd-kit";
+import { TextInputForm } from "../forms";
+import { Icon } from "../icons";
+import { ComponentMenu } from "../menus";
+import { CreateModal } from "./CreateModal";
 import {
   ComponentApiCx,
   type ContextValue as ComponentApiProps,
 } from "./_state";
-import { CreateModal } from "./CreateModal";
-
-// create new, add to landing, re-arrange order, delete, update image (no position), update link, update title
 
 const SupportersModal = ({
   button,
@@ -60,17 +66,29 @@ const Content = () => {
 const Supporters = () => {
   const { supporters } = UserEditableDataCx.useAllData();
 
+  const { supporter } = UserEditableDataCx.useAction();
+
+  const sorted = React.useMemo(() => deepSortByIndex(supporters), [supporters]);
+  console.log("sorted:", sorted);
+
   return (
     <div>
       {!supporters.length ? (
         <div className="text-gray-600">No supporters yet.</div>
       ) : (
         <div className="grid grid-cols-4 gap-sm">
-          {supporters.map((supporter) => (
-            <SupporterCx.Provider supporter={supporter} key={supporter.id}>
-              <Supporter />
-            </SupporterCx.Provider>
-          ))}
+          <DndKit.Context
+            elementIds={getIds(sorted)}
+            onReorder={supporter.order.update}
+          >
+            {sorted.map((supporter) => (
+              <DndKit.Element elementId={supporter.id} key={supporter.id}>
+                <SupporterCx.Provider supporter={supporter}>
+                  <Supporter />
+                </SupporterCx.Provider>
+              </DndKit.Element>
+            ))}
+          </DndKit.Context>
         </div>
       )}
     </div>
@@ -78,29 +96,130 @@ const Supporters = () => {
 };
 
 const Supporter = () => {
-  const { connectSupporter, usedSupporterIds } = ComponentApiCx.use();
+  const { id, image, name, url } = SupporterCx.use();
+  const { supporter: supporterAction } = UserEditableDataCx.useAction();
 
-  const { id, image } = SupporterCx.use();
+  const {
+    data: { undoKey },
+  } = RevisionCx.use();
 
   return (
-    <WithTooltip text="add to landing">
-      <div
-        className="cursor-pointer rounded-lg border p-sm hover:bg-gray-100"
+    <div className="group/supporter relative">
+      <SupporterMenu />
+      <div className={`cursor-pointer rounded-lg border p-sm `}>
+        <div className="relative aspect-video">
+          <UserSelectedImageWrapper
+            dbImageId={image.dbConnections.imageId}
+            placeholderText="supporter image"
+          >
+            {({ dbImageId }) => (
+              <DbImageWrapper dbImageId={dbImageId}>
+                {({ urls }) => (
+                  <CustomisableImage urls={urls} objectFit="contain" />
+                )}
+              </DbImageWrapper>
+            )}
+          </UserSelectedImageWrapper>
+        </div>
+        <div className="mt-md">
+          <div className="text-sm text-gray-400">Name</div>
+          <div className="font-medium">
+            <TextInputForm
+              localStateValue={name}
+              onSubmit={({ inputValue }) =>
+                supporterAction.name.update({ id, newVal: inputValue })
+              }
+              input={{ placeholder: "Supporter name" }}
+              tooltip="Click to edit name"
+              key={undoKey}
+            />
+          </div>
+        </div>
+        <div className="mt-md">
+          <div className="text-sm text-gray-400">Link</div>
+          <div className="overflow-auto font-medium">
+            <TextInputForm
+              localStateValue={url}
+              onSubmit={({ inputValue }) =>
+                supporterAction.url.update({ id, newVal: inputValue })
+              }
+              input={{ placeholder: "Supporter link" }}
+              tooltip="Click to edit link"
+              key={undoKey}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SupporterMenu = () => {
+  const { connectSupporter, usedSupporterIds } = ComponentApiCx.use();
+
+  const { supporter: supporterAction } = UserEditableDataCx.useAction();
+
+  const { id } = SupporterCx.use();
+
+  const isUsed = usedSupporterIds.includes(id);
+
+  const toast = useToast();
+
+  return (
+    <ComponentMenu styles="right-1 top-1 group-hover/supporter:opacity-40">
+      <ComponentMenu.Image.UploadAndLibraryModal
+        onUploadOrSelect={({ dbImageId }) => {
+          supporterAction.image.dbConnections.imageId.update({
+            id,
+            newVal: dbImageId,
+          });
+        }}
+        styles={{
+          menu: { itemsWrapper: "right-0 -bottom-1 translate-y-full" },
+        }}
+      />
+
+      <ComponentMenu.Divider />
+
+      <ComponentMenu.Button
+        tooltip={
+          isUsed ? "can't add - already part of landing" : "add to landing"
+        }
         onClick={() => {
+          if (isUsed) {
+            return;
+          }
           connectSupporter(id);
         }}
+        isDisabled={isUsed}
       >
-        <UserSelectedImageWrapper
-          dbImageId={image.dbConnections.imageId}
-          placeholderText="banner image"
-        >
-          {({ dbImageId }) => (
-            <DbImageWrapper dbImageId={dbImageId}>
-              {({ urls }) => <CustomisableImage urls={urls} />}
-            </DbImageWrapper>
-          )}
-        </UserSelectedImageWrapper>
-      </div>
-    </WithTooltip>
+        <Icon.ConnectEntity />
+      </ComponentMenu.Button>
+
+      <ComponentMenu.Divider />
+
+      <Modal.WithVisibilityProvider
+        button={({ openModal }) => (
+          <ComponentMenu.Button.Delete
+            tooltip="delete supporter"
+            onClick={openModal}
+          />
+        )}
+        panelContent={({ closeModal }) => (
+          <WarningPanel
+            callback={() => {
+              supporterAction.delete({ id });
+              closeModal();
+              toast.neutral("deleted supporter");
+            }}
+            closeModal={closeModal}
+            text={{
+              title: "Delete supporter",
+              body: "Are you sure?",
+            }}
+          />
+        )}
+      />
+    </ComponentMenu>
   );
 };

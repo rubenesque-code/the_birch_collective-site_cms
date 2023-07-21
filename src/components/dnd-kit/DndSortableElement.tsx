@@ -61,7 +61,7 @@ export const DndSortableElement = ({
             styles?.handle || ""
           }`}
         >
-          <WithTooltip text="drag to change position" isDisabled={isDragging}>
+          <WithTooltip text="drag to change order" isDisabled={isDragging}>
             <button
               className="text-2xl"
               style={{

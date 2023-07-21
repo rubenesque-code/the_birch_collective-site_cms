@@ -9,6 +9,9 @@ import { LandingCx, SupporterCx } from "~/context/entities";
 import type { MyDb } from "~/types/database";
 import { useToast } from "~/hooks";
 import { ComponentMenu } from "~/components/menus";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { CustomisableImage } from "~/components/CustomisableImage";
 
 const Supporters = () => {
   return (
@@ -75,6 +78,8 @@ const Entries = () => {
     },
     supporters,
   } = UserEditableDataCx.useAllData();
+  console.log("supporters:", supporters);
+  console.log("entries:", entries);
 
   const {
     page: {
@@ -106,6 +111,7 @@ const Entries = () => {
     });
     return sorted;
   }, [entries, supporters]);
+  console.log("entriesSorted:", entriesSorted);
 
   return (
     <div className="mt-md">
@@ -129,16 +135,6 @@ const Entries = () => {
             (entry) => entry.dbConnections.supporterId,
           )}
         />
-
-        {/* <div className="flex items-center gap-xs text-sm text-gray-400">
-          <span className="text-gray-400">
-            <Icon.Info />
-          </span>
-          <span>
-            Each field below is editable. Edit in depth from the supporter
-            page.
-          </span>
-        </div> */}
       </div>
 
       {!entries.length ? (
@@ -146,14 +142,14 @@ const Entries = () => {
           No supporters added to landing page yet.
         </div>
       ) : (
-        <div className="mt-lg grid grid-cols-2 gap-sm">
+        <div className="mt-lg grid grid-cols-4 gap-lg">
           {entriesSorted.map((supporter) => (
             <LandingCx.Supporter.Provider
               supporter={supporter}
               key={supporter.id}
             >
               <GetSupporterWrapper>
-                {({ connectedSupporter: connectedSupporter }) => (
+                {({ connectedSupporter }) => (
                   <SupporterCx.Provider supporter={connectedSupporter}>
                     <Supporter />
                   </SupporterCx.Provider>
@@ -205,29 +201,24 @@ const UnfoundSupporter = () => (
 );
 
 const Supporter = () => {
-  const { id, name: title } = SupporterCx.use();
-  const { supporter: supporterAction } = UserEditableDataCx.useAction();
-
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
+  const { image } = SupporterCx.use();
 
   return (
-    <div className="group/supporter relative flex flex-col items-center p-sm">
+    <div className="group/supporter relative">
       <SupporterMenu />
-      <div className="w-full text-center font-display text-3xl font-bold uppercase tracking-wider text-brandLightOrange">
-        <TextInputForm
-          localStateValue={title}
-          onSubmit={({ inputValue }) =>
-            supporterAction.name.update({ id, newVal: inputValue })
-          }
-          input={{
-            placeholder: "Title",
-            styles: "uppercase tracking-wider text-center",
-          }}
-          tooltip="Click to edit title"
-          key={undoKey}
-        />
+      <div className="relative aspect-video">
+        <UserSelectedImageWrapper
+          dbImageId={image.dbConnections.imageId}
+          placeholderText="supporter image"
+        >
+          {({ dbImageId }) => (
+            <DbImageWrapper dbImageId={dbImageId}>
+              {({ urls }) => (
+                <CustomisableImage urls={urls} objectFit="contain" />
+              )}
+            </DbImageWrapper>
+          )}
+        </UserSelectedImageWrapper>
       </div>
     </div>
   );
@@ -236,7 +227,7 @@ const Supporter = () => {
 const SupporterMenu = () => {
   const {
     page: {
-      programmes: {
+      supporters: {
         entry: { remove },
       },
     },

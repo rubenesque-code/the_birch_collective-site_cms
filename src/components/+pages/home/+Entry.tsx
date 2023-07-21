@@ -33,6 +33,7 @@ import Supporters from "./supporters/+Entry";
 
 // □ Should have a subtle emboss of section name in each section? Maybe only if one/more text elements have no text
 // □ All inputs should have undo key
+// □ supporters modal tooltip for 'add to landing' is incorrect since modal is for all supporters
 
 const HomePage = () => {
   return (
@@ -55,9 +56,9 @@ const HomePage = () => {
                     <PageLayout.Section.Spacing>
                       <OrgHeadings />
                     </PageLayout.Section.Spacing> */}
-                    <PageLayout.Section.Spacing>
+                    {/*                     <PageLayout.Section.Spacing>
                       <Testimonials />
-                    </PageLayout.Section.Spacing>
+                    </PageLayout.Section.Spacing> */}
                     {/*                     <PageLayout.Section.Spacing>
                       <AboutUs />
                     </PageLayout.Section.Spacing>
@@ -121,9 +122,10 @@ const InitData = ({
     return <PageDataFetch.Error />;
   }
 
-  const page = isDevMode
+  const page = landingQuery.data;
+  /*   const page = isDevMode
     ? Object.assign(seedData.page, landingQuery.data)
-    : landingQuery.data;
+    : landingQuery.data; */
 
   return children({
     page,

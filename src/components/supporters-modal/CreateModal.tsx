@@ -198,7 +198,7 @@ const NewSupporter = () => {
       </div>
 
       <div className="mt-md">
-        <div className="text-sm text-gray-400">Title</div>
+        <div className="text-sm text-gray-400">Name</div>
         <div className="font-medium">
           <TextInputForm
             localStateValue={newSupporter.name}

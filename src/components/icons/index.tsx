@@ -26,6 +26,7 @@ import {
   Minus,
   Tree,
   PiggyBank,
+  FlowArrow,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -63,6 +64,7 @@ Icon.Remove = Minus;
 Icon.CaretLeft = CaretLeft;
 Icon.Programme = Tree;
 Icon.Supporter = PiggyBank;
+Icon.ConnectEntity = FlowArrow;
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";
