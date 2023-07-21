@@ -3,19 +3,18 @@ import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { ImagePlaceholder } from "~/components/ImagePlaceholder";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { Icon } from "~/components/icons";
-import { ComponentMenu } from "~/components/menus";
-import { Slides } from "./slides/+Entry";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { useHovered } from "~/hooks";
 import type { MyDb } from "~/types/database";
 import { UserEditableDataCx } from "../_state";
 import { EditModal } from "./edit/+Entry";
+import { Slides } from "./slides/+Entry";
 
 // □ testimonial endorser name not saving (seems updating okay)
 // □ max width. move nav buttons to right.
 // □ will probably need to reset mydb.testimonials order at points
 
-const TestimonialSlides = () => {
+const Testimonials = () => {
   const { testimonials } = UserEditableDataCx.useAllData();
 
   const slidesInitData = [
@@ -26,19 +25,22 @@ const TestimonialSlides = () => {
   ];
 
   return (
-    <div className="group/testimonials relative">
-      <ComponentMenu styles="right-1 top-1 group-hover/testimonials:opacity-40">
+    <div className="">
+      <div className="flex items-center justify-between rounded-md border border-dashed px-4 py-2">
         <EditModal
           button={({ openModal }) => (
-            <ComponentMenu.Button
-              tooltip="edit testimonials"
+            <div
+              className="my-btn my-btn-neutral flex cursor-pointer items-center gap-xs rounded-sm border-transparent"
               onClick={openModal}
             >
-              <Icon.Configure />
-            </ComponentMenu.Button>
+              <span className="text-gray-400">
+                <Icon.Configure />
+              </span>
+              <span className="">Edit testimonials</span>
+            </div>
           )}
         />
-      </ComponentMenu>
+      </div>
       <Slides
         numSlidesTotal={testimonials.length}
         slides={({ leftMost, rightMost }) =>
@@ -55,7 +57,7 @@ const TestimonialSlides = () => {
   );
 };
 
-export default TestimonialSlides;
+export default Testimonials;
 
 const Testimonial = ({
   testimonial,

@@ -144,13 +144,13 @@ const EntriesSection = () => {
               programme={programme}
               key={programme.id}
             >
-              <GetDataWrapper>
+              <GetProgrammeWrapper>
                 {({ connectedProgramme }) => (
                   <ProgrammeCx.Provider programme={connectedProgramme}>
                     <Programme />
                   </ProgrammeCx.Provider>
                 )}
-              </GetDataWrapper>
+              </GetProgrammeWrapper>
             </LandingCx.Programme.Provider>
           ))}
         </div>
@@ -159,7 +159,7 @@ const EntriesSection = () => {
   );
 };
 
-const GetDataWrapper = ({
+const GetProgrammeWrapper = ({
   children,
 }: {
   children: (arg0: { connectedProgramme: MyDb["programme"] }) => ReactNode;
@@ -172,11 +172,29 @@ const GetDataWrapper = ({
   );
 
   if (!connectedProgramme) {
-    return <div>Couldnt find programme</div>;
+    return <UnfoundProgramme />;
   }
 
   return children({ connectedProgramme });
 };
+
+const UnfoundProgramme = () => (
+  <div className="group/programme relative grid place-items-center rounded-md border-2 border-my-alert-content bg-gray-50 p-md">
+    <ProgrammeMenu />
+    <div className="grid place-items-center">
+      <div className="text-5xl text-gray-500">
+        <Icon.Programme weight="light" />
+      </div>
+      <div className="mt-4 text-center text-my-alert-content">
+        <p className="mt-1">Error - could not find programme.</p>
+      </div>
+      <div className="mt-4 max-w-[400px] text-center text-gray-500">
+        A programme was added to the landing page that can&apos;t be found. It
+        may have been deleted.
+      </div>
+    </div>
+  </div>
+);
 
 const Programme = () => {
   const { id, title, subtitle, summary } = ProgrammeCx.use();
@@ -253,9 +271,9 @@ const ProgrammeMenu = () => {
           toast.neutral("programme removed from landing");
         }}
         tooltip="remove programme from landing"
-        styles={{ button: "hover:text-my-alert-content" }}
+        styles={{ button: "hover:text-my-alert-content hover:bg-my-alert" }}
       >
-        <Icon.Remove />
+        <Icon.Remove weight="bold" />
       </ComponentMenu.Button>
     </ComponentMenu>
   );

@@ -48,7 +48,7 @@ const Content = () => {
         <button
           className="my-btn my-btn-neutral"
           type="button"
-          onClick={() => closeModal()}
+          onClick={closeModal}
         >
           close
         </button>

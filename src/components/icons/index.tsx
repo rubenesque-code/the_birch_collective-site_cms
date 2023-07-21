@@ -24,6 +24,7 @@ import {
   CaretRight,
   CaretLeft,
   Minus,
+  Tree,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -59,6 +60,7 @@ Icon.ArrowRight = ArrowRight;
 Icon.CaretRight = CaretRight;
 Icon.Remove = Minus;
 Icon.CaretLeft = CaretLeft;
+Icon.Programme = Tree;
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";

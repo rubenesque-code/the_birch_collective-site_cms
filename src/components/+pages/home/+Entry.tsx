@@ -10,7 +10,7 @@ import BannerImage from "./BannerImage";
 import OrgHeadings from "./OrgHeadings";
 import { UserEditableDataCx, type UserEditableDbData } from "./_state";
 import { RevisionCx } from "./_state/RevisionCx";
-import TestimonialSlides from "./testimonials/+Entry";
+import Testimonials from "./testimonials/+Entry";
 import AboutUs from "./about-us/+Entry";
 import PageLayout from "~/components/layouts/Page";
 import Workshops from "./workshops/+Entry";
@@ -19,6 +19,7 @@ import PhotoAlbum from "./photo-album/+Entry";
 import { seedData } from "./_state/user-editable-data/seed-data";
 import SupportUs from "./support-us/+Entry";
 import { isDevMode } from "~/helpers/environment";
+import Supporters from "./supporters/+Entry";
 
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, onSuccess, etc.
@@ -28,6 +29,7 @@ import { isDevMode } from "~/helpers/environment";
 // □ maybe do image abstraction.
 // □ in revision.cx, on save success should use func input to update 'current db data'
 // □ UserEditableDataCx should be renamed - have other editable Cx e.g. new testimonial. Rename to e.g. page editable cx
+// □ abstraction for unfound entity: e.g. image, programme, supporter.
 
 // □ Should have a subtle emboss of section name in each section? Maybe only if one/more text elements have no text
 // □ All inputs should have undo key
@@ -49,12 +51,12 @@ const HomePage = () => {
                   }}
                 >
                   <div className="bg-white">
-                    {/*                     <BannerImage />
+                    <BannerImage />
                     <PageLayout.Section.Spacing>
                       <OrgHeadings />
                     </PageLayout.Section.Spacing>
                     <PageLayout.Section.Spacing>
-                      <TestimonialSlides />
+                      <Testimonials />
                     </PageLayout.Section.Spacing>
                     <PageLayout.Section.Spacing>
                       <AboutUs />
@@ -65,11 +67,14 @@ const HomePage = () => {
                     <PageLayout.Section.Spacing>
                       <Programmes />
                     </PageLayout.Section.Spacing>
-                    <PageLayout.Section.Spacing.Vertical>
+                    {/*                     <PageLayout.Section.Spacing.Vertical>
                       <PhotoAlbum />
-                    </PageLayout.Section.Spacing.Vertical> */}
+                    </PageLayout.Section.Spacing.Vertical> 
                     <PageLayout.Section.Spacing>
                       <SupportUs />
+                    </PageLayout.Section.Spacing>  */}
+                    <PageLayout.Section.Spacing>
+                      <Supporters />
                     </PageLayout.Section.Spacing>
                   </div>
                 </PageLayout.Body>
