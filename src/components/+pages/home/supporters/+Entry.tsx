@@ -183,19 +183,17 @@ const GetSupporterWrapper = ({
 };
 
 const UnfoundSupporter = () => (
-  <div className="group/supporter relative grid place-items-center rounded-md border-2 border-my-alert-content bg-gray-50 p-md">
+  <div className="group/supporter relative flex aspect-video flex-col items-center overflow-auto rounded-md border-2 border-my-alert-content bg-gray-50 p-sm">
     <SupporterMenu />
-    <div className="grid place-items-center">
-      <div className="text-5xl text-gray-500">
-        <Icon.Supporter weight="light" />
-      </div>
-      <div className="mt-4 text-center text-my-alert-content">
-        <p className="mt-1">Error - could not find supporter.</p>
-      </div>
-      <div className="mt-4 max-w-[400px] text-center text-gray-500">
-        A supporter was added to the landing page that can&apos;t be found. It
-        may have been deleted.
-      </div>
+    <div className="text-5xl text-gray-500">
+      <Icon.Supporter weight="light" />
+    </div>
+    <div className="mt-4 text-center text-my-alert-content">
+      <p className="mt-1">Error - can&apos;t find supporter.</p>
+    </div>
+    <div className="mt-4 max-w-[400px] text-center text-gray-500">
+      A supporter was added to the landing page that can&apos;t be found. It may
+      have been deleted.
     </div>
   </div>
 );
