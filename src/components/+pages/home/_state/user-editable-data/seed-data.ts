@@ -48,5 +48,34 @@ export const seedData: { page: MyDb["pages"]["landing"] } = {
       heading: "",
       entries: [],
     },
+    supportUs: {
+      heading: "",
+      donate: {
+        buttonText: "",
+        description: "",
+        image: {
+          dbConnections: {
+            imageId: null,
+          },
+          position: {
+            x: 50,
+            y: 50,
+          },
+        },
+      },
+      volunteer: {
+        buttonText: "",
+        description: "",
+        image: {
+          dbConnections: {
+            imageId: null,
+          },
+          position: {
+            x: 50,
+            y: 50,
+          },
+        },
+      },
+    },
   },
 };

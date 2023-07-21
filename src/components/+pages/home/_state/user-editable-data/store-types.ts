@@ -85,6 +85,45 @@ type Actions = {
         };
       };
     };
+    supportUs: {
+      heading: {
+        update: (newVal: string) => void;
+      };
+      donate: {
+        buttonText: {
+          update: (newVal: string) => void;
+        };
+        description: {
+          update: (newVal: string) => void;
+        };
+        image: {
+          dbConnections: {
+            imageId: { update: (imageId: string) => void };
+          };
+          position: {
+            x: { update: (newVal: number) => void };
+            y: { update: (newVal: number) => void };
+          };
+        };
+      };
+      volunteer: {
+        buttonText: {
+          update: (newVal: string) => void;
+        };
+        description: {
+          update: (newVal: string) => void;
+        };
+        image: {
+          dbConnections: {
+            imageId: { update: (imageId: string) => void };
+          };
+          position: {
+            x: { update: (newVal: number) => void };
+            y: { update: (newVal: number) => void };
+          };
+        };
+      };
+    };
   };
   testimonial: {
     create: (arg0: DbData["testimonials"][number]) => void;

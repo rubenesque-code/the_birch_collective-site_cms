@@ -58,6 +58,35 @@ type Landing = {
       index: number;
     }[];
   };
+  supportUs: {
+    heading: string;
+    donate: {
+      buttonText: string;
+      description: string;
+      image: {
+        dbConnections: {
+          imageId: string | null;
+        };
+        position: {
+          x: number;
+          y: number;
+        };
+      };
+    };
+    volunteer: {
+      buttonText: string;
+      description: string;
+      image: {
+        dbConnections: {
+          imageId: string | null;
+        };
+        position: {
+          x: number;
+          y: number;
+        };
+      };
+    };
+  };
 };
 
 export type Pages = {

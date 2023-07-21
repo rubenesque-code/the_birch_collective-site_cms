@@ -360,7 +360,6 @@ export const createUserEditableDataStore = (input: {
                 },
               },
             },
-
             order: {
               update: (input) =>
                 set(
@@ -396,6 +395,120 @@ export const createUserEditableDataStore = (input: {
                     });
                   }),
                 ),
+            },
+          },
+        },
+        supportUs: {
+          heading: {
+            update: (updatedValue) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.page.supportUs.heading = updatedValue;
+                }),
+              ),
+          },
+          donate: {
+            buttonText: {
+              update: (updatedValue) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.page.supportUs.donate.buttonText = updatedValue;
+                  }),
+                ),
+            },
+            description: {
+              update: (updatedValue) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.page.supportUs.donate.description = updatedValue;
+                  }),
+                ),
+            },
+            image: {
+              dbConnections: {
+                imageId: {
+                  update: (newVal) =>
+                    set(
+                      produce((state: UserEditableDataStore) => {
+                        state.data.page.supportUs.donate.image.dbConnections.imageId =
+                          newVal;
+                      }),
+                    ),
+                },
+              },
+              position: {
+                x: {
+                  update: (newVal) =>
+                    set(
+                      produce((state: UserEditableDataStore) => {
+                        state.data.page.supportUs.donate.image.position.x =
+                          newVal;
+                      }),
+                    ),
+                },
+                y: {
+                  update: (newVal) =>
+                    set(
+                      produce((state: UserEditableDataStore) => {
+                        state.data.page.supportUs.donate.image.position.y =
+                          newVal;
+                      }),
+                    ),
+                },
+              },
+            },
+          },
+          volunteer: {
+            buttonText: {
+              update: (updatedValue) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.page.supportUs.volunteer.buttonText =
+                      updatedValue;
+                  }),
+                ),
+            },
+            description: {
+              update: (updatedValue) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.page.supportUs.volunteer.description =
+                      updatedValue;
+                  }),
+                ),
+            },
+            image: {
+              dbConnections: {
+                imageId: {
+                  update: (newVal) =>
+                    set(
+                      produce((state: UserEditableDataStore) => {
+                        state.data.page.supportUs.volunteer.image.dbConnections.imageId =
+                          newVal;
+                      }),
+                    ),
+                },
+              },
+              position: {
+                x: {
+                  update: (newVal) =>
+                    set(
+                      produce((state: UserEditableDataStore) => {
+                        state.data.page.supportUs.volunteer.image.position.x =
+                          newVal;
+                      }),
+                    ),
+                },
+                y: {
+                  update: (newVal) =>
+                    set(
+                      produce((state: UserEditableDataStore) => {
+                        state.data.page.supportUs.volunteer.image.position.y =
+                          newVal;
+                      }),
+                    ),
+                },
+              },
             },
           },
         },

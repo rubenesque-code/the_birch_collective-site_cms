@@ -47,21 +47,13 @@ const Section = () => {
 
 PageLayout.Section = Section;
 
-function SectionDefault({ children }: { children: ReactNode }) {
+function SectionSpacing({ children }: { children: ReactNode }) {
   return (
     <SectionVerticalSpacing>
       <SectionHorizontalSpacing>{children}</SectionHorizontalSpacing>
     </SectionVerticalSpacing>
   );
 }
-
-Section.Default = SectionDefault;
-
-const SectionSpacing = () => {
-  throw new Error(
-    "PageLayout.Section.Spacing exists for naming purposes only and should not be used as a component",
-  );
-};
 
 Section.Spacing = SectionSpacing;
 

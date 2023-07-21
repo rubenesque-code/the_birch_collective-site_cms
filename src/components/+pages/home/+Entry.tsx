@@ -17,6 +17,7 @@ import Workshops from "./workshops/+Entry";
 import Programmes from "./programmes/+Entry";
 import PhotoAlbum from "./photo-album/+Entry";
 import { seedData } from "./_state/user-editable-data/seed-data";
+import SupportUs from "./support-us/+Entry";
 
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, onSuccess, etc.
@@ -47,24 +48,27 @@ const HomePage = () => {
                 >
                   <div className="bg-white">
                     {/*                     <BannerImage />
-                    <PageLayout.Section.Default>
+                    <PageLayout.Section.Spacing>
                       <OrgHeadings />
-                    </PageLayout.Section.Default> */}
-                    <PageLayout.Section.Default>
+                    </PageLayout.Section.Spacing>
+                    <PageLayout.Section.Spacing>
                       <TestimonialSlides />
-                    </PageLayout.Section.Default>
-                    {/*                     <PageLayout.Section.Default>
+                    </PageLayout.Section.Spacing>
+                    <PageLayout.Section.Spacing>
                       <AboutUs />
-                    </PageLayout.Section.Default>
-                    <PageLayout.Section.Default>
+                    </PageLayout.Section.Spacing>
+                    <PageLayout.Section.Spacing>
                       <Workshops />
-                    </PageLayout.Section.Default> */}
-                    {/*                     <PageLayout.Section.Default>
+                    </PageLayout.Section.Spacing>
+                    <PageLayout.Section.Spacing>
                       <Programmes />
-                    </PageLayout.Section.Default> */}
+                    </PageLayout.Section.Spacing>
                     <PageLayout.Section.Spacing.Vertical>
                       <PhotoAlbum />
-                    </PageLayout.Section.Spacing.Vertical>
+                    </PageLayout.Section.Spacing.Vertical> */}
+                    <PageLayout.Section.Spacing>
+                      <SupportUs />
+                    </PageLayout.Section.Spacing>
                   </div>
                 </PageLayout.Body>
               </div>
