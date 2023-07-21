@@ -856,7 +856,7 @@ export const createUserEditableDataStore = (input: {
               }),
             ),
         },
-        title: {
+        name: {
           update: (input) =>
             set(
               produce((state: UserEditableDataStore) => {
@@ -864,7 +864,7 @@ export const createUserEditableDataStore = (input: {
                   (t) => t.id === input.id,
                 );
                 if (index !== -1)
-                  state.data.supporters[index].title = input.newVal;
+                  state.data.supporters[index].name = input.newVal;
               }),
             ),
         },
@@ -876,7 +876,7 @@ export const createUserEditableDataStore = (input: {
                   (t) => t.id === input.id,
                 );
                 if (index !== -1)
-                  state.data.supporters[index].title = input.newVal;
+                  state.data.supporters[index].name = input.newVal;
               }),
             ),
         },

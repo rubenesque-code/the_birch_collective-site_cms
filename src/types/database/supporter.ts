@@ -7,5 +7,5 @@ export type Supporter = {
     };
   };
   url: string;
-  title: string;
+  name: string;
 };

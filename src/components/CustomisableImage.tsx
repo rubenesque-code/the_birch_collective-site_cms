@@ -7,11 +7,13 @@ type Props = { urls: MyDb["image"]["urls"] } & {
     x: number;
     y: number;
   };
+  objectFit?: "cover" | "contain";
 };
 
 export const CustomisableImage = ({
   urls,
   position = { x: 50, y: 50 },
+  objectFit = "cover",
 }: Props) => (
   <NextImage
     alt=""
@@ -20,7 +22,7 @@ export const CustomisableImage = ({
     blurDataURL={urls.blur}
     placeholder="blur"
     style={{
-      objectFit: "cover",
+      objectFit,
       objectPosition: `${position.x}% ${position.y}%`,
     }}
   />

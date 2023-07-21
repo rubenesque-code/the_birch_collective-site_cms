@@ -10,6 +10,7 @@ import {
   ComponentApiCx,
   type ContextValue as ComponentApiProps,
 } from "./_state";
+import { CreateModal } from "./CreateModal";
 
 // create new, add to landing, re-arrange order, delete, update image (no position), update link, update title
 
@@ -36,6 +37,9 @@ const Content = () => {
     <div className="relative flex max-h-[70vh] min-h-[500px] w-[90vw] max-w-[1200px] flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
       <div className="flex items-center justify-between border-b border-b-gray-200 pb-sm">
         <h3 className="leading-6">Edit supporters</h3>
+      </div>
+      <div className="mt-sm">
+        <CreateModal />
       </div>
       <div className="mt-sm flex-grow overflow-y-auto">
         <Supporters />

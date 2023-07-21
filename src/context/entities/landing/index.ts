@@ -1,4 +1,6 @@
 import { ProgrammeCx } from "./ProgrammeCx";
+import { PhotoAlbumEntryCx } from "./PhotoAlbumEntry";
+import { SupporterCx } from "./SupporterCx";
 
 function LandingCx() {
   throw new Error(
@@ -9,3 +11,5 @@ function LandingCx() {
 export { LandingCx };
 
 LandingCx.Programme = ProgrammeCx;
+LandingCx.PhotoAlbumEntry = PhotoAlbumEntryCx;
+LandingCx.Supporter = SupporterCx;

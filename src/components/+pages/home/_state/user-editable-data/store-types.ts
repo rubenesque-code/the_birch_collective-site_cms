@@ -184,7 +184,7 @@ type Actions = {
     order: {
       update: (arg0: { activeId: string; overId: string }) => void;
     };
-    title: {
+    name: {
       update: (arg0: { id: string; newVal: string }) => void;
     };
     url: {

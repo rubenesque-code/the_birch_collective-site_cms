@@ -51,14 +51,14 @@ const HomePage = () => {
                   }}
                 >
                   <div className="bg-white">
-                    <BannerImage />
+                    {/*                     <BannerImage />
                     <PageLayout.Section.Spacing>
                       <OrgHeadings />
-                    </PageLayout.Section.Spacing>
+                    </PageLayout.Section.Spacing> */}
                     <PageLayout.Section.Spacing>
                       <Testimonials />
                     </PageLayout.Section.Spacing>
-                    <PageLayout.Section.Spacing>
+                    {/*                     <PageLayout.Section.Spacing>
                       <AboutUs />
                     </PageLayout.Section.Spacing>
                     <PageLayout.Section.Spacing>
@@ -66,7 +66,7 @@ const HomePage = () => {
                     </PageLayout.Section.Spacing>
                     <PageLayout.Section.Spacing>
                       <Programmes />
-                    </PageLayout.Section.Spacing>
+                    </PageLayout.Section.Spacing> */}
                     {/*                     <PageLayout.Section.Spacing.Vertical>
                       <PhotoAlbum />
                     </PageLayout.Section.Spacing.Vertical> 

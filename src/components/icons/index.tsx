@@ -25,6 +25,7 @@ import {
   CaretLeft,
   Minus,
   Tree,
+  PiggyBank,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -61,6 +62,7 @@ Icon.CaretRight = CaretRight;
 Icon.Remove = Minus;
 Icon.CaretLeft = CaretLeft;
 Icon.Programme = Tree;
+Icon.Supporter = PiggyBank;
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";
