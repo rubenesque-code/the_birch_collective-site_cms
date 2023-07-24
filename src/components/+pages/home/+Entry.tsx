@@ -4,7 +4,7 @@ import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
 import { PageDataFetch } from "~/components/PageDataFetch";
-import Header from "~/components/parts/header";
+import CmsHeader from "~/components/parts/cms-header";
 import { myDb } from "~/my-firebase/firestore";
 import BannerImage from "./BannerImage";
 import OrgHeadings from "./OrgHeadings";
@@ -16,10 +16,9 @@ import PageLayout from "~/components/layouts/Page";
 import Workshops from "./workshops/+Entry";
 import Programmes from "./programmes/+Entry";
 import PhotoAlbum from "./photo-album/+Entry";
-import { seedData } from "./_state/user-editable-data/seed-data";
 import SupportUs from "./support-us/+Entry";
-import { isDevMode } from "~/helpers/environment";
 import Supporters from "./supporters/+Entry";
+import FrontendHeader from "~/components/parts/frontend-header/+Entry";
 
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, onSuccess, etc.
@@ -43,7 +42,10 @@ const HomePage = () => {
           <RevisionCx.Provider initDbData={initDbData}>
             {({ actions, data }) => (
               <div className="flex h-screen w-screen flex-col overflow-hidden">
-                <Header actions={actions} data={{ isChange: data.isChange }} />
+                <CmsHeader
+                  actions={actions}
+                  data={{ isChange: data.isChange }}
+                />
                 <PageLayout.Body
                   styles={{
                     outer:
@@ -52,14 +54,15 @@ const HomePage = () => {
                   }}
                 >
                   <div className="bg-white">
+                    <FrontendHeader />
                     {/*                     <BannerImage />
                     <PageLayout.Section.Spacing>
                       <OrgHeadings />
-                    </PageLayout.Section.Spacing> */}
-                    {/*                     <PageLayout.Section.Spacing>
+                    </PageLayout.Section.Spacing>
+                    <PageLayout.Section.Spacing>
                       <Testimonials />
-                    </PageLayout.Section.Spacing> */}
-                    {/*                     <PageLayout.Section.Spacing>
+                    </PageLayout.Section.Spacing>
+                    <PageLayout.Section.Spacing>
                       <AboutUs />
                     </PageLayout.Section.Spacing>
                     <PageLayout.Section.Spacing>
@@ -67,16 +70,16 @@ const HomePage = () => {
                     </PageLayout.Section.Spacing>
                     <PageLayout.Section.Spacing>
                       <Programmes />
-                    </PageLayout.Section.Spacing> */}
-                    {/*                     <PageLayout.Section.Spacing.Vertical>
+                    </PageLayout.Section.Spacing>
+                    <PageLayout.Section.Spacing.Vertical>
                       <PhotoAlbum />
-                    </PageLayout.Section.Spacing.Vertical> 
+                    </PageLayout.Section.Spacing.Vertical>
                     <PageLayout.Section.Spacing>
                       <SupportUs />
-                    </PageLayout.Section.Spacing>  */}
+                    </PageLayout.Section.Spacing>
                     <PageLayout.Section.Spacing>
                       <Supporters />
-                    </PageLayout.Section.Spacing>
+                    </PageLayout.Section.Spacing> */}
                   </div>
                 </PageLayout.Body>
               </div>
@@ -99,12 +102,16 @@ const InitData = ({
   const testimonialsQuery = useQuery("testimonials", myDb.testimonial.fetchAll);
   const programmesQuery = useQuery("programmes", myDb.programme.fetchAll);
   const supportersQuery = useQuery("supporters", myDb.supporter.fetchAll);
+  const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
+  const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
 
   if (
     landingQuery.isLoading ||
     testimonialsQuery.isLoading ||
     programmesQuery.isLoading ||
-    supportersQuery.isLoading
+    supportersQuery.isLoading ||
+    linkLabelsQuery.isLoading ||
+    orgDetailsQuery.isLoading
   ) {
     return <PageDataFetch.Loading />;
   }
@@ -117,20 +124,21 @@ const InitData = ({
     programmesQuery.isError ||
     !programmesQuery.data ||
     supportersQuery.isError ||
-    !supportersQuery.data
+    !supportersQuery.data ||
+    linkLabelsQuery.isError ||
+    !linkLabelsQuery.data ||
+    orgDetailsQuery.isError ||
+    !orgDetailsQuery.data
   ) {
     return <PageDataFetch.Error />;
   }
 
-  const page = landingQuery.data;
-  /*   const page = isDevMode
-    ? Object.assign(seedData.page, landingQuery.data)
-    : landingQuery.data; */
-
   return children({
-    page,
+    page: landingQuery.data,
     testimonials: testimonialsQuery.data,
     programmes: programmesQuery.data,
     supporters: supportersQuery.data,
+    orgDetails: orgDetailsQuery.data,
+    linkLabels: linkLabelsQuery.data,
   });
 };

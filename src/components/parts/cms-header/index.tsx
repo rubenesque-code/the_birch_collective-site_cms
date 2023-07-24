@@ -5,7 +5,7 @@ import { Icon } from "~/components/icons";
 import { RevisionButtons } from "./RevisionButtons";
 import { ComponentApiCx, type ContextApiCxProps } from "./_state";
 
-const Header = (props: ContextApiCxProps) => (
+const CmsHeader = (props: ContextApiCxProps) => (
   <ComponentApiCx.Provider {...props}>
     <div className="flex items-center justify-between border-b bg-gray-50 px-md py-sm">
       <SideBarMenu />
@@ -17,7 +17,7 @@ const Header = (props: ContextApiCxProps) => (
   </ComponentApiCx.Provider>
 );
 
-export default Header;
+export default CmsHeader;
 
 const UserStatusMenu = () => {
   return (

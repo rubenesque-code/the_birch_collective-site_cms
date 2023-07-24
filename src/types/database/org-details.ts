@@ -1,6 +1,12 @@
 export type OrgDetails = {
+  name: string;
+  logoImage: {
+    dbConnections: {
+      imageId: string | null;
+    };
+  };
   contact: Contact;
-  socialMediaLinks: SocialMedia;
+  socialMediaLinks: SocialMediaLinks;
 };
 
 type Contact = {
@@ -9,7 +15,7 @@ type Contact = {
   email: string;
 };
 
-type SocialMedia = {
+type SocialMediaLinks = {
   facebook: string;
   instagram: string;
   linkedIn: string;

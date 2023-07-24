@@ -1,13 +1,17 @@
-import { TextAreaForm, TextInputForm } from "~/components/forms";
-import { UserEditableDataCx } from "../_state";
-import { RevisionCx } from "../_state/RevisionCx";
 import React, { type ReactNode } from "react";
 import { produce } from "immer";
+
+import type { MyDb } from "~/types/database";
+
+import { useToast } from "~/hooks";
+import { LandingCx, SupporterCx } from "~/context/entities";
+
+import { UserEditableDataCx } from "../_state";
+import { RevisionCx } from "../_state/RevisionCx";
+
+import { TextAreaForm, TextInputForm } from "~/components/forms";
 import SupportersModal from "~/components/supporters-modal/+Entry";
 import { Icon } from "~/components/icons";
-import { LandingCx, SupporterCx } from "~/context/entities";
-import type { MyDb } from "~/types/database";
-import { useToast } from "~/hooks";
 import { ComponentMenu } from "~/components/menus";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
@@ -78,8 +82,6 @@ const Entries = () => {
     },
     supporters,
   } = UserEditableDataCx.useAllData();
-  console.log("supporters:", supporters);
-  console.log("entries:", entries);
 
   const {
     page: {
@@ -111,7 +113,8 @@ const Entries = () => {
     });
     return sorted;
   }, [entries, supporters]);
-  console.log("entriesSorted:", entriesSorted);
+
+  const toast = useToast();
 
   return (
     <div className="mt-md">
@@ -128,9 +131,10 @@ const Entries = () => {
               <span className="">Edit supporters</span>
             </div>
           )}
-          connectSupporter={(supporterId) =>
-            entryAction.add({ dbConnections: { supporterId } })
-          }
+          connectSupporter={(supporterId) => {
+            entryAction.add({ dbConnections: { supporterId } });
+            toast.neutral("added supporter to landing");
+          }}
           usedSupporterIds={entries.map(
             (entry) => entry.dbConnections.supporterId,
           )}

@@ -12,10 +12,7 @@ import { useDocRevisionData, useDocsRevisionData, useToast } from "~/hooks";
 type ContextValue = {
   data: {
     isChange: boolean;
-    // isTestimonialsChange: boolean;
     undoKey: string;
-    // page: ReturnType<typeof useDocRevisionData>;
-    // testimonials: ReturnType<typeof useDocsRevisionData>;
   };
   actions: {
     save: () => void;
@@ -41,6 +38,10 @@ function Provider({
     dbData: currentDbData.page,
     userEditedData: userEditableData.page,
   });
+  const orgDetailsRevisionData = useDocRevisionData({
+    dbData: currentDbData.orgDetails,
+    userEditedData: userEditableData.orgDetails,
+  });
   const testimonialsRevisionData = useDocsRevisionData({
     dbData: currentDbData.testimonials,
     userEditedData: userEditableData.testimonials,
@@ -56,6 +57,7 @@ function Provider({
 
   const isChange =
     pageRevisionData.isChange ||
+    orgDetailsRevisionData.isChange ||
     testimonialsRevisionData.isChange ||
     programmesRevisionData.isChange ||
     supportersRevisionData.isChange;
@@ -81,6 +83,7 @@ function Provider({
           landingSaveMutation.mutateAsync(
             {
               page: pageRevisionData.saveData,
+              orgDetails: orgDetailsRevisionData.saveData,
               testimonials: testimonialsRevisionData.saveData,
               programmes: programmesRevisionData.saveData,
               supporters: supportersRevisionData.saveData,
@@ -112,8 +115,6 @@ function Provider({
     data: {
       isChange,
       undoKey,
-      // page: pageRevisionData,
-      // testimonials: testimonialsRevisionData,
     },
   };
 

@@ -7,6 +7,8 @@ type DbData = {
   testimonials: MyDb["testimonial"][];
   programmes: MyDb["programme"][];
   supporters: MyDb["supporter"][];
+  orgDetails: MyDb["singles"]["orgDetails"];
+  linkLabels: MyDb["singles"]["linkLabels"];
 };
 
 type Actions = {
@@ -194,6 +196,67 @@ type Actions = {
       dbConnections: {
         imageId: { update: (arg0: { id: string; newVal: string }) => void };
       };
+    };
+  };
+  orgDetails: {
+    name: {
+      update: (arg0: string) => void;
+    };
+    logoImage: {
+      dbConnections: {
+        imageId: { update: (arg0: string) => void };
+      };
+    };
+    contact: {
+      address: {
+        update: (arg0: string) => void;
+      };
+      phoneNumber: {
+        update: (arg0: string) => void;
+      };
+      email: {
+        update: (arg0: string) => void;
+      };
+    };
+    socialMediaLinks: {
+      facebook: {
+        update: (arg0: string) => void;
+      };
+      instagram: {
+        update: (arg0: string) => void;
+      };
+      linkedIn: {
+        update: (arg0: string) => void;
+      };
+    };
+  };
+  linkLabels: {
+    aboutUs: {
+      update: (arg0: string) => void;
+    };
+    programmes: {
+      update: (arg0: string) => void;
+    };
+    getInvolved: {
+      update: (arg0: string) => void;
+    };
+    workshops: {
+      update: (arg0: string) => void;
+    };
+    donate: {
+      update: (arg0: string) => void;
+    };
+    volunteer: {
+      update: (arg0: string) => void;
+    };
+    meetTheTeam: {
+      update: (arg0: string) => void;
+    };
+    getInTouch: {
+      update: (arg0: string) => void;
+    };
+    careers: {
+      update: (arg0: string) => void;
     };
   };
 };

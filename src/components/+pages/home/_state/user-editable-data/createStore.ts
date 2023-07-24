@@ -898,6 +898,157 @@ export const createUserEditableDataStore = (input: {
           },
         },
       },
+
+      orgDetails: {
+        name: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                state.data.orgDetails.name = input;
+              }),
+            ),
+        },
+        logoImage: {
+          dbConnections: {
+            imageId: {
+              update: (input) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.orgDetails.logoImage.dbConnections.imageId =
+                      input;
+                  }),
+                ),
+            },
+          },
+        },
+        contact: {
+          address: {
+            update: (input) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.orgDetails.contact.address = input;
+                }),
+              ),
+          },
+          email: {
+            update: (input) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.orgDetails.contact.email = input;
+                }),
+              ),
+          },
+          phoneNumber: {
+            update: (input) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.orgDetails.contact.phoneNumber = input;
+                }),
+              ),
+          },
+        },
+        socialMediaLinks: {
+          facebook: {
+            update: (input) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.orgDetails.socialMediaLinks.facebook = input;
+                }),
+              ),
+          },
+          instagram: {
+            update: (input) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.orgDetails.socialMediaLinks.instagram = input;
+                }),
+              ),
+          },
+          linkedIn: {
+            update: (input) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.orgDetails.socialMediaLinks.linkedIn = input;
+                }),
+              ),
+          },
+        },
+      },
+
+      linkLabels: {
+        aboutUs: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                state.data.linkLabels.aboutUs = input;
+              }),
+            ),
+        },
+        careers: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                state.data.linkLabels.careers = input;
+              }),
+            ),
+        },
+        donate: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                state.data.linkLabels.donate = input;
+              }),
+            ),
+        },
+        getInTouch: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                state.data.linkLabels.getInTouch = input;
+              }),
+            ),
+        },
+        getInvolved: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                state.data.linkLabels.getInvolved = input;
+              }),
+            ),
+        },
+        meetTheTeam: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                state.data.linkLabels.meetTheTeam = input;
+              }),
+            ),
+        },
+        programmes: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                state.data.linkLabels.programmes = input;
+              }),
+            ),
+        },
+        volunteer: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                state.data.linkLabels.volunteer = input;
+              }),
+            ),
+        },
+        workshops: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                state.data.linkLabels.workshops = input;
+              }),
+            ),
+        },
+      },
     },
   }));
 };

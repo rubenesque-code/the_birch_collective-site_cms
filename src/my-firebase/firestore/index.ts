@@ -36,7 +36,15 @@ import {
   fetchProgrammes,
   fetchOneSupporter,
   fetchSupporters,
+  fetchOrgDetails,
+  fetchLinkLabels,
+  fetchHeader,
+  fetchFooter,
 } from "./query";
+import { batchUpdateOrgDetails, updateOrgDetails } from "./mutate/orgDetails";
+import { batchUpdateLinkLabels, updateLinkLabels } from "./mutate/linkLabels";
+import { batchUpdateHeader, updateHeader } from "./mutate/header";
+import { batchUpdateFooter, updateFooter } from "./mutate/footer";
 
 export const myDb = {
   pages: {
@@ -46,6 +54,34 @@ export const myDb = {
       batch: {
         update: batchUpdateLandingPage,
       },
+    },
+  },
+  orgDetails: {
+    fetch: fetchOrgDetails,
+    update: updateOrgDetails,
+    batch: {
+      update: batchUpdateOrgDetails,
+    },
+  },
+  linkLabels: {
+    fetch: fetchLinkLabels,
+    update: updateLinkLabels,
+    batch: {
+      update: batchUpdateLinkLabels,
+    },
+  },
+  header: {
+    fetch: fetchHeader,
+    update: updateHeader,
+    batch: {
+      update: batchUpdateHeader,
+    },
+  },
+  footer: {
+    fetch: fetchFooter,
+    update: updateFooter,
+    batch: {
+      update: batchUpdateFooter,
     },
   },
   image: {

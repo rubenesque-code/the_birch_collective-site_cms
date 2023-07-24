@@ -7,6 +7,7 @@ import { myDb } from "../..";
 
 export const landingPageTransaction = async (input: {
   page: Partial<MyDb["pages"]["landing"]> | null;
+  orgDetails: Partial<MyDb["singles"]["orgDetails"]> | null;
   testimonials: {
     updated: DocPartialWithId<MyDb["testimonial"]>[];
     created: MyDb["testimonial"][];
@@ -25,6 +26,9 @@ export const landingPageTransaction = async (input: {
 }) => {
   const batch = writeBatch(firestore);
 
+  if (input.orgDetails) {
+    myDb.orgDetails.batch.update(input.orgDetails, batch);
+  }
   if (input.page) {
     myDb.pages.landing.batch.update(input.page, batch);
   }

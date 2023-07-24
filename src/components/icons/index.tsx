@@ -27,6 +27,7 @@ import {
   Tree,
   PiggyBank,
   FlowArrow,
+  CaretDown,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -60,6 +61,7 @@ Icon.Create = Plus;
 Icon.DndHandle = DotsSixVertical;
 Icon.ArrowRight = ArrowRight;
 Icon.CaretRight = CaretRight;
+Icon.CaretDown = CaretDown;
 Icon.Remove = Minus;
 Icon.CaretLeft = CaretLeft;
 Icon.Programme = Tree;

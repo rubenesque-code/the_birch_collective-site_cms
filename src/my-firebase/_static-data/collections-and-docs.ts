@@ -4,16 +4,25 @@ const collections = {
   testimonials: "testimonials",
   programmes: "programmes",
   supporters: "supporters",
+  singles: "singles",
 };
 
 const pages = {
   landing: "landing",
 };
 
+const singles = {
+  orgDetails: "orgDetails",
+  linkLabels: "linkLabels",
+  header: "header",
+  footer: "footer",
+};
+
 export const firestore_file_system_names = {
   collections,
   docs: {
     pages,
+    singles,
   },
 };
 
