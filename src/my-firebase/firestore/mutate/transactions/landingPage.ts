@@ -8,6 +8,8 @@ import { myDb } from "../..";
 export const landingPageTransaction = async (input: {
   page: Partial<MyDb["pages"]["landing"]> | null;
   orgDetails: Partial<MyDb["singles"]["orgDetails"]> | null;
+  linkLabels: Partial<MyDb["singles"]["linkLabels"]> | null;
+  header: Partial<MyDb["singles"]["header"]> | null;
   testimonials: {
     updated: DocPartialWithId<MyDb["testimonial"]>[];
     created: MyDb["testimonial"][];
@@ -28,6 +30,12 @@ export const landingPageTransaction = async (input: {
 
   if (input.orgDetails) {
     myDb.orgDetails.batch.update(input.orgDetails, batch);
+  }
+  if (input.header) {
+    myDb.header.batch.update(input.header, batch);
+  }
+  if (input.linkLabels) {
+    myDb.linkLabels.batch.update(input.linkLabels, batch);
   }
   if (input.page) {
     myDb.pages.landing.batch.update(input.page, batch);

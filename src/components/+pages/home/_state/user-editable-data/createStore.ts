@@ -1049,6 +1049,49 @@ export const createUserEditableDataStore = (input: {
             ),
         },
       },
+
+      header: {
+        aboutUs: {
+          popover: {
+            heading: {
+              update: (input) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.header.aboutUs.popover.heading = input;
+                  }),
+                ),
+            },
+            subheading: {
+              update: (input) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.header.aboutUs.popover.subheading = input;
+                  }),
+                ),
+            },
+          },
+        },
+        getInvolved: {
+          popover: {
+            heading: {
+              update: (input) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.header.getInvolved.popover.heading = input;
+                  }),
+                ),
+            },
+            subheading: {
+              update: (input) =>
+                set(
+                  produce((state: UserEditableDataStore) => {
+                    state.data.header.getInvolved.popover.subheading = input;
+                  }),
+                ),
+            },
+          },
+        },
+      },
     },
   }));
 };

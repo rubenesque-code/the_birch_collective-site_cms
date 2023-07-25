@@ -4,7 +4,7 @@ import { WithTooltip } from "~/components/WithTooltip";
 import { TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 
-const AboutUs = () => {
+const GetInvolved = () => {
   const { linkLabels } = UserEditableDataCx.useAllData();
 
   const { linkLabels: linkLabelAction } = UserEditableDataCx.useAction();
@@ -13,15 +13,15 @@ const AboutUs = () => {
     <div className="flex items-center gap-xxs">
       <div className="max-w-[300px] overflow-x-auto text-sm font-semibold uppercase tracking-wide lg:text-base xl:text-lg">
         <TextInputForm
-          localStateValue={linkLabels.aboutUs}
+          localStateValue={linkLabels.getInvolved}
           onSubmit={({ inputValue }) =>
-            linkLabelAction.aboutUs.update(inputValue)
+            linkLabelAction.getInvolved.update(inputValue)
           }
           input={{
-            placeholder: "About us link text",
+            placeholder: "Get involved link text",
             styles: "uppercase tracking-wide",
           }}
-          tooltip="Click to edit about us link text"
+          tooltip="Click to edit get involved link text"
         />
       </div>
 
@@ -44,7 +44,7 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;
+export default GetInvolved;
 
 const PanelContent = () => {
   const { header } = UserEditableDataCx.useAllData();
@@ -55,27 +55,27 @@ const PanelContent = () => {
     <div>
       <div className="font-display text-4xl font-bold tracking-wide text-displayGreen">
         <TextInputForm
-          localStateValue={header.aboutUs.popover.heading}
+          localStateValue={header.getInvolved.popover.heading}
           onSubmit={({ inputValue }) =>
-            headerAction.aboutUs.popover.heading.update(inputValue)
+            headerAction.getInvolved.popover.heading.update(inputValue)
           }
           input={{
-            placeholder: "About us menu heading",
+            placeholder: "Get involved menu heading",
             styles: "tracking-wide",
           }}
-          tooltip="Click to edit about us menu heading"
+          tooltip="Click to edit get involved menu heading"
         />
       </div>
       <div className="mt-2 text-lg">
         <TextInputForm
-          localStateValue={header.aboutUs.popover.subheading}
+          localStateValue={header.getInvolved.popover.subheading}
           onSubmit={({ inputValue }) =>
-            headerAction.aboutUs.popover.subheading.update(inputValue)
+            headerAction.getInvolved.popover.subheading.update(inputValue)
           }
           input={{
-            placeholder: "About us menu subheading",
+            placeholder: "Get involved menu subheading",
           }}
-          tooltip="Click to edit about us menu subheading"
+          tooltip="Click to edit get involved menu subheading"
         />
       </div>
       <PanelLinks />
@@ -96,15 +96,15 @@ const PanelLinks = () => {
         </div>
         <div className="text-lg uppercase tracking-wide">
           <TextInputForm
-            localStateValue={linkLabels.aboutUs}
+            localStateValue={linkLabels.donate}
             onSubmit={({ inputValue }) =>
-              linkLabelAction.aboutUs.update(inputValue)
+              linkLabelAction.donate.update(inputValue)
             }
             input={{
-              placeholder: "About us link text",
+              placeholder: "Donate link text",
               styles: "tracking-wide uppercase",
             }}
-            tooltip="Click to edit about us link text"
+            tooltip="Click to edit donate link text"
           />
         </div>
       </div>
@@ -115,15 +115,15 @@ const PanelLinks = () => {
         </div>
         <div className="text-lg uppercase tracking-wide">
           <TextInputForm
-            localStateValue={linkLabels.meetTheTeam}
+            localStateValue={linkLabels.volunteer}
             onSubmit={({ inputValue }) =>
-              linkLabelAction.meetTheTeam.update(inputValue)
+              linkLabelAction.volunteer.update(inputValue)
             }
             input={{
-              placeholder: "Meet the team link text",
+              placeholder: "Volunteer link text",
               styles: "tracking-wide uppercase",
             }}
-            tooltip="Click to edit meet the team link text"
+            tooltip="Click to edit volunteer link text"
           />
         </div>
       </div>
@@ -134,15 +134,15 @@ const PanelLinks = () => {
         </div>
         <div className="text-lg uppercase tracking-wide">
           <TextInputForm
-            localStateValue={linkLabels.getInTouch}
+            localStateValue={linkLabels.careers}
             onSubmit={({ inputValue }) =>
-              linkLabelAction.getInTouch.update(inputValue)
+              linkLabelAction.careers.update(inputValue)
             }
             input={{
-              placeholder: "Contact link text",
+              placeholder: "Careers link text",
               styles: "tracking-wide uppercase",
             }}
-            tooltip="Click to edit contact link text"
+            tooltip="Click to edit careers link text"
           />
         </div>
       </div>

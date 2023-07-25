@@ -42,6 +42,14 @@ function Provider({
     dbData: currentDbData.orgDetails,
     userEditedData: userEditableData.orgDetails,
   });
+  const linkLabelsRevisionData = useDocRevisionData({
+    dbData: currentDbData.linkLabels,
+    userEditedData: userEditableData.linkLabels,
+  });
+  const headerRevisionData = useDocRevisionData({
+    dbData: currentDbData.header,
+    userEditedData: userEditableData.header,
+  });
   const testimonialsRevisionData = useDocsRevisionData({
     dbData: currentDbData.testimonials,
     userEditedData: userEditableData.testimonials,
@@ -60,6 +68,8 @@ function Provider({
     orgDetailsRevisionData.isChange ||
     testimonialsRevisionData.isChange ||
     programmesRevisionData.isChange ||
+    linkLabelsRevisionData.isChange ||
+    supportersRevisionData.isChange ||
     supportersRevisionData.isChange;
 
   const ifChange = (arg0: () => void) => {
@@ -87,6 +97,8 @@ function Provider({
               testimonials: testimonialsRevisionData.saveData,
               programmes: programmesRevisionData.saveData,
               supporters: supportersRevisionData.saveData,
+              linkLabels: linkLabelsRevisionData.saveData,
+              header: headerRevisionData.saveData,
             },
             {
               onSuccess() {

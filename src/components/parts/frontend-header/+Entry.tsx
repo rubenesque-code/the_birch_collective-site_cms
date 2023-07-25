@@ -5,13 +5,46 @@ import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper"
 import { TextInputForm } from "~/components/forms";
 import { ComponentMenu } from "~/components/menus";
 import AboutUs from "./AboutUs";
+import GetInvolved from "./GetInvolved";
 
 const FrontendHeader = () => {
+  const { linkLabels } = UserEditableDataCx.useAllData();
+
+  const { linkLabels: linkLabelAction } = UserEditableDataCx.useAction();
+
   return (
     <div className="flex items-center justify-between p-md">
       <LogoAndOrgName />
+
       <div className="flex items-center gap-md">
         <AboutUs />
+        <div className="max-w-[300px] overflow-x-auto text-sm font-semibold uppercase tracking-wide lg:text-base xl:text-lg">
+          <TextInputForm
+            localStateValue={linkLabels.programmes}
+            onSubmit={({ inputValue }) =>
+              linkLabelAction.programmes.update(inputValue)
+            }
+            input={{
+              placeholder: "Programmes link text",
+              styles: "uppercase tracking-wide",
+            }}
+            tooltip="Click to edit programmes link text"
+          />
+        </div>
+        <GetInvolved />
+        <div className="max-w-[300px] overflow-x-auto text-sm font-semibold uppercase tracking-wide lg:text-base xl:text-lg">
+          <TextInputForm
+            localStateValue={linkLabels.workshops}
+            onSubmit={({ inputValue }) =>
+              linkLabelAction.workshops.update(inputValue)
+            }
+            input={{
+              placeholder: "Workshops link text",
+              styles: "uppercase tracking-wide",
+            }}
+            tooltip="Click to edit workshops link text"
+          />
+        </div>
       </div>
     </div>
   );

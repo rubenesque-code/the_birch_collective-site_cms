@@ -9,6 +9,7 @@ type DbData = {
   supporters: MyDb["supporter"][];
   orgDetails: MyDb["singles"]["orgDetails"];
   linkLabels: MyDb["singles"]["linkLabels"];
+  header: MyDb["singles"]["header"];
 };
 
 type Actions = {
@@ -257,6 +258,28 @@ type Actions = {
     };
     careers: {
       update: (arg0: string) => void;
+    };
+  };
+  header: {
+    aboutUs: {
+      popover: {
+        heading: {
+          update: (arg0: string) => void;
+        };
+        subheading: {
+          update: (arg0: string) => void;
+        };
+      };
+    };
+    getInvolved: {
+      popover: {
+        heading: {
+          update: (arg0: string) => void;
+        };
+        subheading: {
+          update: (arg0: string) => void;
+        };
+      };
     };
   };
 };

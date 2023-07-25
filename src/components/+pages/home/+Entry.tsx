@@ -104,6 +104,8 @@ const InitData = ({
   const supportersQuery = useQuery("supporters", myDb.supporter.fetchAll);
   const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
   const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
+  const headerQuery = useQuery("header", myDb.header.fetch);
+  // const footerQuery = useQuery("footer", myDb.footer.fetch);
 
   if (
     landingQuery.isLoading ||
@@ -111,6 +113,8 @@ const InitData = ({
     programmesQuery.isLoading ||
     supportersQuery.isLoading ||
     linkLabelsQuery.isLoading ||
+    headerQuery.isLoading ||
+    // footerQuery.isLoading ||
     orgDetailsQuery.isLoading
   ) {
     return <PageDataFetch.Loading />;
@@ -127,6 +131,8 @@ const InitData = ({
     !supportersQuery.data ||
     linkLabelsQuery.isError ||
     !linkLabelsQuery.data ||
+    headerQuery.isError ||
+    !headerQuery.data ||
     orgDetailsQuery.isError ||
     !orgDetailsQuery.data
   ) {
@@ -140,5 +146,6 @@ const InitData = ({
     supporters: supportersQuery.data,
     orgDetails: orgDetailsQuery.data,
     linkLabels: linkLabelsQuery.data,
+    header: headerQuery.data,
   });
 };
