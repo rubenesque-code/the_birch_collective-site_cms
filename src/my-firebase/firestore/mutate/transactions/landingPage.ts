@@ -10,6 +10,7 @@ export const landingPageTransaction = async (input: {
   orgDetails: Partial<MyDb["singles"]["orgDetails"]> | null;
   linkLabels: Partial<MyDb["singles"]["linkLabels"]> | null;
   header: Partial<MyDb["singles"]["header"]> | null;
+  footer: Partial<MyDb["singles"]["footer"]> | null;
   testimonials: {
     updated: DocPartialWithId<MyDb["testimonial"]>[];
     created: MyDb["testimonial"][];

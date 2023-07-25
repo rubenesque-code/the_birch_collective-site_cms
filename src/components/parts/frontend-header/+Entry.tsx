@@ -6,11 +6,16 @@ import { TextInputForm } from "~/components/forms";
 import { ComponentMenu } from "~/components/menus";
 import AboutUs from "./AboutUs";
 import GetInvolved from "./GetInvolved";
+import { RevisionCx } from "~/components/+pages/home/_state/RevisionCx";
 
 const FrontendHeader = () => {
   const { linkLabels } = UserEditableDataCx.useAllData();
 
   const { linkLabels: linkLabelAction } = UserEditableDataCx.useAction();
+
+  const {
+    data: { undoKey },
+  } = RevisionCx.use();
 
   return (
     <div className="flex items-center justify-between p-md">
@@ -29,6 +34,7 @@ const FrontendHeader = () => {
               styles: "uppercase tracking-wide",
             }}
             tooltip="Click to edit programmes link text"
+            key={undoKey}
           />
         </div>
         <GetInvolved />
@@ -43,6 +49,7 @@ const FrontendHeader = () => {
               styles: "uppercase tracking-wide",
             }}
             tooltip="Click to edit workshops link text"
+            key={undoKey}
           />
         </div>
       </div>
@@ -58,6 +65,10 @@ const LogoAndOrgName = () => {
   } = UserEditableDataCx.useAllData();
 
   const { orgDetails: orgDetailsAction } = UserEditableDataCx.useAction();
+
+  const {
+    data: { undoKey },
+  } = RevisionCx.use();
 
   return (
     <div className="flex items-center gap-sm">
@@ -82,6 +93,7 @@ const LogoAndOrgName = () => {
           }
           input={{ placeholder: "Org name" }}
           tooltip="Click to edit org name"
+          key={undoKey}
         />
       </div>
     </div>

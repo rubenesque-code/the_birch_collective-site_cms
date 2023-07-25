@@ -50,6 +50,10 @@ function Provider({
     dbData: currentDbData.header,
     userEditedData: userEditableData.header,
   });
+  const footerRevisionData = useDocRevisionData({
+    dbData: currentDbData.footer,
+    userEditedData: userEditableData.footer,
+  });
   const testimonialsRevisionData = useDocsRevisionData({
     dbData: currentDbData.testimonials,
     userEditedData: userEditableData.testimonials,
@@ -70,7 +74,8 @@ function Provider({
     programmesRevisionData.isChange ||
     linkLabelsRevisionData.isChange ||
     supportersRevisionData.isChange ||
-    supportersRevisionData.isChange;
+    footerRevisionData.isChange ||
+    headerRevisionData.isChange;
 
   const ifChange = (arg0: () => void) => {
     if (!isChange) {
@@ -79,12 +84,12 @@ function Provider({
     arg0();
   };
 
-  const toast = useToast();
-
   const landingSaveMutation = useMutation(
     (input: Parameters<(typeof myDb)["transactions"]["pages"]["landing"]>[0]) =>
       myDb.transactions.pages.landing(input),
   );
+
+  const toast = useToast();
 
   const save = () =>
     ifChange(() =>
@@ -99,6 +104,7 @@ function Provider({
               supporters: supportersRevisionData.saveData,
               linkLabels: linkLabelsRevisionData.saveData,
               header: headerRevisionData.saveData,
+              footer: footerRevisionData.saveData,
             },
             {
               onSuccess() {
@@ -119,7 +125,10 @@ function Provider({
   const undo = () =>
     ifChange(() => {
       userAction.undo(currentDbData);
+
       setUndoKey(generateUid());
+
+      toast.neutral("undone");
     });
 
   const value: ContextValue = {

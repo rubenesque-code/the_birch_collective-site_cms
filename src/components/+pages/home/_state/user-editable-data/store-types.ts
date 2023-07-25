@@ -10,6 +10,7 @@ type DbData = {
   orgDetails: MyDb["singles"]["orgDetails"];
   linkLabels: MyDb["singles"]["linkLabels"];
   header: MyDb["singles"]["header"];
+  footer: MyDb["singles"]["footer"];
 };
 
 type Actions = {
@@ -280,6 +281,16 @@ type Actions = {
           update: (arg0: string) => void;
         };
       };
+    };
+  };
+  footer: {
+    livingWageEmployer: {
+      text: {
+        update: (arg0: string) => void;
+      };
+    };
+    orgDescription: {
+      update: (arg0: string) => void;
     };
   };
 };

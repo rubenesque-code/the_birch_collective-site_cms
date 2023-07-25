@@ -7,7 +7,10 @@ import { WithTooltip } from "../WithTooltip";
 
 export const TextInputForm = (props: {
   localStateValue: string | null;
-  input?: MyPick<InputProps, "minWidth" | "placeholder" | "styles">;
+  input?: MyPick<
+    InputProps,
+    "minWidth" | "placeholder" | "styles" | "autoFocus"
+  >;
   onSubmit: (arg0: { inputValue: string }) => void;
   tooltip?: string;
 }) => {
@@ -59,7 +62,7 @@ type InputProps = {
   setIsFocused: (value: boolean) => void;
   setValue: (value: string) => void;
   value: string;
-  // autoFocus?: boolean;
+  autoFocus?: boolean;
   isFocused: boolean;
   minWidth?: number;
   placeholder?: string;
@@ -68,7 +71,7 @@ type InputProps = {
 };
 
 const Input = ({
-  // autoFocus = false,
+  autoFocus = false,
   isFocused,
   minWidth = 50,
   placeholder = "write here",
@@ -78,9 +81,6 @@ const Input = ({
   trailingSpace = 20,
   value,
 }: InputProps) => {
-  /*   const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
-    useState(false); */
-
   const [dummyInputRef, { width: dummyInputWidth }] =
     useMeasure<HTMLParagraphElement>();
 
@@ -125,6 +125,7 @@ const Input = ({
           style={{
             width: inputWidth > minWidth ? inputWidth : minWidth,
           }}
+          autoFocus={autoFocus}
           ref={inputRef}
         />
       </div>

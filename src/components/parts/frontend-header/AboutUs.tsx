@@ -1,5 +1,6 @@
 import { Popover } from "@headlessui/react";
 import { UserEditableDataCx } from "~/components/+pages/home/_state";
+import { RevisionCx } from "~/components/+pages/home/_state/RevisionCx";
 import { WithTooltip } from "~/components/WithTooltip";
 import { TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
@@ -8,6 +9,10 @@ const AboutUs = () => {
   const { linkLabels } = UserEditableDataCx.useAllData();
 
   const { linkLabels: linkLabelAction } = UserEditableDataCx.useAction();
+
+  const {
+    data: { undoKey },
+  } = RevisionCx.use();
 
   return (
     <div className="flex items-center gap-xxs">
@@ -22,6 +27,7 @@ const AboutUs = () => {
             styles: "uppercase tracking-wide",
           }}
           tooltip="Click to edit about us link text"
+          key={undoKey}
         />
       </div>
 
@@ -51,6 +57,10 @@ const PanelContent = () => {
 
   const { header: headerAction } = UserEditableDataCx.useAction();
 
+  const {
+    data: { undoKey },
+  } = RevisionCx.use();
+
   return (
     <div>
       <div className="font-display text-4xl font-bold tracking-wide text-displayGreen">
@@ -64,6 +74,7 @@ const PanelContent = () => {
             styles: "tracking-wide",
           }}
           tooltip="Click to edit about us menu heading"
+          key={undoKey}
         />
       </div>
       <div className="mt-2 text-lg">
@@ -76,6 +87,7 @@ const PanelContent = () => {
             placeholder: "About us menu subheading",
           }}
           tooltip="Click to edit about us menu subheading"
+          key={undoKey}
         />
       </div>
       <PanelLinks />
@@ -87,6 +99,10 @@ const PanelLinks = () => {
   const { linkLabels } = UserEditableDataCx.useAllData();
 
   const { linkLabels: linkLabelAction } = UserEditableDataCx.useAction();
+
+  const {
+    data: { undoKey },
+  } = RevisionCx.use();
 
   return (
     <div className="mt-8 flex gap-xl">
@@ -105,6 +121,7 @@ const PanelLinks = () => {
               styles: "tracking-wide uppercase",
             }}
             tooltip="Click to edit about us link text"
+            key={undoKey}
           />
         </div>
       </div>
@@ -143,6 +160,7 @@ const PanelLinks = () => {
               styles: "tracking-wide uppercase",
             }}
             tooltip="Click to edit contact link text"
+            key={undoKey}
           />
         </div>
       </div>

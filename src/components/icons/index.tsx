@@ -28,6 +28,9 @@ import {
   PiggyBank,
   FlowArrow,
   CaretDown,
+  FacebookLogo,
+  InstagramLogo,
+  LinkedinLogo,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -67,6 +70,9 @@ Icon.CaretLeft = CaretLeft;
 Icon.Programme = Tree;
 Icon.Supporter = PiggyBank;
 Icon.ConnectEntity = FlowArrow;
+Icon.Facebook = FacebookLogo;
+Icon.Instagram = InstagramLogo;
+Icon.Linkedin = LinkedinLogo;
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";

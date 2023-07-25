@@ -1,7 +1,6 @@
 import { WarningPanel } from "~/components/WarningPanel";
 import { Icon } from "~/components/icons";
 import { Modal } from "~/components/styled-bases";
-import { useToast } from "~/hooks";
 import { Button } from "./Button";
 import { ComponentApiCx } from "./_state";
 
@@ -20,8 +19,6 @@ const Undo = () => {
     data: { isChange },
   } = ComponentApiCx.use();
 
-  const toast = useToast();
-
   return (
     <Modal.WithVisibilityProvider
       button={({ openModal }) => (
@@ -38,7 +35,6 @@ const Undo = () => {
           callback={() => {
             undo();
             closeModal();
-            toast.neutral("undone");
           }}
           closeModal={closeModal}
           text={{

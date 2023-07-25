@@ -1092,6 +1092,27 @@ export const createUserEditableDataStore = (input: {
           },
         },
       },
+      footer: {
+        livingWageEmployer: {
+          text: {
+            update: (input) =>
+              set(
+                produce((state: UserEditableDataStore) => {
+                  state.data.footer.livingWageEmployer.text = input;
+                }),
+              ),
+          },
+        },
+
+        orgDescription: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                state.data.footer.orgDescription = input;
+              }),
+            ),
+        },
+      },
     },
   }));
 };

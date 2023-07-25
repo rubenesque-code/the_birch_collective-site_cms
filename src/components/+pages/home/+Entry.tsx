@@ -19,6 +19,7 @@ import PhotoAlbum from "./photo-album/+Entry";
 import SupportUs from "./support-us/+Entry";
 import Supporters from "./supporters/+Entry";
 import FrontendHeader from "~/components/parts/frontend-header/+Entry";
+import FrontendFooter from "~/components/parts/frontend-footer/+Entry";
 
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, onSuccess, etc.
@@ -29,6 +30,7 @@ import FrontendHeader from "~/components/parts/frontend-header/+Entry";
 // □ in revision.cx, on save success should use func input to update 'current db data'
 // □ UserEditableDataCx should be renamed - have other editable Cx e.g. new testimonial. Rename to e.g. page editable cx
 // □ abstraction for unfound entity: e.g. image, programme, supporter.
+// □ go over each text input and area form + add key where applicable
 
 // □ Should have a subtle emboss of section name in each section? Maybe only if one/more text elements have no text
 // □ All inputs should have undo key
@@ -54,7 +56,7 @@ const HomePage = () => {
                   }}
                 >
                   <div className="bg-white">
-                    <FrontendHeader />
+                    {/* <FrontendHeader /> */}
                     {/*                     <BannerImage />
                     <PageLayout.Section.Spacing>
                       <OrgHeadings />
@@ -80,6 +82,9 @@ const HomePage = () => {
                     <PageLayout.Section.Spacing>
                       <Supporters />
                     </PageLayout.Section.Spacing> */}
+                    <PageLayout.Section.Spacing>
+                      <FrontendFooter />
+                    </PageLayout.Section.Spacing>
                   </div>
                 </PageLayout.Body>
               </div>
@@ -105,7 +110,7 @@ const InitData = ({
   const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
   const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
   const headerQuery = useQuery("header", myDb.header.fetch);
-  // const footerQuery = useQuery("footer", myDb.footer.fetch);
+  const footerQuery = useQuery("footer", myDb.footer.fetch);
 
   if (
     landingQuery.isLoading ||
@@ -114,7 +119,7 @@ const InitData = ({
     supportersQuery.isLoading ||
     linkLabelsQuery.isLoading ||
     headerQuery.isLoading ||
-    // footerQuery.isLoading ||
+    footerQuery.isLoading ||
     orgDetailsQuery.isLoading
   ) {
     return <PageDataFetch.Loading />;
@@ -133,6 +138,8 @@ const InitData = ({
     !linkLabelsQuery.data ||
     headerQuery.isError ||
     !headerQuery.data ||
+    footerQuery.isError ||
+    !footerQuery.data ||
     orgDetailsQuery.isError ||
     !orgDetailsQuery.data
   ) {
@@ -147,5 +154,6 @@ const InitData = ({
     orgDetails: orgDetailsQuery.data,
     linkLabels: linkLabelsQuery.data,
     header: headerQuery.data,
+    footer: footerQuery.data,
   });
 };

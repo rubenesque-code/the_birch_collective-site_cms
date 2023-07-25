@@ -1,3 +1,6 @@
 export type Footer = {
-  a: "hello";
+  livingWageEmployer: {
+    text: string;
+  };
+  orgDescription: string;
 };

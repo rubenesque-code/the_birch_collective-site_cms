@@ -24,3 +24,8 @@ body {
 .firebase-emulator-warning {
   display: none !important;
 }
+
+:root {
+  --toastify-toast-width: 220px !important;
+  --toastify-toast-min-height: 54px !important;
+}
