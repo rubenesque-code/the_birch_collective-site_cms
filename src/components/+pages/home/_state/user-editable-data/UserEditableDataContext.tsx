@@ -46,7 +46,6 @@ function useData<TDataKey extends keyof UserEditableDataStore["data"]>(
     throw new Error("Missing UserEditableDataStore.Provider in the tree");
 
   return useStore(store, (state) => state.data[key]);
-  // return useStore(store, selector, equalityFn);
 }
 
 function useAllData() {
@@ -63,24 +62,6 @@ function useAction() {
     throw new Error("Missing UserEditableDataStore.Provider in the tree");
   return useStore(store, (state) => state.actions);
 }
-/* function useAction<
-  TDataName extends keyof UserEditableDataState["actions"],
-  TMutationType extends keyof UserEditableDataState["actions"][TDataName],
->(
-  dataName: TDataName,
-  mutationType: TMutationType,
-): UserEditableDataState["actions"][TDataName][TMutationType] {
-  const store = useContext(Context);
-  if (!store)
-    throw new Error("Missing UserEditableDataStore.Provider in the tree");
-  return useStore(store, (state) => state.actions[dataName][mutationType]);
-}
-
-function UserEditableData() {
-  throw new Error(
-    "UserEditableStore exists for naming purposes only and should not be used as a component",
-  );
- */
 
 function UserEditableDataCx() {
   throw new Error(

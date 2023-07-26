@@ -25,24 +25,26 @@ import SupportUs from "./support-us/+Entry";
 import Supporters from "./supporters/+Entry";
 import CmsLayout from "~/components/layouts/Cms";
 
-// □ need to have production values in env.local?
-// □ abstraction for react-query onMutate, onSuccess, etc.
-// □ use zod in saving to db?
+// CHECK
 // □ check image blur up works.
+
+// REFACTOR
+// □ abstraction for react-query onMutate, onSuccess, etc.?
+// □ image abstraction?
+// □ abstraction for unfound entity: e.g. image, programme, supporter.
+
+// OTHER
+// □ need to have production values in env.local?
+// □ use zod in saving to db?
 // □ should be able to work out by aspect ratio of image container and aspect ratio of image natural dimensions whether can move up/down and/or left/right.
-// □ maybe do image abstraction.
 // □ in revision.cx, on save success should use func input to update 'current db data'
 // □ UserEditableDataCx should be renamed - have other editable Cx e.g. new testimonial. Rename to e.g. page editable cx
-// □ abstraction for unfound entity: e.g. image, programme, supporter.
-// □ go over each text input and area form + add key where applicable
-// □ in e.g. textInputForm, return input value as first arg, and anything else, such as an onSubmit callback, as field in obj as second arg - that way can pass a function that takes inputVal as it's only arg without an extra func.
 // □ missed toasts - e.g. on reorder
-// □ should probs derive e.g. testimonial type from state used rather than db
+// □ should derive e.g. testimonial type from state used rather than db?
 // □ ideally, don't want to show position buttons if there's an image error (unfound image) either. Would need to recomposoe image state or equivalent.
-
 // □ Should have a subtle emboss of section name in each section? Maybe only if one/more text elements have no text
-// □ All inputs should have undo key
 // □ supporters modal tooltip for 'add to landing' is incorrect since modal is for all supporters
+// □ should memoise in revisionCx?
 
 // todo: Refactor. Maybe not too much.
 

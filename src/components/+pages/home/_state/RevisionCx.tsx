@@ -9,6 +9,8 @@ import { myDb } from "~/my-firebase/firestore";
 import { generateUid } from "~/lib/external-packages-rename";
 import { useDocRevisionData, useDocsRevisionData, useToast } from "~/hooks";
 
+// TODO: seperate stores for each data type?
+
 type ContextValue = {
   data: {
     isChange: boolean;
@@ -84,10 +86,7 @@ function Provider({
     arg0();
   };
 
-  const landingSaveMutation = useMutation(
-    (input: Parameters<(typeof myDb)["transactions"]["pages"]["landing"]>[0]) =>
-      myDb.transactions.pages.landing(input),
-  );
+  const landingSaveMutation = useMutation(myDb.transactions.pages.landing);
 
   const toast = useToast();
 
