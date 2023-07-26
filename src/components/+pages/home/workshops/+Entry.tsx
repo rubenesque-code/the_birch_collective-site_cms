@@ -104,9 +104,7 @@ const TextOverlay = () => {
       <div className="text-left font-display text-6xl font-bold tracking-wide text-white">
         <TextInputForm
           localStateValue={textOverlay.heading}
-          onSubmit={({ inputValue }) =>
-            textOverlayAction.heading.update(inputValue)
-          }
+          onSubmit={textOverlayAction.heading.update}
           input={{
             styles: "tracking-wide font-bold",
             placeholder: "workshops banner heading",
@@ -117,9 +115,7 @@ const TextOverlay = () => {
       <div className="mt-3 hidden w-[300px] text-xl md:block ">
         <TextAreaForm
           localStateValue={textOverlay.body}
-          onSubmit={({ inputValue }) =>
-            textOverlayAction.body.update(inputValue)
-          }
+          onSubmit={textOverlayAction.body.update}
           tooltip="click to edit body"
           textArea={{
             placeholder: "workshops banner body",

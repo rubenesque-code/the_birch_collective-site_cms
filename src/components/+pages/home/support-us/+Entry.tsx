@@ -1,6 +1,6 @@
-import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { UserEditableDataCx } from "../_state";
-import { RevisionCx } from "../_state/RevisionCx";
+
+import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { CustomisableImage } from "~/components/CustomisableImage";
@@ -29,24 +29,17 @@ const Heading = () => {
     page: { supportUs: supportUsActions },
   } = UserEditableDataCx.useAction();
 
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
   return (
     <div className="">
       <div className="text-center font-display text-6xl text-brandGreen">
         <TextInputForm
           localStateValue={supportUs.heading}
-          onSubmit={({ inputValue }) =>
-            supportUsActions.heading.update(inputValue)
-          }
+          onSubmit={supportUsActions.heading.update}
           input={{
             placeholder: "Support us heading",
             styles: "font-bold tracking-wide text-center",
           }}
           tooltip="click to edit support us heading"
-          key={undoKey}
         />
       </div>
     </div>
@@ -157,18 +150,13 @@ const DonateButton = () => {
     },
   } = UserEditableDataCx.useAction();
 
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
   return (
     <div className="absolute bottom-0 left-0 flex cursor-pointer items-center gap-sm rounded-sm bg-brandGreen px-4 py-2 text-lg font-bold tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">
       <TextInputForm
         localStateValue={buttonText}
-        onSubmit={({ inputValue }) => buttonTextAction.update(inputValue)}
+        onSubmit={buttonTextAction.update}
         input={{ placeholder: "Donate button text" }}
         tooltip="Click to edit button text"
-        key={undoKey}
       />
     </div>
   );
@@ -191,37 +179,30 @@ const DonateDescription = () => {
     },
   } = UserEditableDataCx.useAction();
 
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
   return (
     <div className="text-center font-normal lg:text-xl">
       <TextAreaForm
         localStateValue={description}
-        onSubmit={({ inputValue }) => descriptionAction.update(inputValue)}
+        onSubmit={descriptionAction.update}
         textArea={{ placeholder: "Donate description", styles: "text-center" }}
         tooltip="Click to edit description"
-        key={undoKey}
       />
     </div>
   );
 };
 
-const Volunteer = () => {
-  return (
-    <div>
-      <div className="group/volunteer-image relative aspect-square">
-        <VolunteerImageMenu />
-        <VolunteerImage />
-        <VolunteerButton />
-      </div>
-      <div className="mt-5 xs:mt-6 md:mt-8">
-        <VolunteerDescription />
-      </div>
+const Volunteer = () => (
+  <div>
+    <div className="group/volunteer-image relative aspect-square">
+      <VolunteerImageMenu />
+      <VolunteerImage />
+      <VolunteerButton />
     </div>
-  );
-};
+    <div className="mt-5 xs:mt-6 md:mt-8">
+      <VolunteerDescription />
+    </div>
+  </div>
+);
 
 const VolunteerImage = () => {
   const {
@@ -315,18 +296,13 @@ const VolunteerButton = () => {
     },
   } = UserEditableDataCx.useAction();
 
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
   return (
     <div className="absolute bottom-0 left-0 flex cursor-pointer items-center gap-sm rounded-sm bg-brandGreen px-4 py-2 text-lg font-bold tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">
       <TextInputForm
         localStateValue={buttonText}
-        onSubmit={({ inputValue }) => buttonTextAction.update(inputValue)}
+        onSubmit={buttonTextAction.update}
         input={{ placeholder: "Volunteer button text", styles: "" }}
         tooltip="Click to edit button text"
-        key={undoKey}
       />
     </div>
   );
@@ -349,21 +325,16 @@ const VolunteerDescription = () => {
     },
   } = UserEditableDataCx.useAction();
 
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
   return (
     <div className="text-center font-normal lg:text-xl">
       <TextAreaForm
         localStateValue={description}
-        onSubmit={({ inputValue }) => descriptionAction.update(inputValue)}
+        onSubmit={descriptionAction.update}
         textArea={{
           placeholder: "Volunteer description",
           styles: "text-center",
         }}
         tooltip="Click to edit description"
-        key={undoKey}
       />
     </div>
   );

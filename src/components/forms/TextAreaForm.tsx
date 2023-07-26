@@ -4,14 +4,25 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 
 import type { MyPick } from "~/types/utilities";
 import { WithTooltip } from "../WithTooltip";
+import { RevisionCx } from "../+pages/home/_state/RevisionCx";
 
-export const TextAreaForm = (props: {
+type Props = {
   localStateValue: string | null;
   textArea?: MyPick<TextAreaProps, "minWidth" | "placeholder" | "styles">;
-  onSubmit: (arg0: { inputValue: string }) => void;
+  onSubmit: (inputValue: string) => void;
   tooltip?: string;
   submitOnBlur?: boolean;
-}) => {
+};
+
+export const TextAreaForm = (props: Props) => {
+  const {
+    data: { undoKey },
+  } = RevisionCx.use();
+
+  return <ActualComponent {...props} key={undoKey} />;
+};
+
+const ActualComponent = (props: Props) => {
   const [inputValue, setInputValue] = useState(props.localStateValue || "");
   const [inputIsFocused, setInputIsFocused] = useState(false);
 
@@ -22,9 +33,7 @@ export const TextAreaForm = (props: {
 
     const clean = DOMPurify.sanitize(inputValue);
 
-    props.onSubmit({
-      inputValue: clean,
-    });
+    props.onSubmit(clean);
   };
 
   return (

@@ -8,7 +8,6 @@ import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
 import { useToast } from "~/hooks";
 import { UserEditableDataCx } from "../+pages/home/_state";
-import { RevisionCx } from "../+pages/home/_state/RevisionCx";
 import { WarningPanel } from "../WarningPanel";
 import { DndKit } from "../dnd-kit";
 import { TextInputForm } from "../forms";
@@ -99,10 +98,6 @@ const Supporter = () => {
   const { id, image, name, url } = SupporterCx.use();
   const { supporter: supporterAction } = UserEditableDataCx.useAction();
 
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
   return (
     <div className="group/supporter relative">
       <SupporterMenu />
@@ -126,12 +121,11 @@ const Supporter = () => {
           <div className="font-medium">
             <TextInputForm
               localStateValue={name}
-              onSubmit={({ inputValue }) =>
+              onSubmit={(inputValue) =>
                 supporterAction.name.update({ id, newVal: inputValue })
               }
               input={{ placeholder: "Supporter name" }}
               tooltip="Click to edit name"
-              key={undoKey}
             />
           </div>
         </div>
@@ -140,12 +134,11 @@ const Supporter = () => {
           <div className="overflow-auto font-medium">
             <TextInputForm
               localStateValue={url}
-              onSubmit={({ inputValue }) =>
+              onSubmit={(inputValue) =>
                 supporterAction.url.update({ id, newVal: inputValue })
               }
               input={{ placeholder: "Supporter link" }}
               tooltip="Click to edit link"
-              key={undoKey}
             />
           </div>
         </div>

@@ -1,21 +1,20 @@
-import React, { type ReactNode } from "react";
 import { produce } from "immer";
+import React, { type ReactNode } from "react";
 
 import type { MyDb } from "~/types/database";
 
-import { useToast } from "~/hooks";
 import { LandingCx, SupporterCx } from "~/context/entities";
+import { useToast } from "~/hooks";
 
 import { UserEditableDataCx } from "../_state";
-import { RevisionCx } from "../_state/RevisionCx";
 
+import { CustomisableImage } from "~/components/CustomisableImage";
+import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
-import SupportersModal from "~/components/supporters-modal/+Entry";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
-import { CustomisableImage } from "~/components/CustomisableImage";
+import SupportersModal from "~/components/supporters-modal/+Entry";
 
 const Supporters = () => {
   return (
@@ -37,24 +36,17 @@ const Headings = () => {
     page: { supporters: supportersAction },
   } = UserEditableDataCx.useAction();
 
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
   return (
     <div className="">
       <div className="text-center font-display text-6xl text-brandOrange">
         <TextInputForm
           localStateValue={supporters.heading}
-          onSubmit={({ inputValue }) =>
-            supportersAction.heading.update(inputValue)
-          }
+          onSubmit={supportersAction.heading.update}
           input={{
             placeholder: "Supporters heading",
             styles: "font-bold tracking-wide text-center",
           }}
           tooltip="click to edit supporters heading"
-          key={undoKey}
         />
       </div>
       <div className="mt-3 text-center font-light xs:mt-4 xs:text-lg sm:mt-6 sm:text-xl lg:text-2xl">
@@ -64,11 +56,8 @@ const Headings = () => {
             placeholder: "Supporters subheading",
             styles: "tracking-wide text-center",
           }}
-          onSubmit={({ inputValue }) => {
-            supportersAction.subheading.update(inputValue);
-          }}
+          onSubmit={supportersAction.subheading.update}
           tooltip="Click to edit supporters subheading"
-          key={undoKey}
         />
       </div>
     </div>

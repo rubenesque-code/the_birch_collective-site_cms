@@ -202,7 +202,7 @@ const NewSupporter = () => {
         <div className="font-medium">
           <TextInputForm
             localStateValue={newSupporter.name}
-            onSubmit={({ inputValue }) => actions.title.update(inputValue)}
+            onSubmit={actions.title.update}
             input={{ placeholder: "Supporter name" }}
           />
         </div>
@@ -212,7 +212,7 @@ const NewSupporter = () => {
         <div className="font-medium">
           <TextInputForm
             localStateValue={newSupporter.url}
-            onSubmit={({ inputValue }) => actions.url.update(inputValue)}
+            onSubmit={actions.url.update}
             input={{ placeholder: "Supporter link" }}
           />
         </div>
@@ -226,7 +226,6 @@ const Menu = () => {
     actions: { image: imageAction },
   } = NewSupporterCx.use();
 
-  // todo: change wrapper to ComponentMenu
   return (
     <ComponentMenu styles="right-1 top-1 group-hover/supporter-image:opacity-40">
       <ComponentMenu.Image.UploadAndLibraryModal

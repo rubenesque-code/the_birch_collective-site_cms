@@ -10,34 +10,31 @@ import { Icon } from "~/components/icons";
 
 import livingWageLogo from "public/images/living-wage-logo.webp";
 import { NextImage } from "~/lib/external-packages-rename";
-import { RevisionCx } from "~/components/+pages/home/_state/RevisionCx";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { ComponentMenu } from "~/components/menus";
 import { WithTooltip } from "~/components/WithTooltip";
 
 // todo: block phone number + email through other means
 
-const FrontendFooter = () => {
-  return (
-    <div className="flex items-center gap-xl">
-      <div className="flex-grow">
-        <SocialMediaLinks />
-        <div className="mt-md">
-          <PageLinks />
-        </div>
-        <div className="mt-md">
-          <InfoRow />
-        </div>
-        <div className="mt-md">
-          <BottomRow />
-        </div>
+const SiteFooter = () => (
+  <div className="flex items-center gap-xl">
+    <div className="flex-grow">
+      <SocialMediaLinks />
+      <div className="mt-md">
+        <PageLinks />
       </div>
-      <SecondColumn />
+      <div className="mt-md">
+        <InfoRow />
+      </div>
+      <div className="mt-md">
+        <BottomRow />
+      </div>
     </div>
-  );
-};
+    <SecondColumn />
+  </div>
+);
 
-export default FrontendFooter;
+export default SiteFooter;
 
 const SocialMediaLinks = () => {
   const {
@@ -57,9 +54,7 @@ const SocialMediaLinks = () => {
             input={
               <TextInputForm
                 localStateValue={socialMediaLinks.facebook}
-                onSubmit={({ inputValue }) =>
-                  socialMediaLinksAction.facebook.update(inputValue)
-                }
+                onSubmit={socialMediaLinksAction.facebook.update}
                 input={{ placeholder: "Enter facebook link", autoFocus: true }}
                 tooltip="Click to update facebook link"
               />
@@ -76,9 +71,7 @@ const SocialMediaLinks = () => {
             input={
               <TextInputForm
                 localStateValue={socialMediaLinks.instagram}
-                onSubmit={({ inputValue }) =>
-                  socialMediaLinksAction.instagram.update(inputValue)
-                }
+                onSubmit={socialMediaLinksAction.instagram.update}
                 input={{ placeholder: "Enter instagram link", autoFocus: true }}
                 tooltip="Click to update instagram link"
               />
@@ -95,9 +88,7 @@ const SocialMediaLinks = () => {
             input={
               <TextInputForm
                 localStateValue={socialMediaLinks.linkedIn}
-                onSubmit={({ inputValue }) =>
-                  socialMediaLinksAction.linkedIn.update(inputValue)
-                }
+                onSubmit={socialMediaLinksAction.linkedIn.update}
                 input={{ placeholder: "Enter linkedIn link", autoFocus: true }}
                 tooltip="Click to update linkedIn link"
               />
@@ -142,9 +133,7 @@ const PageLinks = () => {
       <div className="font-medium text-brandGreen">
         <TextInputForm
           localStateValue={programmes}
-          onSubmit={({ inputValue }) =>
-            linkLabelsAction.programmes.update(inputValue)
-          }
+          onSubmit={linkLabelsAction.programmes.update}
           input={{ placeholder: "Programmes link text", styles: "underline" }}
           tooltip="Click to edit programmes link text"
         />
@@ -152,9 +141,7 @@ const PageLinks = () => {
       <div className="font-medium text-brandGreen">
         <TextInputForm
           localStateValue={workshops}
-          onSubmit={({ inputValue }) =>
-            linkLabelsAction.workshops.update(inputValue)
-          }
+          onSubmit={linkLabelsAction.workshops.update}
           input={{ placeholder: "Workshops link text", styles: "underline" }}
           tooltip="Click to edit workshops link text"
         />
@@ -162,9 +149,7 @@ const PageLinks = () => {
       <div className="font-medium text-brandGreen">
         <TextInputForm
           localStateValue={donate}
-          onSubmit={({ inputValue }) =>
-            linkLabelsAction.donate.update(inputValue)
-          }
+          onSubmit={linkLabelsAction.donate.update}
           input={{ placeholder: "Donate link text", styles: "underline" }}
           tooltip="Click to edit donate link text"
         />
@@ -172,9 +157,7 @@ const PageLinks = () => {
       <div className="font-medium text-brandGreen">
         <TextInputForm
           localStateValue={volunteer}
-          onSubmit={({ inputValue }) =>
-            linkLabelsAction.volunteer.update(inputValue)
-          }
+          onSubmit={linkLabelsAction.volunteer.update}
           input={{ placeholder: "Volunteer link text", styles: "underline" }}
           tooltip="Click to edit volunteer link text"
         />
@@ -182,9 +165,7 @@ const PageLinks = () => {
       <div className="font-medium text-brandGreen">
         <TextInputForm
           localStateValue={aboutUs}
-          onSubmit={({ inputValue }) =>
-            linkLabelsAction.aboutUs.update(inputValue)
-          }
+          onSubmit={linkLabelsAction.aboutUs.update}
           input={{ placeholder: "About us link text", styles: "underline" }}
           tooltip="Click to edit about us link text"
         />
@@ -200,10 +181,6 @@ const InfoRow = () => {
 
   const { footer: footerAction } = UserEditableDataCx.useAction();
 
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
   return (
     <div className="">
       <div className="text-gray-800">
@@ -212,11 +189,8 @@ const InfoRow = () => {
           textArea={{
             placeholder: "Org description (optional)",
           }}
-          onSubmit={({ inputValue }) => {
-            footerAction.orgDescription.update(inputValue);
-          }}
+          onSubmit={footerAction.orgDescription.update}
           tooltip="Click to edit org description"
-          key={undoKey}
         />
       </div>
       <div className="mt-xxxs text-gray-800">
@@ -225,11 +199,8 @@ const InfoRow = () => {
           textArea={{
             placeholder: "Living wage employer text (optional)",
           }}
-          onSubmit={({ inputValue }) => {
-            footerAction.livingWageEmployer.text.update(inputValue);
-          }}
+          onSubmit={footerAction.livingWageEmployer.text.update}
           tooltip="Click to edit living wage employer text"
-          key={undoKey}
         />
       </div>
     </div>
@@ -301,41 +272,32 @@ const BottomRow = () => {
     footer: footerAction,
   } = UserEditableDataCx.useAction();
 
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
   return (
     <div className="flex items-center gap-lg">
       <div className="text-brandGreen">
         <TextInputForm
           localStateValue={contact.phoneNumber}
-          onSubmit={({ inputValue }) =>
-            contactAction.phoneNumber.update(inputValue)
-          }
+          onSubmit={contactAction.phoneNumber.update}
           input={{ placeholder: "Phone number" }}
           tooltip="Click to edit phone number"
-          key={undoKey}
         />
       </div>
       <div className="text-brandGreen">
         <TextInputForm
           localStateValue={contact.email}
-          onSubmit={({ inputValue }) => contactAction.email.update(inputValue)}
+          onSubmit={contactAction.email.update}
           input={{ placeholder: "Email" }}
           tooltip="Click to edit email"
-          key={undoKey}
         />
       </div>
       <div className="text-brandGreen">
         <TextInputForm
           localStateValue={footer.message}
-          onSubmit={({ inputValue }) => footerAction.message.update(inputValue)}
+          onSubmit={footerAction.message.update}
           input={{
             placeholder: "Link to message form text",
           }}
           tooltip="Click to edit link to message form text"
-          key={undoKey}
         />
       </div>
     </div>

@@ -3,17 +3,29 @@ import { useRef, useState } from "react";
 import { useMeasure } from "react-use";
 
 import type { MyPick } from "~/types/utilities";
-import { WithTooltip } from "../WithTooltip";
 
-export const TextInputForm = (props: {
+import { WithTooltip } from "../WithTooltip";
+import { RevisionCx } from "../+pages/home/_state/RevisionCx";
+
+type Props = {
   localStateValue: string | null;
   input?: MyPick<
     InputProps,
     "minWidth" | "placeholder" | "styles" | "autoFocus"
   >;
-  onSubmit: (arg0: { inputValue: string }) => void;
+  onSubmit: (inputValue: string) => void;
   tooltip?: string;
-}) => {
+};
+
+export const TextInputForm = (props: Props) => {
+  const {
+    data: { undoKey },
+  } = RevisionCx.use();
+
+  return <ActualComponent {...props} key={undoKey} />;
+};
+
+const ActualComponent = (props: Props) => {
   const [inputValue, setInputValue] = useState(props.localStateValue || "");
   const [inputIsFocused, setInputIsFocused] = useState(false);
 
@@ -24,9 +36,7 @@ export const TextInputForm = (props: {
 
     const clean = DOMPurify.sanitize(inputValue);
 
-    props.onSubmit({
-      inputValue: clean,
-    });
+    props.onSubmit(clean);
   };
 
   return (

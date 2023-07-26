@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
 
-function PageLayout() {
+function SiteLayout() {
   throw new Error(
     "PageSectionLayout exists for naming purposes only and should not be used as a component",
   );
 }
 
-export default PageLayout;
+export default SiteLayout;
 
 const Body = ({
   children,
@@ -18,18 +18,20 @@ const Body = ({
     inner?: string;
   };
 }) => (
-  <div className={`grid place-items-center ${styles?.outer || ""}`}>
+  <div
+    className={`grid h-full flex-grow place-items-center overflow-y-auto overflow-x-hidden bg-gray-100 scrollbar-thin
+  ${styles?.outer || ""}`}
+  >
     <div
-      className={`div w-screen max-w-[1200px] items-center ${
-        styles?.inner || ""
-      }`}
+      className={`div w-screen max-w-[1200px] p-sm pr-md
+       ${styles?.inner || ""}`}
     >
-      {children}
+      <div className="bg-white">{children}</div>
     </div>
   </div>
 );
 
-PageLayout.Body = Body;
+SiteLayout.Body = Body;
 
 const SectionHorizontalSpacing = ({ children }: { children: ReactNode }) => (
   <div className="px-4 xs:px-8 sm:px-12 md:px-16 lg:px-24">{children}</div>
@@ -45,7 +47,7 @@ const Section = () => {
   );
 };
 
-PageLayout.Section = Section;
+SiteLayout.Section = Section;
 
 function SectionSpacing({ children }: { children: ReactNode }) {
   return (

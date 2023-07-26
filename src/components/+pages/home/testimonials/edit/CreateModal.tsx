@@ -203,18 +203,14 @@ const NewTestimonial = () => {
         <div className="overflow-y-auto scrollbar-hide">
           <TextAreaForm
             localStateValue={newTestimonialStore.data.text}
-            onSubmit={({ inputValue }) =>
-              newTestimonialStore.actions.text.update(inputValue)
-            }
+            onSubmit={newTestimonialStore.actions.text.update}
             textArea={{ placeholder: "Testimonial text..." }}
           />
         </div>
         <div className="shrink-0 font-medium">
           <TextInputForm
             localStateValue={newTestimonialStore.data.endorserName}
-            onSubmit={({ inputValue }) =>
-              newTestimonialStore.actions.endorserName.update(inputValue)
-            }
+            onSubmit={newTestimonialStore.actions.endorserName.update}
             input={{ placeholder: "Endorser name" }}
           />
         </div>
@@ -226,7 +222,6 @@ const NewTestimonial = () => {
 const Menu = () => {
   const newTestimonialCx = NewTestimonialCx.use();
 
-  // todo: change wrapper to ComponentMenu
   return (
     <div className="absolute right-1 top-1 z-20 flex items-center gap-sm rounded-md bg-white px-xs py-xxs opacity-30 shadow-lg transition-opacity duration-75 ease-in-out group-hover/testimonialImage:opacity-40 hover:!opacity-100 ">
       {newTestimonialCx.data.image.dbConnect.imageId ? (

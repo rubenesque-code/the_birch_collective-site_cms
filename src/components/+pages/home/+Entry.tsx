@@ -3,23 +3,27 @@
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
-import { PageDataFetch } from "~/components/PageDataFetch";
-import CmsHeader from "~/components/parts/cms-header";
 import { myDb } from "~/my-firebase/firestore";
-import BannerImage from "./BannerImage";
-import OrgHeadings from "./OrgHeadings";
+
 import { UserEditableDataCx, type UserEditableDbData } from "./_state";
 import { RevisionCx } from "./_state/RevisionCx";
+
+import { PageDataFetch } from "~/components/PageDataFetch";
+import CmsHeader from "~/components/parts/cms-header/+Entry";
+import SiteHeader from "~/components/parts/site-header/+Entry";
+import SiteFooter from "~/components/parts/site-footer/+Entry";
+
+import BannerImage from "./BannerImage";
+import OrgHeadings from "./OrgHeadings";
 import Testimonials from "./testimonials/+Entry";
 import AboutUs from "./about-us/+Entry";
-import PageLayout from "~/components/layouts/Page";
+import SiteLayout from "~/components/layouts/Site";
 import Workshops from "./workshops/+Entry";
 import Programmes from "./programmes/+Entry";
 import PhotoAlbum from "./photo-album/+Entry";
 import SupportUs from "./support-us/+Entry";
 import Supporters from "./supporters/+Entry";
-import FrontendHeader from "~/components/parts/frontend-header/+Entry";
-import FrontendFooter from "~/components/parts/frontend-footer/+Entry";
+import CmsLayout from "~/components/layouts/Cms";
 
 // □ need to have production values in env.local?
 // □ abstraction for react-query onMutate, onSuccess, etc.
@@ -40,67 +44,60 @@ import FrontendFooter from "~/components/parts/frontend-footer/+Entry";
 
 // todo: Refactor. Maybe not too much.
 
-const HomePage = () => {
-  return (
-    <InitData>
-      {(initDbData) => (
-        <UserEditableDataCx.Provider initDbData={initDbData}>
-          <RevisionCx.Provider initDbData={initDbData}>
-            {({ actions, data }) => (
-              <div className="flex h-screen w-screen flex-col overflow-hidden">
-                <CmsHeader
-                  actions={actions}
-                  data={{ isChange: data.isChange }}
-                />
-                <PageLayout.Body
-                  styles={{
-                    outer:
-                      "h-full flex-grow overflow-y-auto overflow-x-hidden bg-gray-100 scrollbar-thin",
-                    inner: "p-sm pr-md",
-                  }}
-                >
-                  <div className="bg-white">
-                    <FrontendHeader />
-                    <BannerImage />
-                    <PageLayout.Section.Spacing>
-                      <OrgHeadings />
-                    </PageLayout.Section.Spacing>
-                    <PageLayout.Section.Spacing>
-                      <Testimonials />
-                    </PageLayout.Section.Spacing>
-                    <PageLayout.Section.Spacing>
-                      <AboutUs />
-                    </PageLayout.Section.Spacing>
-                    <PageLayout.Section.Spacing>
-                      <Workshops />
-                    </PageLayout.Section.Spacing>
-                    <PageLayout.Section.Spacing>
-                      <Programmes />
-                    </PageLayout.Section.Spacing>
-                    <PageLayout.Section.Spacing.Vertical>
-                      <PhotoAlbum />
-                    </PageLayout.Section.Spacing.Vertical>
-                    <PageLayout.Section.Spacing>
-                      <SupportUs />
-                    </PageLayout.Section.Spacing>
-                    <PageLayout.Section.Spacing>
-                      <Supporters />
-                    </PageLayout.Section.Spacing>
-                    <PageLayout.Section.Spacing.Horizontal>
-                      <div className="mt-2xl pb-xl">
-                        <FrontendFooter />
-                      </div>
-                    </PageLayout.Section.Spacing.Horizontal>
+const HomePage = () => (
+  <InitData>
+    {(initDbData) => (
+      <UserEditableDataCx.Provider initDbData={initDbData}>
+        <RevisionCx.Provider initDbData={initDbData}>
+          {({ actions, data }) => (
+            <CmsLayout.Body>
+              <CmsHeader actions={actions} data={{ isChange: data.isChange }} />
+              <SiteLayout.Body
+              /*                 styles={{
+                  outer:
+                    "h-full flex-grow overflow-y-auto overflow-x-hidden bg-gray-100 scrollbar-thin",
+                  inner: "p-sm pr-md",
+                }} */
+              >
+                <SiteHeader />
+                <BannerImage />
+                <SiteLayout.Section.Spacing>
+                  <OrgHeadings />
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
+                  <Testimonials />
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
+                  <AboutUs />
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
+                  <Workshops />
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
+                  <Programmes />
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing.Vertical>
+                  <PhotoAlbum />
+                </SiteLayout.Section.Spacing.Vertical>
+                <SiteLayout.Section.Spacing>
+                  <SupportUs />
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
+                  <Supporters />
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing.Horizontal>
+                  <div className="mt-2xl pb-xl">
+                    <SiteFooter />
                   </div>
-                </PageLayout.Body>
-              </div>
-            )}
-          </RevisionCx.Provider>
-        </UserEditableDataCx.Provider>
-      )}
-    </InitData>
-  );
-};
+                </SiteLayout.Section.Spacing.Horizontal>
+              </SiteLayout.Body>
+            </CmsLayout.Body>
+          )}
+        </RevisionCx.Provider>
+      </UserEditableDataCx.Provider>
+    )}
+  </InitData>
+);
 
 export default HomePage;
 

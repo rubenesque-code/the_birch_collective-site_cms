@@ -1,33 +1,25 @@
 import { Popover } from "@headlessui/react";
 import { UserEditableDataCx } from "~/components/+pages/home/_state";
-import { RevisionCx } from "~/components/+pages/home/_state/RevisionCx";
 import { WithTooltip } from "~/components/WithTooltip";
 import { TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 
-const AboutUs = () => {
+const GetInvolved = () => {
   const { linkLabels } = UserEditableDataCx.useAllData();
 
   const { linkLabels: linkLabelAction } = UserEditableDataCx.useAction();
-
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
 
   return (
     <div className="flex items-center gap-xxs">
       <div className="max-w-[300px] overflow-x-auto text-sm font-semibold uppercase tracking-wide text-gray-700 lg:text-base xl:text-lg">
         <TextInputForm
-          localStateValue={linkLabels.aboutUs}
-          onSubmit={({ inputValue }) =>
-            linkLabelAction.aboutUs.update(inputValue)
-          }
+          localStateValue={linkLabels.getInvolved}
+          onSubmit={linkLabelAction.getInvolved.update}
           input={{
-            placeholder: "About us link text",
+            placeholder: "Get involved link text",
             styles: "uppercase tracking-wide",
           }}
-          tooltip="Click to edit about us link text"
-          key={undoKey}
+          tooltip="Click to edit get involved link text"
         />
       </div>
 
@@ -41,7 +33,7 @@ const AboutUs = () => {
         </Popover.Button>
 
         <Popover.Panel
-          className={`absolute bottom-0 left-0 z-30 -translate-x-1/2 translate-y-full rounded-sm border bg-white p-lg shadow-lg`}
+          className={`absolute bottom-0 right-0 z-30 translate-y-full rounded-sm border bg-white p-lg shadow-lg`}
         >
           <PanelContent />
         </Popover.Panel>
@@ -50,44 +42,34 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;
+export default GetInvolved;
 
 const PanelContent = () => {
   const { header } = UserEditableDataCx.useAllData();
 
   const { header: headerAction } = UserEditableDataCx.useAction();
 
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
   return (
     <div>
       <div className="font-display text-4xl font-bold tracking-wide text-displayGreen">
         <TextInputForm
-          localStateValue={header.aboutUs.popover.heading}
-          onSubmit={({ inputValue }) =>
-            headerAction.aboutUs.popover.heading.update(inputValue)
-          }
+          localStateValue={header.getInvolved.popover.heading}
+          onSubmit={headerAction.getInvolved.popover.heading.update}
           input={{
-            placeholder: "About us menu heading",
+            placeholder: "Get involved menu heading",
             styles: "tracking-wide",
           }}
-          tooltip="Click to edit about us menu heading"
-          key={undoKey}
+          tooltip="Click to edit get involved menu heading"
         />
       </div>
       <div className="mt-2 text-lg">
         <TextInputForm
-          localStateValue={header.aboutUs.popover.subheading}
-          onSubmit={({ inputValue }) =>
-            headerAction.aboutUs.popover.subheading.update(inputValue)
-          }
+          localStateValue={header.getInvolved.popover.subheading}
+          onSubmit={headerAction.getInvolved.popover.subheading.update}
           input={{
-            placeholder: "About us menu subheading",
+            placeholder: "Get involved menu subheading",
           }}
-          tooltip="Click to edit about us menu subheading"
-          key={undoKey}
+          tooltip="Click to edit get involved menu subheading"
         />
       </div>
       <PanelLinks />
@@ -100,10 +82,6 @@ const PanelLinks = () => {
 
   const { linkLabels: linkLabelAction } = UserEditableDataCx.useAction();
 
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
   return (
     <div className="mt-8 flex gap-xl">
       <div className="flex max-w-[300px] items-center gap-1 overflow-x-auto px-3 py-1">
@@ -112,16 +90,13 @@ const PanelLinks = () => {
         </div>
         <div className="text-lg uppercase tracking-wide">
           <TextInputForm
-            localStateValue={linkLabels.aboutUs}
-            onSubmit={({ inputValue }) =>
-              linkLabelAction.aboutUs.update(inputValue)
-            }
+            localStateValue={linkLabels.donate}
+            onSubmit={linkLabelAction.donate.update}
             input={{
-              placeholder: "About us link text",
+              placeholder: "Donate link text",
               styles: "tracking-wide uppercase",
             }}
-            tooltip="Click to edit about us link text"
-            key={undoKey}
+            tooltip="Click to edit donate link text"
           />
         </div>
       </div>
@@ -132,15 +107,13 @@ const PanelLinks = () => {
         </div>
         <div className="text-lg uppercase tracking-wide">
           <TextInputForm
-            localStateValue={linkLabels.meetTheTeam}
-            onSubmit={({ inputValue }) =>
-              linkLabelAction.meetTheTeam.update(inputValue)
-            }
+            localStateValue={linkLabels.volunteer}
+            onSubmit={linkLabelAction.volunteer.update}
             input={{
-              placeholder: "Meet the team link text",
+              placeholder: "Volunteer link text",
               styles: "tracking-wide uppercase",
             }}
-            tooltip="Click to edit meet the team link text"
+            tooltip="Click to edit volunteer link text"
           />
         </div>
       </div>
@@ -151,16 +124,13 @@ const PanelLinks = () => {
         </div>
         <div className="text-lg uppercase tracking-wide">
           <TextInputForm
-            localStateValue={linkLabels.getInTouch}
-            onSubmit={({ inputValue }) =>
-              linkLabelAction.getInTouch.update(inputValue)
-            }
+            localStateValue={linkLabels.careers}
+            onSubmit={linkLabelAction.careers.update}
             input={{
-              placeholder: "Contact link text",
+              placeholder: "Careers link text",
               styles: "tracking-wide uppercase",
             }}
-            tooltip="Click to edit contact link text"
-            key={undoKey}
+            tooltip="Click to edit careers link text"
           />
         </div>
       </div>

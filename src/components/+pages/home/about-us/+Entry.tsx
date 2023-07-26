@@ -1,6 +1,6 @@
 import ReactTextareaAutosize from "react-textarea-autosize";
-
 import { useMemo, useState } from "react";
+
 import { WarningPanel } from "~/components/WarningPanel";
 import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
@@ -13,7 +13,6 @@ import { getIds } from "~/helpers/data/query";
 import { useToast } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
 import { UserEditableDataCx } from "../_state";
-import { RevisionCx } from "../_state/RevisionCx";
 
 const AboutUs = () => {
   const {
@@ -70,10 +69,8 @@ const AboutUs = () => {
 export default AboutUs;
 
 const Heading = () => {
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
   const { page } = UserEditableDataCx.useAllData();
+
   const action = UserEditableDataCx.useAction();
 
   return (
@@ -84,11 +81,8 @@ const Heading = () => {
           placeholder: "About us heading",
           styles: "uppercase text-center",
         }}
-        onSubmit={({ inputValue }) => {
-          action.page.aboutUs.heading.update(inputValue);
-        }}
+        onSubmit={action.page.aboutUs.heading.update}
         tooltip="Click to edit about us heading"
-        key={undoKey}
       />
     </div>
   );
@@ -146,9 +140,6 @@ const AddEntryForm = () => {
 
 const Entry = () => {
   const {
-    data: { undoKey },
-  } = RevisionCx.use();
-  const {
     page: { aboutUs },
   } = UserEditableDataCx.useAction();
   const aboutUsEntry = AboutUsEntryCx.use();
@@ -163,14 +154,13 @@ const Entry = () => {
         <TextAreaForm
           localStateValue={aboutUsEntry.text}
           textArea={{ placeholder: "About us entry text" }}
-          onSubmit={({ inputValue }) => {
+          onSubmit={(inputValue) => {
             aboutUs.entry.updateText({
               id: aboutUsEntry.id,
               newVal: inputValue,
             });
           }}
           tooltip="Click to edit entry"
-          key={undoKey}
         />
       </div>
     </div>
@@ -233,7 +223,7 @@ const GoToPageButton = () => {
     >
       <TextInputForm
         localStateValue={buttonText}
-        onSubmit={({ inputValue }) => aboutUs.buttonText.update(inputValue)}
+        onSubmit={aboutUs.buttonText.update}
         input={{ placeholder: "Button text", styles: "uppercase" }}
         tooltip="Click to edit button text"
       />

@@ -105,7 +105,7 @@ const ImageInfo = () => {
       >
         <TextInputForm
           localStateValue={text}
-          onSubmit={({ inputValue }) => infoPopover.text.update(inputValue)}
+          onSubmit={infoPopover.text.update}
           input={{ placeholder: "Enter image info" }}
           tooltip="image info"
         />

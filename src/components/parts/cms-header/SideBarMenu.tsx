@@ -5,6 +5,8 @@ import { Icon } from "~/components/icons";
 
 // import { MainMenuIcon, SignOutIcon } from "~/components/ui-elements";
 
+// □ refactor
+
 export const SideBarMenu = () => (
   <Menu>
     {({ open }) => (

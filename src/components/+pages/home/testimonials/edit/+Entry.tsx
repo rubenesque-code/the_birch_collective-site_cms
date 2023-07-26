@@ -133,7 +133,7 @@ const Testimonial = () => {
         <div className="w-full overflow-y-auto p-xs scrollbar-hide">
           <TextAreaForm
             localStateValue={text}
-            onSubmit={({ inputValue }) =>
+            onSubmit={(inputValue) =>
               action.testimonial.text.update({ id, newVal: inputValue })
             }
             textArea={{
@@ -145,7 +145,7 @@ const Testimonial = () => {
         <div className="max-w-[90%] shrink-0 overflow-x-auto font-medium">
           <TextInputForm
             localStateValue={endorserName}
-            onSubmit={({ inputValue }) =>
+            onSubmit={(inputValue) =>
               action.testimonial.endorserName.update({
                 id,
                 newVal: inputValue,

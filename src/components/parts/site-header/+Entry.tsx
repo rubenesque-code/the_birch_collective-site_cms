@@ -6,16 +6,11 @@ import { TextInputForm } from "~/components/forms";
 import { ComponentMenu } from "~/components/menus";
 import AboutUs from "./AboutUs";
 import GetInvolved from "./GetInvolved";
-import { RevisionCx } from "~/components/+pages/home/_state/RevisionCx";
 
-const FrontendHeader = () => {
+const SiteHeader = () => {
   const { linkLabels } = UserEditableDataCx.useAllData();
 
   const { linkLabels: linkLabelAction } = UserEditableDataCx.useAction();
-
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
 
   return (
     <div className="flex items-center justify-between p-md">
@@ -26,30 +21,24 @@ const FrontendHeader = () => {
         <div className="max-w-[300px] overflow-x-auto text-sm font-semibold uppercase tracking-wide text-gray-700 lg:text-base xl:text-lg">
           <TextInputForm
             localStateValue={linkLabels.programmes}
-            onSubmit={({ inputValue }) =>
-              linkLabelAction.programmes.update(inputValue)
-            }
+            onSubmit={linkLabelAction.programmes.update}
             input={{
               placeholder: "Programmes link text",
               styles: "uppercase tracking-wide",
             }}
             tooltip="Click to edit programmes link text"
-            key={undoKey}
           />
         </div>
         <GetInvolved />
         <div className="max-w-[300px] overflow-x-auto text-sm font-semibold uppercase tracking-wide text-gray-700 lg:text-base xl:text-lg">
           <TextInputForm
             localStateValue={linkLabels.workshops}
-            onSubmit={({ inputValue }) =>
-              linkLabelAction.workshops.update(inputValue)
-            }
+            onSubmit={linkLabelAction.workshops.update}
             input={{
               placeholder: "Workshops link text",
               styles: "uppercase tracking-wide",
             }}
             tooltip="Click to edit workshops link text"
-            key={undoKey}
           />
         </div>
       </div>
@@ -57,7 +46,7 @@ const FrontendHeader = () => {
   );
 };
 
-export default FrontendHeader;
+export default SiteHeader;
 
 const LogoAndOrgName = () => {
   const {
@@ -65,10 +54,6 @@ const LogoAndOrgName = () => {
   } = UserEditableDataCx.useAllData();
 
   const { orgDetails: orgDetailsAction } = UserEditableDataCx.useAction();
-
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
 
   return (
     <div className="flex items-center gap-sm">
@@ -88,12 +73,9 @@ const LogoAndOrgName = () => {
       <div className="font-display text-3xl font-bold tracking-wider text-display lg:text-4xl xl:text-6xl">
         <TextInputForm
           localStateValue={name}
-          onSubmit={({ inputValue }) =>
-            orgDetailsAction.name.update(inputValue)
-          }
+          onSubmit={orgDetailsAction.name.update}
           input={{ placeholder: "Org name" }}
           tooltip="Click to edit org name"
-          key={undoKey}
         />
       </div>
     </div>

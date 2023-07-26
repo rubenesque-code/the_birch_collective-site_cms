@@ -1,5 +1,6 @@
 import { produce } from "immer";
 import React, { type ReactNode } from "react";
+
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
@@ -8,20 +9,17 @@ import { LandingCx } from "~/context/entities/landing";
 import { useToast } from "~/hooks";
 import type { MyDb } from "~/types/database";
 import { UserEditableDataCx } from "../_state";
-import { RevisionCx } from "../_state/RevisionCx";
 import AddProgrammeModal from "./entries/add-programme-modal/+Entry";
 
-const Programmes = () => {
-  return (
-    <div className="group/programmes">
-      <Headings />
-      <EntriesSection />
-      <div className="mt-xl flex justify-center">
-        <GoToPageButton />
-      </div>
+const Programmes = () => (
+  <div className="group/programmes">
+    <Headings />
+    <EntriesSection />
+    <div className="mt-xl flex justify-center">
+      <GoToPageButton />
     </div>
-  );
-};
+  </div>
+);
 
 export default Programmes;
 
@@ -34,24 +32,17 @@ const Headings = () => {
     page: { programmes: programmesAction },
   } = UserEditableDataCx.useAction();
 
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
   return (
     <div className="">
       <div className="text-center font-display text-6xl text-brandOrange">
         <TextInputForm
           localStateValue={programmes.heading}
-          onSubmit={({ inputValue }) =>
-            programmesAction.heading.update(inputValue)
-          }
+          onSubmit={programmesAction.heading.update}
           input={{
             placeholder: "Heading",
             styles: "font-bold tracking-wide text-center",
           }}
           tooltip="click to edit programmes heading"
-          key={undoKey}
         />
       </div>
       <div className="mt-3 text-center font-light xs:mt-4 xs:text-lg sm:mt-6 sm:text-xl lg:text-2xl">
@@ -61,11 +52,8 @@ const Headings = () => {
             placeholder: "Subheading",
             styles: "tracking-wide text-center",
           }}
-          onSubmit={({ inputValue }) => {
-            programmesAction.subheading.update(inputValue);
-          }}
+          onSubmit={programmesAction.subheading.update}
           tooltip="Click to edit programmes subheading"
-          key={undoKey}
         />
       </div>
     </div>
@@ -200,17 +188,13 @@ const Programme = () => {
   const { id, title, subtitle, summary } = ProgrammeCx.use();
   const { programme: programmeAction } = UserEditableDataCx.useAction();
 
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
   return (
     <div className="group/programme relative flex flex-col items-center p-sm">
       <ProgrammeMenu />
       <div className="w-full text-center font-display text-3xl font-bold uppercase tracking-wider text-brandLightOrange">
         <TextInputForm
           localStateValue={title}
-          onSubmit={({ inputValue }) =>
+          onSubmit={(inputValue) =>
             programmeAction.title.update({ id, newVal: inputValue })
           }
           input={{
@@ -218,18 +202,16 @@ const Programme = () => {
             styles: "uppercase tracking-wider text-center",
           }}
           tooltip="Click to edit title"
-          key={undoKey}
         />
       </div>
       <div className="mt-xs uppercase text-display xs:text-lg lg:text-xl">
         <TextInputForm
           localStateValue={subtitle}
-          onSubmit={({ inputValue }) =>
+          onSubmit={(inputValue) =>
             programmeAction.subtitle.update({ id, newVal: inputValue })
           }
           input={{ placeholder: "Subtitle", styles: "uppercase" }}
           tooltip="Click to edit subtitle"
-          key={undoKey}
         />
       </div>
       <div className="mt-xs w-full text-center text-base font-light xs:font-normal lg:text-lg">
@@ -239,11 +221,10 @@ const Programme = () => {
             placeholder: "Programme summary",
             styles: "text-center",
           }}
-          onSubmit={({ inputValue }) => {
+          onSubmit={(inputValue) => {
             programmeAction.summary.update({ id, newVal: inputValue });
           }}
           tooltip="Click to edit summary"
-          key={undoKey}
         />
       </div>
     </div>
@@ -290,10 +271,6 @@ const GoToPageButton = () => {
     page: { programmes: programmesAction },
   } = UserEditableDataCx.useAction();
 
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
   return (
     <div
       className="flex cursor-pointer items-center gap-sm rounded-sm bg-brandOrange
@@ -302,12 +279,9 @@ const GoToPageButton = () => {
     >
       <TextInputForm
         localStateValue={buttonText}
-        onSubmit={({ inputValue }) =>
-          programmesAction.buttonText.update(inputValue)
-        }
+        onSubmit={programmesAction.buttonText.update}
         input={{ placeholder: "Button text", styles: "uppercase" }}
         tooltip="Click to edit button text"
-        key={undoKey}
       />
       <div className="">
         <Icon.ArrowRight />
