@@ -109,6 +109,7 @@ const Testimonials = () => {
 
 const Testimonial = () => {
   const { endorserName, image, id, text } = TestimonialCx.use();
+
   const action = UserEditableDataCx.useAction();
 
   return (
@@ -128,17 +129,20 @@ const Testimonial = () => {
         </UserSelectedImageWrapper>
         <Menu />
       </div>
-      <div className="absolute bottom-0 z-20 flex h-3/5 w-full flex-col justify-end gap-sm rounded-b-md bg-gradient-to-t from-black to-transparent p-sm text-center text-lg text-white">
-        <div className="overflow-y-auto scrollbar-hide">
+      <div className="absolute bottom-0 z-20 flex h-3/5 w-full flex-col items-center justify-end gap-sm rounded-b-md bg-gradient-to-t from-black to-transparent p-sm text-center text-lg text-white">
+        <div className="w-full overflow-y-auto p-xs scrollbar-hide">
           <TextAreaForm
             localStateValue={text}
             onSubmit={({ inputValue }) =>
               action.testimonial.text.update({ id, newVal: inputValue })
             }
-            textArea={{ placeholder: "Testimonial text..." }}
+            textArea={{
+              placeholder: "Testimonial text...",
+              styles: "text-center",
+            }}
           />
         </div>
-        <div className="shrink-0 font-medium">
+        <div className="max-w-[90%] shrink-0 overflow-x-auto font-medium">
           <TextInputForm
             localStateValue={endorserName}
             onSubmit={({ inputValue }) =>

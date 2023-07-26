@@ -3,4 +3,5 @@ export type Footer = {
     text: string;
   };
   orgDescription: string;
+  message: string;
 };

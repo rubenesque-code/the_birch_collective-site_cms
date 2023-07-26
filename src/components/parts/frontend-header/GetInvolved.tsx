@@ -11,7 +11,7 @@ const GetInvolved = () => {
 
   return (
     <div className="flex items-center gap-xxs">
-      <div className="max-w-[300px] overflow-x-auto text-sm font-semibold uppercase tracking-wide lg:text-base xl:text-lg">
+      <div className="max-w-[300px] overflow-x-auto text-sm font-semibold uppercase tracking-wide text-gray-700 lg:text-base xl:text-lg">
         <TextInputForm
           localStateValue={linkLabels.getInvolved}
           onSubmit={({ inputValue }) =>
@@ -35,7 +35,7 @@ const GetInvolved = () => {
         </Popover.Button>
 
         <Popover.Panel
-          className={`absolute bottom-0 right-0 translate-y-full rounded-sm border bg-white p-lg shadow-lg`}
+          className={`absolute bottom-0 right-0 z-30 translate-y-full rounded-sm border bg-white p-lg shadow-lg`}
         >
           <PanelContent />
         </Popover.Panel>

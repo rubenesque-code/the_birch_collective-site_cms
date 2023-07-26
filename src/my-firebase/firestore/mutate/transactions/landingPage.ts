@@ -29,18 +29,23 @@ export const landingPageTransaction = async (input: {
 }) => {
   const batch = writeBatch(firestore);
 
+  if (input.page) {
+    myDb.pages.landing.batch.update(input.page, batch);
+  }
+
   if (input.orgDetails) {
     myDb.orgDetails.batch.update(input.orgDetails, batch);
   }
   if (input.header) {
     myDb.header.batch.update(input.header, batch);
   }
+  if (input.footer) {
+    myDb.footer.batch.update(input.footer, batch);
+  }
   if (input.linkLabels) {
     myDb.linkLabels.batch.update(input.linkLabels, batch);
   }
-  if (input.page) {
-    myDb.pages.landing.batch.update(input.page, batch);
-  }
+
   if (input.testimonials.created.length) {
     input.testimonials.created.forEach((testimonial) =>
       myDb.testimonial.batch.create(testimonial, batch),

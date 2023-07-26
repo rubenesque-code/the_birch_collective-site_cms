@@ -41,6 +41,7 @@ const Testimonials = () => {
           )}
         />
       </div>
+
       <Slides
         numSlidesTotal={testimonials.length}
         slides={({ leftMost, rightMost }) =>
@@ -116,7 +117,7 @@ const TestimonialDummy = () => (
 const TestimonialActual = ({ data }: { data: MyDb["testimonial"] }) => {
   return (
     <>
-      <div className=" absolute h-full w-full">
+      <div className="absolute h-full w-full">
         <UserSelectedImageWrapper
           dbImageId={data.image.dbConnect.imageId}
           placeholderText="background image"
@@ -130,14 +131,16 @@ const TestimonialActual = ({ data }: { data: MyDb["testimonial"] }) => {
           )}
         </UserSelectedImageWrapper>
       </div>
-      <div className="absolute bottom-0 z-10 flex h-4/5 w-full flex-col justify-end gap-sm rounded-b-md bg-gradient-to-t from-black to-transparent p-sm text-center text-lg text-white">
-        <div className="overflow-auto scrollbar-hide">
-          {data.text.length ? data.text : "Testimonial"}
-        </div>
-        <div className="shrink-0 font-medium">
-          <p>
-            {data.endorserName.length ? data.endorserName : "Endorser name"}
-          </p>
+      <div className="absolute bottom-0 z-10 h-4/5 w-full bg-gradient-to-t from-black to-transparent">
+        <div className="absolute bottom-0 z-10 flex h-[63%] w-full flex-col justify-end gap-sm p-sm text-center text-lg text-white">
+          <div className="overflow-auto scrollbar-hide">
+            {data.text.length ? data.text : "Testimonial"}
+          </div>
+          <div className="shrink-0 font-medium">
+            <p>
+              {data.endorserName.length ? data.endorserName : "Endorser name"}
+            </p>
+          </div>
         </div>
       </div>
     </>

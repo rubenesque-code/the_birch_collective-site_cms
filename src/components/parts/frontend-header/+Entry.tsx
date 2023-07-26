@@ -23,7 +23,7 @@ const FrontendHeader = () => {
 
       <div className="flex items-center gap-md">
         <AboutUs />
-        <div className="max-w-[300px] overflow-x-auto text-sm font-semibold uppercase tracking-wide lg:text-base xl:text-lg">
+        <div className="max-w-[300px] overflow-x-auto text-sm font-semibold uppercase tracking-wide text-gray-700 lg:text-base xl:text-lg">
           <TextInputForm
             localStateValue={linkLabels.programmes}
             onSubmit={({ inputValue }) =>
@@ -38,7 +38,7 @@ const FrontendHeader = () => {
           />
         </div>
         <GetInvolved />
-        <div className="max-w-[300px] overflow-x-auto text-sm font-semibold uppercase tracking-wide lg:text-base xl:text-lg">
+        <div className="max-w-[300px] overflow-x-auto text-sm font-semibold uppercase tracking-wide text-gray-700 lg:text-base xl:text-lg">
           <TextInputForm
             localStateValue={linkLabels.workshops}
             onSubmit={({ inputValue }) =>

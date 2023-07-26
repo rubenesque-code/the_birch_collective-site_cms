@@ -1103,12 +1103,19 @@ export const createUserEditableDataStore = (input: {
               ),
           },
         },
-
         orgDescription: {
           update: (input) =>
             set(
               produce((state: UserEditableDataStore) => {
                 state.data.footer.orgDescription = input;
+              }),
+            ),
+        },
+        message: {
+          update: (input) =>
+            set(
+              produce((state: UserEditableDataStore) => {
+                state.data.footer.message = input;
               }),
             ),
         },

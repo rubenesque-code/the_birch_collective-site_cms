@@ -13,6 +13,7 @@ import { NextImage } from "~/lib/external-packages-rename";
 import { RevisionCx } from "~/components/+pages/home/_state/RevisionCx";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { ComponentMenu } from "~/components/menus";
+import { WithTooltip } from "~/components/WithTooltip";
 
 // todo: block phone number + email through other means
 
@@ -26,6 +27,9 @@ const FrontendFooter = () => {
         </div>
         <div className="mt-md">
           <InfoRow />
+        </div>
+        <div className="mt-md">
+          <BottomRow />
         </div>
       </div>
       <SecondColumn />
@@ -115,7 +119,9 @@ const SocialMediaLink = ({
 }) => (
   <Popover className="relative">
     <Popover.Button>
-      <div className="text-3xl">{icon}</div>
+      <WithTooltip text="Click to edit link">
+        <div className="text-3xl">{icon}</div>
+      </WithTooltip>
     </Popover.Button>
 
     <Popover.Panel className={`absolute -top-xs left-0 -translate-y-full`}>
@@ -281,5 +287,57 @@ const LogoMenu = () => {
         }}
       />
     </ComponentMenu>
+  );
+};
+
+const BottomRow = () => {
+  const {
+    orgDetails: { contact },
+    footer,
+  } = UserEditableDataCx.useAllData();
+
+  const {
+    orgDetails: { contact: contactAction },
+    footer: footerAction,
+  } = UserEditableDataCx.useAction();
+
+  const {
+    data: { undoKey },
+  } = RevisionCx.use();
+
+  return (
+    <div className="flex items-center gap-lg">
+      <div className="text-brandGreen">
+        <TextInputForm
+          localStateValue={contact.phoneNumber}
+          onSubmit={({ inputValue }) =>
+            contactAction.phoneNumber.update(inputValue)
+          }
+          input={{ placeholder: "Phone number" }}
+          tooltip="Click to edit phone number"
+          key={undoKey}
+        />
+      </div>
+      <div className="text-brandGreen">
+        <TextInputForm
+          localStateValue={contact.email}
+          onSubmit={({ inputValue }) => contactAction.email.update(inputValue)}
+          input={{ placeholder: "Email" }}
+          tooltip="Click to edit email"
+          key={undoKey}
+        />
+      </div>
+      <div className="text-brandGreen">
+        <TextInputForm
+          localStateValue={footer.message}
+          onSubmit={({ inputValue }) => footerAction.message.update(inputValue)}
+          input={{
+            placeholder: "Link to message form text",
+          }}
+          tooltip="Click to edit link to message form text"
+          key={undoKey}
+        />
+      </div>
+    </div>
   );
 };

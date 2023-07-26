@@ -31,10 +31,14 @@ import FrontendFooter from "~/components/parts/frontend-footer/+Entry";
 // □ UserEditableDataCx should be renamed - have other editable Cx e.g. new testimonial. Rename to e.g. page editable cx
 // □ abstraction for unfound entity: e.g. image, programme, supporter.
 // □ go over each text input and area form + add key where applicable
+// □ in e.g. textInputForm, return input value as first arg, and anything else, such as an onSubmit callback, as field in obj as second arg - that way can pass a function that takes inputVal as it's only arg without an extra func.
+// □ missed toasts - e.g. on reorder
 
 // □ Should have a subtle emboss of section name in each section? Maybe only if one/more text elements have no text
 // □ All inputs should have undo key
 // □ supporters modal tooltip for 'add to landing' is incorrect since modal is for all supporters
+
+// todo: Refactor. Maybe not too much.
 
 const HomePage = () => {
   return (
@@ -56,8 +60,8 @@ const HomePage = () => {
                   }}
                 >
                   <div className="bg-white">
-                    {/* <FrontendHeader /> */}
-                    {/*                     <BannerImage />
+                    <FrontendHeader />
+                    <BannerImage />
                     <PageLayout.Section.Spacing>
                       <OrgHeadings />
                     </PageLayout.Section.Spacing>
@@ -81,10 +85,12 @@ const HomePage = () => {
                     </PageLayout.Section.Spacing>
                     <PageLayout.Section.Spacing>
                       <Supporters />
-                    </PageLayout.Section.Spacing> */}
-                    <PageLayout.Section.Spacing>
-                      <FrontendFooter />
                     </PageLayout.Section.Spacing>
+                    <PageLayout.Section.Spacing.Horizontal>
+                      <div className="mt-2xl pb-xl">
+                        <FrontendFooter />
+                      </div>
+                    </PageLayout.Section.Spacing.Horizontal>
                   </div>
                 </PageLayout.Body>
               </div>

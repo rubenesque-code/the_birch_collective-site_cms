@@ -292,6 +292,9 @@ type Actions = {
     orgDescription: {
       update: (arg0: string) => void;
     };
+    message: {
+      update: (arg0: string) => void;
+    };
   };
 };
 
