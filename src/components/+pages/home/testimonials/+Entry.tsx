@@ -9,10 +9,7 @@ import type { MyDb } from "~/types/database";
 import { UserEditableDataCx } from "../_state";
 import { EditModal } from "./edit/+Entry";
 import { Slides } from "./slides/+Entry";
-
-// □ testimonial endorser name not saving (seems updating okay)
-// □ max width. move nav buttons to right.
-// □ will probably need to reset mydb.testimonials order at points
+import CmsLayout from "~/components/layouts/Cms";
 
 const Testimonials = () => {
   const { testimonials } = UserEditableDataCx.useAllData();
@@ -26,7 +23,7 @@ const Testimonials = () => {
 
   return (
     <div className="">
-      <div className="flex items-center justify-between rounded-md border border-dashed px-4 py-2">
+      <CmsLayout.EditBar>
         <EditModal
           button={({ openModal }) => (
             <div
@@ -40,7 +37,7 @@ const Testimonials = () => {
             </div>
           )}
         />
-      </div>
+      </CmsLayout.EditBar>
 
       <Slides
         numSlidesTotal={testimonials.length}
@@ -114,35 +111,33 @@ const TestimonialDummy = () => (
   </>
 );
 
-const TestimonialActual = ({ data }: { data: MyDb["testimonial"] }) => {
-  return (
-    <>
-      <div className="absolute h-full w-full">
-        <UserSelectedImageWrapper
-          dbImageId={data.image.dbConnect.imageId}
-          placeholderText="background image"
-        >
-          {({ dbImageId }) => (
-            <DbImageWrapper dbImageId={dbImageId}>
-              {({ urls }) => (
-                <CustomisableImage urls={urls} position={data.image.position} />
-              )}
-            </DbImageWrapper>
-          )}
-        </UserSelectedImageWrapper>
-      </div>
-      <div className="absolute bottom-0 z-10 h-4/5 w-full bg-gradient-to-t from-black to-transparent">
-        <div className="absolute bottom-0 z-10 flex h-[63%] w-full flex-col justify-end gap-sm p-sm text-center text-lg text-white">
-          <div className="overflow-auto scrollbar-hide">
-            {data.text.length ? data.text : "Testimonial"}
-          </div>
-          <div className="shrink-0 font-medium">
-            <p>
-              {data.endorserName.length ? data.endorserName : "Endorser name"}
-            </p>
-          </div>
+const TestimonialActual = ({ data }: { data: MyDb["testimonial"] }) => (
+  <>
+    <div className="absolute h-full w-full">
+      <UserSelectedImageWrapper
+        dbImageId={data.image.dbConnect.imageId}
+        placeholderText="background image"
+      >
+        {({ dbImageId }) => (
+          <DbImageWrapper dbImageId={dbImageId}>
+            {({ urls }) => (
+              <CustomisableImage urls={urls} position={data.image.position} />
+            )}
+          </DbImageWrapper>
+        )}
+      </UserSelectedImageWrapper>
+    </div>
+    <div className="absolute bottom-0 z-10 h-4/5 w-full bg-gradient-to-t from-black to-transparent">
+      <div className="absolute bottom-0 z-10 flex h-[63%] w-full flex-col justify-end gap-sm p-sm text-center text-lg text-white">
+        <div className="overflow-auto scrollbar-hide">
+          {data.text.length ? data.text : "Testimonial"}
+        </div>
+        <div className="shrink-0 font-medium">
+          <p>
+            {data.endorserName.length ? data.endorserName : "Endorser name"}
+          </p>
         </div>
       </div>
-    </>
-  );
-};
+    </div>
+  </>
+);

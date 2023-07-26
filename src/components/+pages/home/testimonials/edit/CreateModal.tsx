@@ -12,8 +12,6 @@ import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { WarningPanel } from "~/components/WarningPanel";
 import { useToast } from "~/hooks";
 
-// □ refactor
-
 export const CreateModal = () => {
   const { testimonials } = UserEditableDataCx.useAllData();
 
@@ -99,11 +97,44 @@ const NewTestimonialModalContent = ({
   const [showIncompleteErrorMessage, setShowIncompleteErrorMessage] =
     useState(false);
 
-  const { testimonial } = UserEditableDataCx.useAction();
   const { testimonials } = UserEditableDataCx.useAllData();
+
+  const { testimonial: testimonialAction } = UserEditableDataCx.useAction();
+
   const newTestimonialCx = NewTestimonialCx.use();
 
   const toast = useToast();
+
+  const handleCreate = () => {
+    const formIsComplete = Boolean(
+      newTestimonialCx.data.endorserName.length &&
+        newTestimonialCx.data.image.dbConnect.imageId &&
+        newTestimonialCx.data.text.length,
+    );
+
+    if (!formIsComplete) {
+      setShowIncompleteErrorMessage(true);
+      setTimeout(() => {
+        setShowIncompleteErrorMessage(false);
+      }, 7000);
+      return;
+    }
+
+    testimonialAction.create({
+      ...newTestimonialCx.data,
+      index: testimonials.length,
+    });
+
+    toast.neutral("Added testimonial");
+
+    closeNewTestimonialModal();
+
+    setTimeout(() => {
+      newTestimonialCx.actions.resetData(
+        createInitData({ index: testimonials.length + 1 }),
+      );
+    }, 200);
+  };
 
   return (
     <div className="relative flex flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
@@ -139,33 +170,7 @@ const NewTestimonialModalContent = ({
         <button
           className="my-btn my-btn-action"
           type="button"
-          onClick={() => {
-            const formIsComplete = Boolean(
-              newTestimonialCx.data.endorserName.length &&
-                newTestimonialCx.data.image.dbConnect.imageId &&
-                newTestimonialCx.data.text.length,
-            );
-
-            if (!formIsComplete) {
-              setShowIncompleteErrorMessage(true);
-              setTimeout(() => {
-                setShowIncompleteErrorMessage(false);
-              }, 7000);
-              return;
-            }
-
-            testimonial.create({
-              ...newTestimonialCx.data,
-              index: testimonials.length,
-            });
-            toast.neutral("Added testimonial");
-            closeNewTestimonialModal();
-            setTimeout(() => {
-              newTestimonialCx.actions.resetData(
-                createInitData({ index: testimonials.length + 1 }),
-              );
-            }, 200);
-          }}
+          onClick={handleCreate}
         >
           create
         </button>
@@ -173,8 +178,6 @@ const NewTestimonialModalContent = ({
     </div>
   );
 };
-
-// image + image menu as in banner image. create abstraction maybe. image position functionality.
 
 const NewTestimonial = () => {
   const newTestimonialStore = NewTestimonialCx.use();
@@ -220,13 +223,21 @@ const NewTestimonial = () => {
 };
 
 const Menu = () => {
-  const newTestimonialCx = NewTestimonialCx.use();
+  const {
+    actions: { image: imageAction },
+    data: { image },
+  } = NewTestimonialCx.use();
 
   return (
     <div className="absolute right-1 top-1 z-20 flex items-center gap-sm rounded-md bg-white px-xs py-xxs opacity-30 shadow-lg transition-opacity duration-75 ease-in-out group-hover/testimonialImage:opacity-40 hover:!opacity-100 ">
-      {newTestimonialCx.data.image.dbConnect.imageId ? (
+      {image.dbConnect.imageId ? (
         <>
-          <PositionButtons />
+          <ComponentMenu.Image.PositionMenu
+            position={image.position}
+            updateX={imageAction.position.x.update}
+            updateY={imageAction.position.y.update}
+            styles={{ wrapper: "left-0 top-0" }}
+          />
 
           <ComponentMenu.Divider />
         </>
@@ -234,97 +245,14 @@ const Menu = () => {
 
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
-          newTestimonialCx.actions.image.dbConnect.imageId.update(dbImageId);
-          newTestimonialCx.actions.image.position.x.update(50);
-          newTestimonialCx.actions.image.position.y.update(50);
+          imageAction.dbConnect.imageId.update(dbImageId);
+          imageAction.position.x.update(50);
+          imageAction.position.y.update(50);
         }}
         styles={{
           menu: { itemsWrapper: "right-0 -bottom-1 translate-y-full" },
         }}
       />
-    </div>
-  );
-};
-
-const PositionButtons = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const newTStore = NewTestimonialCx.use();
-
-  return (
-    <div className="flex items-center gap-sm">
-      {!isOpen ? (
-        <ComponentMenu.Button
-          onClick={() => setIsOpen(true)}
-          tooltip="show position controls"
-        >
-          <Icon.ChangePos />
-        </ComponentMenu.Button>
-      ) : (
-        <>
-          <ComponentMenu.Button
-            onClick={() => {
-              if (newTStore.data.image.position.x === 0) {
-                return;
-              }
-              const newPosition = newTStore.data.image.position.x - 10;
-              newTStore.actions.image.position.x.update(newPosition);
-            }}
-            tooltip="move image focus to the left"
-            isDisabled={newTStore.data.image.position.x === 0}
-          >
-            <Icon.PosLeft />
-          </ComponentMenu.Button>
-          <ComponentMenu.Button
-            onClick={() => {
-              if (newTStore.data.image.position.x === 100) {
-                return;
-              }
-              const newPosition = newTStore.data.image.position.x + 10;
-              newTStore.actions.image.position.x.update(newPosition);
-            }}
-            tooltip="move image focus to the right"
-            isDisabled={newTStore.data.image.position.x === 100}
-          >
-            <Icon.PosRight />
-          </ComponentMenu.Button>
-
-          <ComponentMenu.Button
-            onClick={() => {
-              if (newTStore.data.image.position.y === 0) {
-                return;
-              }
-              const newPosition = newTStore.data.image.position.y - 10;
-              newTStore.actions.image.position.y.update(newPosition);
-            }}
-            tooltip="show higher part of the image"
-            isDisabled={newTStore.data.image.position.y === 0}
-          >
-            <Icon.PosDown />
-          </ComponentMenu.Button>
-          <ComponentMenu.Button
-            onClick={() => {
-              if (newTStore.data.image.position.y === 100) {
-                return;
-              }
-              const newPosition = newTStore.data.image.position.y + 10;
-              newTStore.actions.image.position.y.update(newPosition);
-            }}
-            tooltip="show lower part of the image"
-            isDisabled={newTStore.data.image.position.y === 100}
-          >
-            <Icon.PosUp />
-          </ComponentMenu.Button>
-
-          <ComponentMenu.Button
-            onClick={() => setIsOpen(false)}
-            tooltip="hide position controls"
-            styles={{ button: "text-xs p-1 text-green-300" }}
-          >
-            <Icon.HideExpandable />
-          </ComponentMenu.Button>
-        </>
-      )}
     </div>
   );
 };

@@ -3,9 +3,14 @@ import { UserEditableDataCx } from "./_state";
 
 const OrgHeadings = () => {
   const {
-    orgHeadings: { byline, name },
-  } = UserEditableDataCx.useData("page");
-  const action = UserEditableDataCx.useAction();
+    page: {
+      orgHeadings: { byline, name },
+    },
+  } = UserEditableDataCx.useAllData();
+
+  const {
+    page: { orgHeadings: orgHeadingsAction },
+  } = UserEditableDataCx.useAction();
 
   return (
     <div className="flex justify-center">
@@ -17,7 +22,7 @@ const OrgHeadings = () => {
               placeholder: "Organisation name",
               styles: "text-center",
             }}
-            onSubmit={action.page.orgHeadings.name.update}
+            onSubmit={orgHeadingsAction.name.update}
             tooltip="Click to edit title"
           />
         </div>
@@ -28,7 +33,7 @@ const OrgHeadings = () => {
               placeholder: "Organisation byline",
               styles: "upppercase tracking-wide text-center",
             }}
-            onSubmit={action.page.orgHeadings.byline.update}
+            onSubmit={orgHeadingsAction.byline.update}
             tooltip="Click to edit byline"
           />
         </div>

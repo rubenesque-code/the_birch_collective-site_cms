@@ -37,6 +37,8 @@ import CmsLayout from "~/components/layouts/Cms";
 // □ go over each text input and area form + add key where applicable
 // □ in e.g. textInputForm, return input value as first arg, and anything else, such as an onSubmit callback, as field in obj as second arg - that way can pass a function that takes inputVal as it's only arg without an extra func.
 // □ missed toasts - e.g. on reorder
+// □ should probs derive e.g. testimonial type from state used rather than db
+// □ ideally, don't want to show position buttons if there's an image error (unfound image) either. Would need to recomposoe image state or equivalent.
 
 // □ Should have a subtle emboss of section name in each section? Maybe only if one/more text elements have no text
 // □ All inputs should have undo key
@@ -45,7 +47,7 @@ import CmsLayout from "~/components/layouts/Cms";
 // todo: Refactor. Maybe not too much.
 
 const HomePage = () => (
-  <InitData>
+  <InitDbData>
     {(initDbData) => (
       <UserEditableDataCx.Provider initDbData={initDbData}>
         <RevisionCx.Provider initDbData={initDbData}>
@@ -96,12 +98,12 @@ const HomePage = () => (
         </RevisionCx.Provider>
       </UserEditableDataCx.Provider>
     )}
-  </InitData>
+  </InitDbData>
 );
 
 export default HomePage;
 
-const InitData = ({
+const InitDbData = ({
   children,
 }: {
   children: (data: UserEditableDbData) => ReactElement;

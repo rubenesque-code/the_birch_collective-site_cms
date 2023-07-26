@@ -13,6 +13,7 @@ import { getIds } from "~/helpers/data/query";
 import { useToast } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
 import { UserEditableDataCx } from "../_state";
+import { useFocused } from "~/hooks/useFocused";
 
 const AboutUs = () => {
   const {
@@ -90,6 +91,7 @@ const Heading = () => {
 
 const AddEntryForm = () => {
   const [text, setText] = useState("");
+  const [isFocused, { focusHandlers }] = useFocused();
 
   const {
     page: {
@@ -119,13 +121,16 @@ const AddEntryForm = () => {
             <Icon.Create />
           </div>
           <ReactTextareaAutosize
-            className={`z-10 w-full resize-none bg-transparent outline-none`}
+            className={`z-10 w-full resize-none outline-none ${
+              isFocused ? "bg-gray-100" : "bg-transparent "
+            }`}
             value={text}
             onChange={(e) => {
               setText(e.target.value);
             }}
             placeholder="Add Entry"
             autoComplete="off"
+            {...focusHandlers}
           />
           {text.length ? (
             <button className="my-btn my-btn-neutral" type="submit">
@@ -216,11 +221,7 @@ const GoToPageButton = () => {
   } = UserEditableDataCx.useAction();
 
   return (
-    <div
-      className="flex cursor-pointer items-center gap-sm rounded-sm bg-brandGreen
-    px-4 py-2 text-lg font-bold uppercase tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl
-    "
-    >
+    <div className="flex cursor-pointer items-center gap-sm rounded-sm bg-brandGreen px-4 py-2 text-lg font-bold uppercase tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">
       <TextInputForm
         localStateValue={buttonText}
         onSubmit={aboutUs.buttonText.update}

@@ -4,71 +4,48 @@ import { CustomisableImage } from "~/components/CustomisableImage";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { WarningPanel } from "~/components/WarningPanel";
+import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
-import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
-import { Modal, MyMenu } from "~/components/styled-bases";
+import { Modal } from "~/components/styled-bases";
 import { deepSortByIndex } from "~/helpers/data/process";
+import { getIds } from "~/helpers/data/query";
 import { useToast } from "~/hooks";
 import { UserEditableDataCx } from "../../_state";
 import { CreateModal } from "./CreateModal";
 import { TestimonialCx } from "./_state";
-import { DndKit } from "~/components/dnd-kit";
-import { getIds } from "~/helpers/data/query";
-
-// □ abstraction for image library modal content + below
-// □ mymodal, provider, useVisibility context, etc. could be better structured
-// □ how does memoisation with array as dependency work? Should calc isChange myself?
-// □ ideally, don't want to show position buttons if there's an image error (unfound image) either. Would need to recomposoe image state or equivalent.
-// □ should probs derive e.g. testimonial type from state used rather than db
-// □ update testimonial index on delete seems to be working. Might be unreliable.
+import ModalLayout from "~/components/layouts/Modal";
 
 export const EditModal = ({
   button,
 }: {
   button: (arg0: { openModal: () => void }) => ReactElement;
-}) => {
-  return (
-    <Modal.VisibilityCx.Provider>
-      {({ closeModal, isOpen, openModal }) => (
-        <>
-          {button({ openModal })}
+}) => (
+  <Modal.VisibilityCx.Provider>
+    {({ closeModal, isOpen, openModal }) => (
+      <>
+        {button({ openModal })}
 
-          <Modal.OverlayAndPanelWrapper
-            onClickOutside={closeModal}
-            isOpen={isOpen}
-            panelContent={<Content />}
-          />
-        </>
-      )}
-    </Modal.VisibilityCx.Provider>
-  );
-};
+        <Modal.OverlayAndPanelWrapper
+          onClickOutside={closeModal}
+          isOpen={isOpen}
+          panelContent={<Content />}
+        />
+      </>
+    )}
+  </Modal.VisibilityCx.Provider>
+);
 
 const Content = () => {
   const { closeModal } = Modal.VisibilityCx.use();
 
   return (
-    <div className="relative flex h-[1200px] max-h-[70vh] w-[90vw] max-w-[1200px] flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
-      <div className="flex items-center justify-between border-b border-b-gray-200 pb-sm">
-        <h3 className="leading-6">Testimonials</h3>
-      </div>
-      <div className="mt-sm">
-        <CreateModal />
-      </div>
-      <div className="mt-sm flex-grow overflow-y-auto">
-        <Testimonials />
-      </div>
-      <div className="mt-xl">
-        <button
-          className="my-btn my-btn-neutral"
-          type="button"
-          onClick={() => closeModal()}
-        >
-          close
-        </button>
-      </div>
-    </div>
+    <ModalLayout.UserEdit
+      body={<Testimonials />}
+      closeModal={closeModal}
+      title="Testimonials"
+      createEntityModal={<CreateModal />}
+    />
   );
 };
 
@@ -161,7 +138,8 @@ const Testimonial = () => {
 
 const Menu = () => {
   const { image, id } = TestimonialCx.use();
-  const userAction = UserEditableDataCx.useAction();
+
+  const { testimonial: testimonialAction } = UserEditableDataCx.useAction();
 
   const toast = useToast();
 
@@ -169,22 +147,33 @@ const Menu = () => {
     <ComponentMenu styles="left-1 top-1 group-hover/testimonialImage:opacity-60">
       {image.dbConnect.imageId ? (
         <>
-          <PositionButtonsMenu />
+          <ComponentMenu.Image.PositionMenu
+            position={image.position}
+            updateX={(newVal) =>
+              testimonialAction.image.position.x.update({ id, newVal })
+            }
+            updateY={(newVal) =>
+              testimonialAction.image.position.y.update({ id, newVal })
+            }
+            styles={{ wrapper: "left-0 top-0" }}
+          />
 
           <ComponentMenu.Divider />
         </>
       ) : null}
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
-          userAction.testimonial.image.dbConnections.imageId.update({
+          testimonialAction.image.dbConnections.imageId.update({
             id,
             newVal: dbImageId,
           });
-          userAction.testimonial.image.position.x.update({
+
+          testimonialAction.image.position.x.update({
             id,
             newVal: 50,
           });
-          userAction.testimonial.image.position.y.update({
+
+          testimonialAction.image.position.y.update({
             id,
             newVal: 50,
           });
@@ -195,6 +184,7 @@ const Menu = () => {
       />
 
       <ComponentMenu.Divider />
+
       <Modal.WithVisibilityProvider
         button={({ openModal }) => (
           <ComponentMenu.Button.Delete
@@ -205,8 +195,10 @@ const Menu = () => {
         panelContent={({ closeModal }) => (
           <WarningPanel
             callback={() => {
-              userAction.testimonial.delete({ id });
+              testimonialAction.delete({ id });
+
               closeModal();
+
               toast.neutral("deleted testimonial");
             }}
             closeModal={closeModal}
@@ -218,108 +210,5 @@ const Menu = () => {
         )}
       />
     </ComponentMenu>
-  );
-};
-
-const PositionButtonsMenu = () => {
-  const {
-    image: { position },
-    id,
-  } = TestimonialCx.use();
-  const userAction = UserEditableDataCx.useAction();
-
-  return (
-    <MyMenu
-      button={
-        <ComponentMenu.Button tooltip="show position controls">
-          <Icon.ChangePos />
-        </ComponentMenu.Button>
-      }
-      styles={{
-        itemsWrapper: "left-0 top-0",
-      }}
-    >
-      {({ close: closeMenu }) => (
-        <>
-          <ComponentMenu styles="opacity-100">
-            <ComponentMenu.Button
-              onClick={() => {
-                if (position.x === 0) {
-                  return;
-                }
-                const newPosition = position.x - 10;
-                userAction.testimonial.image.position.x.update({
-                  id,
-                  newVal: newPosition,
-                });
-              }}
-              tooltip="move image focus to the left"
-              isDisabled={position.x === 0}
-            >
-              <Icon.PosLeft />
-            </ComponentMenu.Button>
-            <ComponentMenu.Button
-              onClick={() => {
-                if (position.x === 100) {
-                  return;
-                }
-                const newPosition = position.x + 10;
-                userAction.testimonial.image.position.x.update({
-                  id,
-                  newVal: newPosition,
-                });
-              }}
-              tooltip="move image focus to the right"
-              isDisabled={position.x === 100}
-            >
-              <Icon.PosRight />
-            </ComponentMenu.Button>
-
-            <ComponentMenu.Button
-              onClick={() => {
-                if (position.y === 0) {
-                  return;
-                }
-                const newPosition = position.y - 10;
-                userAction.testimonial.image.position.y.update({
-                  id,
-                  newVal: newPosition,
-                });
-              }}
-              tooltip="show higher part of the image"
-              isDisabled={position.y === 0}
-            >
-              <Icon.PosDown />
-            </ComponentMenu.Button>
-            <ComponentMenu.Button
-              onClick={() => {
-                if (position.y === 100) {
-                  return;
-                }
-                const newPosition = position.y + 10;
-                userAction.testimonial.image.position.y.update({
-                  id,
-                  newVal: newPosition,
-                });
-              }}
-              tooltip="show lower part of the image"
-              isDisabled={position.y === 100}
-            >
-              <Icon.PosUp />
-            </ComponentMenu.Button>
-
-            <ComponentMenu.Divider />
-
-            <ComponentMenu.Button
-              onClick={closeMenu}
-              tooltip="close position controls"
-              styles={{ button: "text-gray-600" }}
-            >
-              <Icon.HideExpandable />
-            </ComponentMenu.Button>
-          </ComponentMenu>
-        </>
-      )}
-    </MyMenu>
   );
 };

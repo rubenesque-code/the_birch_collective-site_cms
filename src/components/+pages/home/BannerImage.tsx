@@ -99,7 +99,7 @@ const ImageInfo = () => {
       </Popover.Button>
 
       <Popover.Panel
-        className={`absolute -left-xs top-0 z-10 -translate-x-full text-white ${
+        className={`absolute -left-xs top-0 z-10 -translate-x-full px-xs text-white ${
           text.length ? "bg-black" : "border"
         }`}
       >
