@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { produce } from "immer";
 import { createStore } from "zustand";
 import lodash from "lodash";
@@ -38,15 +39,49 @@ type Prev = [
   ...0[],
 ];
 
-type Leaves<T, D extends number = 10> = [D] extends [never]
+type OmitObjArrProps<TObj> = {
+  [K in keyof TObj as TObj[K] extends unknown[]
+    ? never
+    : K]: TObj[K] extends Record<string, unknown>
+    ? OmitObjArrProps<TObj[K]>
+    : TObj[K];
+};
+
+type A = {
+  a: "hello";
+  b: {
+    c: "okay";
+    d: string[];
+  };
+  d: string[];
+};
+
+type B = OmitObjArrProps<A>;
+type C = B["b"]["c"];
+
+const a: A = {
+  a: "hello",
+  b: { c: "okay", d: [] },
+  d: [],
+};
+
+// type D = A['b.c']
+
+type ObjFieldsToStr<T, D extends number = 10> = [D] extends [never]
+  ? never
+  : T extends object
+  ? { [K in keyof T]-?: Join<K, ObjFieldsToStr<T[K], Prev[D]>> }[keyof T]
+  : "";
+
+/* type Leaves<T, D extends number = 10> = [D] extends [never]
   ? never
   : T extends object
   ? { [K in keyof T]-?: Join<K, Leaves<T[K], Prev[D]>> }[keyof T]
-  : "";
+  : ""; */
 
-type MyGen<
+type GetObjValue<
   TObj extends Record<string, unknown>,
-  TKeys extends Leaves<TObj>,
+  TKeys extends string,
 > = Split<TKeys, "."> extends string[]
   ? MyGen3<TObj, Split<TKeys, ".">>
   : never;
@@ -59,7 +94,7 @@ type MyGen3<
   ...infer TRestOfKeysArr extends string[],
 ]
   ? TObj[TKey1] extends string | number | null
-    ? (arg: NonNullable<TObj[TKey1]>) => void
+    ? NonNullable<TObj[TKey1]>
     : TObj[TKey1] extends Record<string, unknown>
     ? MyGen3<TObj[TKey1], TRestOfKeysArr>
     : never
@@ -73,22 +108,30 @@ type Split<S extends string, D extends string> = string extends S
   ? [T, ...Split<U, D>]
   : [S];
 
+// const match = keys.match(/.*\.(.*)$/)
+
 // TODO: revert this createSTore. Apply to new landing-page only store. finish genFunc.
 export const createUserEditableDataStore = (input: {
   dbData: UserEditableDbData;
 }) => {
   return createStore<UserEditableDataStore>()((set) => {
-    function myGenFunc<TKeyStr extends Leaves<UserEditableDataStore["data"]>>(
-      newValue: string,
-      keys: TKeyStr,
-    ) {
-      set(
-        produce((state: UserEditableDataStore) => {
-          lodash.set(state.data, keys, newValue);
-          // state.data.page.bannerImage.dbConnections.imageId = newValue;
-        }),
-      );
+    function nonArrAction<
+      TKeyStr extends ObjFieldsToStr<
+        OmitObjArrProps<UserEditableDataStore["data"]>
+      >,
+    >(keys: TKeyStr) {
+      return {
+        update: (
+          newValue: GetObjValue<UserEditableDataStore["data"], TKeyStr>,
+        ) =>
+          set(
+            produce((state: UserEditableDataStore) => {
+              lodash.set(state.data, keys, newValue);
+            }),
+          ),
+      };
     }
+
     return {
       data: input.dbData,
       actions: {
@@ -101,11 +144,7 @@ export const createUserEditableDataStore = (input: {
         page: {
           bannerImage: {
             dbConnections: {
-              imageId: {
-                update: (newValue) => {
-                  myGenFunc("bannerImage.dbConnections.imageId", newValue);
-                },
-              },
+              imageId: nonArrAction("page.bannerImage.dbConnections.imageId"),
             },
             position: {
               x: {
