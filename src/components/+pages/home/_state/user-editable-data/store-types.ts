@@ -4,8 +4,6 @@ import type { MyDb } from "~/types/database";
 
 type UserEditableDataStore = { data: DbData; actions: Actions };
 
-export type { UserEditableDataStore, DbData as UserEditableDbData };
-
 type DbData = {
   page: MyDb["pages"]["landing"];
   testimonials: MyDb["testimonial"][];
@@ -16,6 +14,8 @@ type DbData = {
   header: MyDb["singles"]["header"];
   footer: MyDb["singles"]["footer"];
 };
+
+export type { UserEditableDataStore, DbData as UserEditableDbData };
 
 type Actions = {
   undo: (updatedData: DbData) => void;

@@ -14,6 +14,9 @@ const BannerImage = () => {
     bannerImage: { dbConnections, position },
   } = UserEditableDataCx.useData("page");
 
+  const data = UserEditableDataCx.useAllData();
+  console.log("data:", data.page.bannerImage.dbConnections.imageId);
+
   return (
     <div className="group/bannerImage relative aspect-[21/9]">
       <Menu />
