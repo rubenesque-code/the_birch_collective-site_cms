@@ -8,15 +8,14 @@ import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper"
 import { ComponentMenu } from "~/components/menus";
 import { Icon } from "~/components/icons";
 import { TextInputForm } from "~/components/forms";
-import { UedCx } from "~/context/user-editable-data";
 
 const BannerImage = () => {
   const {
     bannerImage: { dbConnections, position },
-  } = UedCx.Pages.Landing.useData();
-  /*   const {
-    bannerImage: { dbConnections, position },
-  } = UserEditableDataCx.useData("page"); */
+  } = UserEditableDataCx.useData("page");
+
+  const data = UserEditableDataCx.useAllData();
+  console.log("data:", data.page.bannerImage.dbConnections.imageId);
 
   return (
     <div className="group/bannerImage relative aspect-[21/9]">
@@ -41,7 +40,9 @@ const BannerImage = () => {
 export default BannerImage;
 
 const Menu = () => {
-  const { bannerImage: bannerImageAction } = UedCx.Pages.Landing.useAction();
+  const {
+    page: { bannerImage: bannerImageAction },
+  } = UserEditableDataCx.useAction();
 
   const {
     bannerImage: { position, dbConnections },
@@ -53,8 +54,12 @@ const Menu = () => {
         <>
           <ComponentMenu.Image.PositionMenu
             position={position}
-            updateX={bannerImageAction.position.x}
-            updateY={bannerImageAction.position.y}
+            updateX={(newValue) =>
+              bannerImageAction.position.x.update(newValue)
+            }
+            updateY={(newValue) =>
+              bannerImageAction.position.y.update(newValue)
+            }
             styles={{ wrapper: "left-0 top-0" }}
           />
 
@@ -64,9 +69,9 @@ const Menu = () => {
 
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
-          bannerImageAction.dbConnections.imageId(dbImageId);
-          bannerImageAction.position.x(50);
-          bannerImageAction.position.y(50);
+          bannerImageAction.dbConnections.imageId.update(dbImageId);
+          bannerImageAction.position.x.update(50);
+          bannerImageAction.position.y.update(50);
         }}
         styles={{
           menu: { itemsWrapper: "left-0 -bottom-1 translate-y-full" },

@@ -1,4 +1,4 @@
-import { UserEditableDataCx } from "~/components/+pages/home/_state";
+import { UserEditableDataCx } from "~/components/+pages/home-old/_state";
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";

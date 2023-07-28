@@ -8,7 +8,6 @@ import {
 import { myDb } from "~/my-firebase/firestore";
 import { generateUid } from "~/lib/external-packages-rename";
 import { useDocRevisionData, useDocsRevisionData, useToast } from "~/hooks";
-import { UedCx } from "~/context/user-editable-data";
 
 // TODO: seperate stores for each data type?
 
@@ -37,8 +36,10 @@ function Provider({
 
   const userEditableData = UserEditableDataCx.useAllData();
 
-  const page = UedCx.Pages.Landing.useRevision();
-
+  const pageRevisionData = useDocRevisionData({
+    dbData: currentDbData.page,
+    userEditedData: userEditableData.page,
+  });
   const orgDetailsRevisionData = useDocRevisionData({
     dbData: currentDbData.orgDetails,
     userEditedData: userEditableData.orgDetails,
@@ -69,7 +70,7 @@ function Provider({
   });
 
   const isChange =
-    page.isChange ||
+    pageRevisionData.isChange ||
     orgDetailsRevisionData.isChange ||
     testimonialsRevisionData.isChange ||
     programmesRevisionData.isChange ||
@@ -95,7 +96,7 @@ function Provider({
         () =>
           landingSaveMutation.mutateAsync(
             {
-              page: page.saveData,
+              page: pageRevisionData.saveData,
               orgDetails: orgDetailsRevisionData.saveData,
               testimonials: testimonialsRevisionData.saveData,
               programmes: programmesRevisionData.saveData,
@@ -122,8 +123,6 @@ function Provider({
 
   const undo = () =>
     ifChange(() => {
-      page.undo();
-
       userAction.undo(currentDbData);
 
       setUndoKey(generateUid());

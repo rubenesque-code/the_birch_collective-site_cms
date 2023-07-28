@@ -8,7 +8,7 @@ import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
 import { useToast } from "~/hooks";
-import { UserEditableDataCx } from "../+pages/home/_state";
+import { UserEditableDataCx } from "../+pages/home-old/_state";
 import { NewSupporterCx, createInitData } from "./_state";
 import { TextInputForm } from "../forms";
 

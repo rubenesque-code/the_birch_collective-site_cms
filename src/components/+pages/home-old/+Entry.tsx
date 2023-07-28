@@ -24,7 +24,6 @@ import PhotoAlbum from "./photo-album/+Entry";
 import SupportUs from "./support-us/+Entry";
 import Supporters from "./supporters/+Entry";
 import CmsLayout from "~/components/layouts/Cms";
-import { UedCx } from "~/context/user-editable-data";
 
 // CHECK
 // □ check image blur up works.
@@ -53,51 +52,52 @@ const HomePage = () => (
   <InitDbData>
     {(initDbData) => (
       <UserEditableDataCx.Provider initDbData={initDbData}>
-        <UedCx.Pages.Landing.Provider initData={initDbData.page}>
-          <RevisionCx.Provider initDbData={initDbData}>
-            {({ actions, data }) => (
-              <CmsLayout.Body>
-                <CmsHeader
-                  actions={actions}
-                  data={{ isChange: data.isChange }}
-                />
-                <SiteLayout.Body>
-                  <SiteHeader />
-                  <BannerImage />
-                  <SiteLayout.Section.Spacing>
-                    <OrgHeadings />
-                  </SiteLayout.Section.Spacing>
-                  <SiteLayout.Section.Spacing>
-                    <Testimonials />
-                  </SiteLayout.Section.Spacing>
-                  <SiteLayout.Section.Spacing>
-                    <AboutUs />
-                  </SiteLayout.Section.Spacing>
-                  <SiteLayout.Section.Spacing>
-                    <Workshops />
-                  </SiteLayout.Section.Spacing>
-                  <SiteLayout.Section.Spacing>
-                    <Programmes />
-                  </SiteLayout.Section.Spacing>
-                  <SiteLayout.Section.Spacing.Vertical>
-                    <PhotoAlbum />
-                  </SiteLayout.Section.Spacing.Vertical>
-                  <SiteLayout.Section.Spacing>
-                    <SupportUs />
-                  </SiteLayout.Section.Spacing>
-                  <SiteLayout.Section.Spacing>
-                    <Supporters />
-                  </SiteLayout.Section.Spacing>
-                  <SiteLayout.Section.Spacing.Horizontal>
-                    <div className="mt-2xl pb-xl">
-                      <SiteFooter />
-                    </div>
-                  </SiteLayout.Section.Spacing.Horizontal>
-                </SiteLayout.Body>
-              </CmsLayout.Body>
-            )}
-          </RevisionCx.Provider>
-        </UedCx.Pages.Landing.Provider>
+        <RevisionCx.Provider initDbData={initDbData}>
+          {({ actions, data }) => (
+            <CmsLayout.Body>
+              <CmsHeader actions={actions} data={{ isChange: data.isChange }} />
+              <SiteLayout.Body
+              /*                 styles={{
+                  outer:
+                    "h-full flex-grow overflow-y-auto overflow-x-hidden bg-gray-100 scrollbar-thin",
+                  inner: "p-sm pr-md",
+                }} */
+              >
+                <SiteHeader />
+                <BannerImage />
+                <SiteLayout.Section.Spacing>
+                  <OrgHeadings />
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
+                  <Testimonials />
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
+                  <AboutUs />
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
+                  <Workshops />
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
+                  <Programmes />
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing.Vertical>
+                  <PhotoAlbum />
+                </SiteLayout.Section.Spacing.Vertical>
+                <SiteLayout.Section.Spacing>
+                  <SupportUs />
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
+                  <Supporters />
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing.Horizontal>
+                  <div className="mt-2xl pb-xl">
+                    <SiteFooter />
+                  </div>
+                </SiteLayout.Section.Spacing.Horizontal>
+              </SiteLayout.Body>
+            </CmsLayout.Body>
+          )}
+        </RevisionCx.Provider>
       </UserEditableDataCx.Provider>
     )}
   </InitDbData>

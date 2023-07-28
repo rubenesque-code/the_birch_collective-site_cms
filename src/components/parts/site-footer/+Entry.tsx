@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
-import { UserEditableDataCx } from "~/components/+pages/home/_state";
+import { UserEditableDataCx } from "~/components/+pages/home-old/_state";
 import TextInputPopoverPanel from "~/components/TextInputPopoverPanel";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";

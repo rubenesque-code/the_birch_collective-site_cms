@@ -1,8 +1,9 @@
 import { produce } from "immer";
-import { createStore } from "zustand";
+import * as z from "zustand";
 import lodash from "lodash";
 
 import { getReorderedEntities, sortByIndex } from "~/helpers/data/process";
+import { generateUid } from "~/lib/external-packages-rename";
 
 import type { Store } from "./types";
 import type {
@@ -10,12 +11,11 @@ import type {
   ObjFieldsToStr,
   OmitObjArrProps,
 } from "../_helpers/types";
-import { generateUid } from "~/lib/external-packages-rename";
 
 // TODO: abstraction for delete (entity with index), order
 
-export const createLandingPageStore = (input: { initData: Store["data"] }) =>
-  createStore<Store>((set) => {
+export const createStore = (input: { initData: Store["data"] }) =>
+  z.createStore<Store>((set) => {
     function nonArrAction<
       TKeyStr extends ObjFieldsToStr<OmitObjArrProps<Store["data"]>>,
     >(keys: TKeyStr) {
@@ -311,11 +311,33 @@ export const createLandingPageStore = (input: { initData: Store["data"] }) =>
           donate: {
             buttonText: nonArrAction("supportUs.donate.buttonText"),
             description: nonArrAction("supportUs.donate.description"),
+            image: {
+              dbConnections: {
+                imageId: nonArrAction(
+                  "supportUs.donate.image.dbConnections.imageId",
+                ),
+              },
+              position: {
+                x: nonArrAction("supportUs.donate.image.position.x"),
+                y: nonArrAction("supportUs.donate.image.position.y"),
+              },
+            },
           },
           heading: nonArrAction("supportUs.heading"),
           volunteer: {
             buttonText: nonArrAction("supportUs.volunteer.buttonText"),
             description: nonArrAction("supportUs.volunteer.description"),
+            image: {
+              dbConnections: {
+                imageId: nonArrAction(
+                  "supportUs.volunteer.image.dbConnections.imageId",
+                ),
+              },
+              position: {
+                x: nonArrAction("supportUs.volunteer.image.position.x"),
+                y: nonArrAction("supportUs.volunteer.image.position.y"),
+              },
+            },
           },
         },
 
