@@ -8,6 +8,8 @@ export type Store = {
 
 type Data = MyDb["pages"]["landing"];
 
+// can do a deep merge?
+
 type Actions = {
   overWrite: (data: Data) => void;
 } & GenerateActions<Data>;

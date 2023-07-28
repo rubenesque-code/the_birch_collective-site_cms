@@ -1,137 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { produce } from "immer";
 import { createStore } from "zustand";
-import lodash from "lodash";
 
 import { getReorderedEntities, sortByIndex } from "~/helpers/data/process";
 import type { UserEditableDataStore, UserEditableDbData } from "./store-types";
 import { generateUid } from "~/lib/external-packages-rename";
 
-type Join<K, P> = K extends string | number
-  ? P extends string | number
-    ? `${K}${"" extends P ? "" : "."}${P}`
-    : never
-  : never;
-
-type Prev = [
-  never,
-  0,
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12,
-  13,
-  14,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  ...0[],
-];
-
-type OmitObjArrProps<TObj> = {
-  [K in keyof TObj as TObj[K] extends unknown[]
-    ? never
-    : K]: TObj[K] extends Record<string, unknown>
-    ? OmitObjArrProps<TObj[K]>
-    : TObj[K];
-};
-
-type A = {
-  a: "hello";
-  b: {
-    c: "okay";
-    d: string[];
-  };
-  d: string[];
-};
-
-type B = OmitObjArrProps<A>;
-type C = B["b"]["c"];
-
-const a: A = {
-  a: "hello",
-  b: { c: "okay", d: [] },
-  d: [],
-};
-
-// type D = A['b.c']
-
-type ObjFieldsToStr<T, D extends number = 10> = [D] extends [never]
-  ? never
-  : T extends object
-  ? { [K in keyof T]-?: Join<K, ObjFieldsToStr<T[K], Prev[D]>> }[keyof T]
-  : "";
-
-/* type Leaves<T, D extends number = 10> = [D] extends [never]
-  ? never
-  : T extends object
-  ? { [K in keyof T]-?: Join<K, Leaves<T[K], Prev[D]>> }[keyof T]
-  : ""; */
-
-type GetObjValue<
-  TObj extends Record<string, unknown>,
-  TKeys extends string,
-> = Split<TKeys, "."> extends string[]
-  ? MyGen3<TObj, Split<TKeys, ".">>
-  : never;
-
-type MyGen3<
-  TObj extends Record<string, unknown>,
-  TKeys extends string[],
-> = TKeys extends [
-  infer TKey1 extends string,
-  ...infer TRestOfKeysArr extends string[],
-]
-  ? TObj[TKey1] extends string | number | null
-    ? NonNullable<TObj[TKey1]>
-    : TObj[TKey1] extends Record<string, unknown>
-    ? MyGen3<TObj[TKey1], TRestOfKeysArr>
-    : never
-  : never;
-
-type Split<S extends string, D extends string> = string extends S
-  ? string[]
-  : S extends ""
-  ? []
-  : S extends `${infer T}${D}${infer U}`
-  ? [T, ...Split<U, D>]
-  : [S];
-
-// const match = keys.match(/.*\.(.*)$/)
-
-// TODO: revert this createSTore. Apply to new landing-page only store. finish genFunc.
 export const createUserEditableDataStore = (input: {
   dbData: UserEditableDbData;
 }) => {
   return createStore<UserEditableDataStore>()((set) => {
-    function nonArrAction<
-      TKeyStr extends ObjFieldsToStr<
-        OmitObjArrProps<UserEditableDataStore["data"]>
-      >,
-    >(keys: TKeyStr) {
-      return {
-        update: (
-          newValue: GetObjValue<UserEditableDataStore["data"], TKeyStr>,
-        ) =>
-          set(
-            produce((state: UserEditableDataStore) => {
-              lodash.set(state.data, keys, newValue);
-            }),
-          ),
-      };
-    }
-
     return {
       data: input.dbData,
       actions: {
@@ -144,7 +22,15 @@ export const createUserEditableDataStore = (input: {
         page: {
           bannerImage: {
             dbConnections: {
-              imageId: nonArrAction("page.bannerImage.dbConnections.imageId"),
+              imageId: {
+                update: (newValue) =>
+                  set(
+                    produce((state: UserEditableDataStore) => {
+                      state.data.page.bannerImage.dbConnections.imageId =
+                        newValue;
+                    }),
+                  ),
+              },
             },
             position: {
               x: {

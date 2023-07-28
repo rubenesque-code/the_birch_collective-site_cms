@@ -1,117 +1,162 @@
 import { produce } from "immer";
 import { createStore } from "zustand";
+import lodash from "lodash";
+
+import { getReorderedEntities, sortByIndex } from "~/helpers/data/process";
 
 import type { Store } from "./types";
+import type {
+  GetObjValue,
+  ObjFieldsToStr,
+  OmitObjArrProps,
+} from "../_helpers/types";
 
-type Join<K, P> = K extends string | number
-  ? P extends string | number
-    ? `${K}${"" extends P ? "" : "."}${P}`
-    : never
-  : never;
-
-type Prev = [
-  never,
-  0,
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12,
-  13,
-  14,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  ...0[],
-];
-
-type Leaves<T, D extends number = 10> = [D] extends [never]
-  ? never
-  : T extends object
-  ? { [K in keyof T]-?: Join<K, Leaves<T[K], Prev[D]>> }[keyof T]
-  : "";
-
-type MyGen<
-  TObj extends Record<string, unknown>,
-  TKeys extends Leaves<TObj>,
-> = Split<TKeys, "."> extends string[]
-  ? MyGen3<TObj, Split<TKeys, ".">>
-  : never;
-
-type MyGen3<
-  TObj extends Record<string, unknown>,
-  TKeys extends string[],
-> = TKeys extends [
-  infer TKey1 extends string,
-  ...infer TRestOfKeysArr extends string[],
-]
-  ? TObj[TKey1] extends string | number | null
-    ? (arg: NonNullable<TObj[TKey1]>) => void
-    : TObj[TKey1] extends Record<string, unknown>
-    ? MyGen3<TObj[TKey1], TRestOfKeysArr>
-    : never
-  : never;
-
-type Split<S extends string, D extends string> = string extends S
-  ? string[]
-  : S extends ""
-  ? []
-  : S extends `${infer T}${D}${infer U}`
-  ? [T, ...Split<U, D>]
-  : [S];
-
-type UpdateX = MyGen<Store["data"], "bannerImage.position.x">;
-// myFunc("bannerImage.dbConnections.imageId");
+// TODO: abstraction for delete (entity with index), order
 
 export const createLandingPageStore = (input: { initData: Store["data"] }) =>
   createStore<Store>((set) => {
-    function generateFunc(val: number | string, str: string) {
-      return set(
-        produce((store: Store) => {
-          store.data.bannerImage.dbConnections.imageId = "";
-        }),
-      );
+    function nonArrAction<
+      TKeyStr extends ObjFieldsToStr<OmitObjArrProps<Store["data"]>>,
+    >(keys: TKeyStr) {
+      return (newValue: GetObjValue<Store["data"], TKeyStr>) =>
+        set(
+          produce((store: Store) => {
+            lodash.set(store.data, keys, newValue);
+          }),
+        );
     }
 
     return {
       data: input.initData,
+
       actions: {
-        bannerImage: {
-          dbConnections: {
-            imageId: (newValue) =>
+        overWrite: (updatedData) =>
+          set(
+            produce((store: Store) => {
+              store.data = updatedData;
+            }),
+          ),
+        aboutUs: {
+          buttonText: nonArrAction("aboutUs.buttonText"),
+          entries: {
+            create: (newEntry: Store["data"]["aboutUs"]["entries"][number]) =>
               set(
                 produce((store: Store) => {
-                  store.data.bannerImage.dbConnections.imageId = newValue;
+                  store.data.aboutUs.entries.push(newEntry);
+                }),
+              ),
+            delete: (input: { id: string }) =>
+              set(
+                produce((store: Store) => {
+                  const entriesOrdered =
+                    store.data.aboutUs.entries.sort(sortByIndex);
+
+                  const entityToDeleteIndex = entriesOrdered.findIndex(
+                    (t) => t.id === input.id,
+                  );
+                  if (entityToDeleteIndex === -1) return;
+
+                  entriesOrdered.splice(entityToDeleteIndex, 1);
+
+                  for (
+                    let i = entityToDeleteIndex;
+                    i < entriesOrdered.length;
+                    i++
+                  ) {
+                    entriesOrdered[i].index = entriesOrdered[i].index - 1;
+                  }
+                }),
+              ),
+            updateText: (input: { id: string; newVal: string }) =>
+              set(
+                produce((store: Store) => {
+                  const index = store.data.aboutUs.entries.findIndex(
+                    (t) => t.id === input.id,
+                  );
+                  if (index !== -1)
+                    store.data.aboutUs.entries[index].text = input.newVal;
+                }),
+              ),
+            reorder: (input: { activeId: string; overId: string }) =>
+              set(
+                produce((store: Store) => {
+                  const entriesOrdered =
+                    store.data.aboutUs.entries.sort(sortByIndex);
+
+                  const active = entriesOrdered.find(
+                    (t) => t.id === input.activeId,
+                  );
+                  const over = entriesOrdered.find(
+                    (t) => t.id === input.overId,
+                  );
+
+                  if (!active || !over) {
+                    return;
+                  }
+
+                  const updatedEntries = getReorderedEntities({
+                    active,
+                    over,
+                    entities: entriesOrdered,
+                  });
+
+                  updatedEntries.forEach((updatedEntry) => {
+                    const index = store.data.aboutUs.entries.findIndex(
+                      (t) => t.id === updatedEntry.id,
+                    );
+                    if (index !== -1)
+                      store.data.aboutUs.entries[index].index =
+                        updatedEntry.newIndex;
+                  });
                 }),
               ),
           },
+          heading: nonArrAction("aboutUs.heading"),
+        },
+
+        bannerImage: {
+          dbConnections: {
+            imageId: nonArrAction("bannerImage.dbConnections.imageId"),
+          },
+          position: {
+            x: nonArrAction("bannerImage.position.x"),
+            y: nonArrAction("bannerImage.position.y"),
+          },
+          infoPopover: {
+            text: nonArrAction("bannerImage.infoPopover.text"),
+          },
+        },
+
+        orgHeadings: {
+          byline: nonArrAction("orgHeadings.byline"),
+          name: nonArrAction("orgHeadings.name"),
+        },
+
+        photoAlbum: {
+          entries: {
+            create: (input: Store["data"]["photoAlbum"]["entries"][number]) =>
+              set(
+                produce((store: Store) => {
+                  store.data.photoAlbum.entries.push(input);
+                }),
+              ),
+            delete: (input: { id: string }) =>
+              set(
+                produce((store: Store) => {
+                  const entityToRemoveIndex =
+                    store.data.photoAlbum.entries.findIndex(
+                      (p) => p.id === input.id,
+                    );
+                  if (entityToRemoveIndex !== -1)
+                    store.data.photoAlbum.entries.splice(
+                      entityToRemoveIndex,
+                      1,
+                    );
+                }),
+              ),
+          },
+          heading: nonArrAction("photoAlbum.heading"),
         },
       },
     };
   });
-
-/* type Concat<TArr extends string[]> = TArr extends [
-  infer TKey1 extends string,
-  ...infer TRestOfKeysArr1,
-]
-  ? TRestOfKeysArr1 extends [
-      infer TKey2 extends string,
-      ...infer TRestOfKeysArr2,
-    ]
-    ? TKey2 extends string
-      ? TRestOfKeysArr2 extends []
-        ? `${TKey1}${TKey2}`
-        : ""
-      : TKey1
-    : "bad2"
-  : "bad 1"; */
