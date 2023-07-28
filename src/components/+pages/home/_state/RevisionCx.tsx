@@ -1,21 +1,15 @@
-import { createContext, useContext, type ReactNode, useState } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import { useMutation } from "react-query";
 
-import {
-  UserEditableDataCx,
-  type UserEditableDbData,
-} from "./user-editable-data";
-import { myDb } from "~/my-firebase/firestore";
-import { generateUid } from "~/lib/external-packages-rename";
-import { useDocRevisionData, useDocsRevisionData, useToast } from "~/hooks";
 import { UedCx } from "~/context/user-editable-data";
+import { useToast } from "~/hooks";
+import { myDb } from "~/my-firebase/firestore";
 
 // TODO: seperate stores for each data type?
 
 type ContextValue = {
   data: {
     isChange: boolean;
-    undoKey: string;
   };
   actions: {
     save: () => void;
@@ -27,56 +21,18 @@ const Context = createContext<ContextValue | null>(null);
 
 function Provider({
   children,
-  initDbData,
 }: {
   children: ReactNode | ((args: ContextValue) => ReactNode);
-  initDbData: UserEditableDbData;
 }) {
-  const [currentDbData, setCurrentDbData] = useState(initDbData);
-  const [undoKey, setUndoKey] = useState(generateUid());
-
-  const userEditableData = UserEditableDataCx.useAllData();
-
   const page = UedCx.Pages.Landing.useRevision();
+  const footer = UedCx.Footer.useRevision();
+  const orgDetails = UedCx.OrgDetails.useRevision();
+  const linkLabels = UedCx.LinkLabels.useRevision();
+  const programmes = UedCx.Programmes.useRevision();
 
-  const orgDetailsRevisionData = useDocRevisionData({
-    dbData: currentDbData.orgDetails,
-    userEditedData: userEditableData.orgDetails,
-  });
-  const linkLabelsRevisionData = useDocRevisionData({
-    dbData: currentDbData.linkLabels,
-    userEditedData: userEditableData.linkLabels,
-  });
-  const headerRevisionData = useDocRevisionData({
-    dbData: currentDbData.header,
-    userEditedData: userEditableData.header,
-  });
-  const footerRevisionData = useDocRevisionData({
-    dbData: currentDbData.footer,
-    userEditedData: userEditableData.footer,
-  });
-  const testimonialsRevisionData = useDocsRevisionData({
-    dbData: currentDbData.testimonials,
-    userEditedData: userEditableData.testimonials,
-  });
-  const programmesRevisionData = useDocsRevisionData({
-    dbData: currentDbData.programmes,
-    userEditedData: userEditableData.programmes,
-  });
-  const supportersRevisionData = useDocsRevisionData({
-    dbData: currentDbData.supporters,
-    userEditedData: userEditableData.supporters,
-  });
+  const revisionDataArr = [page, footer, orgDetails, linkLabels, programmes];
 
-  const isChange =
-    page.isChange ||
-    orgDetailsRevisionData.isChange ||
-    testimonialsRevisionData.isChange ||
-    programmesRevisionData.isChange ||
-    linkLabelsRevisionData.isChange ||
-    supportersRevisionData.isChange ||
-    footerRevisionData.isChange ||
-    headerRevisionData.isChange;
+  const isChange = Boolean(revisionDataArr.find((data) => data.isChange));
 
   const ifChange = (arg0: () => void) => {
     if (!isChange) {
@@ -96,17 +52,17 @@ function Provider({
           landingSaveMutation.mutateAsync(
             {
               page: page.saveData,
-              orgDetails: orgDetailsRevisionData.saveData,
-              testimonials: testimonialsRevisionData.saveData,
-              programmes: programmesRevisionData.saveData,
-              supporters: supportersRevisionData.saveData,
-              linkLabels: linkLabelsRevisionData.saveData,
-              header: headerRevisionData.saveData,
-              footer: footerRevisionData.saveData,
+              orgDetails: orgDetails.saveData,
+              testimonials: { created: [], deleted: [], updated: [] },
+              programmes: programmes.saveData,
+              supporters: { created: [], deleted: [], updated: [] },
+              linkLabels: linkLabels.saveData,
+              header: null,
+              footer: footer.saveData,
             },
             {
               onSuccess() {
-                setCurrentDbData(userEditableData);
+                revisionDataArr.forEach((data) => data.onSaveSuccess());
               },
             },
           ),
@@ -118,15 +74,9 @@ function Provider({
       ),
     );
 
-  const userAction = UserEditableDataCx.useAction();
-
   const undo = () =>
     ifChange(() => {
-      page.undo();
-
-      userAction.undo(currentDbData);
-
-      setUndoKey(generateUid());
+      revisionDataArr.forEach((data) => data.handleUndo());
 
       toast.neutral("undone");
     });
@@ -135,7 +85,6 @@ function Provider({
     actions: { undo, save },
     data: {
       isChange,
-      undoKey,
     },
   };
 
@@ -159,7 +108,7 @@ const useThisContext = () => {
 
 function RevisionCx() {
   throw new Error(
-    "RevisionContext exists for naming purposes only and should not be used as a component",
+    "RevisionCx exists for naming purposes only and should not be used as a component",
   );
 }
 

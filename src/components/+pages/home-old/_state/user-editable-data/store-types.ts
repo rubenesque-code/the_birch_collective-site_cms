@@ -20,13 +20,13 @@ export type { UserEditableDataStore, DbData as UserEditableDbData };
 type Actions = {
   undo: (updatedData: DbData) => void;
   page: PageActions;
-  testimonial: TestimonialActions;
+  footer: FooterActions;
+  header: HeaderActions;
+  linkLabels: LinkLabelsActions;
+  orgDetails: OrgDetailsActions;
   programme: ProgrammeActions;
   supporter: SupporterActions;
-  orgDetails: OrgDetailsActions;
-  linkLabels: LinkLabelsActions;
-  header: HeaderActions;
-  footer: FooterActions;
+  testimonial: TestimonialActions;
 };
 
 type PageActions = {

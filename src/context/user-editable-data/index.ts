@@ -1,4 +1,9 @@
 import { LandingPageDataCx } from "./landing-page";
+import { FooterDataCx } from "./footer";
+import { OrgDetailsDataCx } from "./org-details";
+import { LinkLabelsDataCx } from "./link-labels";
+import { HeaderDataCx } from "./header";
+import { ProgrammesDataCx } from "./programmes";
 
 function UedCx() {
   throw new Error(
@@ -17,3 +22,9 @@ function Pages() {
 UedCx.Pages = Pages;
 
 Pages.Landing = LandingPageDataCx;
+
+UedCx.Footer = FooterDataCx;
+UedCx.Header = HeaderDataCx;
+UedCx.OrgDetails = OrgDetailsDataCx;
+UedCx.LinkLabels = LinkLabelsDataCx;
+UedCx.Programmes = ProgrammesDataCx;

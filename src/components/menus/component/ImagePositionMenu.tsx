@@ -72,13 +72,10 @@ const ImagePositionMenu = ({
             </ComponentMenu.Button>
             <ComponentMenu.Button
               onClick={() => {
-                console.log("updating y position", position);
-
                 if (position.y === 100) {
                   return;
                 }
                 const newPosition = position.y + 10;
-                console.log("newPosition:", newPosition);
                 updateY(newPosition);
               }}
               tooltip="show lower part of the image"

@@ -8,8 +8,8 @@ import { ProgrammeCx } from "~/context/entities";
 import { LandingCx } from "~/context/entities/landing";
 import { useToast } from "~/hooks";
 import type { MyDb } from "~/types/database";
-import { UserEditableDataCx } from "../_state";
 import AddProgrammeModal from "./entries/add-programme-modal/+Entry";
+import { UedCx } from "~/context/user-editable-data";
 
 const Programmes = () => (
   <div className="group/programmes">
@@ -24,20 +24,16 @@ const Programmes = () => (
 export default Programmes;
 
 const Headings = () => {
-  const {
-    page: { programmes },
-  } = UserEditableDataCx.useAllData();
+  const { programmes } = UedCx.Pages.Landing.useData();
 
-  const {
-    page: { programmes: programmesAction },
-  } = UserEditableDataCx.useAction();
+  const { programmes: programmesAction } = UedCx.Pages.Landing.useAction();
 
   return (
     <div className="">
       <div className="text-center font-display text-6xl text-brandOrange">
         <TextInputForm
           localStateValue={programmes.heading}
-          onSubmit={programmesAction.heading.update}
+          onSubmit={programmesAction.heading}
           input={{
             placeholder: "Heading",
             styles: "font-bold tracking-wide text-center",
@@ -52,7 +48,7 @@ const Headings = () => {
             placeholder: "Subheading",
             styles: "tracking-wide text-center",
           }}
-          onSubmit={programmesAction.subheading.update}
+          onSubmit={programmesAction.subheading}
           tooltip="Click to edit programmes subheading"
         />
       </div>
@@ -62,11 +58,10 @@ const Headings = () => {
 
 const EntriesSection = () => {
   const {
-    page: {
-      programmes: { entries },
-    },
-    programmes,
-  } = UserEditableDataCx.useAllData();
+    programmes: { entries },
+  } = UedCx.Pages.Landing.useData();
+
+  const programmes = UedCx.Programmes.useData();
 
   const entriesSorted = React.useMemo(() => {
     const sorted = produce(entries, (draft) => {

@@ -2,23 +2,28 @@ import {
   createContext,
   useContext,
   useRef,
-  type ReactNode,
   useState,
+  type ReactNode,
 } from "react";
 import { useStore } from "zustand";
 
-import type { Store } from "./types";
 import type { MyDb } from "~/types/database";
+import type { Store } from "./types";
 
-import { createStore } from "./createStore";
+import { useDocsRevisionData } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
-import { useDocRevisionData } from "~/hooks";
+import { createStore } from "./createStore";
+import type { DocPartialWithId } from "~/types/database/_helpers";
 
 type ContextValue = { store: ReturnType<typeof createStore> } & {
   revision: {
     isChange: boolean;
     undoKey: string;
-    saveData: Partial<MyDb["pages"]["landing"]>;
+    saveData: {
+      created: MyDb["programme"][];
+      deleted: string[];
+      updated: DocPartialWithId<MyDb["programme"]>[];
+    };
     handleUndo: () => void;
     onSaveSuccess: () => void;
   };
@@ -44,7 +49,7 @@ function Provider({
 
   const store = useStore(storeRef.current, (store) => store);
 
-  const { isChange, saveData } = useDocRevisionData({
+  const { isChange, saveData } = useDocsRevisionData({
     dbData: initData,
     userEditedData: store.data,
   });
@@ -82,7 +87,7 @@ function Provider({
 function useData() {
   const context = useContext(Context);
   if (!context)
-    throw new Error("Missing LandingPageDataCx.Provider in the tree");
+    throw new Error("Missing ProgrammesDataCx.Provider in the tree");
 
   return useStore(context.store, (state) => state.data);
 }
@@ -90,7 +95,7 @@ function useData() {
 function useAction() {
   const context = useContext(Context);
   if (!context)
-    throw new Error("Missing LandingPageDataCx.Provider in the tree");
+    throw new Error("Missing ProgrammesDataCx.Provider in the tree");
 
   return useStore(context.store, (state) => state.actions);
 }
@@ -98,20 +103,20 @@ function useAction() {
 function useRevision() {
   const context = useContext(Context);
   if (!context)
-    throw new Error("Missing LandingPageDataCx.Provider in the tree");
+    throw new Error("Missing ProgrammesDataCx.Provider in the tree");
 
   return context.revision;
 }
 
-function LandingPageDataCx() {
+function ProgrammesDataCx() {
   throw new Error(
-    "LandingPageDataCx exists for naming purposes only and should not be used as a component",
+    "ProgrammesDataCx exists for naming purposes only and should not be used as a component",
   );
 }
 
-export { LandingPageDataCx };
+export { ProgrammesDataCx };
 
-LandingPageDataCx.Provider = Provider;
-LandingPageDataCx.useData = useData;
-LandingPageDataCx.useAction = useAction;
-LandingPageDataCx.useRevision = useRevision;
+ProgrammesDataCx.Provider = Provider;
+ProgrammesDataCx.useData = useData;
+ProgrammesDataCx.useAction = useAction;
+ProgrammesDataCx.useRevision = useRevision;

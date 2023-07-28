@@ -1,9 +1,11 @@
 import type { ReactElement, ReactNode } from "react";
+
+import { ComponentApiCx } from "./_state";
+
 import { WarningPanel } from "~/components/WarningPanel";
 import { WithTooltip } from "~/components/WithTooltip";
 import { Icon } from "~/components/icons";
 import { Modal } from "~/components/styled-bases";
-import { ComponentApiCx } from "./_state";
 
 export const RevisionButtons = () => (
   <div className="flex items-center gap-md">
@@ -16,7 +18,7 @@ const Button = ({
   children,
   ...input
 }: {
-  tooltip: (isChange: boolean) => string;
+  tooltip: string;
   onClick: () => void;
   icon: ReactElement;
   children?: ReactNode;
@@ -26,7 +28,7 @@ const Button = ({
   } = ComponentApiCx.use();
 
   return (
-    <WithTooltip text={input.tooltip(isChange)}>
+    <WithTooltip text={input.tooltip}>
       <button
         className={`relative rounded-full p-1 text-2xl transition-all ease-in-out hover:bg-gray-100 ${
           !isChange
@@ -55,9 +57,7 @@ const Undo = () => {
         <Button
           icon={<Icon.Undo weight="light" />}
           onClick={() => isChange && openModal()}
-          tooltip={(isChange) =>
-            isChange ? "undo changes" : "nothing to undo"
-          }
+          tooltip={isChange ? "undo changes" : "nothing to undo"}
         />
       )}
       panelContent={({ closeModal }) => (
@@ -87,7 +87,7 @@ const Save = () => {
     <Button
       icon={<Icon.Save weight="light" />}
       onClick={save}
-      tooltip={(isChange) => (isChange ? "save changes" : "nothing to save")}
+      tooltip={isChange ? "save changes" : "nothing to save"}
     >
       <span
         className={`absolute left-[2.5px] top-[2.5px] h-[8px] w-[8px] rounded-full bg-green-active transition-opacity ease-in-out ${

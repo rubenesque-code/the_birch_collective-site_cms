@@ -18,7 +18,7 @@ type ContextValue = { store: ReturnType<typeof createStore> } & {
   revision: {
     isChange: boolean;
     undoKey: string;
-    saveData: Partial<MyDb["pages"]["landing"]>;
+    saveData: Partial<MyDb["singles"]["header"]>;
     handleUndo: () => void;
     onSaveSuccess: () => void;
   };
@@ -81,37 +81,34 @@ function Provider({
 
 function useData() {
   const context = useContext(Context);
-  if (!context)
-    throw new Error("Missing LandingPageDataCx.Provider in the tree");
+  if (!context) throw new Error("Missing HeaderDataCx.Provider in the tree");
 
   return useStore(context.store, (state) => state.data);
 }
 
 function useAction() {
   const context = useContext(Context);
-  if (!context)
-    throw new Error("Missing LandingPageDataCx.Provider in the tree");
+  if (!context) throw new Error("Missing HeaderDataCx.Provider in the tree");
 
   return useStore(context.store, (state) => state.actions);
 }
 
 function useRevision() {
   const context = useContext(Context);
-  if (!context)
-    throw new Error("Missing LandingPageDataCx.Provider in the tree");
+  if (!context) throw new Error("Missing HeaderDataCx.Provider in the tree");
 
   return context.revision;
 }
 
-function LandingPageDataCx() {
+function HeaderDataCx() {
   throw new Error(
-    "LandingPageDataCx exists for naming purposes only and should not be used as a component",
+    "HeaderDataCx exists for naming purposes only and should not be used as a component",
   );
 }
 
-export { LandingPageDataCx };
+export { HeaderDataCx };
 
-LandingPageDataCx.Provider = Provider;
-LandingPageDataCx.useData = useData;
-LandingPageDataCx.useAction = useAction;
-LandingPageDataCx.useRevision = useRevision;
+HeaderDataCx.Provider = Provider;
+HeaderDataCx.useData = useData;
+HeaderDataCx.useAction = useAction;
+HeaderDataCx.useRevision = useRevision;

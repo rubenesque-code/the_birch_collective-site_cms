@@ -1,7 +1,5 @@
 import { Popover } from "@headlessui/react";
 
-import { UserEditableDataCx } from "./_state";
-
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
@@ -45,7 +43,7 @@ const Menu = () => {
 
   const {
     bannerImage: { position, dbConnections },
-  } = UserEditableDataCx.useData("page");
+  } = UedCx.Pages.Landing.useData();
 
   return (
     <ComponentMenu styles="left-1 top-1 group-hover/bannerImage:opacity-40">
@@ -81,12 +79,11 @@ const ImageInfo = () => {
     bannerImage: {
       infoPopover: { text },
     },
-  } = UserEditableDataCx.useData("page");
+  } = UedCx.Pages.Landing.useData();
+
   const {
-    page: {
-      bannerImage: { infoPopover },
-    },
-  } = UserEditableDataCx.useAction();
+    bannerImage: { infoPopover: infoPopoverAction },
+  } = UedCx.Pages.Landing.useAction();
 
   return (
     <Popover className="absolute right-sm top-sm z-10">
@@ -103,7 +100,7 @@ const ImageInfo = () => {
       >
         <TextInputForm
           localStateValue={text}
-          onSubmit={infoPopover.text.update}
+          onSubmit={infoPopoverAction.text}
           input={{ placeholder: "Enter image info" }}
           tooltip="image info"
         />

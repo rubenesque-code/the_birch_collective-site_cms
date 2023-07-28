@@ -5,26 +5,26 @@ import { useQuery } from "react-query";
 
 import { myDb } from "~/my-firebase/firestore";
 
-import { UserEditableDataCx, type UserEditableDbData } from "./_state";
 import { RevisionCx } from "./_state/RevisionCx";
 
 import { PageDataFetch } from "~/components/PageDataFetch";
 import CmsHeader from "~/components/parts/cms-header/+Entry";
-import SiteHeader from "~/components/parts/site-header/+Entry";
 import SiteFooter from "~/components/parts/site-footer/+Entry";
+import SiteHeader from "~/components/parts/site-header/+Entry";
 
+import CmsLayout from "~/components/layouts/Cms";
+import SiteLayout from "~/components/layouts/Site";
+import { UedCx } from "~/context/user-editable-data";
 import BannerImage from "./BannerImage";
 import OrgHeadings from "./OrgHeadings";
-import Testimonials from "./testimonials/+Entry";
 import AboutUs from "./about-us/+Entry";
-import SiteLayout from "~/components/layouts/Site";
-import Workshops from "./workshops/+Entry";
-import Programmes from "./programmes/+Entry";
 import PhotoAlbum from "./photo-album/+Entry";
+import Programmes from "./programmes/+Entry";
 import SupportUs from "./support-us/+Entry";
 import Supporters from "./supporters/+Entry";
-import CmsLayout from "~/components/layouts/Cms";
-import { UedCx } from "~/context/user-editable-data";
+import Testimonials from "./testimonials/+Entry";
+import Workshops from "./workshops/+Entry";
+import type { MyDb } from "~/types/database";
 
 // CHECK
 // □ check image blur up works.
@@ -47,68 +47,77 @@ import { UedCx } from "~/context/user-editable-data";
 // □ supporters modal tooltip for 'add to landing' is incorrect since modal is for all supporters
 // □ should memoise in revisionCx?
 
-// todo: Refactor. Maybe not too much.
+// todo: Will have to remove undo keys from text-input/area form? Re-work revision daat? make an unod key context?
 
 const HomePage = () => (
   <InitDbData>
     {(initDbData) => (
-      <UserEditableDataCx.Provider initDbData={initDbData}>
-        <UedCx.Pages.Landing.Provider initData={initDbData.page}>
-          <RevisionCx.Provider initDbData={initDbData}>
-            {({ actions, data }) => (
-              <CmsLayout.Body>
-                <CmsHeader
-                  actions={actions}
-                  data={{ isChange: data.isChange }}
-                />
-                <SiteLayout.Body>
-                  <SiteHeader />
-                  <BannerImage />
-                  <SiteLayout.Section.Spacing>
-                    <OrgHeadings />
-                  </SiteLayout.Section.Spacing>
-                  <SiteLayout.Section.Spacing>
-                    <Testimonials />
-                  </SiteLayout.Section.Spacing>
-                  <SiteLayout.Section.Spacing>
-                    <AboutUs />
-                  </SiteLayout.Section.Spacing>
-                  <SiteLayout.Section.Spacing>
-                    <Workshops />
-                  </SiteLayout.Section.Spacing>
-                  <SiteLayout.Section.Spacing>
-                    <Programmes />
-                  </SiteLayout.Section.Spacing>
-                  <SiteLayout.Section.Spacing.Vertical>
-                    <PhotoAlbum />
-                  </SiteLayout.Section.Spacing.Vertical>
-                  <SiteLayout.Section.Spacing>
-                    <SupportUs />
-                  </SiteLayout.Section.Spacing>
-                  <SiteLayout.Section.Spacing>
-                    <Supporters />
-                  </SiteLayout.Section.Spacing>
-                  <SiteLayout.Section.Spacing.Horizontal>
-                    <div className="mt-2xl pb-xl">
-                      <SiteFooter />
-                    </div>
-                  </SiteLayout.Section.Spacing.Horizontal>
-                </SiteLayout.Body>
-              </CmsLayout.Body>
-            )}
-          </RevisionCx.Provider>
-        </UedCx.Pages.Landing.Provider>
-      </UserEditableDataCx.Provider>
+      <UedProviders initDbData={initDbData}>
+        <RevisionCx.Provider>
+          {(revision) => (
+            <CmsLayout.Body>
+              <CmsHeader
+                actions={revision.actions}
+                data={{ isChange: revision.data.isChange }}
+              />
+              <SiteLayout.Body>
+                {/* <SiteHeader /> */}
+                <BannerImage />
+                <SiteLayout.Section.Spacing>
+                  <OrgHeadings />
+                </SiteLayout.Section.Spacing>
+                {/*                 <SiteLayout.Section.Spacing>
+                  <Testimonials />
+                </SiteLayout.Section.Spacing> */}
+                {/*                 <SiteLayout.Section.Spacing>
+                  <AboutUs />
+                </SiteLayout.Section.Spacing> */}
+                {/*                 <SiteLayout.Section.Spacing>
+                  <Workshops />
+                </SiteLayout.Section.Spacing> */}
+                <SiteLayout.Section.Spacing>
+                  <Programmes />
+                </SiteLayout.Section.Spacing>
+                {/*                 <SiteLayout.Section.Spacing.Vertical>
+                  <PhotoAlbum />
+                </SiteLayout.Section.Spacing.Vertical> */}
+                {/*                 <SiteLayout.Section.Spacing>
+                  <SupportUs />
+                </SiteLayout.Section.Spacing> */}
+                {/*                 <SiteLayout.Section.Spacing>
+                  <Supporters />
+                </SiteLayout.Section.Spacing> */}
+                <SiteLayout.Section.Spacing.Horizontal>
+                  <div className="mt-2xl pb-xl">
+                    <SiteFooter />
+                  </div>
+                </SiteLayout.Section.Spacing.Horizontal>
+              </SiteLayout.Body>
+            </CmsLayout.Body>
+          )}
+        </RevisionCx.Provider>
+      </UedProviders>
     )}
   </InitDbData>
 );
 
 export default HomePage;
 
+type DbData = {
+  page: MyDb["pages"]["landing"];
+  testimonials: MyDb["testimonial"][];
+  programmes: MyDb["programme"][];
+  supporters: MyDb["supporter"][];
+  orgDetails: MyDb["singles"]["orgDetails"];
+  linkLabels: MyDb["singles"]["linkLabels"];
+  header: MyDb["singles"]["header"];
+  footer: MyDb["singles"]["footer"];
+};
+
 const InitDbData = ({
   children,
 }: {
-  children: (data: UserEditableDbData) => ReactElement;
+  children: (data: DbData) => ReactElement;
 }) => {
   const landingQuery = useQuery("landing", myDb.pages.landing.fetch);
   const testimonialsQuery = useQuery("testimonials", myDb.testimonial.fetchAll);
@@ -163,4 +172,28 @@ const InitDbData = ({
     header: headerQuery.data,
     footer: footerQuery.data,
   });
+};
+
+const UedProviders = ({
+  initDbData,
+  children,
+}: {
+  initDbData: DbData;
+  children: ReactElement;
+}) => {
+  return (
+    <UedCx.Pages.Landing.Provider initData={initDbData.page}>
+      <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
+        <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
+          <UedCx.Header.Provider initData={initDbData.header}>
+            <UedCx.Footer.Provider initData={initDbData.footer}>
+              <UedCx.Programmes.Provider initData={initDbData.programmes}>
+                {children}
+              </UedCx.Programmes.Provider>
+            </UedCx.Footer.Provider>
+          </UedCx.Header.Provider>
+        </UedCx.LinkLabels.Provider>
+      </UedCx.OrgDetails.Provider>
+    </UedCx.Pages.Landing.Provider>
+  );
 };

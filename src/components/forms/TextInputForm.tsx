@@ -5,7 +5,6 @@ import { useMeasure } from "react-use";
 import type { MyPick } from "~/types/utilities";
 
 import { WithTooltip } from "../WithTooltip";
-import { RevisionCx } from "../+pages/home-old/_state/RevisionCx";
 
 type Props = {
   localStateValue: string | null;
@@ -18,11 +17,7 @@ type Props = {
 };
 
 export const TextInputForm = (props: Props) => {
-  const {
-    data: { undoKey },
-  } = RevisionCx.use();
-
-  return <ActualComponent {...props} key={undoKey} />;
+  return <ActualComponent {...props} />;
 };
 
 const ActualComponent = (props: Props) => {
