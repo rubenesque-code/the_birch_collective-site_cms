@@ -10,6 +10,7 @@ import type {
   ObjFieldsToStr,
   OmitObjArrProps,
 } from "../_helpers/types";
+import { generateUid } from "~/lib/external-packages-rename";
 
 // TODO: abstraction for delete (entity with index), order
 
@@ -36,6 +37,7 @@ export const createLandingPageStore = (input: { initData: Store["data"] }) =>
               store.data = updatedData;
             }),
           ),
+
         aboutUs: {
           buttonText: nonArrAction("aboutUs.buttonText"),
           entries: {
@@ -154,8 +156,183 @@ export const createLandingPageStore = (input: { initData: Store["data"] }) =>
                     );
                 }),
               ),
+            image: {
+              dbConnections: {
+                imageId: {
+                  update: (input) =>
+                    set(
+                      produce((store: Store) => {
+                        const index = store.data.photoAlbum.entries.findIndex(
+                          (t) => t.id === input.id,
+                        );
+                        if (index !== -1)
+                          store.data.photoAlbum.entries[
+                            index
+                          ].image.dbConnections.imageId = input.newVal;
+                      }),
+                    ),
+                },
+              },
+              position: {
+                x: {
+                  update: (input) =>
+                    set(
+                      produce((store: Store) => {
+                        const index = store.data.photoAlbum.entries.findIndex(
+                          (t) => t.id === input.id,
+                        );
+                        if (index !== -1) {
+                          store.data.photoAlbum.entries[
+                            index
+                          ].image.position.x = input.newVal;
+                        }
+                      }),
+                    ),
+                },
+                y: {
+                  update: (input) =>
+                    set(
+                      produce((store: Store) => {
+                        const index = store.data.photoAlbum.entries.findIndex(
+                          (t) => t.id === input.id,
+                        );
+                        if (index !== -1)
+                          store.data.photoAlbum.entries[
+                            index
+                          ].image.position.y = input.newVal;
+                      }),
+                    ),
+                },
+              },
+            },
+            reorder: (input) =>
+              set(
+                produce((store: Store) => {
+                  const entriesOrdered =
+                    store.data.photoAlbum.entries.sort(sortByIndex);
+
+                  const active = entriesOrdered.find(
+                    (t) => t.id === input.activeId,
+                  );
+                  const over = entriesOrdered.find(
+                    (t) => t.id === input.overId,
+                  );
+
+                  if (!active || !over) {
+                    return;
+                  }
+
+                  const updatedEntries = getReorderedEntities({
+                    active,
+                    over,
+                    entities: entriesOrdered,
+                  });
+
+                  updatedEntries.forEach((updatedEntry) => {
+                    const index = store.data.photoAlbum.entries.findIndex(
+                      (t) => t.id === updatedEntry.id,
+                    );
+                    if (index !== -1)
+                      store.data.photoAlbum.entries[index].index =
+                        updatedEntry.newIndex;
+                  });
+                }),
+              ),
           },
           heading: nonArrAction("photoAlbum.heading"),
+        },
+
+        programmes: {
+          buttonText: nonArrAction("programmes.buttonText"),
+          entries: {
+            add: (input) =>
+              set(
+                produce((store: Store) => {
+                  store.data.programmes.entries.push({
+                    dbConnections: {
+                      programmeId: input.dbConnect.programmeId,
+                    },
+                    id: input.id || generateUid(),
+                  });
+                }),
+              ),
+            remove: (input) =>
+              set(
+                produce((store: Store) => {
+                  const entityToRemoveIndex =
+                    store.data.programmes.entries.findIndex(
+                      (p) => p.id === input.id,
+                    );
+                  if (entityToRemoveIndex !== -1)
+                    store.data.programmes.entries.splice(
+                      entityToRemoveIndex,
+                      1,
+                    );
+                }),
+              ),
+          },
+          heading: nonArrAction("programmes.heading"),
+          subheading: nonArrAction("programmes.subheading"),
+        },
+
+        supporters: {
+          entries: {
+            add: (input) =>
+              set(
+                produce((store: Store) => {
+                  store.data.supporters.entries.push({
+                    dbConnections: {
+                      supporterId: input.dbConnections.supporterId,
+                    },
+                    id: generateUid(),
+                  });
+                }),
+              ),
+            remove: (input) =>
+              set(
+                produce((store: Store) => {
+                  const entityToRemoveIndex =
+                    store.data.supporters.entries.findIndex(
+                      (p) => p.id === input.id,
+                    );
+                  if (entityToRemoveIndex !== -1)
+                    store.data.supporters.entries.splice(
+                      entityToRemoveIndex,
+                      1,
+                    );
+                }),
+              ),
+          },
+          heading: nonArrAction("supporters.heading"),
+          subheading: nonArrAction("supporters.subheading"),
+        },
+
+        supportUs: {
+          donate: {
+            buttonText: nonArrAction("supportUs.donate.buttonText"),
+            description: nonArrAction("supportUs.donate.description"),
+          },
+          heading: nonArrAction("supportUs.heading"),
+          volunteer: {
+            buttonText: nonArrAction("supportUs.volunteer.buttonText"),
+            description: nonArrAction("supportUs.volunteer.description"),
+          },
+        },
+
+        workshops: {
+          image: {
+            dbConnections: {
+              imageId: nonArrAction("workshops.image.dbConnections.imageId"),
+            },
+            position: {
+              x: nonArrAction("workshops.image.position.x"),
+              y: nonArrAction("workshops.image.position.y"),
+            },
+          },
+          textOverlay: {
+            body: nonArrAction("workshops.textOverlay.body"),
+            heading: nonArrAction("workshops.textOverlay.heading"),
+          },
         },
       },
     };
