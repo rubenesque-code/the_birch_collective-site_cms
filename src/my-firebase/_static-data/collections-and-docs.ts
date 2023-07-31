@@ -9,6 +9,7 @@ const collections = {
 
 const pages = {
   landing: "landing",
+  aboutUs: "aboutUs",
 };
 
 const singles = {

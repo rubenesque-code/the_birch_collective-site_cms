@@ -27,3 +27,28 @@ export const batchUpdateLandingPage = (
 
   batch.update(docRef, data);
 };
+
+export const updateAboutUsPage = async (
+  data: Partial<MyDb["pages"]["aboutUs"]>,
+) => {
+  const docRef = doc(
+    firestore,
+    firestore_file_system_names.collections.pages,
+    firestore_file_system_names.docs.pages.aboutUs,
+  );
+
+  await updateDoc(docRef, data);
+};
+
+export const batchUpdateAboutUsPage = (
+  data: Partial<MyDb["pages"]["aboutUs"]>,
+  batch: WriteBatch,
+) => {
+  const docRef = doc(
+    firestore,
+    firestore_file_system_names.collections.pages,
+    firestore_file_system_names.docs.pages.aboutUs,
+  );
+
+  batch.update(docRef, data);
+};

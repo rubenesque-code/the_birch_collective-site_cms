@@ -6,6 +6,7 @@ import { HeaderDataCx } from "./header";
 import { ProgrammesDataCx } from "./programmes";
 import { TestimonialsDataCx } from "./testimonials";
 import { SupportersDataCx } from "./supporters";
+import { AboutUsPageDataCx } from "./about-us-page";
 
 function UedCx() {
   throw new Error(
@@ -24,6 +25,7 @@ function Pages() {
 UedCx.Pages = Pages;
 
 Pages.Landing = LandingPageDataCx;
+Pages.AboutUs = AboutUsPageDataCx;
 
 UedCx.Footer = FooterDataCx;
 UedCx.Header = HeaderDataCx;

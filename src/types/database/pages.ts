@@ -1,3 +1,8 @@
+export type Pages = {
+  landing: Landing;
+  aboutUs: AboutUs;
+};
+
 type Landing = {
   bannerImage: {
     dbConnections: {
@@ -97,6 +102,37 @@ type Landing = {
   };
 };
 
-export type Pages = {
-  landing: Landing;
+type AboutUs = {
+  bannerImage: {
+    dbConnections: {
+      imageId: string | null;
+    };
+    position: {
+      x: number;
+      y: number;
+    };
+  };
+  heading: string;
+  subheading: string;
+  mainText: string;
+  theTeam: {
+    heading: string;
+    text: string;
+    members: {
+      id: string;
+      index: number;
+      name: string;
+      role: string;
+      bio: string;
+      image: {
+        dbConnections: {
+          imageId: string | null;
+        };
+        position: {
+          x: number;
+          y: number;
+        };
+      };
+    }[];
+  };
 };

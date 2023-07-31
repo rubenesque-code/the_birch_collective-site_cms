@@ -16,6 +16,16 @@ export const fetchLanding = async () => {
   return data;
 };
 
+export const fetchAboutUs = async () => {
+  const docRef = getDocRef("pages", "aboutUs");
+
+  const data = (await getDocData(
+    docRef,
+  )) as unknown as MyDb["pages"]["aboutUs"];
+
+  return data;
+};
+
 export const fetchOneImage = async (id: string) => {
   const docRef = getDocRef("images", id);
 

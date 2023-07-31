@@ -122,17 +122,19 @@ const InitDbData = ({
 }: {
   children: (data: DbData) => ReactElement;
 }) => {
-  const landingQuery = useQuery("landing", myDb.pages.landing.fetch);
+  const pageQuery = useQuery("landing", myDb.pages.landing.fetch);
+
+  const footerQuery = useQuery("footer", myDb.footer.fetch);
+  const headerQuery = useQuery("header", myDb.header.fetch);
+  const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
+  const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
+
   const testimonialsQuery = useQuery("testimonials", myDb.testimonial.fetchAll);
   const programmesQuery = useQuery("programmes", myDb.programme.fetchAll);
   const supportersQuery = useQuery("supporters", myDb.supporter.fetchAll);
-  const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
-  const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
-  const headerQuery = useQuery("header", myDb.header.fetch);
-  const footerQuery = useQuery("footer", myDb.footer.fetch);
 
   if (
-    landingQuery.isLoading ||
+    pageQuery.isLoading ||
     testimonialsQuery.isLoading ||
     programmesQuery.isLoading ||
     supportersQuery.isLoading ||
@@ -145,8 +147,8 @@ const InitDbData = ({
   }
 
   if (
-    landingQuery.isError ||
-    !landingQuery.data ||
+    pageQuery.isError ||
+    !pageQuery.data ||
     testimonialsQuery.isError ||
     !testimonialsQuery.data ||
     programmesQuery.isError ||
@@ -166,7 +168,7 @@ const InitDbData = ({
   }
 
   return children({
-    page: landingQuery.data,
+    page: pageQuery.data,
     testimonials: testimonialsQuery.data,
     programmes: programmesQuery.data,
     supporters: supportersQuery.data,

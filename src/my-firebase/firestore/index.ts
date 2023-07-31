@@ -1,5 +1,10 @@
 import { createImage } from "./mutate/image";
-import { batchUpdateLandingPage, updateLandingPage } from "./mutate/pages";
+import {
+  batchUpdateAboutUsPage,
+  batchUpdateLandingPage,
+  updateAboutUsPage,
+  updateLandingPage,
+} from "./mutate/pages";
 import {
   batchCreateTestimonial,
   batchDeleteTestimonial,
@@ -40,11 +45,13 @@ import {
   fetchLinkLabels,
   fetchHeader,
   fetchFooter,
+  fetchAboutUs,
 } from "./query";
 import { batchUpdateOrgDetails, updateOrgDetails } from "./mutate/orgDetails";
 import { batchUpdateLinkLabels, updateLinkLabels } from "./mutate/linkLabels";
 import { batchUpdateHeader, updateHeader } from "./mutate/header";
 import { batchUpdateFooter, updateFooter } from "./mutate/footer";
+import { aboutUsPageTransaction } from "./mutate/transactions/aboutUsPage";
 
 export const myDb = {
   pages: {
@@ -53,6 +60,13 @@ export const myDb = {
       update: updateLandingPage,
       batch: {
         update: batchUpdateLandingPage,
+      },
+    },
+    aboutUs: {
+      fetch: fetchAboutUs,
+      update: updateAboutUsPage,
+      batch: {
+        update: batchUpdateAboutUsPage,
       },
     },
   },
@@ -128,6 +142,7 @@ export const myDb = {
   transactions: {
     pages: {
       landing: landingPageTransaction,
+      aboutUs: aboutUsPageTransaction,
     },
   },
 };

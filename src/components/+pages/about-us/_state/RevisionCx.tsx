@@ -24,24 +24,18 @@ function Provider({
 }: {
   children: ReactNode | ((args: ContextValue) => ReactNode);
 }) {
-  const page = UedCx.Pages.Landing.useRevision();
+  const page = UedCx.Pages.AboutUs.use();
   const footer = UedCx.Footer.useRevision();
   const header = UedCx.Header.useRevision();
-  const orgDetails = UedCx.OrgDetails.useRevision();
   const linkLabels = UedCx.LinkLabels.useRevision();
-  const programmes = UedCx.Programmes.useRevision();
-  const { revision: testimonials } = UedCx.Testimonials.use();
-  const { revision: supporters } = UedCx.Supporters.use();
+  const orgDetails = UedCx.OrgDetails.useRevision();
 
   const revisionDataArr = [
-    page,
+    page.revision,
     footer,
     header,
     linkLabels,
     orgDetails,
-    programmes,
-    testimonials,
-    supporters,
   ];
 
   const isChange = Boolean(revisionDataArr.find((data) => data.isChange));
@@ -53,7 +47,7 @@ function Provider({
     arg0();
   };
 
-  const landingSaveMutation = useMutation(myDb.transactions.pages.landing);
+  const saveMutation = useMutation(myDb.transactions.pages.aboutUs);
 
   const toast = useToast();
 
@@ -61,13 +55,10 @@ function Provider({
     ifChange(() =>
       toast.promise(
         () =>
-          landingSaveMutation.mutateAsync(
+          saveMutation.mutateAsync(
             {
-              page: page.saveData,
+              page: page.revision.saveData,
               orgDetails: orgDetails.saveData,
-              testimonials: testimonials.saveData,
-              programmes: programmes.saveData,
-              supporters: supporters.saveData,
               linkLabels: linkLabels.saveData,
               header: header.saveData,
               footer: footer.saveData,
@@ -107,7 +98,6 @@ function Provider({
   );
 }
 
-// should use zod for instead of checkObjectHasField?
 const useThisContext = () => {
   const context = useContext(Context);
 
