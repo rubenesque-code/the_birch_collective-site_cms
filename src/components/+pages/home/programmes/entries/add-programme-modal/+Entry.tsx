@@ -1,28 +1,29 @@
 import Markdown from "markdown-to-jsx";
-
 import { useMemo, type ReactElement } from "react";
-import { Icon } from "~/components/icons";
+
+import { WithTooltip } from "~/components/WithTooltip";
+import ModalLayout from "~/components/layouts/Modal";
 import { Modal } from "~/components/styled-bases";
 import { ProgrammeCx } from "~/context/entities";
+import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
 import { strArrayDivergence } from "~/helpers/query-arr";
-import { UserEditableDataCx } from "../../../_state";
-import { WithTooltip } from "~/components/WithTooltip";
 import { useToast } from "~/hooks";
+import { ComponentApiCx, type ContextApiCxProps } from "./_state";
+
+// todo: editable. dnd
 
 const AddProgrammeModal = ({
   button,
+  ...contextProps
 }: {
   button: (arg0: { openModal: () => void }) => ReactElement;
-}) => {
-  return (
-    <Modal.WithVisibilityProvider
-      button={({ openModal }) => button({ openModal })}
-      panelContent={<Content />}
-    />
-  );
-};
+} & ContextApiCxProps) => (
+  <ComponentApiCx.Provider {...contextProps}>
+    <Modal.WithVisibilityProvider button={button} panelContent={<Content />} />
+  </ComponentApiCx.Provider>
+);
 
 export default AddProgrammeModal;
 
@@ -30,40 +31,28 @@ const Content = () => {
   const { closeModal } = Modal.VisibilityCx.use();
 
   return (
-    <div className="relative flex max-h-[70vh] min-h-[500px] w-[90vw] max-w-[1200px] flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
-      <div className="flex items-center justify-between border-b border-b-gray-200 pb-sm">
-        <h3 className="leading-6">Add programme</h3>
-        <h5 className="flex items-center gap-xs text-sm text-gray-500">
-          <span className="text-gray-400">
-            <Icon.Info />
-          </span>
-          Create, delete and edit in depth on the programmes page.
-        </h5>
-      </div>
-
-      <div className="mt-sm flex-grow overflow-y-auto">
-        <Programmes />
-      </div>
-      <div className="mt-xl">
-        <button
-          className="my-btn my-btn-neutral"
-          type="button"
-          onClick={closeModal}
-        >
-          close
-        </button>
-      </div>
-    </div>
+    <ModalLayout.UserEdit
+      body={<Programmes />}
+      closeModal={closeModal}
+      header={
+        <ModalLayout.UserEdit.Header>
+          <ModalLayout.UserEdit.Header.Title>
+            Add programme
+          </ModalLayout.UserEdit.Header.Title>
+          <ModalLayout.UserEdit.Header.Info>
+            Create, delete and edit in depth on the programmes page.
+          </ModalLayout.UserEdit.Header.Info>
+        </ModalLayout.UserEdit.Header>
+      }
+    />
   );
 };
 
 const Programmes = () => {
-  const { programmes } = UserEditableDataCx.useAllData();
-  const { page } = UserEditableDataCx.useAllData();
+  const programmes = UedCx.Programmes.useData();
 
-  const usedProgrammeIds = page.programmes.entries.map(
-    (entry) => entry.dbConnections.programmeId,
-  );
+  const { usedProgrammeIds } = ComponentApiCx.use();
+
   const unusedProgrammeIds = strArrayDivergence(
     getIds(programmes),
     usedProgrammeIds,
@@ -99,25 +88,21 @@ const Programmes = () => {
 const ProgrammeSummary = () => {
   const { id, subtitle, summary, title } = ProgrammeCx.use();
 
-  const {
-    page: {
-      programmes: {
-        entry: { add },
-      },
-    },
-  } = UserEditableDataCx.useAction();
+  const { connectProgramme, connectTooltip } = ComponentApiCx.use();
 
   const toast = useToast();
 
   const { closeModal } = Modal.VisibilityCx.use();
 
   return (
-    <WithTooltip text="add to landing">
+    <WithTooltip text={connectTooltip}>
       <div
         className="cursor-pointer rounded-lg border p-sm hover:bg-gray-100"
         onClick={() => {
-          add({ dbConnect: { programmeId: id } });
+          connectProgramme(id);
+
           toast.neutral("programme added to landing");
+
           closeModal();
         }}
       >

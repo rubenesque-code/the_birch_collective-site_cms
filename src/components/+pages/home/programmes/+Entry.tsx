@@ -10,6 +10,8 @@ import { useToast } from "~/hooks";
 import type { MyDb } from "~/types/database";
 import AddProgrammeModal from "./entries/add-programme-modal/+Entry";
 import { UedCx } from "~/context/user-editable-data";
+import CmsLayout from "~/components/layouts/Cms";
+import { getIds } from "~/helpers/data/query";
 
 const Programmes = () => (
   <div className="group/programmes">
@@ -60,9 +62,13 @@ const EntriesSection = () => {
   const {
     programmes: { entries },
   } = UedCx.Pages.Landing.useData();
+  const {
+    programmes: { entries: entryAction },
+  } = UedCx.Pages.Landing.useAction();
 
   const programmes = UedCx.Programmes.useData();
 
+  // □ refactor?
   const entriesSorted = React.useMemo(() => {
     const sorted = produce(entries, (draft) => {
       draft.sort((entryA, entryB) => {
@@ -90,7 +96,7 @@ const EntriesSection = () => {
 
   return (
     <div className="mt-md">
-      <div className="flex items-center justify-between rounded-md border border-dashed px-4 py-2">
+      <CmsLayout.EditBar>
         <AddProgrammeModal
           button={({ openModal }) => (
             <div
@@ -103,6 +109,11 @@ const EntriesSection = () => {
               <span className="">Add programme</span>
             </div>
           )}
+          connectProgramme={(programmeId) =>
+            entryAction.add({ dbConnect: { programmeId } })
+          }
+          connectTooltip="Add to landing"
+          usedProgrammeIds={getIds(entries)}
         />
 
         <div className="flex items-center gap-xs text-sm text-gray-400">
@@ -114,7 +125,7 @@ const EntriesSection = () => {
             page.
           </span>
         </div>
-      </div>
+      </CmsLayout.EditBar>
 
       {!entries.length ? (
         <div className="mt-md text-gray-800">
@@ -127,13 +138,13 @@ const EntriesSection = () => {
               programme={programme}
               key={programme.id}
             >
-              <GetProgrammeWrapper>
+              <ConnectProgramme>
                 {({ connectedProgramme }) => (
                   <ProgrammeCx.Provider programme={connectedProgramme}>
                     <Programme />
                   </ProgrammeCx.Provider>
                 )}
-              </GetProgrammeWrapper>
+              </ConnectProgramme>
             </LandingCx.Programme.Provider>
           ))}
         </div>
@@ -142,13 +153,13 @@ const EntriesSection = () => {
   );
 };
 
-const GetProgrammeWrapper = ({
+const ConnectProgramme = ({
   children,
 }: {
   children: (arg0: { connectedProgramme: MyDb["programme"] }) => ReactNode;
 }) => {
   const landingProgramme = LandingCx.Programme.use();
-  const { programmes } = UserEditableDataCx.useAllData();
+  const programmes = UedCx.Programmes.useData();
 
   const connectedProgramme = programmes.find(
     (programme) => programme.id === landingProgramme.dbConnections.programmeId,
@@ -181,7 +192,7 @@ const UnfoundProgramme = () => (
 
 const Programme = () => {
   const { id, title, subtitle, summary } = ProgrammeCx.use();
-  const { programme: programmeAction } = UserEditableDataCx.useAction();
+  const programmeAction = UedCx.Programmes.useAction();
 
   return (
     <div className="group/programme relative flex flex-col items-center p-sm">
@@ -190,7 +201,7 @@ const Programme = () => {
         <TextInputForm
           localStateValue={title}
           onSubmit={(inputValue) =>
-            programmeAction.title.update({ id, newVal: inputValue })
+            programmeAction.title({ id, newVal: inputValue })
           }
           input={{
             placeholder: "Title",
@@ -203,7 +214,7 @@ const Programme = () => {
         <TextInputForm
           localStateValue={subtitle}
           onSubmit={(inputValue) =>
-            programmeAction.subtitle.update({ id, newVal: inputValue })
+            programmeAction.subtitle({ id, newVal: inputValue })
           }
           input={{ placeholder: "Subtitle", styles: "uppercase" }}
           tooltip="Click to edit subtitle"
@@ -217,7 +228,7 @@ const Programme = () => {
             styles: "text-center",
           }}
           onSubmit={(inputValue) => {
-            programmeAction.summary.update({ id, newVal: inputValue });
+            programmeAction.summary({ id, newVal: inputValue });
           }}
           tooltip="Click to edit summary"
         />
@@ -228,12 +239,10 @@ const Programme = () => {
 
 const ProgrammeMenu = () => {
   const {
-    page: {
-      programmes: {
-        entry: { remove },
-      },
+    programmes: {
+      entries: { remove },
     },
-  } = UserEditableDataCx.useAction();
+  } = UedCx.Pages.Landing.useAction();
 
   const { id } = LandingCx.Programme.use();
 
@@ -257,24 +266,16 @@ const ProgrammeMenu = () => {
 
 const GoToPageButton = () => {
   const {
-    page: {
-      programmes: { buttonText },
-    },
-  } = UserEditableDataCx.useAllData();
+    programmes: { buttonText },
+  } = UedCx.Pages.Landing.useData();
 
-  const {
-    page: { programmes: programmesAction },
-  } = UserEditableDataCx.useAction();
+  const { programmes: programmesAction } = UedCx.Pages.Landing.useAction();
 
   return (
-    <div
-      className="flex cursor-pointer items-center gap-sm rounded-sm bg-brandOrange
-    px-4 py-2 text-lg font-bold uppercase tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl
-    "
-    >
+    <div className="flex cursor-pointer items-center gap-sm rounded-sm bg-brandOrange px-4 py-2 text-lg font-bold uppercase tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">
       <TextInputForm
         localStateValue={buttonText}
-        onSubmit={programmesAction.buttonText.update}
+        onSubmit={programmesAction.buttonText}
         input={{ placeholder: "Button text", styles: "uppercase" }}
         tooltip="Click to edit button text"
       />

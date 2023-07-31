@@ -63,9 +63,9 @@ const HomePage = () => (
               <SiteLayout.Body>
                 {/* <SiteHeader /> */}
                 <BannerImage />
-                <SiteLayout.Section.Spacing>
+                {/*                 <SiteLayout.Section.Spacing>
                   <OrgHeadings />
-                </SiteLayout.Section.Spacing>
+                </SiteLayout.Section.Spacing> */}
                 {/*                 <SiteLayout.Section.Spacing>
                   <Testimonials />
                 </SiteLayout.Section.Spacing> */}
