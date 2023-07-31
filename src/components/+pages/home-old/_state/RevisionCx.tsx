@@ -57,16 +57,16 @@ function Provider({
     userEditedData: userEditableData.footer,
   });
   const testimonialsRevisionData = useDocsRevisionData({
-    dbData: currentDbData.testimonials,
-    userEditedData: userEditableData.testimonials,
+    initData: currentDbData.testimonials,
+    updatedData: userEditableData.testimonials,
   });
   const programmesRevisionData = useDocsRevisionData({
-    dbData: currentDbData.programmes,
-    userEditedData: userEditableData.programmes,
+    initData: currentDbData.programmes,
+    updatedData: userEditableData.programmes,
   });
   const supportersRevisionData = useDocsRevisionData({
-    dbData: currentDbData.supporters,
-    userEditedData: userEditableData.supporters,
+    initData: currentDbData.supporters,
+    updatedData: userEditableData.supporters,
   });
 
   const isChange =

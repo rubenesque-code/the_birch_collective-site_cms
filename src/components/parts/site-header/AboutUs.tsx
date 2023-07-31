@@ -1,21 +1,21 @@
 import { Popover } from "@headlessui/react";
 
-import { UserEditableDataCx } from "~/components/+pages/home-old/_state";
 import { WithTooltip } from "~/components/WithTooltip";
 import { TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
+import { UedCx } from "~/context/user-editable-data";
 
 const AboutUs = () => {
-  const { linkLabels } = UserEditableDataCx.useAllData();
+  const linkLabels = UedCx.LinkLabels.useData();
 
-  const { linkLabels: linkLabelAction } = UserEditableDataCx.useAction();
+  const linkLabelAction = UedCx.LinkLabels.useAction();
 
   return (
     <div className="flex items-center gap-xxs">
       <div className="max-w-[300px] overflow-x-auto text-sm font-semibold uppercase tracking-wide text-gray-700 lg:text-base xl:text-lg">
         <TextInputForm
           localStateValue={linkLabels.aboutUs}
-          onSubmit={linkLabelAction.aboutUs.update}
+          onSubmit={linkLabelAction.aboutUs}
           input={{
             placeholder: "About us link text",
             styles: "uppercase tracking-wide",
@@ -46,16 +46,16 @@ const AboutUs = () => {
 export default AboutUs;
 
 const PanelContent = () => {
-  const { header } = UserEditableDataCx.useAllData();
+  const header = UedCx.Header.useData();
 
-  const { header: headerAction } = UserEditableDataCx.useAction();
+  const headerAction = UedCx.Header.useAction();
 
   return (
     <div>
       <div className="font-display text-4xl font-bold tracking-wide text-displayGreen">
         <TextInputForm
           localStateValue={header.aboutUs.popover.heading}
-          onSubmit={headerAction.aboutUs.popover.heading.update}
+          onSubmit={headerAction.aboutUs.popover.heading}
           input={{
             placeholder: "About us menu heading",
             styles: "tracking-wide",
@@ -66,7 +66,7 @@ const PanelContent = () => {
       <div className="mt-2 text-lg">
         <TextInputForm
           localStateValue={header.aboutUs.popover.subheading}
-          onSubmit={headerAction.aboutUs.popover.subheading.update}
+          onSubmit={headerAction.aboutUs.popover.subheading}
           input={{
             placeholder: "About us menu subheading",
           }}
@@ -79,9 +79,9 @@ const PanelContent = () => {
 };
 
 const PanelLinks = () => {
-  const { linkLabels } = UserEditableDataCx.useAllData();
+  const linkLabels = UedCx.LinkLabels.useData();
 
-  const { linkLabels: linkLabelAction } = UserEditableDataCx.useAction();
+  const linkLabelAction = UedCx.LinkLabels.useAction();
 
   return (
     <div className="mt-8 flex gap-xl">
@@ -92,7 +92,7 @@ const PanelLinks = () => {
         <div className="text-lg uppercase tracking-wide">
           <TextInputForm
             localStateValue={linkLabels.aboutUs}
-            onSubmit={linkLabelAction.aboutUs.update}
+            onSubmit={linkLabelAction.aboutUs}
             input={{
               placeholder: "About us link text",
               styles: "tracking-wide uppercase",
@@ -109,7 +109,7 @@ const PanelLinks = () => {
         <div className="text-lg uppercase tracking-wide">
           <TextInputForm
             localStateValue={linkLabels.meetTheTeam}
-            onSubmit={linkLabelAction.meetTheTeam.update}
+            onSubmit={linkLabelAction.meetTheTeam}
             input={{
               placeholder: "Meet the team link text",
               styles: "tracking-wide uppercase",
@@ -126,7 +126,7 @@ const PanelLinks = () => {
         <div className="text-lg uppercase tracking-wide">
           <TextInputForm
             localStateValue={linkLabels.getInTouch}
-            onSubmit={linkLabelAction.getInTouch.update}
+            onSubmit={linkLabelAction.getInTouch}
             input={{
               placeholder: "Contact link text",
               styles: "tracking-wide uppercase",

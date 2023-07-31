@@ -69,7 +69,7 @@ type TextAreaProps = {
   placeholder?: string;
   trailingSpace?: number;
   styles?: string;
-  autoFocus?: boolean;
+  // autoFocus?: boolean;
 };
 
 const TextArea = ({
@@ -79,10 +79,10 @@ const TextArea = ({
   setValue,
   styles = "",
   value,
-  autoFocus,
-}: TextAreaProps) => {
-  const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
-    useState(false);
+}: // autoFocus,
+TextAreaProps) => {
+  /*   const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
+    useState(false); */
 
   return (
     <>
@@ -98,13 +98,13 @@ const TextArea = ({
             setValue(e.target.value);
           }}
           placeholder={placeholder}
-          onFocus={(e) => {
-            if (!autoFocus && !isBlurredOnInitialRender) {
+          onFocus={() => {
+            /*             if (!autoFocus && !isBlurredOnInitialRender) {
               // · handle unwanted autofocus (bug?)
               e.currentTarget.blur();
               setIsBlurredOnInitialRender(true);
               console.log("1");
-            }
+            } */
 
             setIsFocused(true);
           }}
@@ -112,7 +112,7 @@ const TextArea = ({
             setIsFocused(false);
           }}
           autoComplete="off"
-          autoFocus={autoFocus}
+          autoFocus={false}
         />
       </div>
     </>

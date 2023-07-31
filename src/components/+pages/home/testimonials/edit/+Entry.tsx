@@ -11,10 +11,10 @@ import { Modal } from "~/components/styled-bases";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
 import { useToast } from "~/hooks";
-import { UserEditableDataCx } from "../../_state";
 import { CreateModal } from "./CreateModal";
-import { TestimonialCx } from "./_state";
 import ModalLayout from "~/components/layouts/Modal";
+import { UedCx } from "~/context/user-editable-data";
+import { TestimonialCx } from "~/context/entities";
 
 export const EditModal = ({
   button,
@@ -50,11 +50,11 @@ const Content = () => {
 };
 
 const Testimonials = () => {
-  const { testimonials } = UserEditableDataCx.useAllData();
+  const {
+    store: { data: testimonials, actions },
+  } = UedCx.Testimonials.use();
 
   const sorted = useMemo(() => deepSortByIndex(testimonials), [testimonials]);
-
-  const userActions = UserEditableDataCx.useAction();
 
   return (
     <div>
@@ -64,7 +64,7 @@ const Testimonials = () => {
         <div className="grid grid-cols-3 gap-sm pr-sm">
           <DndKit.Context
             elementIds={getIds(sorted)}
-            onReorder={userActions.testimonial.order.update}
+            onReorder={actions.reorder}
           >
             {sorted.map((testimonial) => (
               <DndKit.Element
@@ -87,7 +87,9 @@ const Testimonials = () => {
 const Testimonial = () => {
   const { endorserName, image, id, text } = TestimonialCx.use();
 
-  const action = UserEditableDataCx.useAction();
+  const {
+    store: { actions },
+  } = UedCx.Testimonials.use();
 
   return (
     <div className="group/testimonialImage relative aspect-[3/4]">
@@ -110,9 +112,7 @@ const Testimonial = () => {
         <div className="w-full overflow-y-auto p-xs scrollbar-hide">
           <TextAreaForm
             localStateValue={text}
-            onSubmit={(inputValue) =>
-              action.testimonial.text.update({ id, newVal: inputValue })
-            }
+            onSubmit={(inputValue) => actions.text({ id, newVal: inputValue })}
             textArea={{
               placeholder: "Testimonial text...",
               styles: "text-center",
@@ -123,7 +123,7 @@ const Testimonial = () => {
           <TextInputForm
             localStateValue={endorserName}
             onSubmit={(inputValue) =>
-              action.testimonial.endorserName.update({
+              actions.endorserName({
                 id,
                 newVal: inputValue,
               })
@@ -139,7 +139,9 @@ const Testimonial = () => {
 const Menu = () => {
   const { image, id } = TestimonialCx.use();
 
-  const { testimonial: testimonialAction } = UserEditableDataCx.useAction();
+  const {
+    store: { actions },
+  } = UedCx.Testimonials.use();
 
   const toast = useToast();
 
@@ -149,12 +151,8 @@ const Menu = () => {
         <>
           <ComponentMenu.Image.PositionMenu
             position={image.position}
-            updateX={(newVal) =>
-              testimonialAction.image.position.x.update({ id, newVal })
-            }
-            updateY={(newVal) =>
-              testimonialAction.image.position.y.update({ id, newVal })
-            }
+            updateX={(newVal) => actions.image.position.x({ id, newVal })}
+            updateY={(newVal) => actions.image.position.y({ id, newVal })}
             styles={{ wrapper: "left-0 top-0" }}
           />
 
@@ -163,17 +161,17 @@ const Menu = () => {
       ) : null}
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
-          testimonialAction.image.dbConnections.imageId.update({
+          actions.image.dbConnections.imageId({
             id,
             newVal: dbImageId,
           });
 
-          testimonialAction.image.position.x.update({
+          actions.image.position.x({
             id,
             newVal: 50,
           });
 
-          testimonialAction.image.position.y.update({
+          actions.image.position.y({
             id,
             newVal: 50,
           });
@@ -195,7 +193,7 @@ const Menu = () => {
         panelContent={({ closeModal }) => (
           <WarningPanel
             callback={() => {
-              testimonialAction.delete({ id });
+              actions.delete({ id });
 
               closeModal();
 

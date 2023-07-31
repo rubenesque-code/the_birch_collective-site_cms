@@ -3,9 +3,9 @@ import { Popover } from "@headlessui/react";
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { ComponentMenu } from "~/components/menus";
-import { Icon } from "~/components/icons";
 import { TextInputForm } from "~/components/forms";
+import { Icon } from "~/components/icons";
+import { ComponentMenu } from "~/components/menus";
 import { UedCx } from "~/context/user-editable-data";
 
 const BannerImage = () => {
@@ -85,6 +85,8 @@ const ImageInfo = () => {
     bannerImage: { infoPopover: infoPopoverAction },
   } = UedCx.Pages.Landing.useAction();
 
+  const { undoKey } = UedCx.Pages.Landing.useRevision();
+
   return (
     <Popover className="absolute right-sm top-sm z-10">
       <Popover.Button>
@@ -94,7 +96,7 @@ const ImageInfo = () => {
       </Popover.Button>
 
       <Popover.Panel
-        className={`absolute -left-xs top-0 z-10 -translate-x-full px-xs text-white ${
+        className={`absolute -left-xs top-0 z-10 -translate-x-full px-xs text-white transition-colors duration-100 ease-in-out ${
           text.length ? "bg-black" : "border"
         }`}
       >
@@ -102,7 +104,8 @@ const ImageInfo = () => {
           localStateValue={text}
           onSubmit={infoPopoverAction.text}
           input={{ placeholder: "Enter image info" }}
-          tooltip="image info"
+          tooltip="Click to edit image info"
+          key={undoKey}
         />
       </Popover.Panel>
     </Popover>

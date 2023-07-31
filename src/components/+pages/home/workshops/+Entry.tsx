@@ -1,17 +1,15 @@
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { UserEditableDataCx } from "../_state";
 import { ComponentMenu } from "~/components/menus";
 import { Icon } from "~/components/icons";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
+import { UedCx } from "~/context/user-editable-data";
 
 const Workshops = () => {
   const {
-    page: {
-      workshops: { image },
-    },
-  } = UserEditableDataCx.useAllData();
+    workshops: { image },
+  } = UedCx.Pages.Landing.useData();
 
   return (
     <div className="flex justify-end">
@@ -41,14 +39,10 @@ export default Workshops;
 
 const ImageMenu = () => {
   const {
-    page: { workshops: workshopsAction },
-  } = UserEditableDataCx.useAction();
+    workshops: { image },
+  } = UedCx.Pages.Landing.useData();
 
-  const {
-    page: {
-      workshops: { image },
-    },
-  } = UserEditableDataCx.useAllData();
+  const { workshops: workshopsAction } = UedCx.Pages.Landing.useAction();
 
   return (
     <ComponentMenu styles="right-1 top-1 group-hover/workshops-image:opacity-40">
@@ -56,12 +50,8 @@ const ImageMenu = () => {
         <>
           <ComponentMenu.Image.PositionMenu
             position={image.position}
-            updateX={(newValue) =>
-              workshopsAction.image.position.x.update(newValue)
-            }
-            updateY={(newValue) =>
-              workshopsAction.image.position.y.update(newValue)
-            }
+            updateX={(newValue) => workshopsAction.image.position.x(newValue)}
+            updateY={(newValue) => workshopsAction.image.position.y(newValue)}
             styles={{
               wrapper: "right-0 top-0",
               menuItemsWrapper: "right-0",
@@ -74,9 +64,9 @@ const ImageMenu = () => {
 
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
-          workshopsAction.image.dbConnections.imageId.update(dbImageId);
-          workshopsAction.image.position.x.update(50);
-          workshopsAction.image.position.y.update(50);
+          workshopsAction.image.dbConnections.imageId(dbImageId);
+          workshopsAction.image.position.x(50);
+          workshopsAction.image.position.y(50);
         }}
         styles={{
           menu: { itemsWrapper: "right-0 -bottom-1 translate-y-full" },
@@ -88,23 +78,19 @@ const ImageMenu = () => {
 
 const TextOverlay = () => {
   const {
-    page: {
-      workshops: { textOverlay },
-    },
-  } = UserEditableDataCx.useAllData();
+    workshops: { textOverlay },
+  } = UedCx.Pages.Landing.useData();
 
   const {
-    page: {
-      workshops: { textOverlay: textOverlayAction },
-    },
-  } = UserEditableDataCx.useAction();
+    workshops: { textOverlay: textOverlayAction },
+  } = UedCx.Pages.Landing.useAction();
 
   return (
     <div className="absolute bottom-0 right-0 min-w-fit translate-y-xl bg-brandRed p-6 pr-12 text-white md:-bottom-10 md:w-1/3 md:translate-y-0 md:p-12">
       <div className="text-left font-display text-6xl font-bold tracking-wide text-white">
         <TextInputForm
           localStateValue={textOverlay.heading}
-          onSubmit={textOverlayAction.heading.update}
+          onSubmit={textOverlayAction.heading}
           input={{
             styles: "tracking-wide font-bold",
             placeholder: "workshops banner heading",
@@ -115,7 +101,7 @@ const TextOverlay = () => {
       <div className="mt-3 hidden w-[300px] text-xl md:block ">
         <TextAreaForm
           localStateValue={textOverlay.body}
-          onSubmit={textOverlayAction.body.update}
+          onSubmit={textOverlayAction.body}
           tooltip="click to edit body"
           textArea={{
             placeholder: "workshops banner body",

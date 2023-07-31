@@ -1,16 +1,37 @@
-import { UserEditableDataCx } from "../_state";
-
 import { TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
-import { ComponentMenu } from "~/components/menus";
+import CmsLayout from "~/components/layouts/Cms";
+import SiteLayout from "~/components/layouts/Site";
+import { UedCx } from "~/context/user-editable-data";
 import Slides from "./slides/+Entry";
 import { EditModal } from "./slides/edit/+Entry";
 
 const PhotoAlbum = () => (
-  <div className="group/photo-album flex justify-end">
-    <div className="w-3/4">
-      <Heading />
-      <Entries />
+  <div>
+    <SiteLayout.Section.Spacing.Horizontal>
+      <CmsLayout.EditBar>
+        <EditModal
+          button={({ openModal }) => (
+            <div
+              className="my-btn my-btn-neutral flex cursor-pointer items-center gap-xs rounded-sm border-transparent"
+              onClick={openModal}
+            >
+              <span className="text-gray-400">
+                <Icon.Configure />
+              </span>
+              <span className="">Edit photo album</span>
+            </div>
+          )}
+        />
+      </CmsLayout.EditBar>
+    </SiteLayout.Section.Spacing.Horizontal>
+    <div className="mt-md flex justify-end">
+      <div className="w-3/4">
+        <Heading />
+        <div className="relative aspect-video overflow-visible">
+          <Slides />
+        </div>
+      </div>
     </div>
   </div>
 );
@@ -19,20 +40,16 @@ export default PhotoAlbum;
 
 const Heading = () => {
   const {
-    page: {
-      photoAlbum: { heading },
-    },
-  } = UserEditableDataCx.useAllData();
+    photoAlbum: { heading },
+  } = UedCx.Pages.Landing.useData();
 
-  const {
-    page: { photoAlbum: photoAlbumAction },
-  } = UserEditableDataCx.useAction();
+  const { photoAlbum: photoAlbumAction } = UedCx.Pages.Landing.useAction();
 
   return (
     <div className="flex items-center justify-end gap-xs">
       <TextInputForm
         localStateValue={heading}
-        onSubmit={photoAlbumAction.heading.update}
+        onSubmit={photoAlbumAction.heading}
         input={{ placeholder: "Photo album heading", styles: "uppercase" }}
         tooltip="Click to edit heading"
       />
@@ -40,18 +57,3 @@ const Heading = () => {
     </div>
   );
 };
-
-const Entries = () => (
-  <div className="relative aspect-video overflow-visible bg-red-300">
-    <ComponentMenu styles="top-1 right-1 group-hover/photo-album:opacity-40">
-      <EditModal
-        button={({ openModal }) => (
-          <ComponentMenu.Button onClick={openModal} tooltip="Edit images">
-            <Icon.Configure />
-          </ComponentMenu.Button>
-        )}
-      />
-    </ComponentMenu>
-    <Slides />
-  </div>
-);

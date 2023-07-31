@@ -29,8 +29,18 @@ function Provider({
   const orgDetails = UedCx.OrgDetails.useRevision();
   const linkLabels = UedCx.LinkLabels.useRevision();
   const programmes = UedCx.Programmes.useRevision();
+  const { revision: testimonials } = UedCx.Testimonials.use();
+  const { revision: supporters } = UedCx.Supporters.use();
 
-  const revisionDataArr = [page, footer, orgDetails, linkLabels, programmes];
+  const revisionDataArr = [
+    page,
+    footer,
+    orgDetails,
+    linkLabels,
+    programmes,
+    testimonials,
+    supporters,
+  ];
 
   const isChange = Boolean(revisionDataArr.find((data) => data.isChange));
 
@@ -53,9 +63,9 @@ function Provider({
             {
               page: page.saveData,
               orgDetails: orgDetails.saveData,
-              testimonials: { created: [], deleted: [], updated: [] },
+              testimonials: testimonials.saveData,
               programmes: programmes.saveData,
-              supporters: { created: [], deleted: [], updated: [] },
+              supporters: supporters.saveData,
               linkLabels: linkLabels.saveData,
               header: null,
               footer: footer.saveData,

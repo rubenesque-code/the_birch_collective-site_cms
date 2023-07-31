@@ -52,7 +52,7 @@ const SocialMediaLinks = () => {
               <TextInputForm
                 localStateValue={socialMediaLinks.facebook}
                 onSubmit={socialMediaLinksAction.facebook}
-                input={{ placeholder: "Enter facebook link", autoFocus: true }}
+                input={{ placeholder: "Enter facebook link" }}
                 tooltip="Click to update facebook link"
               />
             }
@@ -69,7 +69,7 @@ const SocialMediaLinks = () => {
               <TextInputForm
                 localStateValue={socialMediaLinks.instagram}
                 onSubmit={socialMediaLinksAction.instagram}
-                input={{ placeholder: "Enter instagram link", autoFocus: true }}
+                input={{ placeholder: "Enter instagram link" }}
                 tooltip="Click to update instagram link"
               />
             }
@@ -86,7 +86,7 @@ const SocialMediaLinks = () => {
               <TextInputForm
                 localStateValue={socialMediaLinks.linkedIn}
                 onSubmit={socialMediaLinksAction.linkedIn}
-                input={{ placeholder: "Enter linkedIn link", autoFocus: true }}
+                input={{ placeholder: "Enter linkedIn link" }}
                 tooltip="Click to update linkedIn link"
               />
             }

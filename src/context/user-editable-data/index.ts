@@ -4,6 +4,8 @@ import { OrgDetailsDataCx } from "./org-details";
 import { LinkLabelsDataCx } from "./link-labels";
 import { HeaderDataCx } from "./header";
 import { ProgrammesDataCx } from "./programmes";
+import { TestimonialsDataCx } from "./testimonials";
+import { SupportersDataCx } from "./supporters";
 
 function UedCx() {
   throw new Error(
@@ -28,3 +30,5 @@ UedCx.Header = HeaderDataCx;
 UedCx.OrgDetails = OrgDetailsDataCx;
 UedCx.LinkLabels = LinkLabelsDataCx;
 UedCx.Programmes = ProgrammesDataCx;
+UedCx.Testimonials = TestimonialsDataCx;
+UedCx.Supporters = SupportersDataCx;

@@ -1,16 +1,14 @@
 import { TextAreaForm } from "~/components/forms";
-import { UserEditableDataCx } from "./_state";
+import { UedCx } from "~/context/user-editable-data";
 
 const OrgHeadings = () => {
   const {
-    page: {
-      orgHeadings: { byline, name },
-    },
-  } = UserEditableDataCx.useAllData();
+    orgHeadings: { byline, name },
+  } = UedCx.Pages.Landing.useData();
 
-  const {
-    page: { orgHeadings: orgHeadingsAction },
-  } = UserEditableDataCx.useAction();
+  const { orgHeadings: orgHeadingsAction } = UedCx.Pages.Landing.useAction();
+
+  const { undoKey } = UedCx.Pages.Landing.useRevision();
 
   return (
     <div className="flex justify-center">
@@ -22,8 +20,9 @@ const OrgHeadings = () => {
               placeholder: "Organisation name",
               styles: "text-center",
             }}
-            onSubmit={orgHeadingsAction.name.update}
+            onSubmit={orgHeadingsAction.name}
             tooltip="Click to edit title"
+            key={undoKey}
           />
         </div>
         <div className="mt-4 flex w-full justify-center text-base uppercase tracking-wide text-brandOrange xs:text-xl sm:text-2xl md:mt-8 md:text-3xl lg:text-4xl">
@@ -33,8 +32,9 @@ const OrgHeadings = () => {
               placeholder: "Organisation byline",
               styles: "upppercase tracking-wide text-center",
             }}
-            onSubmit={orgHeadingsAction.byline.update}
+            onSubmit={orgHeadingsAction.byline}
             tooltip="Click to edit byline"
+            key={undoKey}
           />
         </div>
       </div>

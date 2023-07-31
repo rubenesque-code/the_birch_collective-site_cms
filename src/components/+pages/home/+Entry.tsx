@@ -47,6 +47,9 @@ import type { MyDb } from "~/types/database";
 // □ supporters modal tooltip for 'add to landing' is incorrect since modal is for all supporters
 // □ should memoise in revisionCx?
 
+// STATE
+// □ could have a queryOne in state data e.g. for programmes/testimonials
+
 // todo: Will have to remove undo keys from text-input/area form? Re-work revision daat? make an unod key context?
 
 const HomePage = () => (
@@ -54,39 +57,39 @@ const HomePage = () => (
     {(initDbData) => (
       <UedProviders initDbData={initDbData}>
         <RevisionCx.Provider>
-          {(revision) => (
+          {(revisionState) => (
             <CmsLayout.Body>
               <CmsHeader
-                actions={revision.actions}
-                data={{ isChange: revision.data.isChange }}
+                actions={revisionState.actions}
+                data={{ isChange: revisionState.data.isChange }}
               />
               <SiteLayout.Body>
-                {/* <SiteHeader /> */}
+                <SiteHeader />
                 <BannerImage />
-                {/*                 <SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
                   <OrgHeadings />
-                </SiteLayout.Section.Spacing> */}
-                {/*                 <SiteLayout.Section.Spacing>
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
                   <Testimonials />
-                </SiteLayout.Section.Spacing> */}
-                {/*                 <SiteLayout.Section.Spacing>
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
                   <AboutUs />
-                </SiteLayout.Section.Spacing> */}
-                {/*                 <SiteLayout.Section.Spacing>
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
                   <Workshops />
-                </SiteLayout.Section.Spacing> */}
+                </SiteLayout.Section.Spacing>
                 <SiteLayout.Section.Spacing>
                   <Programmes />
                 </SiteLayout.Section.Spacing>
-                {/*                 <SiteLayout.Section.Spacing.Vertical>
+                <SiteLayout.Section.Spacing.Vertical>
                   <PhotoAlbum />
-                </SiteLayout.Section.Spacing.Vertical> */}
-                {/*                 <SiteLayout.Section.Spacing>
+                </SiteLayout.Section.Spacing.Vertical>
+                <SiteLayout.Section.Spacing>
                   <SupportUs />
-                </SiteLayout.Section.Spacing> */}
-                {/*                 <SiteLayout.Section.Spacing>
+                </SiteLayout.Section.Spacing>
+                <SiteLayout.Section.Spacing>
                   <Supporters />
-                </SiteLayout.Section.Spacing> */}
+                </SiteLayout.Section.Spacing>
                 <SiteLayout.Section.Spacing.Horizontal>
                   <div className="mt-2xl pb-xl">
                     <SiteFooter />
@@ -188,7 +191,11 @@ const UedProviders = ({
           <UedCx.Header.Provider initData={initDbData.header}>
             <UedCx.Footer.Provider initData={initDbData.footer}>
               <UedCx.Programmes.Provider initData={initDbData.programmes}>
-                {children}
+                <UedCx.Testimonials.Provider initData={initDbData.testimonials}>
+                  <UedCx.Supporters.Provider initData={initDbData.supporters}>
+                    {children}
+                  </UedCx.Supporters.Provider>
+                </UedCx.Testimonials.Provider>
               </UedCx.Programmes.Provider>
             </UedCx.Footer.Provider>
           </UedCx.Header.Provider>

@@ -12,20 +12,17 @@ import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
 import { useToast } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
-import { UserEditableDataCx } from "../_state";
 import { useFocused } from "~/hooks/useFocused";
+import { UedCx } from "~/context/user-editable-data";
 
 const AboutUs = () => {
   const {
-    page: {
-      aboutUs: { entries },
-    },
-  } = UserEditableDataCx.useAllData();
+    aboutUs: { entries },
+  } = UedCx.Pages.Landing.useData();
+
   const {
-    page: {
-      aboutUs: { entry },
-    },
-  } = UserEditableDataCx.useAction();
+    aboutUs: { entries: entriesAction },
+  } = UedCx.Pages.Landing.useAction();
 
   const sorted = useMemo(() => deepSortByIndex(entries), [entries]);
 
@@ -41,7 +38,7 @@ const AboutUs = () => {
           <div className="mt-xl grid w-full grid-cols-1 gap-sm">
             <DndKit.Context
               elementIds={getIds(sorted)}
-              onReorder={entry.order.update}
+              onReorder={entriesAction.reorder}
             >
               {sorted.map((aboutUsEntry) => (
                 <DndKit.Element
@@ -70,20 +67,23 @@ const AboutUs = () => {
 export default AboutUs;
 
 const Heading = () => {
-  const { page } = UserEditableDataCx.useAllData();
+  const { aboutUs } = UedCx.Pages.Landing.useData();
 
-  const action = UserEditableDataCx.useAction();
+  const { aboutUs: aboutUsAction } = UedCx.Pages.Landing.useAction();
+
+  const { undoKey } = UedCx.Pages.Landing.useRevision();
 
   return (
     <div className="w-full text-center font-display text-6xl font-bold text-brandGreen">
       <TextAreaForm
-        localStateValue={page.aboutUs.heading}
+        localStateValue={aboutUs.heading}
         textArea={{
           placeholder: "About us heading",
           styles: "uppercase text-center",
         }}
-        onSubmit={action.page.aboutUs.heading.update}
+        onSubmit={aboutUsAction.heading}
         tooltip="Click to edit about us heading"
+        key={undoKey}
       />
     </div>
   );
@@ -94,11 +94,12 @@ const AddEntryForm = () => {
   const [isFocused, { focusHandlers }] = useFocused();
 
   const {
-    page: {
-      aboutUs: { entries },
-    },
-  } = UserEditableDataCx.useAllData();
-  const action = UserEditableDataCx.useAction();
+    aboutUs: { entries },
+  } = UedCx.Pages.Landing.useData();
+
+  const {
+    aboutUs: { entries: entriesAction },
+  } = UedCx.Pages.Landing.useAction();
 
   return (
     <div className="pl-xl">
@@ -108,7 +109,7 @@ const AddEntryForm = () => {
           onSubmit={(e) => {
             e.preventDefault();
 
-            action.page.aboutUs.entry.create({
+            entriesAction.create({
               id: generateUid(),
               index: entries.length,
               text,
@@ -144,10 +145,11 @@ const AddEntryForm = () => {
 };
 
 const Entry = () => {
+  const { id, text } = AboutUsEntryCx.use();
+
   const {
-    page: { aboutUs },
-  } = UserEditableDataCx.useAction();
-  const aboutUsEntry = AboutUsEntryCx.use();
+    aboutUs: { entries: entriesAction },
+  } = UedCx.Pages.Landing.useAction();
 
   return (
     <div className="group/entry relative flex w-full gap-sm hover:border-b">
@@ -157,11 +159,11 @@ const Entry = () => {
       </div>
       <div className="flex-grow text-2xl">
         <TextAreaForm
-          localStateValue={aboutUsEntry.text}
+          localStateValue={text}
           textArea={{ placeholder: "About us entry text" }}
           onSubmit={(inputValue) => {
-            aboutUs.entry.updateText({
-              id: aboutUsEntry.id,
+            entriesAction.updateText({
+              id,
               newVal: inputValue,
             });
           }}
@@ -176,8 +178,8 @@ const EntryMenu = () => {
   const aboutUsEntry = AboutUsEntryCx.use();
 
   const {
-    page: { aboutUs },
-  } = UserEditableDataCx.useAction();
+    aboutUs: { entries: entriesAction },
+  } = UedCx.Pages.Landing.useAction();
 
   const toast = useToast();
 
@@ -193,8 +195,10 @@ const EntryMenu = () => {
         panelContent={({ closeModal }) => (
           <WarningPanel
             callback={() => {
-              aboutUs.entry.delete({ id: aboutUsEntry.id });
+              entriesAction.delete({ id: aboutUsEntry.id });
+
               closeModal();
+
               toast.neutral("deleted entry");
             }}
             closeModal={closeModal}
@@ -211,22 +215,21 @@ const EntryMenu = () => {
 
 const GoToPageButton = () => {
   const {
-    page: {
-      aboutUs: { buttonText },
-    },
-  } = UserEditableDataCx.useAllData();
+    aboutUs: { buttonText },
+  } = UedCx.Pages.Landing.useData();
 
-  const {
-    page: { aboutUs },
-  } = UserEditableDataCx.useAction();
+  const { aboutUs: aboutUsAction } = UedCx.Pages.Landing.useAction();
+
+  const { undoKey } = UedCx.Pages.Landing.useRevision();
 
   return (
     <div className="flex cursor-pointer items-center gap-sm rounded-sm bg-brandGreen px-4 py-2 text-lg font-bold uppercase tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">
       <TextInputForm
         localStateValue={buttonText}
-        onSubmit={aboutUs.buttonText.update}
+        onSubmit={aboutUsAction.buttonText}
         input={{ placeholder: "Button text", styles: "uppercase" }}
         tooltip="Click to edit button text"
+        key={undoKey}
       />
       <div className="">
         <Icon.ArrowRight />

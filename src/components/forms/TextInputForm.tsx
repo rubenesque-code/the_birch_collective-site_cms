@@ -8,10 +8,7 @@ import { WithTooltip } from "../WithTooltip";
 
 type Props = {
   localStateValue: string | null;
-  input?: MyPick<
-    InputProps,
-    "minWidth" | "placeholder" | "styles" | "autoFocus"
-  >;
+  input?: MyPick<InputProps, "minWidth" | "placeholder" | "styles">;
   onSubmit: (inputValue: string) => void;
   tooltip?: string;
 };
@@ -67,7 +64,7 @@ type InputProps = {
   setIsFocused: (value: boolean) => void;
   setValue: (value: string) => void;
   value: string;
-  autoFocus?: boolean;
+  // autoFocus?: boolean;
   isFocused: boolean;
   minWidth?: number;
   placeholder?: string;
@@ -76,7 +73,7 @@ type InputProps = {
 };
 
 const Input = ({
-  autoFocus = false,
+  // autoFocus = false,
   isFocused,
   minWidth = 50,
   placeholder = "write here",
@@ -86,8 +83,8 @@ const Input = ({
   trailingSpace = 20,
   value,
 }: InputProps) => {
-  const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
-    useState(false);
+  /*   const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
+    useState(false); */
 
   const [dummyInputRef, { width: dummyInputWidth }] =
     useMeasure<HTMLParagraphElement>();
@@ -120,14 +117,15 @@ const Input = ({
           placeholder={placeholder}
           type="text"
           autoComplete="off"
-          onFocus={(e) => {
-            if (!autoFocus && !isBlurredOnInitialRender) {
+          onFocus={() => {
+            /*             if (!autoFocus && !isBlurredOnInitialRender) {
               // · handle unwanted autofocus (bug?)
               e.currentTarget.blur();
               setIsBlurredOnInitialRender(true);
             } else {
               setIsFocused(true);
-            }
+            } */
+            setIsFocused(true);
           }}
           onBlur={() => {
             setIsFocused(false);
@@ -135,7 +133,8 @@ const Input = ({
           style={{
             width: inputWidth > minWidth ? inputWidth : minWidth,
           }}
-          autoFocus={autoFocus}
+          // autoFocus={autoFocus}
+          autoFocus={false}
           ref={inputRef}
         />
       </div>

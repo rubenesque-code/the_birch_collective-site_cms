@@ -1,18 +1,23 @@
+import type { ReactElement } from "react";
+
+import { UedCx } from "~/context/user-editable-data";
+import { deepSortByIndex } from "~/helpers/data/process";
+import { useHovered } from "~/hooks";
+
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { ImagePlaceholder } from "~/components/ImagePlaceholder";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { Icon } from "~/components/icons";
-import { deepSortByIndex } from "~/helpers/data/process";
-import { useHovered } from "~/hooks";
-import type { MyDb } from "~/types/database";
-import { UserEditableDataCx } from "../_state";
+import CmsLayout from "~/components/layouts/Cms";
+import { TestimonialCx } from "~/context/entities";
 import { EditModal } from "./edit/+Entry";
 import { Slides } from "./slides/+Entry";
-import CmsLayout from "~/components/layouts/Cms";
 
 const Testimonials = () => {
-  const { testimonials } = UserEditableDataCx.useAllData();
+  const {
+    store: { data: testimonials },
+  } = UedCx.Testimonials.use();
 
   const slidesInitData = [
     ...deepSortByIndex(testimonials),
@@ -42,12 +47,22 @@ const Testimonials = () => {
       <Slides
         numSlidesTotal={testimonials.length}
         slides={({ leftMost, rightMost }) =>
-          slidesInitData.map((landingData, i) => (
-            <Testimonial
-              slidesView={{ isFirst: i === leftMost, isLast: i === rightMost }}
-              testimonial={landingData}
+          slidesInitData.map((testimonial, i) => (
+            <TestimonialWrapper
+              slidesView={{
+                isFirst: i === leftMost,
+                isLast: i === rightMost,
+              }}
               key={i}
-            />
+            >
+              {testimonial === "dummy" ? (
+                <TestimonialDummy />
+              ) : (
+                <TestimonialCx.Provider testimonial={testimonial}>
+                  <TestimonialActual />
+                </TestimonialCx.Provider>
+              )}
+            </TestimonialWrapper>
           ))
         }
       />
@@ -57,15 +72,15 @@ const Testimonials = () => {
 
 export default Testimonials;
 
-const Testimonial = ({
-  testimonial,
+const TestimonialWrapper = ({
+  children,
   slidesView,
 }: {
+  children: ReactElement;
   slidesView: {
     isFirst?: boolean;
     isLast?: boolean;
   };
-  testimonial: MyDb["testimonial"] | "dummy";
 }) => {
   const [isHovered, { hoverHandlers }] = useHovered();
 
@@ -82,11 +97,7 @@ const Testimonial = ({
       }`}
       {...hoverHandlers}
     >
-      {testimonial === "dummy" ? (
-        <TestimonialDummy />
-      ) : (
-        <TestimonialActual data={testimonial} />
-      )}
+      {children}
     </div>
   );
 };
@@ -111,33 +122,34 @@ const TestimonialDummy = () => (
   </>
 );
 
-const TestimonialActual = ({ data }: { data: MyDb["testimonial"] }) => (
-  <>
-    <div className="absolute h-full w-full">
-      <UserSelectedImageWrapper
-        dbImageId={data.image.dbConnect.imageId}
-        placeholderText="background image"
-      >
-        {({ dbImageId }) => (
-          <DbImageWrapper dbImageId={dbImageId}>
-            {({ urls }) => (
-              <CustomisableImage urls={urls} position={data.image.position} />
-            )}
-          </DbImageWrapper>
-        )}
-      </UserSelectedImageWrapper>
-    </div>
-    <div className="absolute bottom-0 z-10 h-4/5 w-full bg-gradient-to-t from-black to-transparent">
-      <div className="absolute bottom-0 z-10 flex h-[63%] w-full flex-col justify-end gap-sm p-sm text-center text-lg text-white">
-        <div className="overflow-auto scrollbar-hide">
-          {data.text.length ? data.text : "Testimonial"}
-        </div>
-        <div className="shrink-0 font-medium">
-          <p>
-            {data.endorserName.length ? data.endorserName : "Endorser name"}
-          </p>
+const TestimonialActual = () => {
+  const { endorserName, image, text } = TestimonialCx.use();
+  return (
+    <>
+      <div className="absolute h-full w-full">
+        <UserSelectedImageWrapper
+          dbImageId={image.dbConnect.imageId}
+          placeholderText="background image"
+        >
+          {({ dbImageId }) => (
+            <DbImageWrapper dbImageId={dbImageId}>
+              {({ urls }) => (
+                <CustomisableImage urls={urls} position={image.position} />
+              )}
+            </DbImageWrapper>
+          )}
+        </UserSelectedImageWrapper>
+      </div>
+      <div className="absolute bottom-0 z-10 h-4/5 w-full bg-gradient-to-t from-black to-transparent">
+        <div className="absolute bottom-0 z-10 flex h-[63%] w-full flex-col justify-end gap-sm p-sm text-center text-lg text-white">
+          <div className="overflow-auto scrollbar-hide">
+            {text.length ? text : "Testimonial"}
+          </div>
+          <div className="shrink-0 font-medium">
+            <p>{endorserName.length ? endorserName : "Endorser name"}</p>
+          </div>
         </div>
       </div>
-    </div>
-  </>
-);
+    </>
+  );
+};

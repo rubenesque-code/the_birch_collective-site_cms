@@ -6,8 +6,6 @@ import type { MyDb } from "~/types/database";
 import { LandingCx, SupporterCx } from "~/context/entities";
 import { useToast } from "~/hooks";
 
-import { UserEditableDataCx } from "../_state";
-
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
@@ -15,38 +13,37 @@ import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import SupportersModal from "~/components/supporters-modal/+Entry";
+import { UedCx } from "~/context/user-editable-data";
+import CmsLayout from "~/components/layouts/Cms";
 
-const Supporters = () => {
-  return (
-    <div>
-      <Headings />
-      <Entries />
-    </div>
-  );
-};
+const Supporters = () => (
+  <div>
+    <Headings />
+    <Entries />
+  </div>
+);
 
 export default Supporters;
 
 const Headings = () => {
-  const {
-    page: { supporters },
-  } = UserEditableDataCx.useAllData();
+  const { supporters } = UedCx.Pages.Landing.useData();
 
-  const {
-    page: { supporters: supportersAction },
-  } = UserEditableDataCx.useAction();
+  const { supporters: supportersAction } = UedCx.Pages.Landing.useAction();
+
+  const { undoKey } = UedCx.Pages.Landing.useRevision();
 
   return (
     <div className="">
       <div className="text-center font-display text-6xl text-brandOrange">
         <TextInputForm
           localStateValue={supporters.heading}
-          onSubmit={supportersAction.heading.update}
+          onSubmit={supportersAction.heading}
           input={{
             placeholder: "Supporters heading",
             styles: "font-bold tracking-wide text-center",
           }}
           tooltip="click to edit supporters heading"
+          key={undoKey}
         />
       </div>
       <div className="mt-3 text-center font-light xs:mt-4 xs:text-lg sm:mt-6 sm:text-xl lg:text-2xl">
@@ -56,8 +53,9 @@ const Headings = () => {
             placeholder: "Supporters subheading",
             styles: "tracking-wide text-center",
           }}
-          onSubmit={supportersAction.subheading.update}
+          onSubmit={supportersAction.subheading}
           tooltip="Click to edit supporters subheading"
+          key={undoKey}
         />
       </div>
     </div>
@@ -66,17 +64,16 @@ const Headings = () => {
 
 const Entries = () => {
   const {
-    page: {
-      supporters: { entries },
-    },
-    supporters,
-  } = UserEditableDataCx.useAllData();
+    supporters: { entries },
+  } = UedCx.Pages.Landing.useData();
 
   const {
-    page: {
-      supporters: { entry: entryAction },
-    },
-  } = UserEditableDataCx.useAction();
+    store: { data: supporters },
+  } = UedCx.Supporters.use();
+
+  const {
+    supporters: { entries: entriesAction },
+  } = UedCx.Pages.Landing.useAction();
 
   const entriesSorted = React.useMemo(() => {
     const sorted = produce(entries, (draft) => {
@@ -107,7 +104,7 @@ const Entries = () => {
 
   return (
     <div className="mt-md">
-      <div className="flex items-center justify-between rounded-md border border-dashed px-4 py-2">
+      <CmsLayout.EditBar>
         <SupportersModal
           button={({ openModal }) => (
             <div
@@ -121,14 +118,14 @@ const Entries = () => {
             </div>
           )}
           connectSupporter={(supporterId) => {
-            entryAction.add({ dbConnections: { supporterId } });
+            entriesAction.add({ dbConnections: { supporterId } });
             toast.neutral("added supporter to landing");
           }}
           usedSupporterIds={entries.map(
             (entry) => entry.dbConnections.supporterId,
           )}
         />
-      </div>
+      </CmsLayout.EditBar>
 
       {!entries.length ? (
         <div className="mt-md text-gray-800">
@@ -141,13 +138,13 @@ const Entries = () => {
               supporter={supporter}
               key={supporter.id}
             >
-              <GetSupporterWrapper>
+              <ConnectSupporter>
                 {({ connectedSupporter }) => (
                   <SupporterCx.Provider supporter={connectedSupporter}>
                     <Supporter />
                   </SupporterCx.Provider>
                 )}
-              </GetSupporterWrapper>
+              </ConnectSupporter>
             </LandingCx.Supporter.Provider>
           ))}
         </div>
@@ -156,23 +153,26 @@ const Entries = () => {
   );
 };
 
-const GetSupporterWrapper = ({
+const ConnectSupporter = ({
   children,
 }: {
   children: (arg0: { connectedSupporter: MyDb["supporter"] }) => ReactNode;
 }) => {
   const landingSupporter = LandingCx.Supporter.use();
-  const { supporters } = UserEditableDataCx.useAllData();
 
-  const connectedSupporter = supporters.find(
+  const {
+    store: { data: supporters },
+  } = UedCx.Supporters.use();
+
+  const queriedSupporter = supporters.find(
     (supporter) => supporter.id === landingSupporter.dbConnections.supporterId,
   );
 
-  if (!connectedSupporter) {
+  if (!queriedSupporter) {
     return <UnfoundSupporter />;
   }
 
-  return children({ connectedSupporter });
+  return children({ connectedSupporter: queriedSupporter });
 };
 
 const UnfoundSupporter = () => (
@@ -217,12 +217,10 @@ const Supporter = () => {
 
 const SupporterMenu = () => {
   const {
-    page: {
-      supporters: {
-        entry: { remove },
-      },
+    supporters: {
+      entries: { remove },
     },
-  } = UserEditableDataCx.useAction();
+  } = UedCx.Pages.Landing.useAction();
 
   const { id } = LandingCx.Supporter.use();
 
@@ -233,6 +231,7 @@ const SupporterMenu = () => {
       <ComponentMenu.Button
         onClick={() => {
           remove({ id });
+
           toast.neutral("supporter removed from landing");
         }}
         tooltip="remove supporter from landing"

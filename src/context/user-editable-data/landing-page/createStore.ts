@@ -158,51 +158,44 @@ export const createStore = (input: { initData: Store["data"] }) =>
               ),
             image: {
               dbConnections: {
-                imageId: {
-                  update: (input) =>
-                    set(
-                      produce((store: Store) => {
-                        const index = store.data.photoAlbum.entries.findIndex(
-                          (t) => t.id === input.id,
-                        );
-                        if (index !== -1)
-                          store.data.photoAlbum.entries[
-                            index
-                          ].image.dbConnections.imageId = input.newVal;
-                      }),
-                    ),
-                },
+                imageId: (input) =>
+                  set(
+                    produce((store: Store) => {
+                      const index = store.data.photoAlbum.entries.findIndex(
+                        (t) => t.id === input.id,
+                      );
+                      if (index !== -1)
+                        store.data.photoAlbum.entries[
+                          index
+                        ].image.dbConnections.imageId = input.newVal;
+                    }),
+                  ),
               },
               position: {
-                x: {
-                  update: (input) =>
-                    set(
-                      produce((store: Store) => {
-                        const index = store.data.photoAlbum.entries.findIndex(
-                          (t) => t.id === input.id,
-                        );
-                        if (index !== -1) {
-                          store.data.photoAlbum.entries[
-                            index
-                          ].image.position.x = input.newVal;
-                        }
-                      }),
-                    ),
-                },
-                y: {
-                  update: (input) =>
-                    set(
-                      produce((store: Store) => {
-                        const index = store.data.photoAlbum.entries.findIndex(
-                          (t) => t.id === input.id,
-                        );
-                        if (index !== -1)
-                          store.data.photoAlbum.entries[
-                            index
-                          ].image.position.y = input.newVal;
-                      }),
-                    ),
-                },
+                x: (input) =>
+                  set(
+                    produce((store: Store) => {
+                      const index = store.data.photoAlbum.entries.findIndex(
+                        (t) => t.id === input.id,
+                      );
+                      if (index !== -1) {
+                        store.data.photoAlbum.entries[index].image.position.x =
+                          input.newVal;
+                      }
+                    }),
+                  ),
+
+                y: (input) =>
+                  set(
+                    produce((store: Store) => {
+                      const index = store.data.photoAlbum.entries.findIndex(
+                        (t) => t.id === input.id,
+                      );
+                      if (index !== -1)
+                        store.data.photoAlbum.entries[index].image.position.y =
+                          input.newVal;
+                    }),
+                  ),
               },
             },
             reorder: (input) =>

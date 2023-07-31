@@ -8,14 +8,16 @@ import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
 import { useToast } from "~/hooks";
-import { UserEditableDataCx } from "../+pages/home-old/_state";
 import { NewSupporterCx, createInitData } from "./_state";
 import { TextInputForm } from "../forms";
+import { UedCx } from "~/context/user-editable-data";
 
 // □ refactor
 
 export const CreateModal = () => {
-  const { supporters } = UserEditableDataCx.useAllData();
+  const {
+    store: { data: supporters },
+  } = UedCx.Supporters.use();
 
   return (
     <NewSupporterCx.Provider newSupporter={{ index: supporters.length }}>
@@ -97,9 +99,9 @@ const NewSupporterModalContent = ({
   const [showIncompleteErrorMessage, setShowIncompleteErrorMessage] =
     useState(false);
 
-  const { supporter: supporterAction } = UserEditableDataCx.useAction();
-
-  const { supporters } = UserEditableDataCx.useAllData();
+  const {
+    store: { data: supporters, actions: supportersAction },
+  } = UedCx.Supporters.use();
 
   const { data: newSupporter, actions: newSupporterAction } =
     NewSupporterCx.use();
@@ -154,7 +156,7 @@ const NewSupporterModalContent = ({
               return;
             }
 
-            supporterAction.create({
+            supportersAction.create({
               ...newSupporter,
               index: supporters.length,
             });

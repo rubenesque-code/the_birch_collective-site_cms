@@ -1,20 +1,21 @@
 import { Popover } from "@headlessui/react";
-import { UserEditableDataCx } from "~/components/+pages/home-old/_state";
+
 import { WithTooltip } from "~/components/WithTooltip";
 import { TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
+import { UedCx } from "~/context/user-editable-data";
 
 const GetInvolved = () => {
-  const { linkLabels } = UserEditableDataCx.useAllData();
+  const linkLabels = UedCx.LinkLabels.useData();
 
-  const { linkLabels: linkLabelAction } = UserEditableDataCx.useAction();
+  const linkLabelAction = UedCx.LinkLabels.useAction();
 
   return (
     <div className="flex items-center gap-xxs">
       <div className="max-w-[300px] overflow-x-auto text-sm font-semibold uppercase tracking-wide text-gray-700 lg:text-base xl:text-lg">
         <TextInputForm
           localStateValue={linkLabels.getInvolved}
-          onSubmit={linkLabelAction.getInvolved.update}
+          onSubmit={linkLabelAction.getInvolved}
           input={{
             placeholder: "Get involved link text",
             styles: "uppercase tracking-wide",
@@ -45,16 +46,16 @@ const GetInvolved = () => {
 export default GetInvolved;
 
 const PanelContent = () => {
-  const { header } = UserEditableDataCx.useAllData();
+  const header = UedCx.Header.useData();
 
-  const { header: headerAction } = UserEditableDataCx.useAction();
+  const headerAction = UedCx.Header.useAction();
 
   return (
     <div>
       <div className="font-display text-4xl font-bold tracking-wide text-displayGreen">
         <TextInputForm
           localStateValue={header.getInvolved.popover.heading}
-          onSubmit={headerAction.getInvolved.popover.heading.update}
+          onSubmit={headerAction.getInvolved.popover.heading}
           input={{
             placeholder: "Get involved menu heading",
             styles: "tracking-wide",
@@ -65,7 +66,7 @@ const PanelContent = () => {
       <div className="mt-2 text-lg">
         <TextInputForm
           localStateValue={header.getInvolved.popover.subheading}
-          onSubmit={headerAction.getInvolved.popover.subheading.update}
+          onSubmit={headerAction.getInvolved.popover.subheading}
           input={{
             placeholder: "Get involved menu subheading",
           }}
@@ -78,9 +79,9 @@ const PanelContent = () => {
 };
 
 const PanelLinks = () => {
-  const { linkLabels } = UserEditableDataCx.useAllData();
+  const linkLabels = UedCx.LinkLabels.useData();
 
-  const { linkLabels: linkLabelAction } = UserEditableDataCx.useAction();
+  const linkLabelAction = UedCx.LinkLabels.useAction();
 
   return (
     <div className="mt-8 flex gap-xl">
@@ -91,7 +92,7 @@ const PanelLinks = () => {
         <div className="text-lg uppercase tracking-wide">
           <TextInputForm
             localStateValue={linkLabels.donate}
-            onSubmit={linkLabelAction.donate.update}
+            onSubmit={linkLabelAction.donate}
             input={{
               placeholder: "Donate link text",
               styles: "tracking-wide uppercase",
@@ -108,7 +109,7 @@ const PanelLinks = () => {
         <div className="text-lg uppercase tracking-wide">
           <TextInputForm
             localStateValue={linkLabels.volunteer}
-            onSubmit={linkLabelAction.volunteer.update}
+            onSubmit={linkLabelAction.volunteer}
             input={{
               placeholder: "Volunteer link text",
               styles: "tracking-wide uppercase",
@@ -125,7 +126,7 @@ const PanelLinks = () => {
         <div className="text-lg uppercase tracking-wide">
           <TextInputForm
             localStateValue={linkLabels.careers}
-            onSubmit={linkLabelAction.careers.update}
+            onSubmit={linkLabelAction.careers}
             input={{
               placeholder: "Careers link text",
               styles: "tracking-wide uppercase",

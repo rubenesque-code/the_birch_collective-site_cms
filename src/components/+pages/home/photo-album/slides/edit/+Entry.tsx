@@ -11,11 +11,11 @@ import { ComponentMenu } from "~/components/menus";
 import { ImageUploadAndLibrary } from "~/components/parts/upload-image-and-library";
 import { Modal } from "~/components/styled-bases";
 import { PhotoAlbumEntryCx } from "~/context/entities/landing/PhotoAlbumEntry";
+import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
 import { useToast } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
-import { UserEditableDataCx } from "../../../_state";
 
 export const EditModal = ({
   button,
@@ -38,18 +38,15 @@ export const EditModal = ({
 );
 
 const Content = () => {
-  const { closeModal } = Modal.VisibilityCx.use();
+  const {
+    photoAlbum: { entries },
+  } = UedCx.Pages.Landing.useData();
 
   const {
-    page: {
-      photoAlbum: { entries },
-    },
-  } = UserEditableDataCx.useAllData();
-  const {
-    page: {
-      photoAlbum: { entry: entryAction },
-    },
-  } = UserEditableDataCx.useAction();
+    photoAlbum: { entries: entryAction },
+  } = UedCx.Pages.Landing.useAction();
+
+  const { closeModal } = Modal.VisibilityCx.use();
 
   return (
     <div className="relative flex h-[1200px] max-h-[70vh] w-[90vw] max-w-[1200px] flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
@@ -98,15 +95,14 @@ const Content = () => {
 
 const Entries = () => {
   const {
-    page: {
-      photoAlbum: { entries },
-    },
-  } = UserEditableDataCx.useAllData();
-  console.log("entries:", entries[0]);
+    photoAlbum: { entries },
+  } = UedCx.Pages.Landing.useData();
+
+  const {
+    photoAlbum: { entries: entriesAction },
+  } = UedCx.Pages.Landing.useAction();
 
   const sorted = useMemo(() => deepSortByIndex(entries), [entries]);
-
-  const userActions = UserEditableDataCx.useAction();
 
   return (
     <div className="mt-xs">
@@ -116,7 +112,7 @@ const Entries = () => {
         <div className="grid grid-cols-3 gap-sm pr-sm">
           <DndKit.Context
             elementIds={getIds(sorted)}
-            onReorder={userActions.page.photoAlbum.entry.order.update}
+            onReorder={entriesAction.reorder}
           >
             {sorted.map((entry) => (
               <DndKit.Element
@@ -164,11 +160,10 @@ const Entry = () => {
 
 const Menu = () => {
   const { image, id } = PhotoAlbumEntryCx.use();
+
   const {
-    page: {
-      photoAlbum: { entry: entryAction },
-    },
-  } = UserEditableDataCx.useAction();
+    photoAlbum: { entries: entriesAction },
+  } = UedCx.Pages.Landing.useAction();
 
   const toast = useToast();
 
@@ -178,12 +173,8 @@ const Menu = () => {
         <>
           <ComponentMenu.Image.PositionMenu
             position={image.position}
-            updateX={(newVal) =>
-              entryAction.image.position.x.update({ id, newVal })
-            }
-            updateY={(newVal) =>
-              entryAction.image.position.y.update({ id, newVal })
-            }
+            updateX={(newVal) => entriesAction.image.position.x({ id, newVal })}
+            updateY={(newVal) => entriesAction.image.position.y({ id, newVal })}
             styles={{ wrapper: "left-0 top-0" }}
           />
 
@@ -192,15 +183,15 @@ const Menu = () => {
       ) : null}
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
-          entryAction.image.dbConnections.imageId.update({
+          entriesAction.image.dbConnections.imageId({
             id,
             newVal: dbImageId,
           });
-          entryAction.image.position.x.update({
+          entriesAction.image.position.x({
             id,
             newVal: 50,
           });
-          entryAction.image.position.y.update({
+          entriesAction.image.position.y({
             id,
             newVal: 50,
           });
@@ -221,7 +212,7 @@ const Menu = () => {
         panelContent={({ closeModal }) => (
           <WarningPanel
             callback={() => {
-              entryAction.delete({ id });
+              entriesAction.delete({ id });
               closeModal();
               toast.neutral("deleted album entry");
             }}

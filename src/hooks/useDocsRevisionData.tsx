@@ -88,16 +88,16 @@ function processUpdatedDocs<TDoc extends { id: string }>(
 }
 
 export function useDocsRevisionData<TDoc extends { id: string }>(input: {
-  dbData: TDoc[];
-  userEditedData: TDoc[];
+  initData: TDoc[];
+  updatedData: TDoc[];
 }) {
   const [changeKey, setChangeKey] = useState(generateUid());
   // new
-  const created = arrayDivergence(input.userEditedData, input.dbData);
+  const created = arrayDivergence(input.updatedData, input.initData);
 
-  const deleted = arrayDivergenceByIds(input.dbData, input.userEditedData);
+  const deleted = arrayDivergenceByIds(input.initData, input.updatedData);
 
-  const persistedPairs = getArrayUnion(input.dbData, input.userEditedData);
+  const persistedPairs = getArrayUnion(input.initData, input.updatedData);
   // map docs. return partial of each changed doc - fields that have changed + id.
   const updated = processUpdatedDocs(persistedPairs);
 

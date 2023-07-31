@@ -3,15 +3,14 @@ import React, { type ReactNode } from "react";
 
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
+import CmsLayout from "~/components/layouts/Cms";
 import { ComponentMenu } from "~/components/menus";
 import { ProgrammeCx } from "~/context/entities";
 import { LandingCx } from "~/context/entities/landing";
+import { UedCx } from "~/context/user-editable-data";
 import { useToast } from "~/hooks";
 import type { MyDb } from "~/types/database";
 import AddProgrammeModal from "./entries/add-programme-modal/+Entry";
-import { UedCx } from "~/context/user-editable-data";
-import CmsLayout from "~/components/layouts/Cms";
-import { getIds } from "~/helpers/data/query";
 
 const Programmes = () => (
   <div className="group/programmes">
@@ -29,6 +28,7 @@ const Headings = () => {
   const { programmes } = UedCx.Pages.Landing.useData();
 
   const { programmes: programmesAction } = UedCx.Pages.Landing.useAction();
+  const { undoKey } = UedCx.Pages.Landing.useRevision();
 
   return (
     <div className="">
@@ -41,6 +41,7 @@ const Headings = () => {
             styles: "font-bold tracking-wide text-center",
           }}
           tooltip="click to edit programmes heading"
+          key={undoKey}
         />
       </div>
       <div className="mt-3 text-center font-light xs:mt-4 xs:text-lg sm:mt-6 sm:text-xl lg:text-2xl">
@@ -52,6 +53,7 @@ const Headings = () => {
           }}
           onSubmit={programmesAction.subheading}
           tooltip="Click to edit programmes subheading"
+          key={undoKey}
         />
       </div>
     </div>
@@ -201,6 +203,8 @@ const Programme = () => {
 
   const programmeAction = UedCx.Programmes.useAction();
 
+  const { undoKey } = UedCx.Programmes.useRevision();
+
   return (
     <div className="group/programme relative flex flex-col items-center p-sm">
       <ProgrammeMenu />
@@ -215,6 +219,7 @@ const Programme = () => {
             styles: "tracking-wider text-center",
           }}
           tooltip="Click to edit title"
+          key={undoKey}
         />
       </div>
       <div className="mt-xs uppercase text-display xs:text-lg lg:text-xl">
@@ -225,6 +230,7 @@ const Programme = () => {
           }
           input={{ placeholder: "Subtitle", styles: "uppercase" }}
           tooltip="Click to edit subtitle"
+          key={undoKey}
         />
       </div>
       <div className="mt-xs w-full text-center text-base font-light xs:font-normal lg:text-lg">
@@ -238,6 +244,7 @@ const Programme = () => {
             programmeAction.summary({ id, newVal: inputValue });
           }}
           tooltip="Click to edit summary"
+          key={undoKey}
         />
       </div>
     </div>
@@ -278,6 +285,8 @@ const GoToPageButton = () => {
 
   const { programmes: programmesAction } = UedCx.Pages.Landing.useAction();
 
+  const { undoKey } = UedCx.Programmes.useRevision();
+
   return (
     <div className="flex cursor-pointer items-center gap-sm rounded-sm bg-brandOrange px-4 py-2 text-lg font-bold uppercase tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">
       <TextInputForm
@@ -285,6 +294,7 @@ const GoToPageButton = () => {
         onSubmit={programmesAction.buttonText}
         input={{ placeholder: "Button text", styles: "uppercase" }}
         tooltip="Click to edit button text"
+        key={undoKey}
       />
       <div className="">
         <Icon.ArrowRight />

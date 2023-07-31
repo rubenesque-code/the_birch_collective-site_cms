@@ -25,11 +25,11 @@ type ArrActions = {
       delete: (arg0: { id: string }) => void;
       image: {
         dbConnections: {
-          imageId: { update: (arg0: { id: string; newVal: string }) => void };
+          imageId: (arg0: { id: string; newVal: string }) => void;
         };
         position: {
-          x: { update: (arg0: { id: string; newVal: number }) => void };
-          y: { update: (arg0: { id: string; newVal: number }) => void };
+          x: (arg0: { id: string; newVal: number }) => void;
+          y: (arg0: { id: string; newVal: number }) => void;
         };
       };
       reorder: (arg0: { activeId: string; overId: string }) => void;

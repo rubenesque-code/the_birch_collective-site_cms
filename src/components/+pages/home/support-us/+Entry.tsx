@@ -1,10 +1,9 @@
-import { UserEditableDataCx } from "../_state";
-
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { ComponentMenu } from "~/components/menus";
+import { UedCx } from "~/context/user-editable-data";
 
 const SupportUs = () => {
   return (
@@ -21,20 +20,16 @@ const SupportUs = () => {
 export default SupportUs;
 
 const Heading = () => {
-  const {
-    page: { supportUs },
-  } = UserEditableDataCx.useAllData();
+  const { supportUs } = UedCx.Pages.Landing.useData();
 
-  const {
-    page: { supportUs: supportUsActions },
-  } = UserEditableDataCx.useAction();
+  const { supportUs: supportUsActions } = UedCx.Pages.Landing.useAction();
 
   return (
     <div className="">
       <div className="text-center font-display text-6xl text-brandGreen">
         <TextInputForm
           localStateValue={supportUs.heading}
-          onSubmit={supportUsActions.heading.update}
+          onSubmit={supportUsActions.heading}
           input={{
             placeholder: "Support us heading",
             styles: "font-bold tracking-wide text-center",
@@ -63,10 +58,8 @@ const Donate = () => {
 
 const DonateImage = () => {
   const {
-    page: {
-      supportUs: { donate },
-    },
-  } = UserEditableDataCx.useAllData();
+    supportUs: { donate },
+  } = UedCx.Pages.Landing.useData();
 
   return (
     <UserSelectedImageWrapper
@@ -86,20 +79,16 @@ const DonateImage = () => {
 
 const DonateImageMenu = () => {
   const {
-    page: {
-      supportUs: {
-        donate: { image },
-      },
+    supportUs: {
+      donate: { image },
     },
-  } = UserEditableDataCx.useAllData();
+  } = UedCx.Pages.Landing.useData();
 
   const {
-    page: {
-      supportUs: {
-        donate: { image: imageAction },
-      },
+    supportUs: {
+      donate: { image: imageAction },
     },
-  } = UserEditableDataCx.useAction();
+  } = UedCx.Pages.Landing.useAction();
 
   return (
     <ComponentMenu styles="right-1 top-1 group-hover/donate-image:opacity-40">
@@ -107,8 +96,8 @@ const DonateImageMenu = () => {
         <>
           <ComponentMenu.Image.PositionMenu
             position={image.position}
-            updateX={(newValue) => imageAction.position.x.update(newValue)}
-            updateY={(newValue) => imageAction.position.y.update(newValue)}
+            updateX={(newValue) => imageAction.position.x(newValue)}
+            updateY={(newValue) => imageAction.position.y(newValue)}
             styles={{
               wrapper: "right-0 top-0",
               menuItemsWrapper: "right-0",
@@ -121,9 +110,9 @@ const DonateImageMenu = () => {
 
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
-          imageAction.dbConnections.imageId.update(dbImageId);
-          imageAction.position.x.update(50);
-          imageAction.position.y.update(50);
+          imageAction.dbConnections.imageId(dbImageId);
+          imageAction.position.x(50);
+          imageAction.position.y(50);
         }}
         styles={{
           menu: { itemsWrapper: "right-0 -bottom-1 translate-y-full" },
@@ -135,26 +124,22 @@ const DonateImageMenu = () => {
 
 const DonateButton = () => {
   const {
-    page: {
-      supportUs: {
-        donate: { buttonText },
-      },
+    supportUs: {
+      donate: { buttonText },
     },
-  } = UserEditableDataCx.useAllData();
+  } = UedCx.Pages.Landing.useData();
 
   const {
-    page: {
-      supportUs: {
-        donate: { buttonText: buttonTextAction },
-      },
+    supportUs: {
+      donate: { buttonText: buttonTextAction },
     },
-  } = UserEditableDataCx.useAction();
+  } = UedCx.Pages.Landing.useAction();
 
   return (
     <div className="absolute bottom-0 left-0 flex cursor-pointer items-center gap-sm rounded-sm bg-brandGreen px-4 py-2 text-lg font-bold tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">
       <TextInputForm
         localStateValue={buttonText}
-        onSubmit={buttonTextAction.update}
+        onSubmit={buttonTextAction}
         input={{ placeholder: "Donate button text" }}
         tooltip="Click to edit button text"
       />
@@ -164,26 +149,22 @@ const DonateButton = () => {
 
 const DonateDescription = () => {
   const {
-    page: {
-      supportUs: {
-        donate: { description },
-      },
+    supportUs: {
+      donate: { description },
     },
-  } = UserEditableDataCx.useAllData();
+  } = UedCx.Pages.Landing.useData();
 
   const {
-    page: {
-      supportUs: {
-        donate: { description: descriptionAction },
-      },
+    supportUs: {
+      donate: { description: descriptionAction },
     },
-  } = UserEditableDataCx.useAction();
+  } = UedCx.Pages.Landing.useAction();
 
   return (
     <div className="text-center font-normal lg:text-xl">
       <TextAreaForm
         localStateValue={description}
-        onSubmit={descriptionAction.update}
+        onSubmit={descriptionAction}
         textArea={{ placeholder: "Donate description", styles: "text-center" }}
         tooltip="Click to edit description"
       />
@@ -193,7 +174,7 @@ const DonateDescription = () => {
 
 const Volunteer = () => (
   <div>
-    <div className="group/volunteer-image relative aspect-square">
+    <div className="group/donate-image relative aspect-square">
       <VolunteerImageMenu />
       <VolunteerImage />
       <VolunteerButton />
@@ -206,10 +187,8 @@ const Volunteer = () => (
 
 const VolunteerImage = () => {
   const {
-    page: {
-      supportUs: { volunteer },
-    },
-  } = UserEditableDataCx.useAllData();
+    supportUs: { volunteer },
+  } = UedCx.Pages.Landing.useData();
 
   return (
     <UserSelectedImageWrapper
@@ -232,20 +211,16 @@ const VolunteerImage = () => {
 
 const VolunteerImageMenu = () => {
   const {
-    page: {
-      supportUs: {
-        volunteer: { image },
-      },
+    supportUs: {
+      volunteer: { image },
     },
-  } = UserEditableDataCx.useAllData();
+  } = UedCx.Pages.Landing.useData();
 
   const {
-    page: {
-      supportUs: {
-        volunteer: { image: imageAction },
-      },
+    supportUs: {
+      volunteer: { image: imageAction },
     },
-  } = UserEditableDataCx.useAction();
+  } = UedCx.Pages.Landing.useAction();
 
   return (
     <ComponentMenu styles="right-1 top-1 group-hover/volunteer-image:opacity-40">
@@ -253,8 +228,8 @@ const VolunteerImageMenu = () => {
         <>
           <ComponentMenu.Image.PositionMenu
             position={image.position}
-            updateX={(newValue) => imageAction.position.x.update(newValue)}
-            updateY={(newValue) => imageAction.position.y.update(newValue)}
+            updateX={(newValue) => imageAction.position.x(newValue)}
+            updateY={(newValue) => imageAction.position.y(newValue)}
             styles={{
               wrapper: "right-0 top-0",
               menuItemsWrapper: "right-0",
@@ -267,9 +242,9 @@ const VolunteerImageMenu = () => {
 
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
-          imageAction.dbConnections.imageId.update(dbImageId);
-          imageAction.position.x.update(50);
-          imageAction.position.y.update(50);
+          imageAction.dbConnections.imageId(dbImageId);
+          imageAction.position.x(50);
+          imageAction.position.y(50);
         }}
         styles={{
           menu: { itemsWrapper: "right-0 -bottom-1 translate-y-full" },
@@ -281,27 +256,23 @@ const VolunteerImageMenu = () => {
 
 const VolunteerButton = () => {
   const {
-    page: {
-      supportUs: {
-        volunteer: { buttonText },
-      },
+    supportUs: {
+      volunteer: { buttonText },
     },
-  } = UserEditableDataCx.useAllData();
+  } = UedCx.Pages.Landing.useData();
 
   const {
-    page: {
-      supportUs: {
-        volunteer: { buttonText: buttonTextAction },
-      },
+    supportUs: {
+      volunteer: { buttonText: buttonTextAction },
     },
-  } = UserEditableDataCx.useAction();
+  } = UedCx.Pages.Landing.useAction();
 
   return (
     <div className="absolute bottom-0 left-0 flex cursor-pointer items-center gap-sm rounded-sm bg-brandGreen px-4 py-2 text-lg font-bold tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">
       <TextInputForm
         localStateValue={buttonText}
-        onSubmit={buttonTextAction.update}
-        input={{ placeholder: "Volunteer button text", styles: "" }}
+        onSubmit={buttonTextAction}
+        input={{ placeholder: "Volunteer button text" }}
         tooltip="Click to edit button text"
       />
     </div>
@@ -310,26 +281,22 @@ const VolunteerButton = () => {
 
 const VolunteerDescription = () => {
   const {
-    page: {
-      supportUs: {
-        volunteer: { description },
-      },
+    supportUs: {
+      volunteer: { description },
     },
-  } = UserEditableDataCx.useAllData();
+  } = UedCx.Pages.Landing.useData();
 
   const {
-    page: {
-      supportUs: {
-        volunteer: { description: descriptionAction },
-      },
+    supportUs: {
+      volunteer: { description: descriptionAction },
     },
-  } = UserEditableDataCx.useAction();
+  } = UedCx.Pages.Landing.useAction();
 
   return (
     <div className="text-center font-normal lg:text-xl">
       <TextAreaForm
         localStateValue={description}
-        onSubmit={descriptionAction.update}
+        onSubmit={descriptionAction}
         textArea={{
           placeholder: "Volunteer description",
           styles: "text-center",

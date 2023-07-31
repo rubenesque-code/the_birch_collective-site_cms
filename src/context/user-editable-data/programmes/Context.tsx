@@ -50,8 +50,8 @@ function Provider({
   const store = useStore(storeRef.current, (store) => store);
 
   const { isChange, saveData } = useDocsRevisionData({
-    dbData: initData,
-    userEditedData: store.data,
+    initData: initData,
+    updatedData: store.data,
   });
 
   const handleUndo = () => {

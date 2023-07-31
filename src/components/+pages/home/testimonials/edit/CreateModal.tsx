@@ -6,17 +6,17 @@ import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper"
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
-import { UserEditableDataCx } from "../../_state";
 import { NewTestimonialCx, createInitData } from "./_state/NewTestimonialCx";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { WarningPanel } from "~/components/WarningPanel";
 import { useToast } from "~/hooks";
+import { UedCx } from "~/context/user-editable-data";
 
 export const CreateModal = () => {
-  const { testimonials } = UserEditableDataCx.useAllData();
+  const { store } = UedCx.Testimonials.use();
 
   return (
-    <NewTestimonialCx.Provider newTestimonial={{ index: testimonials.length }}>
+    <NewTestimonialCx.Provider newTestimonial={{ index: store.data.length }}>
       {(newTestimonialCx) => (
         <Modal.VisibilityCx.Provider>
           {(newTestimonialModal) => (
@@ -63,7 +63,7 @@ export const CreateModal = () => {
                         <WarningPanel
                           callback={() => {
                             newTestimonialCx.actions.resetData(
-                              createInitData({ index: testimonials.length }),
+                              createInitData({ index: store.data.length }),
                             );
                             newTestimonialModal.closeModal();
                             warningModal.closeModal();
@@ -97,9 +97,7 @@ const NewTestimonialModalContent = ({
   const [showIncompleteErrorMessage, setShowIncompleteErrorMessage] =
     useState(false);
 
-  const { testimonials } = UserEditableDataCx.useAllData();
-
-  const { testimonial: testimonialAction } = UserEditableDataCx.useAction();
+  const { store } = UedCx.Testimonials.use();
 
   const newTestimonialCx = NewTestimonialCx.use();
 
@@ -120,9 +118,9 @@ const NewTestimonialModalContent = ({
       return;
     }
 
-    testimonialAction.create({
+    store.actions.create({
       ...newTestimonialCx.data,
-      index: testimonials.length,
+      index: store.data.length,
     });
 
     toast.neutral("Added testimonial");
@@ -131,7 +129,7 @@ const NewTestimonialModalContent = ({
 
     setTimeout(() => {
       newTestimonialCx.actions.resetData(
-        createInitData({ index: testimonials.length + 1 }),
+        createInitData({ index: store.data.length + 1 }),
       );
     }, 200);
   };

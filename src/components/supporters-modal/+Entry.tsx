@@ -8,7 +8,6 @@ import { SupporterCx } from "~/context/entities";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
 import { useToast } from "~/hooks";
-import { UserEditableDataCx } from "../+pages/home-old/_state";
 import { WarningPanel } from "../WarningPanel";
 import { DndKit } from "../dnd-kit";
 import { TextInputForm } from "../forms";
@@ -19,6 +18,7 @@ import {
   ComponentApiCx,
   type ContextValue as ComponentApiProps,
 } from "./_state";
+import { UedCx } from "~/context/user-editable-data";
 
 const SupportersModal = ({
   button,
@@ -64,9 +64,9 @@ const Content = () => {
 };
 
 const Supporters = () => {
-  const { supporters } = UserEditableDataCx.useAllData();
-
-  const { supporter } = UserEditableDataCx.useAction();
+  const {
+    store: { data: supporters, actions },
+  } = UedCx.Supporters.use();
 
   const sorted = React.useMemo(() => deepSortByIndex(supporters), [supporters]);
 
@@ -78,7 +78,7 @@ const Supporters = () => {
         <div className="grid grid-cols-4 gap-sm">
           <DndKit.Context
             elementIds={getIds(sorted)}
-            onReorder={supporter.order.update}
+            onReorder={actions.reorder}
           >
             {sorted.map((supporter) => (
               <DndKit.Element elementId={supporter.id} key={supporter.id}>
@@ -96,7 +96,10 @@ const Supporters = () => {
 
 const Supporter = () => {
   const { id, image, name, url } = SupporterCx.use();
-  const { supporter: supporterAction } = UserEditableDataCx.useAction();
+
+  const {
+    store: { actions },
+  } = UedCx.Supporters.use();
 
   return (
     <div className="group/supporter relative">
@@ -122,7 +125,7 @@ const Supporter = () => {
             <TextInputForm
               localStateValue={name}
               onSubmit={(inputValue) =>
-                supporterAction.name.update({ id, newVal: inputValue })
+                actions.name({ id, newVal: inputValue })
               }
               input={{ placeholder: "Supporter name" }}
               tooltip="Click to edit name"
@@ -134,9 +137,7 @@ const Supporter = () => {
           <div className="overflow-auto font-medium">
             <TextInputForm
               localStateValue={url}
-              onSubmit={(inputValue) =>
-                supporterAction.url.update({ id, newVal: inputValue })
-              }
+              onSubmit={(inputValue) => actions.url({ id, newVal: inputValue })}
               input={{ placeholder: "Supporter link" }}
               tooltip="Click to edit link"
             />
@@ -150,7 +151,9 @@ const Supporter = () => {
 const SupporterMenu = () => {
   const { connectSupporter, usedSupporterIds } = ComponentApiCx.use();
 
-  const { supporter: supporterAction } = UserEditableDataCx.useAction();
+  const {
+    store: { actions },
+  } = UedCx.Supporters.use();
 
   const { id } = SupporterCx.use();
 
@@ -162,7 +165,7 @@ const SupporterMenu = () => {
     <ComponentMenu styles="right-1 top-1 group-hover/supporter:opacity-40">
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
-          supporterAction.image.dbConnections.imageId.update({
+          actions.image.dbConnections.imageId({
             id,
             newVal: dbImageId,
           });
@@ -201,7 +204,7 @@ const SupporterMenu = () => {
         panelContent={({ closeModal }) => (
           <WarningPanel
             callback={() => {
-              supporterAction.delete({ id });
+              actions.delete({ id });
               closeModal();
               toast.neutral("deleted supporter");
             }}

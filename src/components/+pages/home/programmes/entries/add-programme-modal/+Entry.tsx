@@ -131,7 +131,7 @@ const ProgrammeSummary = ({ isUsed }: { isUsed: boolean }) => {
       <div className="flex w-full items-center justify-between">
         {!isUsed ? (
           <WithTooltip text="Unused on page">
-            <div className="cursor-help rounded-sm border px-xxs py-xxxs text-xs text-gray-500">
+            <div className="cursor-help rounded-sm border px-xxs py-xxxs text-xs text-gray-400">
               Unused
             </div>
           </WithTooltip>
@@ -149,7 +149,9 @@ const ProgrammeSummary = ({ isUsed }: { isUsed: boolean }) => {
 
               closeModal();
             }}
-            tooltip={!isUsed ? connectTooltip : "can't add - already in use"}
+            tooltip={
+              !isUsed ? connectTooltip : "can't add to page - already in use"
+            }
             isDisabled={isUsed}
             styles={{ button: "text-blue-400" }}
           >
