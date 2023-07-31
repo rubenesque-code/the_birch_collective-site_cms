@@ -94,6 +94,8 @@ const EntriesSection = () => {
     return sorted;
   }, [entries, programmes]);
 
+  const toast = useToast();
+
   return (
     <div className="mt-md">
       <CmsLayout.EditBar>
@@ -109,11 +111,15 @@ const EntriesSection = () => {
               <span className="">Add programme</span>
             </div>
           )}
-          connectProgramme={(programmeId) =>
-            entryAction.add({ dbConnect: { programmeId } })
-          }
+          connectProgramme={(programmeId) => {
+            entryAction.add({ dbConnect: { programmeId } });
+
+            toast.neutral("added programme to landing");
+          }}
           connectTooltip="Add to landing"
-          usedProgrammeIds={getIds(entries)}
+          usedProgrammeIds={entries.map(
+            (entry) => entry.dbConnections.programmeId,
+          )}
         />
 
         <div className="flex items-center gap-xs text-sm text-gray-400">
@@ -192,12 +198,13 @@ const UnfoundProgramme = () => (
 
 const Programme = () => {
   const { id, title, subtitle, summary } = ProgrammeCx.use();
+
   const programmeAction = UedCx.Programmes.useAction();
 
   return (
     <div className="group/programme relative flex flex-col items-center p-sm">
       <ProgrammeMenu />
-      <div className="w-full text-center font-display text-3xl font-bold uppercase tracking-wider text-brandLightOrange">
+      <div className="w-full text-center font-display text-3xl font-bold tracking-wider text-brandLightOrange">
         <TextInputForm
           localStateValue={title}
           onSubmit={(inputValue) =>
@@ -205,7 +212,7 @@ const Programme = () => {
           }
           input={{
             placeholder: "Title",
-            styles: "uppercase tracking-wider text-center",
+            styles: "tracking-wider text-center",
           }}
           tooltip="Click to edit title"
         />

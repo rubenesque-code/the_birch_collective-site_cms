@@ -86,6 +86,9 @@ const Input = ({
   trailingSpace = 20,
   value,
 }: InputProps) => {
+  const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
+    useState(false);
+
   const [dummyInputRef, { width: dummyInputWidth }] =
     useMeasure<HTMLParagraphElement>();
 
@@ -96,7 +99,9 @@ const Input = ({
   return (
     <>
       <div
-        className={`relative h-full rounded-sm transition-colors duration-75 ease-in-out focus-within:bg-gray-100`}
+        className={`relative h-full rounded-sm transition-colors duration-75 ease-in-out ${
+          isFocused ? "bg-gray-100" : ""
+        }`}
       >
         <p
           className={`invisible absolute whitespace-nowrap ${styles}`}
@@ -115,14 +120,14 @@ const Input = ({
           placeholder={placeholder}
           type="text"
           autoComplete="off"
-          onFocus={() => {
-            /*             if (!autoFocus && !isBlurredOnInitialRender) {
+          onFocus={(e) => {
+            if (!autoFocus && !isBlurredOnInitialRender) {
+              // · handle unwanted autofocus (bug?)
               e.currentTarget.blur();
               setIsBlurredOnInitialRender(true);
-              console.log("1");
-            } */
-
-            setIsFocused(true);
+            } else {
+              setIsFocused(true);
+            }
           }}
           onBlur={() => {
             setIsFocused(false);

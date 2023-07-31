@@ -1,4 +1,5 @@
 import React, { type ReactElement } from "react";
+
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
@@ -68,7 +69,6 @@ const Supporters = () => {
   const { supporter } = UserEditableDataCx.useAction();
 
   const sorted = React.useMemo(() => deepSortByIndex(supporters), [supporters]);
-  console.log("sorted:", sorted);
 
   return (
     <div>
