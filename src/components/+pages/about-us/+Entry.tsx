@@ -14,8 +14,11 @@ import CmsLayout from "~/components/layouts/Cms";
 import SiteLayout from "~/components/layouts/Site";
 import { UedCx } from "~/context/user-editable-data";
 import type { MyDb } from "~/types/database";
+import BannerImage from "./banner-image/+Entry";
+import Headings from "./headings/+Entry";
+import MainText from "./main-text/+Entry";
 
-const HomePage = () => (
+const AboutPage = () => (
   <InitDbData>
     {(initDbData) => (
       <UedProviders initDbData={initDbData}>
@@ -28,7 +31,7 @@ const HomePage = () => (
               />
               <SiteLayout.Body>
                 <SiteHeader />
-                About Us Page
+                <PageSpecificContent />
                 <SiteLayout.Section.Spacing.Horizontal>
                   <div className="mt-2xl pb-xl">
                     <SiteFooter />
@@ -43,7 +46,19 @@ const HomePage = () => (
   </InitDbData>
 );
 
-export default HomePage;
+export default AboutPage;
+
+const PageSpecificContent = () => (
+  <>
+    <BannerImage />
+    <SiteLayout.Section.Spacing>
+      <Headings />
+    </SiteLayout.Section.Spacing>
+    <SiteLayout.Section.Spacing>
+      <MainText />
+    </SiteLayout.Section.Spacing>
+  </>
+);
 
 type DbData = {
   page: MyDb["pages"]["aboutUs"];

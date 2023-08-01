@@ -111,6 +111,7 @@ TextAreaProps) => {
           onBlur={() => {
             setIsFocused(false);
           }}
+          cols={2}
           autoComplete="off"
           autoFocus={false}
         />
