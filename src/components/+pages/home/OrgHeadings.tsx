@@ -12,7 +12,7 @@ const OrgHeadings = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="">
+      <div className="w-full">
         <div className="w-full font-display text-8xl font-bold text-brandOrange">
           <TextAreaForm
             localStateValue={name}

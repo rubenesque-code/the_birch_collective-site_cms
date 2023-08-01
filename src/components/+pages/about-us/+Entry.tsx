@@ -17,6 +17,7 @@ import type { MyDb } from "~/types/database";
 import BannerImage from "./banner-image/+Entry";
 import Headings from "./headings/+Entry";
 import MainText from "./main-text/+Entry";
+import TheTeam from "./the-team/+Entry";
 
 const AboutPage = () => (
   <InitDbData>
@@ -51,11 +52,16 @@ export default AboutPage;
 const PageSpecificContent = () => (
   <>
     <BannerImage />
-    <SiteLayout.Section.Spacing>
-      <Headings />
-    </SiteLayout.Section.Spacing>
+    <div className="mt-xl">
+      <SiteLayout.Section.Spacing.Horizontal>
+        <Headings />
+      </SiteLayout.Section.Spacing.Horizontal>
+    </div>
     <SiteLayout.Section.Spacing>
       <MainText />
+    </SiteLayout.Section.Spacing>
+    <SiteLayout.Section.Spacing>
+      <TheTeam />
     </SiteLayout.Section.Spacing>
   </>
 );
