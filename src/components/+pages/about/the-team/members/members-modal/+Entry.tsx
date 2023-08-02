@@ -24,23 +24,20 @@ const MembersModal = ({
 }: {
   button: (arg0: { openModal: () => void }) => ReactElement;
 }) => (
-  <Modal.WithVisibilityProvider button={button} panelContent={<Content />} />
+  <Modal.WithVisibilityProvider
+    button={button}
+    panelContent={({ closeModal }) => (
+      <ModalLayout.UserEdit
+        body={<Members />}
+        closeModal={closeModal}
+        createEntityModal={<CreateModal />}
+        title="Edit team members"
+      />
+    )}
+  />
 );
 
 export default MembersModal;
-
-const Content = () => {
-  const { closeModal } = Modal.VisibilityCx.use();
-
-  return (
-    <ModalLayout.UserEdit
-      body={<Members />}
-      closeModal={closeModal}
-      createEntityModal={<CreateModal />}
-      title="Edit team members"
-    />
-  );
-};
 
 const Members = () => {
   const {

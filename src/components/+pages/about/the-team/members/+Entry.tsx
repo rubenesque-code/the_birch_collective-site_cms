@@ -9,7 +9,7 @@ import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 import MembersModal from "./members-modal/+Entry";
 
-export const Members = () => {
+const Members = () => {
   const {
     store: {
       data: {
@@ -32,7 +32,7 @@ export const Members = () => {
           )}
         />
         <CmsLayout.EditBar.Info
-          infoText="Edit member fields from pop-up"
+          infoText="Edit member fields from pop-up (left)"
           gap="xs"
         />
       </CmsLayout.EditBar>
@@ -48,6 +48,8 @@ export const Members = () => {
     </div>
   );
 };
+
+export default Members;
 
 const Member = () => {
   const { bio, image, name, role } = AboutCx.TeamMember.use();
