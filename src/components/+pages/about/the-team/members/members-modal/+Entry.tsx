@@ -55,7 +55,6 @@ const Members = () => {
   } = UedCx.Pages.AboutUs.use();
 
   const sorted = React.useMemo(() => deepSortByIndex(members), [members]);
-  console.log("sorted:", sorted);
 
   return (
     <div>
@@ -105,7 +104,12 @@ const Member = () => {
             {({ dbImageId }) => (
               <DbImageWrapper dbImageId={dbImageId}>
                 {({ urls }) => (
-                  <CustomisableImage urls={urls} objectFit="cover" isCircle />
+                  <CustomisableImage
+                    urls={urls}
+                    objectFit="cover"
+                    position={image.position}
+                    isCircle
+                  />
                 )}
               </DbImageWrapper>
             )}
@@ -180,7 +184,7 @@ const MemberMenu = () => {
             updateY={(updatedValue) =>
               memberAction.image.position.y({ id, updatedValue })
             }
-            styles={{ wrapper: "left-0 top-0" }}
+            styles={{ wrapper: "right-0 top-0", menuItemsWrapper: "right-0" }}
           />
 
           <ComponentMenu.Divider />

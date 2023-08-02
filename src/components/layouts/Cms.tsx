@@ -26,8 +26,18 @@ const EditBar = ({ children }: { children: ReactNode }) => (
 
 CmsLayout.EditBar = EditBar;
 
-const EditBarInfo = ({ infoText }: { infoText: string }) => (
-  <div className="flex items-center gap-sm text-sm text-gray-400">
+const EditBarInfo = ({
+  infoText,
+  gap = "sm",
+}: {
+  infoText: string;
+  gap?: "sm" | "xs";
+}) => (
+  <div
+    className={`flex items-center text-sm text-gray-400 ${
+      gap === "xs" ? "gap-xs" : "gap-sm"
+    }`}
+  >
     <span>
       <Icon.Info />
     </span>

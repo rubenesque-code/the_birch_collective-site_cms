@@ -31,6 +31,7 @@ import {
   FacebookLogo,
   InstagramLogo,
   LinkedinLogo,
+  CaretUp,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -73,6 +74,7 @@ Icon.ConnectEntity = FlowArrow;
 Icon.Facebook = FacebookLogo;
 Icon.Instagram = InstagramLogo;
 Icon.Linkedin = LinkedinLogo;
+Icon.CaretUp = CaretUp;
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";

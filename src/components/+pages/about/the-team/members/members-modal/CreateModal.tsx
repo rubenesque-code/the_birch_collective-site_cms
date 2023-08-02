@@ -205,7 +205,12 @@ const NewMember = () => {
           {({ dbImageId }) => (
             <DbImageWrapper dbImageId={dbImageId}>
               {({ urls }) => (
-                <CustomisableImage urls={urls} objectFit="cover" isCircle />
+                <CustomisableImage
+                  urls={urls}
+                  objectFit="cover"
+                  position={image.position}
+                  isCircle
+                />
               )}
             </DbImageWrapper>
           )}
@@ -261,7 +266,7 @@ const NewMemberMenu = () => {
             position={image.position}
             updateX={(updatedValue) => imageAction.position.x(updatedValue)}
             updateY={(updatedValue) => imageAction.position.y(updatedValue)}
-            styles={{ wrapper: "left-0 top-0" }}
+            styles={{ wrapper: "right-0 top-0", menuItemsWrapper: "right-0" }}
           />
 
           <ComponentMenu.Divider />
