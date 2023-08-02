@@ -1,9 +1,13 @@
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { UedCx } from "~/context/user-editable-data";
+import { Members } from "./members/+Entry";
 
 const TheTeam = () => (
   <div>
     <Headings />
+    <div className="mt-md">
+      <Members />
+    </div>
   </div>
 );
 

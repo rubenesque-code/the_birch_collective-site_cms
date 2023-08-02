@@ -8,12 +8,14 @@ type Props = { urls: MyDb["image"]["urls"] } & {
     y: number;
   };
   objectFit?: "cover" | "contain";
+  isCircle?: boolean;
 };
 
 export const CustomisableImage = ({
   urls,
   position = { x: 50, y: 50 },
   objectFit = "cover",
+  isCircle = false,
 }: Props) => (
   <NextImage
     alt=""
@@ -21,6 +23,7 @@ export const CustomisableImage = ({
     src={urls.large}
     blurDataURL={urls.blur}
     placeholder="blur"
+    className={isCircle ? "rounded-full" : ""}
     style={{
       objectFit,
       objectPosition: `${position.x}% ${position.y}%`,

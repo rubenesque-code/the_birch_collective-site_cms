@@ -14,6 +14,7 @@ import { useToast } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
 import { useFocused } from "~/hooks/useFocused";
 import { UedCx } from "~/context/user-editable-data";
+import { WithTooltip } from "~/components/WithTooltip";
 
 const AboutUs = () => {
   const {
@@ -103,7 +104,11 @@ const AddEntryForm = () => {
 
   return (
     <div className="pl-xl">
-      <div className="rounded-md border border-dashed px-4 py-2">
+      <div
+        className={`rounded-md px-4 py-2 transition-all duration-100 ease-in-out ${
+          isFocused ? "border border-blue-300" : ""
+        }`}
+      >
         <form
           className="flex w-full items-center gap-sm text-sm"
           onSubmit={(e) => {
@@ -121,18 +126,20 @@ const AddEntryForm = () => {
           <div className="text-gray-400">
             <Icon.Create />
           </div>
-          <ReactTextareaAutosize
-            className={`z-10 w-full resize-none outline-none ${
-              isFocused ? "bg-gray-100" : "bg-transparent "
-            }`}
-            value={text}
-            onChange={(e) => {
-              setText(e.target.value);
-            }}
-            placeholder="Add Entry"
-            autoComplete="off"
-            {...focusHandlers}
-          />
+          <WithTooltip text="click to type in new entry">
+            <ReactTextareaAutosize
+              className={`z-10 w-full resize-none outline-none ${
+                isFocused ? "bg-transparent" : "bg-transparent "
+              }`}
+              value={text}
+              onChange={(e) => {
+                setText(e.target.value);
+              }}
+              placeholder="Add Entry"
+              autoComplete="off"
+              {...focusHandlers}
+            />
+          </WithTooltip>
           {text.length ? (
             <button className="my-btn my-btn-neutral" type="submit">
               Submit

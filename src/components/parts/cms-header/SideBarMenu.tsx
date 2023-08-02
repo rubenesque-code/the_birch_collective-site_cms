@@ -63,8 +63,6 @@ const Content = () => (
 const PageLinks = () => (
   <div className="flex flex-col gap-sm">
     <PageLink route="/" text="Home" />
-    <PageLink route="/albums" text="Albums" />
-    <PageLink route="/videos" text="Videos" />
     <PageLink route="/about" text="About" />
     <div className="mt-sm">
       <PageLink route="/images" text="Images" />

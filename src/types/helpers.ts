@@ -1,4 +1,4 @@
-export type GenerateActions<TData extends Record<string, unknown>> = {
+export type GenerateNonArrActions<TData extends Record<string, unknown>> = {
   [TKey in keyof TData as TData[TKey] extends
     | string
     | number
@@ -11,27 +11,9 @@ export type GenerateActions<TData extends Record<string, unknown>> = {
     : TData[TKey] extends unknown[]
     ? Record<string, unknown>
     : TData[TKey] extends Record<string, unknown>
-    ? GenerateActions<TData[TKey]>
+    ? GenerateNonArrActions<TData[TKey]>
     : never;
 };
-
-export type GenerateEntityNonArrActions<TData extends Record<string, unknown>> =
-  {
-    [TKey in keyof TData as TData[TKey] extends
-      | string
-      | number
-      | null
-      | Record<string, unknown>
-      | unknown[]
-      ? TKey
-      : never]: TData[TKey] extends string | number | null
-      ? (arg0: { id: string; updatedValue: NonNullable<TData[TKey]> }) => void
-      : TData[TKey] extends unknown[]
-      ? Record<string, unknown>
-      : TData[TKey] extends Record<string, unknown>
-      ? GenerateEntityNonArrActions<TData[TKey]>
-      : never;
-  };
 
 type Join<K, P> = K extends string | number
   ? P extends string | number

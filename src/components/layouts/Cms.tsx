@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { Icon } from "../icons";
+
 function CmsLayout() {
   throw new Error(
     "CmsLayout exists for naming purposes only and should not be used as a component",
@@ -23,3 +25,33 @@ const EditBar = ({ children }: { children: ReactNode }) => (
 );
 
 CmsLayout.EditBar = EditBar;
+
+const EditBarInfo = ({ infoText }: { infoText: string }) => (
+  <div className="flex items-center gap-sm text-sm text-gray-400">
+    <span>
+      <Icon.Info />
+    </span>
+    <p>{infoText}</p>
+  </div>
+);
+
+const EditBarEditButton = ({
+  buttonText,
+  onClick,
+}: {
+  buttonText: string;
+  onClick: () => void;
+}) => (
+  <div
+    className="my-btn my-btn-neutral flex cursor-pointer items-center gap-xs rounded-sm border-transparent"
+    onClick={onClick}
+  >
+    <span className="text-gray-400">
+      <Icon.Configure />
+    </span>
+    <span className="">{buttonText}</span>
+  </div>
+);
+
+EditBar.Info = EditBarInfo;
+EditBar.EditButton = EditBarEditButton;

@@ -5,6 +5,8 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 import type { MyPick } from "~/types/utilities";
 import { WithTooltip } from "../WithTooltip";
 
+// todo: if have y overflow (it's set on parent of this component), tooltip follows position of top of this component which is overflowed so looks funny.
+
 type Props = {
   localStateValue: string | null;
   textArea?: MyPick<TextAreaProps, "minWidth" | "placeholder" | "styles">;
@@ -32,19 +34,19 @@ const ActualComponent = (props: Props) => {
   };
 
   return (
-    <WithTooltip
-      text={props.tooltip || ""}
-      isDisabled={!props.tooltip?.length || inputIsFocused}
-      placement="top"
-    >
-      <form
-        className="relative inline-block w-full max-w-full"
-        onSubmit={(e) => {
-          e.preventDefault();
+    <form
+      className="relative inline-block w-full max-w-full"
+      onSubmit={(e) => {
+        e.preventDefault();
 
-          handleSubmit();
-        }}
-        onBlur={handleSubmit}
+        handleSubmit();
+      }}
+      onBlur={handleSubmit}
+    >
+      <WithTooltip
+        text={props.tooltip || ""}
+        isDisabled={!props.tooltip?.length || inputIsFocused}
+        placement="top"
       >
         <div className="form-control">
           <TextArea
@@ -55,8 +57,8 @@ const ActualComponent = (props: Props) => {
             {...props.textArea}
           />
         </div>
-      </form>
-    </WithTooltip>
+      </WithTooltip>
+    </form>
   );
 };
 

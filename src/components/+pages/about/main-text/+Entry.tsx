@@ -1,5 +1,4 @@
 import { TextAreaForm } from "~/components/forms";
-import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
 import { UedCx } from "~/context/user-editable-data";
 
@@ -15,15 +14,7 @@ const MainText = () => {
   return (
     <div>
       <CmsLayout.EditBar>
-        <div className="flex items-center gap-sm text-sm text-gray-400">
-          <span>
-            <Icon.Info />
-          </span>
-          <p className="">
-            The text area below is an approximation of how the text will look on
-            the actual site.
-          </p>
-        </div>
+        <CmsLayout.EditBar.Info infoText="The text area below is an approximation of how the text will look on the actual site." />
       </CmsLayout.EditBar>
       <div className="custom-prose prose mt-sm w-full max-w-full">
         <TextAreaForm

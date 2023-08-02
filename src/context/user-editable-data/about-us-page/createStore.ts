@@ -32,12 +32,25 @@ export const createStore = (input: { initData: Store["data"] }) =>
         OmitObjArrProps<MyOmit<TeamMember, "id" | "index">>
       >,
     >(keys: TKeyStr) {
-      return (
-        newValue: GetObjValue<MyOmit<TeamMember, "id" | "index">, TKeyStr>,
-      ) =>
+      return (input: {
+        id: string;
+        updatedValue: GetObjValue<MyOmit<TeamMember, "id" | "index">, TKeyStr>;
+      }) =>
         set(
           produce((store: Store) => {
-            lodash.set(store.data, keys, newValue);
+            const entityIndex = store.data.theTeam.members.findIndex(
+              (member) => member.id === input.id,
+            );
+
+            if (entityIndex < 0) {
+              return;
+            }
+
+            lodash.set(
+              store.data.theTeam.members[entityIndex],
+              keys,
+              input.updatedValue,
+            );
           }),
         );
     }
