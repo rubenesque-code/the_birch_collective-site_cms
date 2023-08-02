@@ -1,8 +1,6 @@
 import { type ReactElement, useState } from "react";
 import { Icon } from "./icons";
 
-// T| animate open and close
-
 const Accordion = ({
   children,
   numLinesClamped,
@@ -23,9 +21,9 @@ const Accordion = ({
 
   return (
     <div className="flex flex-col gap-2">
-      <p className={`${!isOpen ? lineClampToken : "line-clamp-none"}`}>
+      <div className={`${!isOpen ? lineClampToken : "line-clamp-none"}`}>
         {children}
-      </p>
+      </div>
       <button
         className="ml-2 flex items-center gap-2 text-gray-600"
         onClick={() => setIsOpen(!isOpen)}

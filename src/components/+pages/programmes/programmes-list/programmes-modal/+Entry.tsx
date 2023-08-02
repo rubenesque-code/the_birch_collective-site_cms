@@ -18,8 +18,11 @@ import { DndKit } from "~/components/dnd-kit";
 import { ComponentMenu } from "~/components/menus";
 import { WarningPanel } from "~/components/WarningPanel";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
+import { ProgrammeCx } from "~/context/entities";
 
-const MembersModal = ({
+// TODO: programme type change
+
+const ProgrammesModal = ({
   button,
 }: {
   button: (arg0: { openModal: () => void }) => ReactElement;
@@ -28,46 +31,39 @@ const MembersModal = ({
     button={button}
     panelContent={({ closeModal }) => (
       <ModalLayout.UserEdit
-        body={<Members />}
+        body={<Programmes />}
         closeModal={closeModal}
         createEntityModal={<CreateModal />}
-        title="Edit team members"
+        title="Edit programmes"
       />
     )}
   />
 );
 
-export default MembersModal;
+export default ProgrammesModal;
 
-const Members = () => {
-  const {
-    store: {
-      data: {
-        theTeam: { members },
-      },
-      actions: {
-        theTeam: { members: membersAction },
-      },
-    },
-  } = UedCx.Pages.AboutUs.use();
+const Programmes = () => {
+  const programmes = UedCx.Programmes.useData();
 
-  const sorted = React.useMemo(() => deepSortByIndex(members), [members]);
+  const programmeAction = UedCx.Programmes.useAction();
+
+  const sorted = React.useMemo(() => deepSortByIndex(programmes), [programmes]);
 
   return (
     <div>
-      {!members.length ? (
+      {!programmes.length ? (
         <div className="text-gray-600">No members yet.</div>
       ) : (
-        <div className="grid grid-cols-2 gap-sm">
+        <div className="grid grid-cols-1 gap-sm">
           <DndKit.Context
             elementIds={getIds(sorted)}
-            onReorder={membersAction.reorder}
+            onReorder={programmeAction.reorder}
           >
-            {sorted.map((member) => (
-              <DndKit.Element elementId={member.id} key={member.id}>
-                <AboutCx.TeamMember.Provider teamMember={member}>
-                  <Member />
-                </AboutCx.TeamMember.Provider>
+            {sorted.map((programme) => (
+              <DndKit.Element elementId={programme.id} key={programme.id}>
+                <ProgrammeCx.Provider programme={programme}>
+                  <Programme />
+                </ProgrammeCx.Provider>
               </DndKit.Element>
             ))}
           </DndKit.Context>
@@ -77,8 +73,8 @@ const Members = () => {
   );
 };
 
-const Member = () => {
-  const { id, bio, image, name, role } = AboutCx.TeamMember.use();
+const Programme = () => {
+  const { id, subtitle, summary, title } = ProgrammeCx.use();
 
   const {
     store: {

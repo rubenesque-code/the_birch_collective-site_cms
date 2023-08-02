@@ -10,6 +10,7 @@ const collections = {
 const pages = {
   landing: "landing",
   aboutUs: "aboutUs",
+  programmes: "programmes",
 };
 
 const singles = {

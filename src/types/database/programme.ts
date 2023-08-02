@@ -1,7 +1,19 @@
 export type Programme = {
   id: string;
   index: number;
-  summary: string;
-  title: string;
   subtitle: string;
+  title: string;
+  summary: {
+    image: {
+      dbConnections: {
+        imageId: string | null;
+      };
+      position: {
+        x: number;
+        y: number;
+      };
+    };
+    text: string;
+    bullets: { id: string; text: string }[];
+  };
 };

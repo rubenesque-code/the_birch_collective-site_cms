@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { Menu, Transition } from "@headlessui/react";
 import { Icon } from "~/components/icons";
+import React from "react";
+import { useQuery } from "react-query";
+import { myDb } from "~/my-firebase/firestore";
+import { produce } from "immer";
+import { WithTooltip } from "~/components/WithTooltip";
 // import { signOut } from "next-auth/react";
 
 // import { MainMenuIcon, SignOutIcon } from "~/components/ui-elements";
@@ -64,6 +69,7 @@ const PageLinks = () => (
   <div className="flex flex-col gap-sm">
     <PageLink route="/" text="Home" />
     <PageLink route="/about" text="About" />
+    <Programmes />
     <div className="mt-sm">
       <PageLink route="/images" text="Images" />
     </div>
@@ -72,7 +78,84 @@ const PageLinks = () => (
 
 const PageLink = ({ route, text }: { text: string; route: string }) => (
   <Link href={route} passHref>
-    <div className="text-gray-600 transition-colors duration-75 ease-in-out hover:text-gray-800">
+    <div className="text-gray-600 transition-colors duration-75 ease-in-out hover:text-blue-600">
+      {text}
+    </div>
+  </Link>
+);
+
+const Programmes = () => {
+  const [isExpanded, setIsExpanded] = React.useState(false);
+
+  const programmesQuery = useQuery("programmes", myDb.programme.fetchAll);
+
+  const processed = React.useMemo(() => {
+    if (!programmesQuery.data) {
+      return;
+    }
+
+    const valid = programmesQuery.data.filter(
+      (programme) => programme.title.length,
+    );
+
+    const alphabetical = produce(valid, (draft) =>
+      draft.sort((a, b) => {
+        const titleA = a.title.toUpperCase();
+        const titleB = b.title.toUpperCase();
+
+        return titleA < titleB ? -1 : titleA > titleB ? 1 : 0;
+      }),
+    );
+
+    return alphabetical;
+  }, [programmesQuery.data]);
+
+  return (
+    <div className={``}>
+      <div className={`flex items-center justify-between`}>
+        <Link href="/programmes">
+          <span className="text-gray-600 transition-colors duration-75 ease-in-out hover:text-blue-600">
+            Programmes
+          </span>
+        </Link>
+        {processed?.length ? (
+          <WithTooltip
+            text={isExpanded ? "hide programmes" : "show programmes"}
+          >
+            <span
+              className={`cursor-pointer rounded-full p-xxxs text-sm hover:bg-gray-50`}
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              {isExpanded ? <Icon.CaretUp /> : <Icon.CaretDown />}
+            </span>
+          </WithTooltip>
+        ) : null}
+      </div>
+
+      {processed?.length ? (
+        <div
+          className={`flex flex-col gap-sm border-l pl-sm ${
+            !isExpanded
+              ? `mt-0 max-h-0 opacity-10`
+              : `mt-md max-h-full opacity-100`
+          } overflow-hidden transition-all duration-150 ease-in-out`}
+        >
+          {processed.map((programme) => (
+            <ProgrammeLink
+              id={programme.id}
+              text={programme.title}
+              key={programme.id}
+            />
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+const ProgrammeLink = ({ id, text }: { text: string; id: string }) => (
+  <Link href={`/programmes/${id}`} passHref>
+    <div className="capitalize text-gray-600 transition-colors duration-75 ease-in-out hover:text-blue-600">
       {text}
     </div>
   </Link>

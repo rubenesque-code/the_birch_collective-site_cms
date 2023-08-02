@@ -1,6 +1,7 @@
 export type Pages = {
   landing: Landing;
   aboutUs: AboutUs;
+  programmes: Programmes;
 };
 
 type Landing = {
@@ -135,4 +136,18 @@ type AboutUs = {
       };
     }[];
   };
+};
+
+type Programmes = {
+  bannerImage: {
+    dbConnections: {
+      imageId: string | null;
+    };
+    position: {
+      x: number;
+      y: number;
+    };
+  };
+  heading: string;
+  mainText: string;
 };

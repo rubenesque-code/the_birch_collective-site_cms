@@ -33,6 +33,7 @@ import type { MyDb } from "~/types/database";
 // □ abstraction for react-query onMutate, onSuccess, etc.?
 // □ image abstraction?
 // □ abstraction for unfound entity: e.g. image, programme, supporter.
+// □ programmes modal on home page should be different. Same as one on programmes page?
 
 // OTHER
 // □ need to have production values in env.local?

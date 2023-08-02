@@ -6,7 +6,7 @@ import {
   getDocRef,
 } from "../_helpers";
 
-export const fetchLanding = async () => {
+export const fetchLandingPage = async () => {
   const docRef = getDocRef("pages", "landing");
 
   const data = (await getDocData(
@@ -16,8 +16,18 @@ export const fetchLanding = async () => {
   return data;
 };
 
-export const fetchAboutUs = async () => {
+export const fetchAboutUsPage = async () => {
   const docRef = getDocRef("pages", "aboutUs");
+
+  const data = (await getDocData(
+    docRef,
+  )) as unknown as MyDb["pages"]["aboutUs"];
+
+  return data;
+};
+
+export const fetchProgrammesPage = async () => {
+  const docRef = getDocRef("pages", "programmes");
 
   const data = (await getDocData(
     docRef,

@@ -103,15 +103,10 @@ const EntriesSection = () => {
       <CmsLayout.EditBar>
         <AddProgrammeModal
           button={({ openModal }) => (
-            <div
-              className="my-btn my-btn-neutral flex cursor-pointer items-center gap-xs rounded-sm border-transparent"
+            <CmsLayout.EditBar.EditButton
+              buttonText="Edit programmes"
               onClick={openModal}
-            >
-              <span className="text-gray-400">
-                <Icon.Create />
-              </span>
-              <span className="">Add programme</span>
-            </div>
+            />
           )}
           connectProgramme={(programmeId) => {
             entryAction.add({ dbConnect: { programmeId } });
@@ -124,15 +119,10 @@ const EntriesSection = () => {
           )}
         />
 
-        <div className="flex items-center gap-xs text-sm text-gray-400">
-          <span className="text-gray-400">
-            <Icon.Info />
-          </span>
-          <span>
-            Each field below is editable. Edit in depth from the programmes
-            page.
-          </span>
-        </div>
+        <CmsLayout.EditBar.Info
+          infoText="Edit fields below from pop-up (left). Edit in depth from the programmes page."
+          gap="xs"
+        />
       </CmsLayout.EditBar>
 
       {!entries.length ? (

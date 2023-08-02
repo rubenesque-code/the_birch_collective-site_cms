@@ -2,17 +2,8 @@ import { createImage } from "./mutate/image";
 import {
   batchUpdateAboutUsPage,
   batchUpdateLandingPage,
-  updateAboutUsPage,
-  updateLandingPage,
+  batchUpdateProgrammesPage,
 } from "./mutate/pages";
-import {
-  batchCreateTestimonial,
-  batchDeleteTestimonial,
-  batchUpdateTestimonial,
-  createTestimonial,
-  updateTestimonial,
-  deleteTestimonial,
-} from "./mutate/testimonial";
 import {
   batchCreateProgramme,
   batchDeleteProgramme,
@@ -29,44 +20,59 @@ import {
   deleteSupporter,
   updateSupporter,
 } from "./mutate/supporter";
+import {
+  batchCreateTestimonial,
+  batchDeleteTestimonial,
+  batchUpdateTestimonial,
+  createTestimonial,
+  deleteTestimonial,
+  updateTestimonial,
+} from "./mutate/testimonial";
 
+import { batchUpdateFooter, updateFooter } from "./mutate/footer";
+import { batchUpdateHeader, updateHeader } from "./mutate/header";
+import { batchUpdateLinkLabels, updateLinkLabels } from "./mutate/linkLabels";
+import { batchUpdateOrgDetails, updateOrgDetails } from "./mutate/orgDetails";
+import { aboutUsPageTransaction } from "./mutate/transactions/aboutUsPage";
 import { landingPageTransaction } from "./mutate/transactions/landingPage";
 import {
-  fetchImages,
-  fetchLanding,
-  fetchOneImage,
-  fetchOneTestimonial,
-  fetchTestimonials,
-  fetchOneProgramme,
-  fetchProgrammes,
-  fetchOneSupporter,
-  fetchSupporters,
-  fetchOrgDetails,
-  fetchLinkLabels,
-  fetchHeader,
+  fetchAboutUsPage,
   fetchFooter,
-  fetchAboutUs,
+  fetchHeader,
+  fetchImages,
+  fetchLandingPage,
+  fetchLinkLabels,
+  fetchOneImage,
+  fetchOneProgramme,
+  fetchOneSupporter,
+  fetchOneTestimonial,
+  fetchOrgDetails,
+  fetchProgrammes,
+  fetchProgrammesPage,
+  fetchSupporters,
+  fetchTestimonials,
 } from "./query";
-import { batchUpdateOrgDetails, updateOrgDetails } from "./mutate/orgDetails";
-import { batchUpdateLinkLabels, updateLinkLabels } from "./mutate/linkLabels";
-import { batchUpdateHeader, updateHeader } from "./mutate/header";
-import { batchUpdateFooter, updateFooter } from "./mutate/footer";
-import { aboutUsPageTransaction } from "./mutate/transactions/aboutUsPage";
+import { programmesPageTransaction } from "./mutate/transactions/programmesPage";
 
 export const myDb = {
   pages: {
     landing: {
-      fetch: fetchLanding,
-      update: updateLandingPage,
+      fetch: fetchLandingPage,
       batch: {
         update: batchUpdateLandingPage,
       },
     },
     aboutUs: {
-      fetch: fetchAboutUs,
-      update: updateAboutUsPage,
+      fetch: fetchAboutUsPage,
       batch: {
         update: batchUpdateAboutUsPage,
+      },
+    },
+    programmes: {
+      fetch: fetchProgrammesPage,
+
+      batch: {
+        update: batchUpdateProgrammesPage,
       },
     },
   },
@@ -143,6 +149,7 @@ export const myDb = {
     pages: {
       landing: landingPageTransaction,
       aboutUs: aboutUsPageTransaction,
+      programmes: programmesPageTransaction,
     },
   },
 };
