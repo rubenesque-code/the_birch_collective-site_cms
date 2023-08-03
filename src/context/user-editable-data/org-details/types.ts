@@ -1,5 +1,5 @@
 import type { MyDb } from "~/types/database";
-import type { GenerateActions as GenerateNonArrActions } from "../_helpers/types";
+import type { GenerateNonArrActions as GenerateNonArrActions } from "../_helpers/types";
 
 export type Store = {
   data: Data;

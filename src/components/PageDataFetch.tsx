@@ -21,6 +21,18 @@ const MyError = () => (
   </div>
 );
 
+const DynamicRouteEntityNotFound = ({ entityName }: { entityName: string }) => (
+  <div className="fixed inset-0 grid place-items-center">
+    <div className="max-w-lg">
+      <h3 className="font-medium">Could not find {entityName}</h3>
+      <p className="mt-xs text-gray-600">
+        The {entityName} from the entered address could not be found. It may
+        have been deleted.
+      </p>
+    </div>
+  </div>
+);
+
 const PageDataFetch = () => {
   throw new Error(
     "PageDataFetch exists for naming purposes only and should not be used as a component",
@@ -31,3 +43,4 @@ export { PageDataFetch };
 
 PageDataFetch.Loading = Loading;
 PageDataFetch.Error = MyError;
+PageDataFetch.NotFound = DynamicRouteEntityNotFound;

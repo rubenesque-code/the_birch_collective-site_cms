@@ -1,6 +1,6 @@
 import type { MyDb } from "~/types/database";
 import type {
-  GenerateActions as GenerateNonArrActions,
+  GenerateNonArrActions as GenerateNonArrActions,
   GenerateEntityNonArrActions,
 } from "../_helpers/types";
 import type { MyOmit } from "~/types/utilities";
