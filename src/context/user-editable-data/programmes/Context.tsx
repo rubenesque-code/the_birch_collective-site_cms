@@ -1,11 +1,5 @@
-import {
-  createContext,
-  useContext,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
-import { useStore } from "zustand";
+import React from "react";
+import * as z from "zustand";
 
 import type { MyDb } from "~/types/database";
 import type { Store } from "./types";
@@ -15,7 +9,7 @@ import { generateUid } from "~/lib/external-packages-rename";
 import { createStore } from "./createStore";
 import type { DocPartialWithId } from "~/types/database/_helpers";
 
-type ContextValue = { store: ReturnType<typeof createStore> } & {
+type ContextValue = { store: Store } & {
   revision: {
     isChange: boolean;
     undoKey: string;
@@ -29,25 +23,25 @@ type ContextValue = { store: ReturnType<typeof createStore> } & {
   };
 };
 
-const Context = createContext<ContextValue | null>(null);
+const Context = React.createContext<ContextValue | null>(null);
 
 function Provider({
   children,
   ...props
 }: {
-  children: ReactNode | ((args: ContextValue) => ReactNode);
+  children: React.ReactNode | ((args: ContextValue) => React.ReactNode);
   initData: Store["data"];
 }) {
-  const [initData, setInitData] = useState(props.initData);
-  const [undoKey, setUndoKey] = useState(generateUid());
+  const [initData, setInitData] = React.useState(props.initData);
+  const [undoKey, setUndoKey] = React.useState(generateUid());
 
-  const storeRef = useRef<ContextValue["store"]>();
+  const storeRef = React.useRef<ReturnType<typeof createStore>>();
 
   if (!storeRef.current) {
     storeRef.current = createStore({ initData: props.initData });
   }
 
-  const store = useStore(storeRef.current, (store) => store);
+  const store = z.useStore(storeRef.current, (store) => store);
 
   const { isChange, saveData } = useDocsRevisionData({
     initData: initData,
@@ -65,7 +59,7 @@ function Provider({
   };
 
   const value: ContextValue = {
-    store: storeRef.current,
+    store,
     revision: {
       isChange,
       undoKey,
@@ -84,28 +78,12 @@ function Provider({
   );
 }
 
-function useData() {
-  const context = useContext(Context);
+function useContext() {
+  const context = React.useContext(Context);
   if (!context)
     throw new Error("Missing ProgrammesDataCx.Provider in the tree");
 
-  return useStore(context.store, (state) => state.data);
-}
-
-function useAction() {
-  const context = useContext(Context);
-  if (!context)
-    throw new Error("Missing ProgrammesDataCx.Provider in the tree");
-
-  return useStore(context.store, (state) => state.actions);
-}
-
-function useRevision() {
-  const context = useContext(Context);
-  if (!context)
-    throw new Error("Missing ProgrammesDataCx.Provider in the tree");
-
-  return context.revision;
+  return context;
 }
 
 function ProgrammesDataCx() {
@@ -117,6 +95,4 @@ function ProgrammesDataCx() {
 export { ProgrammesDataCx };
 
 ProgrammesDataCx.Provider = Provider;
-ProgrammesDataCx.useData = useData;
-ProgrammesDataCx.useAction = useAction;
-ProgrammesDataCx.useRevision = useRevision;
+ProgrammesDataCx.use = useContext;

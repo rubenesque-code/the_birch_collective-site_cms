@@ -31,7 +31,7 @@ export const fetchProgrammesPage = async () => {
 
   const data = (await getDocData(
     docRef,
-  )) as unknown as MyDb["pages"]["aboutUs"];
+  )) as unknown as MyDb["pages"]["programmes"];
 
   return data;
 };

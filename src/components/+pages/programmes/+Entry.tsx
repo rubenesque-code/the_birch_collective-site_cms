@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 
 import { myDb } from "~/my-firebase/firestore";
 
-import { RevisionCx } from "./_state/RevisionCx";
+import { RevisionCx } from "./_state";
 
 import { PageDataFetch } from "~/components/PageDataFetch";
 import CmsHeader from "~/components/parts/cms-header/+Entry";

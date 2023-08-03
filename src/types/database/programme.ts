@@ -13,7 +13,9 @@ export type Programme = {
         y: number;
       };
     };
-    text: string;
-    bullets: { id: string; text: string }[];
+    mainText: string;
+    bullets: { id: string; index: number; text: string }[];
   };
 };
+
+// probs a sections arr

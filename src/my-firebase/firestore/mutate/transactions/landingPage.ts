@@ -5,8 +5,12 @@ import type { DocPartialWithId } from "~/types/database/_helpers";
 import { firestore } from "~/my-firebase/client";
 import { myDb } from "../..";
 
+import type { MyPick } from "~/types/utilities";
+
+type Page = MyDb["pages"]["landing"];
+
 export const landingPageTransaction = async (input: {
-  page: Partial<MyDb["pages"]["landing"]> | null;
+  page: (MyPick<Page, "id"> & Partial<Page>) | null;
   orgDetails: Partial<MyDb["singles"]["orgDetails"]> | null;
   linkLabels: Partial<MyDb["singles"]["linkLabels"]> | null;
   header: Partial<MyDb["singles"]["header"]> | null;

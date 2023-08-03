@@ -23,12 +23,13 @@ function Provider({
   children: ReactNode | ((args: ContextValue) => ReactNode);
 }) {
   const page = UedCx.Pages.Programmes.use();
+
   const footer = UedCx.Footer.useRevision();
   const header = UedCx.Header.useRevision();
   const linkLabels = UedCx.LinkLabels.useRevision();
   const orgDetails = UedCx.OrgDetails.useRevision();
 
-  const programmes = UedCx.Programmes.useRevision();
+  const { revision: programmes } = UedCx.Programmes.use();
 
   const revisionDataArr = [
     page.revision,
@@ -58,7 +59,7 @@ function Provider({
         () =>
           saveMutation.mutateAsync(
             {
-              page: page.revision.saveData,
+              page: { id: "programmes-page", ...page.revision.saveData },
               orgDetails: orgDetails.saveData,
               linkLabels: linkLabels.saveData,
               header: header.saveData,

@@ -30,7 +30,7 @@ export const SideBarMenu = () => (
           leaveFrom="transform opacity-100 translate-x-0"
           leaveTo="transform opacity-0 -translate-x-full"
         >
-          <Menu.Items className="h-full overflow-y-auto border-r-2 bg-white py-sm pl-md pr-3xl">
+          <Menu.Items className="h-full overflow-y-auto border-r-2 bg-white py-sm pl-md pr-2xl">
             <Content />
           </Menu.Items>
         </Transition>
@@ -112,7 +112,7 @@ const Programmes = () => {
 
   return (
     <div className={``}>
-      <div className={`flex items-center justify-between`}>
+      <div className={`flex items-center gap-lg`}>
         <Link href="/programmes">
           <span className="text-gray-600 transition-colors duration-75 ease-in-out hover:text-blue-600">
             Programmes

@@ -25,11 +25,13 @@ function Provider({
   children: ReactNode | ((args: ContextValue) => ReactNode);
 }) {
   const page = UedCx.Pages.Landing.useRevision();
+
   const footer = UedCx.Footer.useRevision();
   const header = UedCx.Header.useRevision();
   const orgDetails = UedCx.OrgDetails.useRevision();
   const linkLabels = UedCx.LinkLabels.useRevision();
-  const programmes = UedCx.Programmes.useRevision();
+
+  const { revision: programmes } = UedCx.Programmes.use();
   const { revision: testimonials } = UedCx.Testimonials.use();
   const { revision: supporters } = UedCx.Supporters.use();
 
@@ -63,7 +65,7 @@ function Provider({
         () =>
           landingSaveMutation.mutateAsync(
             {
-              page: page.saveData,
+              page: { id: "landing-page", ...page.saveData },
               orgDetails: orgDetails.saveData,
               testimonials: testimonials.saveData,
               programmes: programmes.saveData,

@@ -5,6 +5,7 @@ export type Pages = {
 };
 
 type Landing = {
+  id: "landing-page";
   bannerImage: {
     dbConnections: {
       imageId: string | null;
@@ -104,6 +105,7 @@ type Landing = {
 };
 
 type AboutUs = {
+  id: "about-page";
   bannerImage: {
     dbConnections: {
       imageId: string | null;
@@ -139,6 +141,7 @@ type AboutUs = {
 };
 
 type Programmes = {
+  id: "programmes-page";
   bannerImage: {
     dbConnections: {
       imageId: string | null;

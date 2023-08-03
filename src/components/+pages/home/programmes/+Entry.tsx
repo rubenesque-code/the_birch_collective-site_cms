@@ -1,16 +1,18 @@
 import { produce } from "immer";
 import React, { type ReactNode } from "react";
 
+import { ProgrammeCx } from "~/context/entities";
+import { LandingCx } from "~/context/entities/landing";
+import { UedCx } from "~/context/user-editable-data";
+
+import type { MyDb } from "~/types/database";
+import { useToast } from "~/hooks";
+
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
 import { ComponentMenu } from "~/components/menus";
-import { ProgrammeCx } from "~/context/entities";
-import { LandingCx } from "~/context/entities/landing";
-import { UedCx } from "~/context/user-editable-data";
-import { useToast } from "~/hooks";
-import type { MyDb } from "~/types/database";
-import AddProgrammeModal from "./entries/add-programme-modal/+Entry";
+import ProgrammesModal from "~/components/programmes-modal/+Entry";
 
 const Programmes = () => (
   <div className="group/programmes">
@@ -68,7 +70,9 @@ const EntriesSection = () => {
     programmes: { entries: entryAction },
   } = UedCx.Pages.Landing.useAction();
 
-  const programmes = UedCx.Programmes.useData();
+  const {
+    store: { data: programmes },
+  } = UedCx.Programmes.use();
 
   // □ refactor?
   const entriesSorted = React.useMemo(() => {
@@ -101,7 +105,7 @@ const EntriesSection = () => {
   return (
     <div className="mt-md">
       <CmsLayout.EditBar>
-        <AddProgrammeModal
+        <ProgrammesModal
           button={({ openModal }) => (
             <CmsLayout.EditBar.EditButton
               buttonText="Edit programmes"
@@ -120,7 +124,7 @@ const EntriesSection = () => {
         />
 
         <CmsLayout.EditBar.Info
-          infoText="Edit fields below from pop-up (left). Edit in depth from the programmes page."
+          infoText="Fields below are editable. Edit in depth from the programmes page."
           gap="xs"
         />
       </CmsLayout.EditBar>
@@ -157,7 +161,9 @@ const ConnectProgramme = ({
   children: (arg0: { connectedProgramme: MyDb["programme"] }) => ReactNode;
 }) => {
   const landingProgramme = LandingCx.Programme.use();
-  const programmes = UedCx.Programmes.useData();
+  const {
+    store: { data: programmes },
+  } = UedCx.Programmes.use();
 
   const connectedProgramme = programmes.find(
     (programme) => programme.id === landingProgramme.dbConnections.programmeId,
@@ -191,9 +197,10 @@ const UnfoundProgramme = () => (
 const Programme = () => {
   const { id, title, subtitle, summary } = ProgrammeCx.use();
 
-  const programmeAction = UedCx.Programmes.useAction();
-
-  const { undoKey } = UedCx.Programmes.useRevision();
+  const {
+    store: { actions: programmeAction },
+    revision: { undoKey },
+  } = UedCx.Programmes.use();
 
   return (
     <div className="group/programme relative flex flex-col items-center p-sm">
@@ -202,7 +209,7 @@ const Programme = () => {
         <TextInputForm
           localStateValue={title}
           onSubmit={(inputValue) =>
-            programmeAction.title({ id, newVal: inputValue })
+            programmeAction.title({ id, updatedValue: inputValue })
           }
           input={{
             placeholder: "Title",
@@ -212,26 +219,29 @@ const Programme = () => {
           key={undoKey}
         />
       </div>
-      <div className="mt-xs uppercase text-display xs:text-lg lg:text-xl">
-        <TextInputForm
+      <div className="mt-xs w-full uppercase text-display xs:text-lg lg:text-xl">
+        <TextAreaForm
           localStateValue={subtitle}
           onSubmit={(inputValue) =>
-            programmeAction.subtitle({ id, newVal: inputValue })
+            programmeAction.subtitle({ id, updatedValue: inputValue })
           }
-          input={{ placeholder: "Subtitle", styles: "uppercase" }}
+          textArea={{
+            placeholder: "Subtitle",
+            styles: "uppercase text-center",
+          }}
           tooltip="Click to edit subtitle"
           key={undoKey}
         />
       </div>
       <div className="mt-xs w-full text-center text-base font-light xs:font-normal lg:text-lg">
         <TextAreaForm
-          localStateValue={summary}
+          localStateValue={summary.mainText}
           textArea={{
             placeholder: "Programme summary",
             styles: "text-center",
           }}
           onSubmit={(inputValue) => {
-            programmeAction.summary({ id, newVal: inputValue });
+            programmeAction.summary.mainText({ id, updatedValue: inputValue });
           }}
           tooltip="Click to edit summary"
           key={undoKey}
@@ -275,7 +285,7 @@ const GoToPageButton = () => {
 
   const { programmes: programmesAction } = UedCx.Pages.Landing.useAction();
 
-  const { undoKey } = UedCx.Programmes.useRevision();
+  const { undoKey } = UedCx.Pages.Landing.useRevision();
 
   return (
     <div className="flex cursor-pointer items-center gap-sm rounded-sm bg-brandOrange px-4 py-2 text-lg font-bold uppercase tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">

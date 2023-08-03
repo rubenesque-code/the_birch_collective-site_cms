@@ -8,41 +8,37 @@ import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
 import { useToast } from "~/hooks";
-import { NewMemberCx, createInitData } from "./_state";
+import { NewProgrammeCx, createInitData } from "./_state";
 import { UedCx } from "~/context/user-editable-data";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 
 // □ refactor
 
-export const CreateModal = () => {
+const CreateModal = () => {
   const {
-    store: {
-      data: {
-        theTeam: { members },
-      },
-    },
-  } = UedCx.Pages.AboutUs.use();
+    store: { data: programmes },
+  } = UedCx.Programmes.use();
 
   return (
-    <NewMemberCx.Provider newMember={{ index: members.length }}>
-      {(newMemberCx) => (
+    <NewProgrammeCx.Provider newProgramme={{ index: programmes.length }}>
+      {(newProgrammeCx) => (
         <Modal.VisibilityCx.Provider>
-          {(newMemberModal) => (
+          {(newProgrammeModal) => (
             <Modal.VisibilityCx.Provider>
               {(warningModal) => {
-                const handleCloseNewMemberModal = () => {
-                  if (newMemberCx.isUserEntry) {
+                const handleCloseNewProgrammeModal = () => {
+                  if (newProgrammeCx.isUserEntry) {
                     warningModal.openModal();
                     return;
                   }
-                  newMemberModal.closeModal();
+                  newProgrammeModal.closeModal();
                 };
 
                 return (
                   <>
                     <button
                       className={`group my-btn-create mb-sm flex items-center gap-xs rounded-md px-sm py-1.5 text-white`}
-                      onClick={newMemberModal.openModal}
+                      onClick={newProgrammeModal.openModal}
                       type="button"
                     >
                       <span className="text-sm">
@@ -52,12 +48,12 @@ export const CreateModal = () => {
                     </button>
 
                     <Modal.OverlayAndPanelWrapper
-                      onClickOutside={handleCloseNewMemberModal}
-                      isOpen={newMemberModal.isOpen}
+                      onClickOutside={handleCloseNewProgrammeModal}
+                      isOpen={newProgrammeModal.isOpen}
                       panelContent={
-                        <NewMemberModalContent
-                          onClose={handleCloseNewMemberModal}
-                          closeNewMemberModal={newMemberModal.closeModal}
+                        <NewProgrammeModalContent
+                          onClose={handleCloseNewProgrammeModal}
+                          closeNewProgrammeModal={newProgrammeModal.closeModal}
                         />
                       }
                     />
@@ -68,15 +64,15 @@ export const CreateModal = () => {
                       panelContent={
                         <WarningPanel
                           callback={() => {
-                            newMemberCx.actions.resetData(
-                              createInitData({ index: members.length }),
+                            newProgrammeCx.actions.resetData(
+                              createInitData({ index: programmes.length }),
                             );
-                            newMemberModal.closeModal();
+                            newProgrammeModal.closeModal();
                             warningModal.closeModal();
                           }}
                           closeModal={warningModal.closeModal}
                           text={{
-                            title: "Close member creation?",
+                            title: "Close programme creation?",
                             body: "Changes made will be lost.",
                           }}
                         />
@@ -89,49 +85,45 @@ export const CreateModal = () => {
           )}
         </Modal.VisibilityCx.Provider>
       )}
-    </NewMemberCx.Provider>
+    </NewProgrammeCx.Provider>
   );
 };
 
-const NewMemberModalContent = ({
+export default CreateModal;
+
+const NewProgrammeModalContent = ({
   onClose,
-  closeNewMemberModal,
+  closeNewProgrammeModal,
 }: {
   onClose: () => void;
-  closeNewMemberModal: () => void;
+  closeNewProgrammeModal: () => void;
 }) => {
   const [showIncompleteErrorMessage, setShowIncompleteErrorMessage] =
     useState(false);
 
   const {
-    store: {
-      data: {
-        theTeam: { members },
-      },
-      actions: {
-        theTeam: { members: memberAction },
-      },
-    },
-  } = UedCx.Pages.AboutUs.use();
+    store: { data: programmes, actions: programmeAction },
+  } = UedCx.Programmes.use();
 
-  const { data: newMember, actions: newMemberAction } = NewMemberCx.use();
+  const { data: newProgramme, actions: newProgrammeAction } =
+    NewProgrammeCx.use();
 
   const toast = useToast();
 
   return (
     <div className="relative flex flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
       <div className="flex items-center justify-between border-b border-b-gray-200 pb-sm">
-        <h3 className="leading-6">Add new member</h3>
+        <h3 className="leading-6">Create programme</h3>
       </div>
 
       <div className="mt-sm flex-grow overflow-y-auto">
-        <NewMember />
+        <NewProgramme />
       </div>
 
       {showIncompleteErrorMessage ? (
         <div className="mt-sm w-[346px] text-sm">
           <p className="text-my-error-content">
-            Can&apos;t create member. Requirements: image, name, role, bio.
+            Can&apos;t create programme. Requirements: title, subtitle.
           </p>
         </div>
       ) : null}
@@ -153,10 +145,7 @@ const NewMemberModalContent = ({
           type="button"
           onClick={() => {
             const formIsComplete = Boolean(
-              newMember.image.dbConnections.imageId &&
-                newMember.name.length &&
-                newMember.role.length &&
-                newMember.bio.length,
+              newProgramme.subtitle && newProgramme.title,
             );
 
             if (!formIsComplete) {
@@ -167,15 +156,18 @@ const NewMemberModalContent = ({
               return;
             }
 
-            memberAction.create({
-              ...newMember,
-              index: members.length,
+            programmeAction.create({
+              ...newProgramme,
+              index: programmes.length,
             });
-            toast.neutral("Added member");
-            closeNewMemberModal();
+
+            toast.neutral("Added programme");
+
+            closeNewProgrammeModal();
+
             setTimeout(() => {
-              newMemberAction.resetData(
-                createInitData({ index: members.length + 1 }),
+              newProgrammeAction.resetData(
+                createInitData({ index: programmes.length + 1 }),
               );
             }, 200);
           }}
@@ -187,29 +179,26 @@ const NewMemberModalContent = ({
   );
 };
 
-const NewMember = () => {
+const NewProgramme = () => {
   const {
-    data: { bio, image, name, role },
-    actions,
-  } = NewMemberCx.use();
+    data: { subtitle, summary, title },
+    actions: newProgrammeAction,
+  } = NewProgrammeCx.use();
 
   return (
     <div className="relative w-[700px]">
-      <div className="group/member-image relative aspect-square w-[200px] rounded-full">
-        <NewMemberMenu />
+      <div className="group/programme-image relative aspect-video w-[500px]">
+        <NewProgrammeMenu />
         <UserSelectedImageWrapper
-          dbImageId={image.dbConnections.imageId}
-          placeholderText="member image"
-          isCircle
+          dbImageId={summary.image.dbConnections.imageId}
+          placeholderText="summary image"
         >
           {({ dbImageId }) => (
             <DbImageWrapper dbImageId={dbImageId}>
               {({ urls }) => (
                 <CustomisableImage
                   urls={urls}
-                  objectFit="cover"
-                  position={image.position}
-                  isCircle
+                  position={summary.image.position}
                 />
               )}
             </DbImageWrapper>
@@ -218,32 +207,32 @@ const NewMember = () => {
       </div>
 
       <div className="mt-md">
-        <div className="text-sm text-gray-400">Name</div>
+        <div className="text-sm text-gray-400">Title</div>
         <div className="font-medium">
           <TextInputForm
-            localStateValue={name}
-            onSubmit={actions.name}
-            input={{ placeholder: "Member name" }}
+            localStateValue={title}
+            onSubmit={newProgrammeAction.title}
+            input={{ placeholder: "Programme title" }}
           />
         </div>
       </div>
       <div className="mt-md">
-        <div className="text-sm text-gray-400">Role</div>
+        <div className="text-sm text-gray-400">Subtitle</div>
         <div className="font-medium">
           <TextInputForm
-            localStateValue={role}
-            onSubmit={actions.role}
-            input={{ placeholder: "Member role" }}
+            localStateValue={subtitle}
+            onSubmit={newProgrammeAction.subtitle}
+            input={{ placeholder: "Programme subtitle" }}
           />
         </div>
       </div>
       <div className="mt-md">
-        <div className="text-sm text-gray-400">Bio</div>
+        <div className="text-sm text-gray-400">Summary</div>
         <div className="max-h-[400px] overflow-y-auto">
           <TextAreaForm
-            localStateValue={bio}
-            onSubmit={actions.bio}
-            textArea={{ placeholder: "Member bio" }}
+            localStateValue={summary.mainText}
+            onSubmit={newProgrammeAction.summary.mainText}
+            textArea={{ placeholder: "Programme summary" }}
           />
         </div>
       </div>
@@ -251,15 +240,18 @@ const NewMember = () => {
   );
 };
 
-const NewMemberMenu = () => {
+const NewProgrammeMenu = () => {
   const {
-    data: { image },
-    actions: { image: imageAction },
-  } = NewMemberCx.use();
-  console.log("image:", image);
+    data: {
+      summary: { image },
+    },
+    actions: {
+      summary: { image: imageAction },
+    },
+  } = NewProgrammeCx.use();
 
   return (
-    <ComponentMenu styles="right-1 top-1 group-hover/member-image:opacity-40">
+    <ComponentMenu styles="right-1 top-1 group-hover/programme-image:opacity-40">
       {image.dbConnections.imageId ? (
         <>
           <ComponentMenu.Image.PositionMenu
@@ -272,6 +264,7 @@ const NewMemberMenu = () => {
           <ComponentMenu.Divider />
         </>
       ) : null}
+
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
           imageAction.dbConnections.imageId(dbImageId);

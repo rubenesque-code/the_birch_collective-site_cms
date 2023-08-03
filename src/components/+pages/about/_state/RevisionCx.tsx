@@ -57,7 +57,7 @@ function Provider({
         () =>
           saveMutation.mutateAsync(
             {
-              page: page.revision.saveData,
+              page: { id: "about-page", ...page.revision.saveData },
               orgDetails: orgDetails.saveData,
               linkLabels: linkLabels.saveData,
               header: header.saveData,
