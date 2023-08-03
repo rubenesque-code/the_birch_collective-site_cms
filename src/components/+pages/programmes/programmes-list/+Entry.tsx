@@ -20,6 +20,9 @@ import { Icon } from "~/components/icons";
 import { WithTooltip } from "~/components/WithTooltip";
 import type { MyDb } from "~/types/database";
 import { Leaf } from "@phosphor-icons/react";
+import { Modal } from "~/components/styled-bases";
+import { WarningPanel } from "~/components/WarningPanel";
+import { useToast } from "~/hooks";
 
 const ProgrammesList = () => {
   return (
@@ -151,69 +154,6 @@ const Programme = () => {
   );
 };
 
-const ProgrammeBullets = () => {
-  const {
-    summary: { bullets },
-  } = ProgrammeCx.use();
-
-  const sorted = React.useMemo(() => deepSortByIndex(bullets), [bullets]);
-
-  return (
-    <>
-      {!sorted.length ? (
-        <p className="italic text-gray-500">No programme bullets yet.</p>
-      ) : (
-        sorted.map((bullet) => (
-          <ProgrammeBullet bullet={bullet} key={bullet.id} />
-        ))
-      )}
-    </>
-  );
-};
-
-const ProgrammeBullet = ({
-  bullet,
-}: {
-  bullet: MyDb["programme"]["summary"]["bullets"][number];
-}) => {
-  const { id: programmeId } = ProgrammeCx.use();
-
-  const {
-    store: {
-      actions: {
-        summary: { bullets: bulletAction },
-      },
-    },
-    revision: { undoKey },
-  } = UedCx.Programmes.use();
-
-  return (
-    <div className="flex gap-xs">
-      <div className="translate-y-[6px] text-xs text-brandLightBrown">
-        <Leaf />
-      </div>
-      <div className="flex-grow  text-gray-600">
-        <TextAreaForm
-          localStateValue={bullet.text}
-          textArea={{
-            placeholder: "Bullet text",
-            styles: "tracking-wide",
-          }}
-          onSubmit={(inputValue) =>
-            bulletAction.text({
-              bulletId: bullet.id,
-              programmeId,
-              updatedValue: inputValue,
-            })
-          }
-          tooltip="Click to edit bullet text"
-          key={undoKey}
-        />
-      </div>
-    </div>
-  );
-};
-
 const ImageMenu = () => {
   const {
     store: {
@@ -259,6 +199,133 @@ const ImageMenu = () => {
         }}
       />
     </ComponentMenu>
+  );
+};
+
+const ProgrammeBullets = () => {
+  const {
+    id: programmeId,
+    summary: { bullets },
+  } = ProgrammeCx.use();
+
+  const {
+    store: {
+      actions: {
+        summary: { bullets: bulletsAction },
+      },
+    },
+  } = UedCx.Programmes.use();
+
+  const sorted = React.useMemo(() => deepSortByIndex(bullets), [bullets]);
+
+  return (
+    <>
+      {!sorted.length ? (
+        <p className="italic text-gray-500">No programme bullets yet.</p>
+      ) : (
+        <div className="grid grid-cols-1 gap-xxs">
+          <DndKit.Context
+            elementIds={getIds(sorted)}
+            onReorder={(input) =>
+              bulletsAction.reorder({ programmeId, bullets: input })
+            }
+          >
+            {sorted.map((bullet) => (
+              <DndKit.Element elementId={bullet.id} key={bullet.id}>
+                <ProgrammeBullet bullet={bullet} />
+              </DndKit.Element>
+            ))}
+          </DndKit.Context>
+        </div>
+      )}
+    </>
+  );
+};
+
+const ProgrammeBullet = ({
+  bullet,
+}: {
+  bullet: MyDb["programme"]["summary"]["bullets"][number];
+}) => {
+  const { id: programmeId } = ProgrammeCx.use();
+
+  const {
+    store: {
+      actions: {
+        summary: { bullets: bulletAction },
+      },
+    },
+    revision: { undoKey },
+  } = UedCx.Programmes.use();
+
+  return (
+    <div className="group/bullet flex items-start gap-sm">
+      <div className="relative translate-y-[6px] text-xs text-brandLightBrown">
+        <ProgrammeBulletMenu bulletId={bullet.id} />
+        <Leaf />
+      </div>
+      <div className="flex-grow  text-gray-600">
+        <TextAreaForm
+          localStateValue={bullet.text}
+          textArea={{
+            placeholder: "Bullet text",
+            styles: "tracking-wide leading-relaxed",
+          }}
+          onSubmit={(inputValue) =>
+            bulletAction.text({
+              bulletId: bullet.id,
+              programmeId,
+              updatedValue: inputValue,
+            })
+          }
+          tooltip="Click to edit bullet text"
+          key={undoKey}
+        />
+      </div>
+    </div>
+  );
+};
+
+const ProgrammeBulletMenu = ({ bulletId }: { bulletId: string }) => {
+  const {
+    store: {
+      actions: {
+        summary: { bullets: bulletAction },
+      },
+    },
+  } = UedCx.Programmes.use();
+
+  const { id: programmeId } = ProgrammeCx.use();
+
+  const toast = useToast();
+
+  return (
+    <div className="absolute left-1/2 top-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-colors duration-75 ease-in-out group-hover/bullet:z-10 group-hover/bullet:opacity-60 hover:!opacity-100">
+      <Modal.WithVisibilityProvider
+        button={({ openModal }) => (
+          <ComponentMenu.Button.Delete
+            onClick={openModal}
+            tooltip="delete bullet"
+          />
+        )}
+        panelContent={({ closeModal }) => (
+          <WarningPanel
+            callback={() => {
+              bulletAction.delete({ bulletId, programmeId });
+
+              closeModal();
+
+              toast.neutral("deleted programme bullet");
+            }}
+            closeModal={closeModal}
+            text={{
+              title: "Delete programme bullet",
+              body: "Are you sure?",
+            }}
+          />
+        )}
+      />
+    </div>
   );
 };
 
