@@ -7,18 +7,15 @@ import {
 } from "react";
 import { useStore } from "zustand";
 
-import type { MyDb } from "~/types/database";
-
 import { useDocRevisionData } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
-import { createStore } from "./createStore";
-import type { Store } from "./types";
+import { createStore, type Store } from "./store";
 
 type ContextValue = { store: Store } & {
   revision: {
     isChange: boolean;
     undoKey: string;
-    saveData: Partial<MyDb["pages"]["programmes"]>;
+    saveData: Partial<Store["data"]>;
     handleUndo: () => void;
     onSaveSuccess: () => void;
   };
@@ -31,7 +28,7 @@ function Provider({
   ...props
 }: {
   children: ReactNode | ((args: ContextValue) => ReactNode);
-  initData: MyDb["pages"]["programmes"];
+  initData: Store["data"];
 }) {
   const [initData, setInitData] = useState(props.initData);
   const [undoKey, setUndoKey] = useState(generateUid());
@@ -82,18 +79,18 @@ function Provider({
 function useThisContext() {
   const context = useContext(Context);
   if (!context)
-    throw new Error("Missing ProgrammesPageDataCx.Provider in the tree");
+    throw new Error("Missing ProgrammePageDataCx.Provider in the tree");
 
   return context;
 }
 
-function ProgrammesPageDataCx() {
+function ProgrammePageDataCx() {
   throw new Error(
-    "ProgrammesPageDataCx exists for naming purposes only and should not be used as a component",
+    "ProgrammePageDataCx exists for naming purposes only and should not be used as a component",
   );
 }
 
-export { ProgrammesPageDataCx };
+export { ProgrammePageDataCx };
 
-ProgrammesPageDataCx.Provider = Provider;
-ProgrammesPageDataCx.use = useThisContext;
+ProgrammePageDataCx.Provider = Provider;
+ProgrammePageDataCx.use = useThisContext;

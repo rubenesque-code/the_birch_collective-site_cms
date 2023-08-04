@@ -8,6 +8,7 @@ import { TestimonialsDataCx } from "./testimonials";
 import { SupportersDataCx } from "./supporters";
 import { AboutUsPageDataCx } from "./about-us-page";
 import { ProgrammesPageDataCx } from "./programmes-page";
+import { ProgrammePageDataCx } from "./programme";
 
 function UedCx() {
   throw new Error(
@@ -34,5 +35,6 @@ UedCx.Header = HeaderDataCx;
 UedCx.OrgDetails = OrgDetailsDataCx;
 UedCx.LinkLabels = LinkLabelsDataCx;
 UedCx.Programmes = ProgrammesDataCx;
+UedCx.Programme = ProgrammePageDataCx;
 UedCx.Testimonials = TestimonialsDataCx;
 UedCx.Supporters = SupportersDataCx;

@@ -1,25 +1,11 @@
 export type Programme = {
   id: string;
+
   index: number;
-  subtitle: string;
-  title: string;
-  summary: {
-    image: {
-      dbConnections: {
-        imageId: string | null;
-      };
-      position: {
-        x: number;
-        y: number;
-      };
-    };
-    mainText: string;
-    bullets: { id: string; index: number; text: string }[];
-  };
+
   sections: {
     id: string;
     index: number;
-    colour: "brown" | "green" | "orange";
     bullets: {
       icon:
         | "leaf"
@@ -40,5 +26,26 @@ export type Programme = {
         | "sun";
       entries: { id: string; index: number; text: string }[];
     };
+    colour: "brown" | "green" | "orange";
   }[];
+
+  subtitle: string;
+
+  summary: {
+    bullets: { id: string; index: number; text: string }[];
+
+    image: {
+      dbConnections: {
+        imageId: string | null;
+      };
+      position: {
+        x: number;
+        y: number;
+      };
+    };
+
+    mainText: string;
+  };
+
+  title: string;
 };

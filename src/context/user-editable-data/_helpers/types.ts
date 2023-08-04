@@ -25,7 +25,9 @@ export type GenerateEntityNonArrActions<TData extends Record<string, unknown>> =
       | null
       | Record<string, unknown>
       | unknown[]
-      ? TKey
+      ? TKey extends "id" | "index"
+        ? never
+        : TKey
       : never]: TData[TKey] extends string | number | null
       ? (arg0: { id: string; updatedValue: NonNullable<TData[TKey]> }) => void
       : TData[TKey] extends unknown[]
