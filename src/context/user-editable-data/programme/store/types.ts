@@ -11,11 +11,19 @@ export type Store = {
 };
 
 export type Programme = MyOmit<MyDb["programme"], "summary">;
+export type Info = Programme["info"][number];
 export type Section = Programme["sections"][number];
 
+type InfoNonArrActions = GenerateEntityNonArrActions<Info>;
 type SectionNonArrActions = GenerateEntityNonArrActions<Section>;
 
 type ArrActions = {
+  info: {
+    create: (arg0: Info) => void;
+    delete: (arg0: { id: string }) => void;
+    reorder: (arg0: { activeId: string; overId: string }) => void;
+  } & InfoNonArrActions;
+
   sections: {
     create: (arg0: Section) => void;
     delete: (arg0: { id: string }) => void;

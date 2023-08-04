@@ -7,7 +7,10 @@ export type Store = {
   actions: Actions;
 };
 
-export type Programme = MyOmit<MyDb["programme"], "sections">;
+export type Programme = MyOmit<
+  MyDb["programme"],
+  "sections" | "info" | "bannerImage" | "mainText"
+>;
 type Data = Programme[];
 
 type ArrActions = {

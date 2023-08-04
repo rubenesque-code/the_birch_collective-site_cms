@@ -3,9 +3,25 @@ export type Programme = {
 
   index: number;
 
+  bannerImage: {
+    dbConnections: {
+      imageId: string | null;
+    };
+    position: {
+      x: number;
+      y: number;
+    };
+  };
+
+  info: { id: string; index: number; title: string; text: string }[];
+
+  mainText: string;
+
   sections: {
     id: string;
+
     index: number;
+
     bullets: {
       icon:
         | "leaf"
@@ -24,8 +40,10 @@ export type Programme = {
         | "star"
         | "tipi"
         | "sun";
+
       entries: { id: string; index: number; text: string }[];
     };
+
     colour: "brown" | "green" | "orange";
   }[];
 
@@ -38,6 +56,7 @@ export type Programme = {
       dbConnections: {
         imageId: string | null;
       };
+
       position: {
         x: number;
         y: number;

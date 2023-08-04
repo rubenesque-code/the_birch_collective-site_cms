@@ -123,7 +123,7 @@ const Programmes = () => {
             text={isExpanded ? "hide programmes" : "show programmes"}
           >
             <span
-              className={`cursor-pointer rounded-full p-xxxs text-sm hover:bg-gray-50`}
+              className={`cursor-pointer rounded-full p-xxs text-sm hover:bg-gray-100`}
               onClick={() => setIsExpanded(!isExpanded)}
             >
               {isExpanded ? <Icon.CaretUp /> : <Icon.CaretDown />}

@@ -53,6 +53,7 @@ import {
   fetchTestimonials,
 } from "./query";
 import { programmesPageTransaction } from "./mutate/transactions/programmesPage";
+import { programmePageTransaction } from "./mutate/transactions/programme";
 
 export const myDb = {
   pages: {
@@ -150,6 +151,7 @@ export const myDb = {
       landing: landingPageTransaction,
       aboutUs: aboutUsPageTransaction,
       programmes: programmesPageTransaction,
+      programme: programmePageTransaction,
     },
   },
 };

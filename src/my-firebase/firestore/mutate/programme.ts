@@ -49,6 +49,7 @@ export const batchUpdateProgramme = (
   input: DocPartialWithId<MyDb["programme"]>,
   batch: WriteBatch,
 ) => {
+  console.log("input:", input);
   const docRef = doc(
     firestore,
     firestore_file_system_names.collections.programmes,

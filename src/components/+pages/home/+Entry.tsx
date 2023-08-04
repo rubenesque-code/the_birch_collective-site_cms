@@ -47,6 +47,8 @@ import type { MyDb } from "~/types/database";
 // □ Should have a subtle emboss of section name in each section? Maybe only if one/more text elements have no text
 // □ supporters modal tooltip for 'add to landing' is incorrect since modal is for all supporters
 // □ should memoise in revisionCx?
+// □ rework process entity logic + types. Want to keep ids. Types could be improved. Must be a lodash helper? lodash.set as used in UedCx?
+// □ on could not find entity page, etc., have cms header there + bg, though no revision buttons
 
 // STATE
 // □ could have a queryOne in state data e.g. for programmes/testimonials

@@ -7,7 +7,7 @@ import type {
   ObjFieldsToStr,
   OmitObjArrProps,
 } from "../../_helpers/types";
-import type { Store, Section } from "./types";
+import type { Store, Info, Section } from "./types";
 import type { MyOmit } from "~/types/utilities";
 import { getReorderedEntities, sortByIndex } from "~/helpers/data/process";
 
@@ -22,6 +22,34 @@ export const createStore = (input: { initData: Store["data"] }) =>
         set(
           produce((store: Store) => {
             lodash.set(store.data, keys, newValue);
+          }),
+        );
+    }
+
+    function infoNonArrAction<
+      TKeyStr extends ObjFieldsToStr<
+        OmitObjArrProps<MyOmit<Info, "id" | "index">>
+      >,
+    >(keys: TKeyStr) {
+      return (input: {
+        id: string;
+        updatedValue: GetObjValue<MyOmit<Info, "id" | "index">, TKeyStr>;
+      }) =>
+        set(
+          produce((store: Store) => {
+            const entityIndex = store.data.sections.findIndex(
+              (section) => section.id === input.id,
+            );
+
+            if (entityIndex < 0) {
+              return;
+            }
+
+            lodash.set(
+              store.data.sections[entityIndex],
+              keys,
+              input.updatedValue,
+            );
           }),
         );
     }
@@ -64,6 +92,84 @@ export const createStore = (input: { initData: Store["data"] }) =>
               store.data = updatedData;
             }),
           ),
+
+        bannerImage: {
+          dbConnections: {
+            imageId: nonArrAction("bannerImage.dbConnections.imageId"),
+          },
+
+          position: {
+            x: nonArrAction("bannerImage.position.x"),
+            y: nonArrAction("bannerImage.position.y"),
+          },
+        },
+
+        info: {
+          create: (newEntry) =>
+            set(
+              produce((store: Store) => {
+                store.data.info.push(newEntry);
+              }),
+            ),
+
+          delete: (input) =>
+            set(
+              produce((store: Store) => {
+                const entriesOrdered = store.data.info.sort(sortByIndex);
+
+                const entityToDeleteIndex = entriesOrdered.findIndex(
+                  (t) => t.id === input.id,
+                );
+                if (entityToDeleteIndex === -1) return;
+
+                entriesOrdered.splice(entityToDeleteIndex, 1);
+
+                for (
+                  let i = entityToDeleteIndex;
+                  i < entriesOrdered.length;
+                  i++
+                ) {
+                  entriesOrdered[i].index = entriesOrdered[i].index - 1;
+                }
+              }),
+            ),
+
+          reorder: (input) =>
+            set(
+              produce((store: Store) => {
+                const entriesOrdered = store.data.info.sort(sortByIndex);
+
+                const active = entriesOrdered.find(
+                  (t) => t.id === input.activeId,
+                );
+                const over = entriesOrdered.find((t) => t.id === input.overId);
+
+                if (!active || !over) {
+                  return;
+                }
+
+                const updatedEntries = getReorderedEntities({
+                  active,
+                  over,
+                  entities: entriesOrdered,
+                });
+
+                updatedEntries.forEach((updatedEntry) => {
+                  const index = store.data.info.findIndex(
+                    (t) => t.id === updatedEntry.id,
+                  );
+                  if (index !== -1)
+                    store.data.info[index].index = updatedEntry.newIndex;
+                });
+              }),
+            ),
+
+          text: infoNonArrAction("text"),
+
+          title: infoNonArrAction("title"),
+        },
+
+        mainText: nonArrAction("mainText"),
 
         sections: {
           create: (newEntry) =>

@@ -15,6 +15,10 @@ import SiteLayout from "~/components/layouts/Site";
 import { UedCx } from "~/context/user-editable-data";
 import type { MyDb } from "~/types/database";
 import { useDynamicRouteParams } from "~/hooks";
+import BannerImage from "./banner-image/+Entry";
+import Headings from "./headings/+Entry";
+import MainText from "./main-text/+Entry";
+import Info from "./info/+Entry";
 
 const AboutPage = () => (
   <AwaitParams>
@@ -52,7 +56,24 @@ export default AboutPage;
 
 const PageSpecificContent = () => (
   <>
-    <div>Programme</div>
+    <BannerImage />
+
+    <SiteLayout.Section.Spacing>
+      <Headings />
+    </SiteLayout.Section.Spacing>
+
+    <SiteLayout.Section.Spacing.Horizontal>
+      <MainText />
+    </SiteLayout.Section.Spacing.Horizontal>
+
+    <SiteLayout.Section.Spacing>
+      <div className="flex gap-lg">
+        <div className="flex-grow">
+          <Info />
+        </div>
+        <div className="w-[300px]">Posters</div>
+      </div>
+    </SiteLayout.Section.Spacing>
   </>
 );
 
@@ -146,16 +167,16 @@ const UedProviders = ({
   children: ReactElement;
 }) => {
   return (
-    <UedCx.Programme.Provider initData={initDbData.programme}>
-      <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
-        <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
-          <UedCx.Header.Provider initData={initDbData.header}>
-            <UedCx.Footer.Provider initData={initDbData.footer}>
+    <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
+      <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
+        <UedCx.Header.Provider initData={initDbData.header}>
+          <UedCx.Footer.Provider initData={initDbData.footer}>
+            <UedCx.Programme.Provider initData={initDbData.programme}>
               {children}
-            </UedCx.Footer.Provider>
-          </UedCx.Header.Provider>
-        </UedCx.LinkLabels.Provider>
-      </UedCx.OrgDetails.Provider>
-    </UedCx.Programme.Provider>
+            </UedCx.Programme.Provider>
+          </UedCx.Footer.Provider>
+        </UedCx.Header.Provider>
+      </UedCx.LinkLabels.Provider>
+    </UedCx.OrgDetails.Provider>
   );
 };

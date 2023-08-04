@@ -22,23 +22,19 @@ function Provider({
 }: {
   children: ReactNode | ((args: ContextValue) => ReactNode);
 }) {
-  const page = UedCx.Pages.Programmes.use();
-
   const footer = UedCx.Footer.useRevision();
   const header = UedCx.Header.useRevision();
   const linkLabels = UedCx.LinkLabels.useRevision();
   const orgDetails = UedCx.OrgDetails.useRevision();
 
-  const { revision: programmes } = UedCx.Programmes.use();
+  const {
+    store: {
+      data: { id },
+    },
+    revision: programme,
+  } = UedCx.Programme.use();
 
-  const revisionDataArr = [
-    page.revision,
-    footer,
-    header,
-    linkLabels,
-    orgDetails,
-    programmes,
-  ];
+  const revisionDataArr = [footer, header, linkLabels, orgDetails, programme];
 
   const isChange = Boolean(revisionDataArr.find((data) => data.isChange));
 
@@ -49,7 +45,7 @@ function Provider({
     arg0();
   };
 
-  const saveMutation = useMutation(myDb.transactions.pages.programmes);
+  const saveMutation = useMutation(myDb.transactions.pages.programme);
 
   const toast = useToast();
 
@@ -59,12 +55,11 @@ function Provider({
         () =>
           saveMutation.mutateAsync(
             {
-              page: { id: "programmes-page", ...page.revision.saveData },
               orgDetails: orgDetails.saveData,
               linkLabels: linkLabels.saveData,
               header: header.saveData,
               footer: footer.saveData,
-              programmes: programmes.saveData,
+              programme: { id, ...programme.saveData },
             },
             {
               onSuccess() {
