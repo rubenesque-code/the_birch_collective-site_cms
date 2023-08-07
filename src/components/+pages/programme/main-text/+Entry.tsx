@@ -1,5 +1,8 @@
+import Markdown from "markdown-to-jsx";
 import { TextAreaForm } from "~/components/forms";
+import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
+import { Modal } from "~/components/styled-bases";
 import { UedCx } from "~/context/user-editable-data";
 
 const MainText = () => {
@@ -14,7 +17,8 @@ const MainText = () => {
   return (
     <div>
       <CmsLayout.EditBar>
-        <CmsLayout.EditBar.Info infoText="The text area below is an approximation of how the text will look on the actual site." />
+        <PreviewModal />
+        <CmsLayout.EditBar.Info infoText="The text below is an approximation. See preview left." />
       </CmsLayout.EditBar>
       <div className="custom-prose prose mt-sm w-full max-w-full">
         <TextAreaForm
@@ -32,3 +36,47 @@ const MainText = () => {
 };
 
 export default MainText;
+
+const PreviewModal = () => {
+  const {
+    store: {
+      data: { mainText },
+    },
+  } = UedCx.Programme.use();
+
+  return (
+    <Modal.WithVisibilityProvider
+      button={({ openModal }) => (
+        <CmsLayout.EditBar.Button
+          icon={<Icon.SitePreview />}
+          onClick={openModal}
+          text="preview"
+        />
+      )}
+      panelContent={({ closeModal }) => (
+        <div className="rounded-lg bg-white p-lg">
+          <div className="flex justify-end">
+            <h2 className="flex items-center gap-xs  text-gray-400">
+              <span>
+                <Icon.SitePreview />
+              </span>
+              <span>site preview</span>
+            </h2>
+          </div>
+          <div className="custom-prose prose mt-lg max-w-full gap-10 md:columns-2">
+            <Markdown>{mainText}</Markdown>
+          </div>
+          <div className="mt-xl flex justify-end">
+            <button
+              className="my-btn my-btn-neutral"
+              type="button"
+              onClick={closeModal}
+            >
+              close
+            </button>
+          </div>
+        </div>
+      )}
+    />
+  );
+};

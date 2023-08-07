@@ -49,6 +49,7 @@ import type { MyDb } from "~/types/database";
 // □ should memoise in revisionCx?
 // □ rework process entity logic + types. Want to keep ids. Types could be improved. Must be a lodash helper? lodash.set as used in UedCx?
 // □ on could not find entity page, etc., have cms header there + bg, though no revision buttons
+// □ should show preview of e.g. programme main text if can't display how text will look within text-area
 
 // STATE
 // □ could have a queryOne in state data e.g. for programmes/testimonials

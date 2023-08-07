@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import { Icon } from "../icons";
 
@@ -45,6 +45,28 @@ const EditBarInfo = ({
   </div>
 );
 
+EditBar.Info = EditBarInfo;
+
+const EditBarButton = ({
+  icon,
+  onClick,
+  text,
+}: {
+  onClick: () => void;
+  icon: ReactElement;
+  text: string;
+}) => (
+  <div
+    className="my-btn my-btn-neutral flex cursor-pointer items-center gap-xs rounded-sm border-transparent"
+    onClick={onClick}
+  >
+    <span className="text-gray-400">{icon}</span>
+    <span className="">{text}</span>
+  </div>
+);
+
+EditBar.Button = EditBarButton;
+
 const EditBarEditButton = ({
   buttonText,
   onClick,
@@ -52,16 +74,11 @@ const EditBarEditButton = ({
   buttonText: string;
   onClick: () => void;
 }) => (
-  <div
-    className="my-btn my-btn-neutral flex cursor-pointer items-center gap-xs rounded-sm border-transparent"
+  <EditBarButton
+    icon={<Icon.Configure />}
     onClick={onClick}
-  >
-    <span className="text-gray-400">
-      <Icon.Configure />
-    </span>
-    <span className="">{buttonText}</span>
-  </div>
+    text={buttonText}
+  />
 );
 
-EditBar.Info = EditBarInfo;
-EditBar.EditButton = EditBarEditButton;
+EditBarButton.Edit = EditBarEditButton;

@@ -1,6 +1,6 @@
 import React from "react";
 import { DndKit } from "~/components/dnd-kit";
-import { TextInputForm } from "~/components/forms";
+import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { InfoEntryCx } from "~/context/entities/programme";
 import { UedCx } from "~/context/user-editable-data";
@@ -61,10 +61,10 @@ const Entry = () => {
           key={undoKey}
         />
       </div>
-      <div className="">
-        <TextInputForm
+      <div className="w-full text-gray-800">
+        <TextAreaForm
           localStateValue={text}
-          input={{
+          textArea={{
             placeholder: "Info text",
           }}
           onSubmit={(updatedValue) => infoAction.text({ id, updatedValue })}
@@ -122,18 +122,17 @@ const AddEntryForm = () => {
           <Icon.Create />
         </div>
 
-        <div className="flex items-center gap-xs">
+        <div className="flex w-full flex-shrink items-center gap-xs ">
           <input
-            className="w-auto min-w-[80px] overflow-x-auto font-bold focus:bg-gray-100"
+            className="w-auto min-w-[80px] max-w-full overflow-x-auto font-bold focus:bg-gray-100"
             type="text"
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Title"
             value={title}
             size={1}
           />
-
           <input
-            className="w-auto min-w-[250px] overflow-x-auto focus:bg-gray-100"
+            className="w-auto max-w-full flex-grow overflow-x-auto focus:bg-gray-100"
             type="text"
             onChange={(e) => setText(e.target.value)}
             value={text}
