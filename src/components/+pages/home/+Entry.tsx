@@ -50,6 +50,9 @@ import type { MyDb } from "~/types/database";
 // □ rework process entity logic + types. Want to keep ids. Types could be improved. Must be a lodash helper? lodash.set as used in UedCx?
 // □ on could not find entity page, etc., have cms header there + bg, though no revision buttons
 // □ make preview modal abstraction. Apply to each page.
+// □ Is a double scroll bar in edit team members
+// □ prop Option to have darker bg
+// □ autofocus still triggers on textinputform
 
 // STATE
 // □ could have a queryOne in state data e.g. for programmes/testimonials

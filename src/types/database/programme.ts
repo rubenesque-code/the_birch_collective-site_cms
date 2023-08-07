@@ -51,10 +51,21 @@ export type Programme = {
         | "tipi"
         | "sun";
 
-      entries: { id: string; index: number; text: string }[];
+      type: "text" | "text-and-title";
+
+      entries: {
+        id: string;
+        index: number;
+        text: string;
+        title: string | null;
+      }[];
     };
 
     colour: "brown" | "green" | "orange";
+
+    title: string;
+
+    description: string | null;
   }[];
 
   subtitle: string;

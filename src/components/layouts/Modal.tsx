@@ -16,15 +16,17 @@ const UserEdit = ({
   closeModal,
   styles,
   header,
+  showCloseSection = true,
 }: {
   createEntityModal?: ReactElement;
   body: ReactElement;
   title?: string;
-  closeModal: () => void;
+  closeModal?: () => void;
   styles?: {
     outerWrapper?: string;
   };
   header?: ReactElement;
+  showCloseSection?: boolean;
 }) => (
   <div
     className={`relative flex h-[1200px] max-h-[70vh] w-[90vw] max-w-[1200px] flex-col rounded-2xl bg-white p-6 text-left shadow-xl ${
@@ -41,15 +43,17 @@ const UserEdit = ({
       <div className="mt-sm">{createEntityModal}</div>
     ) : null}
     <div className="mt-sm flex-grow overflow-y-auto">{body}</div>
-    <div className="mt-xl">
-      <button
-        className="my-btn my-btn-neutral"
-        type="button"
-        onClick={closeModal}
-      >
-        close
-      </button>
-    </div>
+    {showCloseSection ? (
+      <div className="mt-xl">
+        <button
+          className="my-btn my-btn-neutral"
+          type="button"
+          onClick={closeModal}
+        >
+          close
+        </button>
+      </div>
+    ) : null}
   </div>
 );
 

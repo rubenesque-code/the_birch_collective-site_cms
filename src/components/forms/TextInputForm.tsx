@@ -83,8 +83,8 @@ const Input = ({
   trailingSpace = 20,
   value,
 }: InputProps) => {
-  /*   const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
-    useState(false); */
+  const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
+    useState(false);
 
   const [dummyInputRef, { width: dummyInputWidth }] =
     useMeasure<HTMLParagraphElement>();
@@ -117,15 +117,14 @@ const Input = ({
           placeholder={placeholder}
           type="text"
           autoComplete="off"
-          onFocus={() => {
-            /*             if (!autoFocus && !isBlurredOnInitialRender) {
+          onFocus={(e) => {
+            if (!isBlurredOnInitialRender) {
               // · handle unwanted autofocus (bug?)
               e.currentTarget.blur();
               setIsBlurredOnInitialRender(true);
             } else {
               setIsFocused(true);
-            } */
-            setIsFocused(true);
+            }
           }}
           onBlur={() => {
             setIsFocused(false);

@@ -83,8 +83,8 @@ const TextArea = ({
   value,
 }: // autoFocus,
 TextAreaProps) => {
-  /*   const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
-    useState(false); */
+  const [isBlurredOnInitialRender, setIsBlurredOnInitialRender] =
+    useState(false);
 
   return (
     <>
@@ -100,15 +100,14 @@ TextAreaProps) => {
             setValue(e.target.value);
           }}
           placeholder={placeholder}
-          onFocus={() => {
-            /*             if (!autoFocus && !isBlurredOnInitialRender) {
+          onFocus={(e) => {
+            if (!isBlurredOnInitialRender) {
               // · handle unwanted autofocus (bug?)
               e.currentTarget.blur();
               setIsBlurredOnInitialRender(true);
-              console.log("1");
-            } */
-
-            setIsFocused(true);
+            } else {
+              setIsFocused(true);
+            }
           }}
           onBlur={() => {
             setIsFocused(false);

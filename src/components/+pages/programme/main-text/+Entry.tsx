@@ -57,7 +57,7 @@ const PreviewModal = () => {
         />
       )}
       panelContent={({ closeModal }) => (
-        <div className="rounded-lg bg-white p-lg">
+        <div className="rounded-lg bg-white p-lg shadow-xl">
           <div className="flex justify-end">
             <h2 className="flex items-center gap-xs  text-gray-400">
               <span>

@@ -20,6 +20,7 @@ import Headings from "./headings/+Entry";
 import MainText from "./main-text/+Entry";
 import Info from "./info/+Entry";
 import Posters from "./posters/+Entry";
+import Sections from "./sections/+Entry";
 
 const AboutPage = () => (
   <AwaitParams>
@@ -77,6 +78,10 @@ const PageSpecificContent = () => (
         </div>
       </div>
     </SiteLayout.Section.Spacing>
+
+    <SiteLayout.Section.Spacing.Horizontal>
+      <Sections />
+    </SiteLayout.Section.Spacing.Horizontal>
   </>
 );
 

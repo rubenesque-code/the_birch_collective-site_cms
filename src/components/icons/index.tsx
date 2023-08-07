@@ -33,6 +33,21 @@ import {
   LinkedinLogo,
   CaretUp,
   MonitorPlay,
+  OrangeSlice,
+  Leaf,
+  FlowerTulip,
+  PottedPlant,
+  FlowerLotus,
+  Feather,
+  Flame,
+  FishSimple,
+  Mountains,
+  Moon,
+  Grains,
+  Star,
+  Tipi,
+  Sun,
+  Plant,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -88,3 +103,28 @@ const AboutUsIcon = (
 ) => <FontAwesomeIcon icon={faCottonBureau} {...props} />;
 
 Icon.AboutUs = AboutUsIcon;
+
+const BulletIcon = () => {
+  throw new Error(
+    "BulletIcon exists for naming purposes only and should not be used as a component",
+  );
+};
+
+Icon.Bullet = BulletIcon;
+
+BulletIcon.Leaf = Leaf;
+BulletIcon.Tree = Tree;
+BulletIcon.Orange = OrangeSlice;
+BulletIcon.Plant = Plant;
+BulletIcon.PottedPlant = PottedPlant;
+BulletIcon.Tulip = FlowerTulip;
+BulletIcon.Lotus = FlowerLotus;
+BulletIcon.Feather = Feather;
+BulletIcon.Flame = Flame;
+BulletIcon.Fish = FishSimple;
+BulletIcon.Mountains = Mountains;
+BulletIcon.Moon = Moon;
+BulletIcon.Grains = Grains;
+BulletIcon.Star = Star;
+BulletIcon.Tipi = Tipi;
+BulletIcon.Sun = Sun;

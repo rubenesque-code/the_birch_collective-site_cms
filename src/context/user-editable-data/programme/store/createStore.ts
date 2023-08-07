@@ -326,6 +326,8 @@ export const createStore = (input: { initData: Store["data"] }) =>
               }),
             ),
 
+          description: sectionNonArrAction("description"),
+
           bullets: {
             entries: {
               create: (input) =>
@@ -445,6 +447,8 @@ export const createStore = (input: { initData: Store["data"] }) =>
           },
 
           colour: sectionNonArrAction("colour"),
+
+          title: sectionNonArrAction("title"),
         },
 
         subtitle: nonArrAction("subtitle"),
