@@ -18,7 +18,10 @@ const MainText = () => {
     <div>
       <CmsLayout.EditBar>
         <PreviewModal />
-        <CmsLayout.EditBar.Info infoText="The text below is an approximation. See preview left." />
+        <CmsLayout.EditBar.Info
+          infoText="The text below is an approximation. See preview left."
+          gap="xs"
+        />
       </CmsLayout.EditBar>
       <div className="custom-prose prose mt-sm w-full max-w-full">
         <TextAreaForm
@@ -50,7 +53,7 @@ const PreviewModal = () => {
         <CmsLayout.EditBar.Button
           icon={<Icon.SitePreview />}
           onClick={openModal}
-          text="preview"
+          text="preview text"
         />
       )}
       panelContent={({ closeModal }) => (
@@ -60,7 +63,7 @@ const PreviewModal = () => {
               <span>
                 <Icon.SitePreview />
               </span>
-              <span>site preview</span>
+              <span>preview</span>
             </h2>
           </div>
           <div className="custom-prose prose mt-lg max-w-full gap-10 md:columns-2">

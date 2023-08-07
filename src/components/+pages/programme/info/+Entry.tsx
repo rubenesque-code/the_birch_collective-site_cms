@@ -1,12 +1,15 @@
 import React from "react";
+import { WarningPanel } from "~/components/WarningPanel";
 import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
+import { ComponentMenu } from "~/components/menus";
+import { Modal } from "~/components/styled-bases";
 import { InfoEntryCx } from "~/context/entities/programme";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
-import { useFocused } from "~/hooks";
+import { useFocused, useToast } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
 
 const Info = () => {
@@ -37,7 +40,6 @@ const Info = () => {
 
 export default Info;
 
-// todo: delete bullet
 const Entry = () => {
   const {
     store: {
@@ -49,8 +51,9 @@ const Entry = () => {
   const { id, text, title } = InfoEntryCx.use();
 
   return (
-    <div className="flex gap-xs">
-      <div className="font-bold">
+    <div className="group/entry relative flex items-start gap-xs">
+      <div className="relative font-bold">
+        <EntryDeleteButton />
         <TextInputForm
           localStateValue={title}
           input={{
@@ -72,6 +75,47 @@ const Entry = () => {
           key={undoKey}
         />
       </div>
+    </div>
+  );
+};
+
+const EntryDeleteButton = () => {
+  const {
+    store: {
+      actions: { info: infoAction },
+    },
+  } = UedCx.Programme.use();
+
+  const { id } = InfoEntryCx.use();
+
+  const toast = useToast();
+
+  return (
+    <div className="absolute -left-1 top-1/2 -translate-x-full -translate-y-1/2 opacity-0 transition-colors duration-75 ease-in-out group-hover/entry:opacity-60 hover:!opacity-100">
+      <Modal.WithVisibilityProvider
+        button={({ openModal }) => (
+          <ComponentMenu.Button.Delete
+            onClick={openModal}
+            tooltip="delete entry"
+          />
+        )}
+        panelContent={({ closeModal }) => (
+          <WarningPanel
+            callback={() => {
+              infoAction.delete({ id });
+
+              closeModal();
+
+              toast.neutral("deleted info entry");
+            }}
+            closeModal={closeModal}
+            text={{
+              title: "Delete info entry",
+              body: "Are you sure?",
+            }}
+          />
+        )}
+      />
     </div>
   );
 };

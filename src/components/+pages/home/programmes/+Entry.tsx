@@ -107,7 +107,7 @@ const EntriesSection = () => {
       <CmsLayout.EditBar>
         <ProgrammesModal
           button={({ openModal }) => (
-            <CmsLayout.EditBar.EditButton
+            <CmsLayout.EditBar.Button.Edit
               buttonText="Edit programmes"
               onClick={openModal}
             />

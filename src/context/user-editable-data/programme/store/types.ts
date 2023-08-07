@@ -12,9 +12,11 @@ export type Store = {
 
 export type Programme = MyOmit<MyDb["programme"], "summary">;
 export type Info = Programme["info"][number];
+export type Poster = Programme["posters"][number];
 export type Section = Programme["sections"][number];
 
 type InfoNonArrActions = GenerateEntityNonArrActions<Info>;
+type PosterNonArrActions = GenerateEntityNonArrActions<Poster>;
 type SectionNonArrActions = GenerateEntityNonArrActions<Section>;
 
 type ArrActions = {
@@ -23,6 +25,12 @@ type ArrActions = {
     delete: (arg0: { id: string }) => void;
     reorder: (arg0: { activeId: string; overId: string }) => void;
   } & InfoNonArrActions;
+
+  posters: {
+    create: (arg0: Poster) => void;
+    delete: (arg0: { id: string }) => void;
+    reorder: (arg0: { activeId: string; overId: string }) => void;
+  } & PosterNonArrActions;
 
   sections: {
     create: (arg0: Section) => void;
@@ -47,25 +55,6 @@ type ArrActions = {
       };
     };
   } & SectionNonArrActions;
-
-  /*   summary: {
-    bullets: {
-      create: (arg0: {
-        sectionId: string;
-        newEntry: Data["summary"]["bullets"][number];
-      }) => void;
-      delete: (arg0: { sectionId: string; bulletId: string }) => void;
-      reorder: (arg0: {
-        sectionId: string;
-        bullet: { activeId: string; overId: string };
-      }) => void;
-      text: (arg0: {
-        sectionId: string;
-        bulletId: string;
-        updatedValue: string;
-      }) => void;
-    };
-  }; */
 };
 
 type Actions = {

@@ -7,7 +7,7 @@ import type {
   ObjFieldsToStr,
   OmitObjArrProps,
 } from "../../_helpers/types";
-import type { Store, Info, Section } from "./types";
+import type { Store, Info, Section, Poster } from "./types";
 import type { MyOmit } from "~/types/utilities";
 import { getReorderedEntities, sortByIndex } from "~/helpers/data/process";
 
@@ -34,6 +34,34 @@ export const createStore = (input: { initData: Store["data"] }) =>
       return (input: {
         id: string;
         updatedValue: GetObjValue<MyOmit<Info, "id" | "index">, TKeyStr>;
+      }) =>
+        set(
+          produce((store: Store) => {
+            const entityIndex = store.data.sections.findIndex(
+              (section) => section.id === input.id,
+            );
+
+            if (entityIndex < 0) {
+              return;
+            }
+
+            lodash.set(
+              store.data.sections[entityIndex],
+              keys,
+              input.updatedValue,
+            );
+          }),
+        );
+    }
+
+    function posterNonArrAction<
+      TKeyStr extends ObjFieldsToStr<
+        OmitObjArrProps<MyOmit<Poster, "id" | "index">>
+      >,
+    >(keys: TKeyStr) {
+      return (input: {
+        id: string;
+        updatedValue: GetObjValue<MyOmit<Poster, "id" | "index">, TKeyStr>;
       }) =>
         set(
           produce((store: Store) => {
@@ -170,6 +198,73 @@ export const createStore = (input: { initData: Store["data"] }) =>
         },
 
         mainText: nonArrAction("mainText"),
+
+        posters: {
+          create: (newEntry) =>
+            set(
+              produce((store: Store) => {
+                store.data.posters.push(newEntry);
+              }),
+            ),
+
+          delete: (input) =>
+            set(
+              produce((store: Store) => {
+                const entriesOrdered = store.data.posters.sort(sortByIndex);
+
+                const entityToDeleteIndex = entriesOrdered.findIndex(
+                  (t) => t.id === input.id,
+                );
+                if (entityToDeleteIndex === -1) return;
+
+                entriesOrdered.splice(entityToDeleteIndex, 1);
+
+                for (
+                  let i = entityToDeleteIndex;
+                  i < entriesOrdered.length;
+                  i++
+                ) {
+                  entriesOrdered[i].index = entriesOrdered[i].index - 1;
+                }
+              }),
+            ),
+
+          reorder: (input) =>
+            set(
+              produce((store: Store) => {
+                const entriesOrdered = store.data.posters.sort(sortByIndex);
+
+                const active = entriesOrdered.find(
+                  (t) => t.id === input.activeId,
+                );
+                const over = entriesOrdered.find((t) => t.id === input.overId);
+
+                if (!active || !over) {
+                  return;
+                }
+
+                const updatedEntries = getReorderedEntities({
+                  active,
+                  over,
+                  entities: entriesOrdered,
+                });
+
+                updatedEntries.forEach((updatedEntry) => {
+                  const index = store.data.posters.findIndex(
+                    (t) => t.id === updatedEntry.id,
+                  );
+                  if (index !== -1)
+                    store.data.posters[index].index = updatedEntry.newIndex;
+                });
+              }),
+            ),
+
+          image: {
+            dbConnections: {
+              imageId: posterNonArrAction("image.dbConnections.imageId"),
+            },
+          },
+        },
 
         sections: {
           create: (newEntry) =>

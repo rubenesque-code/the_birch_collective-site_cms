@@ -19,6 +19,7 @@ import BannerImage from "./banner-image/+Entry";
 import Headings from "./headings/+Entry";
 import MainText from "./main-text/+Entry";
 import Info from "./info/+Entry";
+import Posters from "./posters/+Entry";
 
 const AboutPage = () => (
   <AwaitParams>
@@ -67,11 +68,13 @@ const PageSpecificContent = () => (
     </SiteLayout.Section.Spacing.Horizontal>
 
     <SiteLayout.Section.Spacing>
-      <div className="flex gap-lg">
-        <div className="flex-grow">
+      <div className="grid grid-cols-2 gap-lg">
+        <div className="">
           <Info />
         </div>
-        <div className="w-[300px]">Posters</div>
+        <div className="">
+          <Posters />
+        </div>
       </div>
     </SiteLayout.Section.Spacing>
   </>

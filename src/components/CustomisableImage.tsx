@@ -23,7 +23,7 @@ export const CustomisableImage = ({
     src={urls.large}
     blurDataURL={urls.blur}
     placeholder="blur"
-    className={isCircle ? "rounded-full" : ""}
+    className={`${isCircle ? "rounded-full" : ""}`}
     style={{
       objectFit,
       objectPosition: `${position.x}% ${position.y}%`,

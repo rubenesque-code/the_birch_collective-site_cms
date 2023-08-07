@@ -17,6 +17,16 @@ export type Programme = {
 
   mainText: string;
 
+  posters: {
+    id: string;
+    index: number;
+    image: {
+      dbConnections: {
+        imageId: string | null;
+      };
+    };
+  }[];
+
   sections: {
     id: string;
 

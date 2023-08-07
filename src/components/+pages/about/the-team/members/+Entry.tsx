@@ -25,7 +25,7 @@ const Members = () => {
       <CmsLayout.EditBar>
         <MembersModal
           button={({ openModal }) => (
-            <CmsLayout.EditBar.EditButton
+            <CmsLayout.EditBar.Button.Edit
               buttonText="Edit members"
               onClick={openModal}
             />
