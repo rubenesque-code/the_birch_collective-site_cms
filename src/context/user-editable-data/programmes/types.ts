@@ -1,5 +1,5 @@
 import type { MyDb } from "~/types/database";
-import type { MyOmit } from "~/types/utilities";
+import type { MyPick } from "~/types/utilities";
 import type { GenerateEntityNonArrActions } from "../_helpers/types";
 
 export type Store = {
@@ -7,11 +7,14 @@ export type Store = {
   actions: Actions;
 };
 
-export type Programme = MyOmit<
-  MyDb["programme"],
-  "sections" | "info" | "bannerImage" | "mainText"
->;
 type Data = Programme[];
+
+type Programme = MyDb["programme"];
+
+export type ProgrammeActionFields = MyPick<
+  Programme,
+  "subtitle" | "summary" | "title"
+>;
 
 type ArrActions = {
   summary: {
@@ -39,5 +42,5 @@ type Actions = {
   create: (arg0: Programme) => void;
   delete: (arg0: { id: string }) => void;
   reorder: (arg0: { activeId: string; overId: string }) => void;
-} & GenerateEntityNonArrActions<MyOmit<Programme, "id" | "index">> &
+} & GenerateEntityNonArrActions<ProgrammeActionFields> &
   ArrActions;

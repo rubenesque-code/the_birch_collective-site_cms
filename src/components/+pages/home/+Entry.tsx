@@ -53,6 +53,8 @@ import type { MyDb } from "~/types/database";
 // □ Is a double scroll bar in edit team members
 // □ prop Option to have darker bg
 // □ autofocus still triggers on textinputform
+// □ option to toggle programme subtitle
+// □ component menu delete button. Need span around icon? Want to be able to have text-gray-400 on cms.editbar. text needs to go red when hover on outer wrapper - not working properly.
 
 // STATE
 // □ could have a queryOne in state data e.g. for programmes/testimonials

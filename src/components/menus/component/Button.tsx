@@ -34,11 +34,18 @@ const Button = ({
 
 export { Button };
 
-const DeleteButton = (
-  props: MyPick<ButtonProps, "onClick" | "styles" | "tooltip">,
-) => (
-  <Button {...props} styles={{ button: "hover:bg-my-alert" }}>
-    <span className="text-my-alert-content">
+const DeleteButton = ({
+  styles,
+  ...props
+}: { styles?: { outer?: string; inner?: string } } & MyPick<
+  ButtonProps,
+  "onClick" | "tooltip"
+>) => (
+  <Button
+    {...props}
+    styles={{ button: `hover:bg-my-alert ${styles?.outer || ""}` }}
+  >
+    <span className={`text-my-alert-content ${styles?.inner || ""}`}>
       <Icon.Delete />
     </span>
   </Button>

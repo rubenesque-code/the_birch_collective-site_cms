@@ -37,7 +37,7 @@ export const createStore = (input: { initData: Store["data"] }) =>
       }) =>
         set(
           produce((store: Store) => {
-            const entityIndex = store.data.sections.findIndex(
+            const entityIndex = store.data.info.findIndex(
               (section) => section.id === input.id,
             );
 
@@ -45,11 +45,7 @@ export const createStore = (input: { initData: Store["data"] }) =>
               return;
             }
 
-            lodash.set(
-              store.data.sections[entityIndex],
-              keys,
-              input.updatedValue,
-            );
+            lodash.set(store.data.info[entityIndex], keys, input.updatedValue);
           }),
         );
     }
@@ -65,7 +61,7 @@ export const createStore = (input: { initData: Store["data"] }) =>
       }) =>
         set(
           produce((store: Store) => {
-            const entityIndex = store.data.sections.findIndex(
+            const entityIndex = store.data.posters.findIndex(
               (section) => section.id === input.id,
             );
 
@@ -74,7 +70,7 @@ export const createStore = (input: { initData: Store["data"] }) =>
             }
 
             lodash.set(
-              store.data.sections[entityIndex],
+              store.data.posters[entityIndex],
               keys,
               input.updatedValue,
             );

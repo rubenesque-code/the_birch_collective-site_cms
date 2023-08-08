@@ -30,7 +30,7 @@ function Provider({
   ...props
 }: {
   children: React.ReactNode | ((args: ContextValue) => React.ReactNode);
-  initData: Store["data"];
+  initData: MyDb["programme"][];
 }) {
   const [initData, setInitData] = React.useState(props.initData);
   const [undoKey, setUndoKey] = React.useState(generateUid());

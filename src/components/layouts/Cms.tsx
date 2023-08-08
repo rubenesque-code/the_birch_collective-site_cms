@@ -64,7 +64,7 @@ const EditBarButton = ({
   text,
   tooltip,
 }: {
-  onClick: () => void;
+  onClick?: () => void;
   icon: ReactElement;
   text: string;
   tooltip?: string;

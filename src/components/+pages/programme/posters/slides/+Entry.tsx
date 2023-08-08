@@ -10,6 +10,7 @@ import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper"
 import { Icon } from "~/components/icons";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
+import { ImagePlaceholder } from "~/components/ImagePlaceholder";
 
 const Slides = () => {
   const [swiper, setSwiper] = React.useState<SwiperType | null>(null);
@@ -24,39 +25,48 @@ const Slides = () => {
 
   return (
     <div className="relative flex h-full w-full justify-end">
-      <Swiper
-        spaceBetween={0}
-        slidesPerView={1}
-        onSwiper={(swiper) => setSwiper(swiper)}
-        style={{
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-        }}
-      >
-        {sorted.map((entry, i) => {
-          return (
-            <SwiperSlide key={i}>
-              <UserSelectedImageWrapper
-                dbImageId={entry.image.dbConnections.imageId}
-                placeholderText="programme poster"
-              >
-                {({ dbImageId }) => (
-                  <DbImageWrapper dbImageId={dbImageId}>
-                    {({ urls }) => (
-                      <CustomisableImage urls={urls} objectFit="contain" />
-                    )}
-                  </DbImageWrapper>
-                )}
-              </UserSelectedImageWrapper>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
-      <Navigation
-        swipeLeft={() => swiper?.slidePrev()}
-        swipeRight={() => swiper?.slideNext()}
-      />
+      {!posters.length ? (
+        <div className="absolute h-full w-full">
+          <ImagePlaceholder placeholderText="flyers" />
+        </div>
+      ) : (
+        <Swiper
+          spaceBetween={0}
+          slidesPerView={1}
+          onSwiper={(swiper) => setSwiper(swiper)}
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          {sorted.map((entry, i) => {
+            return (
+              <SwiperSlide key={i}>
+                <UserSelectedImageWrapper
+                  dbImageId={entry.image.dbConnections.imageId}
+                  placeholderText="programme poster"
+                >
+                  {({ dbImageId }) => (
+                    <DbImageWrapper dbImageId={dbImageId}>
+                      {({ urls }) => (
+                        <CustomisableImage urls={urls} objectFit="contain" />
+                      )}
+                    </DbImageWrapper>
+                  )}
+                </UserSelectedImageWrapper>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      )}
+
+      {sorted.length > 1 ? (
+        <Navigation
+          swipeLeft={() => swiper?.slidePrev()}
+          swipeRight={() => swiper?.slideNext()}
+        />
+      ) : null}
     </div>
   );
 };

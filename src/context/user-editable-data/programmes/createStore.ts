@@ -8,19 +8,17 @@ import type {
   ObjFieldsToStr,
   OmitObjArrProps,
 } from "../_helpers/types";
-import type { Programme, Store } from "./types";
-import type { MyOmit } from "~/types/utilities";
+import type { Store, ProgrammeActionFields } from "./types";
+import type { MyDb } from "~/types/database";
 
 export const createStore = (input: { initData: Store["data"] }) =>
   z.createStore<Store>((set) => {
     function nonArrAction<
-      TKeyStr extends ObjFieldsToStr<
-        OmitObjArrProps<MyOmit<Programme, "id" | "index">>
-      >,
+      TKeyStr extends ObjFieldsToStr<OmitObjArrProps<ProgrammeActionFields>>,
     >(keys: TKeyStr) {
       return (input: {
         id: string;
-        updatedValue: GetObjValue<MyOmit<Programme, "id" | "index">, TKeyStr>;
+        updatedValue: GetObjValue<ProgrammeActionFields, TKeyStr>;
       }) =>
         set(
           produce((store: Store) => {
@@ -48,7 +46,7 @@ export const createStore = (input: { initData: Store["data"] }) =>
             }),
           ),
 
-        create: (newEntry: Programme) =>
+        create: (newEntry: MyDb["programme"]) =>
           set(
             produce((store: Store) => {
               store.data.push(newEntry);

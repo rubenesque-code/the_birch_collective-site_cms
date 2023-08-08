@@ -51,6 +51,7 @@ import {
   ArrowsCounterClockwise,
   ArrowDown,
   ArrowUp,
+  ArrowSquareIn,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -98,6 +99,7 @@ Icon.SitePreview = MonitorPlay;
 Icon.Update = ArrowsCounterClockwise;
 Icon.ArrowDown = ArrowDown;
 Icon.ArrowUp = ArrowUp;
+Icon.InternalLink = ArrowSquareIn;
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";

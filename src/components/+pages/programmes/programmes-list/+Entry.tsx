@@ -23,30 +23,31 @@ import { Leaf } from "@phosphor-icons/react";
 import { Modal } from "~/components/styled-bases";
 import { WarningPanel } from "~/components/WarningPanel";
 import { useToast } from "~/hooks";
+import Link from "next/link";
 
-const ProgrammesList = () => {
-  return (
-    <div>
-      <CmsLayout.EditBar>
-        <ProgrammesModal
-          button={({ openModal }) => (
-            <CmsLayout.EditBar.Button.Edit
-              buttonText="Edit programmes"
-              onClick={openModal}
-            />
-          )}
-        />
-        <CmsLayout.EditBar.Info
-          infoText="Edit fields below. Edit in depth from individual page."
-          gap="xs"
-        />
-      </CmsLayout.EditBar>
-      <div className="mt-xl">
-        <Programmes />
-      </div>
+const ProgrammesList = () => (
+  <div>
+    <CmsLayout.EditBar className="opacity-50 transition-opacity duration-100 ease-in-out hover:opacity-100">
+      <ProgrammesModal
+        button={({ openModal }) => (
+          <CmsLayout.EditBar.Button.Edit
+            buttonText="Edit programmes"
+            onClick={openModal}
+          />
+        )}
+      />
+
+      <CmsLayout.EditBar.Info
+        infoText="Below fields are editable. Edit in depth from individual page."
+        gap="xs"
+      />
+    </CmsLayout.EditBar>
+
+    <div className="mt-xl">
+      <Programmes />
     </div>
-  );
-};
+  </div>
+);
 
 export default ProgrammesList;
 
@@ -78,76 +79,120 @@ const Programme = () => {
     revision: { undoKey },
   } = UedCx.Programmes.use();
 
+  const toast = useToast();
+
   return (
-    <div className="flex gap-md">
-      <div className="w-full max-w-[350px]">
-        <div className="group/image relative aspect-[4/3] w-full ">
-          <ImageMenu />
-          <UserSelectedImageWrapper
-            dbImageId={summary.image.dbConnections.imageId}
-            placeholderText="summary image"
-          >
-            {({ dbImageId }) => (
-              <DbImageWrapper dbImageId={dbImageId}>
-                {({ urls }) => (
-                  <CustomisableImage
-                    urls={urls}
-                    position={summary.image.position}
-                  />
-                )}
-              </DbImageWrapper>
-            )}
-          </UserSelectedImageWrapper>
-        </div>
-      </div>
-      <div className="flex-grow">
-        <div className="font-display text-5xl text-brandOrange">
-          <TextInputForm
-            localStateValue={title}
-            input={{
-              placeholder: "Programme title",
-              styles: "tracking-wide font-bold",
-            }}
-            onSubmit={(inputValue) =>
-              actions.title({ id, updatedValue: inputValue })
-            }
-            tooltip="Click to edit title"
-            key={undoKey}
-          />
-        </div>
-        <div className="mt-xxs font-display text-3xl text-brandOrange">
-          <TextAreaForm
-            localStateValue={subtitle}
-            textArea={{
-              placeholder: "Programme subtitle",
-              styles: "tracking-wide font-bold",
-            }}
-            onSubmit={(inputValue) =>
-              actions.subtitle({ id, updatedValue: inputValue })
-            }
-            tooltip="Click to edit subtitle"
-            key={undoKey}
-          />
-        </div>
-        <div className="custom-prose_no-p-margin prose mt-xs max-w-full font-medium">
-          <TextAreaForm
-            localStateValue={summary.mainText}
-            textArea={{
-              placeholder: "Programme summary",
-              styles: "tracking-wide font-medium",
-            }}
-            onSubmit={(inputValue) =>
-              actions.subtitle({ id, updatedValue: inputValue })
-            }
-            tooltip="Click to edit subtitle"
-            key={undoKey}
-          />
+    <div className="group/programme">
+      <CmsLayout.EditBar className="opacity-40 transition-opacity duration-100 ease-in-out group-hover/programme:opacity-80 hover:!opacity-100">
+        <div>
+          <Link href={`programmes/${id}`}>
+            <CmsLayout.EditBar.Button
+              icon={<Icon.InternalLink />}
+              text="page"
+            />
+          </Link>
         </div>
         <div>
-          <ProgrammeBullets />
+          <Modal.WithVisibilityProvider
+            button={({ openModal }) => (
+              <ComponentMenu.Button.Delete
+                tooltip="delete programme"
+                onClick={openModal}
+                styles={{
+                  inner: "!text-gray-400 hover:!text-my-alert-content",
+                }}
+              />
+            )}
+            panelContent={({ closeModal }) => (
+              <WarningPanel
+                callback={() => {
+                  actions.delete({ id });
+
+                  closeModal();
+
+                  toast.neutral("deleted programme");
+                }}
+                closeModal={closeModal}
+                text={{
+                  title: "Delete programme",
+                  body: "Are you sure?",
+                }}
+              />
+            )}
+          />
         </div>
-        <div className="mt-xs">
-          <AddBulletForm />
+      </CmsLayout.EditBar>
+
+      <div className="mt-md flex gap-md">
+        <div className="w-full max-w-[350px]">
+          <div className="group/image relative aspect-[4/3] w-full ">
+            <ImageMenu />
+            <UserSelectedImageWrapper
+              dbImageId={summary.image.dbConnections.imageId}
+              placeholderText="summary image"
+            >
+              {({ dbImageId }) => (
+                <DbImageWrapper dbImageId={dbImageId}>
+                  {({ urls }) => (
+                    <CustomisableImage
+                      urls={urls}
+                      position={summary.image.position}
+                    />
+                  )}
+                </DbImageWrapper>
+              )}
+            </UserSelectedImageWrapper>
+          </div>
+        </div>
+        <div className="flex-grow">
+          <div className="font-display text-5xl text-brandOrange">
+            <TextInputForm
+              localStateValue={title}
+              input={{
+                placeholder: "Programme title",
+                styles: "tracking-wide font-bold",
+              }}
+              onSubmit={(inputValue) =>
+                actions.title({ id, updatedValue: inputValue })
+              }
+              tooltip="Click to edit title"
+              key={undoKey}
+            />
+          </div>
+          <div className="mt-xxs font-display text-3xl text-brandOrange">
+            <TextAreaForm
+              localStateValue={subtitle}
+              textArea={{
+                placeholder: "Programme subtitle",
+                styles: "tracking-wide font-bold",
+              }}
+              onSubmit={(inputValue) =>
+                actions.subtitle({ id, updatedValue: inputValue })
+              }
+              tooltip="Click to edit subtitle"
+              key={undoKey}
+            />
+          </div>
+          <div className="custom-prose_no-p-margin prose mt-xs max-w-full font-medium">
+            <TextAreaForm
+              localStateValue={summary.mainText}
+              textArea={{
+                placeholder: "Programme summary",
+                styles: "tracking-wide font-medium",
+              }}
+              onSubmit={(inputValue) =>
+                actions.subtitle({ id, updatedValue: inputValue })
+              }
+              tooltip="Click to edit subtitle"
+              key={undoKey}
+            />
+          </div>
+          <div>
+            <ProgrammeBullets />
+          </div>
+          <div className="mt-xs">
+            <AddBulletForm />
+          </div>
         </div>
       </div>
     </div>
@@ -219,7 +264,7 @@ const ProgrammeBullets = () => {
   const sorted = React.useMemo(() => deepSortByIndex(bullets), [bullets]);
 
   return (
-    <>
+    <div className="mt-xs">
       {!sorted.length ? (
         <p className="italic text-gray-500">No programme bullets yet.</p>
       ) : (
@@ -238,7 +283,7 @@ const ProgrammeBullets = () => {
           </DndKit.Context>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

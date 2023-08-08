@@ -13,23 +13,32 @@ import type {
 } from "~/types/helpers";
 import type { MyOmit, MyPick } from "~/types/utilities";
 
-type NewProgramme = MyPick<
-  MyDb["programme"],
-  "id" | "index" | "subtitle" | "summary" | "title"
+type Programme = MyDb["programme"];
+
+type Actions = GenerateNonArrActions<
+  MyPick<Programme, "subtitle" | "summary" | "title">
 >;
 
-type Actions = GenerateNonArrActions<MyOmit<NewProgramme, "id" | "index">>;
-
 interface Store {
-  data: NewProgramme;
+  data: Programme;
   actions: {
-    resetData: (data: NewProgramme) => void;
+    resetData: (data: Programme) => void;
   } & Actions;
 }
 
-export const createInitData = (input: { index: number }): NewProgramme => ({
+export const createInitData = (input: { index: number }): Programme => ({
   id: generateUid(),
   index: input.index,
+  bannerImage: {
+    dbConnections: {
+      imageId: null,
+    },
+    position: { x: 50, y: 50 },
+  },
+  info: [],
+  mainText: "",
+  posters: [],
+  sections: [],
   subtitle: "",
   summary: {
     bullets: [],

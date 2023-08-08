@@ -32,7 +32,7 @@ const Sections = () => {
     <div>
       <CmsLayout.EditBar className="opacity-50 transition-opacity duration-100 ease-in-out hover:opacity-100">
         <div className="flex items-center gap-sm">
-          <PreviewModal />
+          {sections.length ? <PreviewModal /> : null}
           <NewSectionModal
             button={({ openModal }) => (
               <CmsLayout.EditBar.Button
@@ -115,6 +115,7 @@ const Section = () => {
     () => deepSortByIndex(sections),
     [sections],
   );
+  console.log("sectionsSorted:", sectionsSorted);
 
   const { id, title, bullets, colour, description, index } = SectionCx.use();
 
@@ -129,6 +130,8 @@ const Section = () => {
     () => deepSortByIndex(bullets.entries),
     [bullets.entries],
   );
+
+  const toast = useToast();
 
   return (
     <div className="group/section">
@@ -181,6 +184,7 @@ const Section = () => {
             }
           />
         </div>
+
         <div className="flex items-center gap-sm">
           <ComponentMenu.Button
             onClick={() => {
@@ -213,6 +217,36 @@ const Section = () => {
           >
             <Icon.ArrowUp />
           </ComponentMenu.Button>
+
+          <ComponentMenu.Divider />
+
+          <Modal.WithVisibilityProvider
+            button={({ openModal }) => (
+              <ComponentMenu.Button.Delete
+                tooltip="delete programme"
+                onClick={openModal}
+                styles={{
+                  inner: "!text-gray-400 hover:!text-my-alert-content",
+                }}
+              />
+            )}
+            panelContent={({ closeModal }) => (
+              <WarningPanel
+                callback={() => {
+                  sectionAction.delete({ id });
+
+                  closeModal();
+
+                  toast.neutral("deleted programme");
+                }}
+                closeModal={closeModal}
+                text={{
+                  title: "Delete programme",
+                  body: "Are you sure?",
+                }}
+              />
+            )}
+          />
         </div>
       </CmsLayout.EditBar>
 
