@@ -441,9 +441,37 @@ export const createStore = (input: { initData: Store["data"] }) =>
                       input.updatedValue;
                   }),
                 ),
+
+              title: (input) =>
+                set(
+                  produce((store: Store) => {
+                    const sectionIndex = store.data.sections.findIndex(
+                      (section) => section.id === input.sectionId,
+                    );
+
+                    if (sectionIndex < 0) {
+                      return;
+                    }
+
+                    const section = store.data.sections[sectionIndex];
+
+                    const bulletIndex = section.bullets.entries.findIndex(
+                      (bullet) => bullet.id === input.bulletId,
+                    );
+
+                    if (bulletIndex < 0) {
+                      return;
+                    }
+
+                    section.bullets.entries[bulletIndex].title =
+                      input.updatedValue;
+                  }),
+                ),
             },
 
             icon: sectionNonArrAction("bullets.icon"),
+
+            type: sectionNonArrAction("bullets.type"),
           },
 
           colour: sectionNonArrAction("colour"),

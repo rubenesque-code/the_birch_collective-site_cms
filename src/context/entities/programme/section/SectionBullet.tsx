@@ -1,20 +1,21 @@
 import { createContext, useContext, type ReactNode } from "react";
 import type { MyDb } from "~/types/database";
 
-type Section = MyDb["programme"]["sections"][number];
+type Bullet =
+  MyDb["programme"]["sections"][number]["bullets"]["entries"][number];
 
-type ContextValue = Section;
+type ContextValue = Bullet;
 
 const Context = createContext<ContextValue | null>(null);
 
 function Provider({
   children,
-  section,
+  bullet,
 }: {
   children: ReactNode | ((args: ContextValue) => ReactNode);
-  section: Section;
+  bullet: Bullet;
 }) {
-  const value: ContextValue = section;
+  const value: ContextValue = bullet;
 
   return (
     <Context.Provider value={value}>
@@ -27,19 +28,19 @@ const useThisContext = () => {
   const context = useContext(Context);
 
   if (!context) {
-    throw new Error("Section.use must be used within its provider!");
+    throw new Error("SectionBulletCx.use must be used within its provider!");
   }
 
   return context;
 };
 
-function SectionCx() {
+function SectionBulletCx() {
   throw new Error(
-    "SectionCx exists for naming purposes only and should not be used as a component",
+    "SectionBulletCx exists for naming purposes only and should not be used as a component",
   );
 }
 
-export { SectionCx };
+export { SectionBulletCx };
 
-SectionCx.Provider = Provider;
-SectionCx.use = useThisContext;
+SectionBulletCx.Provider = Provider;
+SectionBulletCx.use = useThisContext;

@@ -129,6 +129,7 @@ const Input = ({
           onBlur={() => {
             setIsFocused(false);
           }}
+          onClick={(e) => e.currentTarget.focus()}
           style={{
             width: inputWidth > minWidth ? inputWidth : minWidth,
           }}

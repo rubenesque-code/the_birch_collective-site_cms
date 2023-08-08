@@ -15,8 +15,6 @@ import { useToast } from "~/hooks";
 import type { MyDb } from "~/types/database";
 import { NewSectionCx, createInitData } from "./_state";
 
-// □ refactor
-
 const NewSectionModal = ({
   button,
 }: {
@@ -265,9 +263,7 @@ const ColourModal = () => {
             <div className="flex items-center gap-lg">
               <WithTooltip text="click to make brown">
                 <div
-                  className={`aspect-square w-[25px] cursor-pointer ${bgColourSwith(
-                    "brown",
-                  )}`}
+                  className={`aspect-square w-[25px] cursor-pointer bg-brandBrown`}
                   onClick={() => {
                     if (colour === "brown") {
                       return;
@@ -279,9 +275,7 @@ const ColourModal = () => {
               </WithTooltip>
               <WithTooltip text="click to make orange">
                 <div
-                  className={`aspect-square w-[25px] cursor-pointer ${bgColourSwith(
-                    "orange",
-                  )}`}
+                  className={`aspect-square w-[25px] cursor-pointer bg-brandOrange`}
                   onClick={() => {
                     if (colour === "orange") {
                       return;
@@ -293,9 +287,7 @@ const ColourModal = () => {
               </WithTooltip>
               <WithTooltip text="click to make green">
                 <div
-                  className={`aspect-square w-[25px] cursor-pointer ${bgColourSwith(
-                    "green",
-                  )}`}
+                  className={`aspect-square w-[25px] cursor-pointer bg-brandGreen`}
                   onClick={() => {
                     if (colour === "green") {
                       return;

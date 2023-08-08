@@ -89,7 +89,8 @@ TextAreaProps) => {
   return (
     <>
       <div
-        className={`relative h-full w-full rounded-sm transition-colors duration-75 ease-in-out focus-within:bg-gray-100`}
+        className={`relative grid w-full place-items-center rounded-sm transition-colors duration-75 ease-in-out focus-within:bg-gray-100`}
+        // className={`relative h-full w-full rounded-sm transition-colors duration-75 ease-in-out focus-within:bg-gray-100`}
       >
         <ReactTextareaAutosize
           className={`z-10 w-full resize-none bg-transparent outline-none ${styles} ${
@@ -112,7 +113,7 @@ TextAreaProps) => {
           onBlur={() => {
             setIsFocused(false);
           }}
-          cols={2}
+          onClick={(e) => e.currentTarget.focus()}
           autoComplete="off"
           autoFocus={false}
         />

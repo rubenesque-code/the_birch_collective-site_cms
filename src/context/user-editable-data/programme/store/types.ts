@@ -52,6 +52,11 @@ type ArrActions = {
           bulletId: string;
           updatedValue: string;
         }) => void;
+        title: (arg0: {
+          sectionId: string;
+          bulletId: string;
+          updatedValue: string;
+        }) => void;
       };
     };
   } & SectionNonArrActions;
