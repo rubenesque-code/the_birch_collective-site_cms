@@ -28,3 +28,12 @@ export const batchUpdateProgrammesPage = (
 
   batch.update(docRef, data);
 };
+
+export const batchUpdateDonatePage = (
+  data: Partial<MyDb["pages"]["donate"]>,
+  batch: WriteBatch,
+) => {
+  const docRef = getDocRef("pages", "donate");
+
+  batch.update(docRef, data);
+};

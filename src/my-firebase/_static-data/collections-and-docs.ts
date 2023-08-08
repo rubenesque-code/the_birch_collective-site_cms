@@ -11,6 +11,7 @@ const pages = {
   landing: "landing",
   aboutUs: "aboutUs",
   programmes: "programmes",
+  donate: "donate",
 };
 
 const singles = {

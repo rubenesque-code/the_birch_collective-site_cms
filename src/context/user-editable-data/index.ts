@@ -9,6 +9,7 @@ import { SupportersDataCx } from "./supporters";
 import { AboutUsPageDataCx } from "./about-us-page";
 import { ProgrammesPageDataCx } from "./programmes-page";
 import { ProgrammePageDataCx } from "./programme";
+import { DonatePageDataCx } from "./donate-page";
 
 function UedCx() {
   throw new Error(
@@ -29,6 +30,7 @@ UedCx.Pages = Pages;
 Pages.Landing = LandingPageDataCx;
 Pages.AboutUs = AboutUsPageDataCx;
 Pages.Programmes = ProgrammesPageDataCx;
+Pages.Donate = DonatePageDataCx;
 
 UedCx.Footer = FooterDataCx;
 UedCx.Header = HeaderDataCx;

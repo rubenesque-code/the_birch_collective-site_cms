@@ -2,6 +2,7 @@ export type Pages = {
   landing: Landing;
   aboutUs: AboutUs;
   programmes: Programmes;
+  donate: Donate;
 };
 
 type Landing = {
@@ -153,4 +154,35 @@ type Programmes = {
   };
   heading: string;
   mainText: string;
+};
+
+type Donate = {
+  id: "donate-page";
+
+  bannerImage: {
+    dbConnections: {
+      imageId: string | null;
+    };
+    position: {
+      x: number;
+      y: number;
+    };
+  };
+
+  heading: string;
+  subheading: string;
+
+  body: {
+    heading: string;
+    text: string;
+    image: {
+      dbConnections: {
+        imageId: string | null;
+      };
+      position: {
+        x: number;
+        y: number;
+      };
+    };
+  };
 };

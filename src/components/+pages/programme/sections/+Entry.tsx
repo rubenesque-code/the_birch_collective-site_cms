@@ -223,7 +223,7 @@ const Section = () => {
           <Modal.WithVisibilityProvider
             button={({ openModal }) => (
               <ComponentMenu.Button.Delete
-                tooltip="delete programme"
+                tooltip="delete section"
                 onClick={openModal}
                 styles={{
                   inner: "!text-gray-400 hover:!text-my-alert-content",

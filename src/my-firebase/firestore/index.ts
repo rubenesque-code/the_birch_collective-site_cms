@@ -1,6 +1,7 @@
 import { createImage } from "./mutate/image";
 import {
   batchUpdateAboutUsPage,
+  batchUpdateDonatePage,
   batchUpdateLandingPage,
   batchUpdateProgrammesPage,
 } from "./mutate/pages";
@@ -37,6 +38,7 @@ import { aboutUsPageTransaction } from "./mutate/transactions/aboutUsPage";
 import { landingPageTransaction } from "./mutate/transactions/landingPage";
 import {
   fetchAboutUsPage,
+  fetchDonatePage,
   fetchFooter,
   fetchHeader,
   fetchImages,
@@ -54,6 +56,7 @@ import {
 } from "./query";
 import { programmesPageTransaction } from "./mutate/transactions/programmesPage";
 import { programmePageTransaction } from "./mutate/transactions/programme";
+import { donatePageTransaction } from "./mutate/transactions/donate";
 
 export const myDb = {
   pages: {
@@ -71,12 +74,18 @@ export const myDb = {
     },
     programmes: {
       fetch: fetchProgrammesPage,
-
       batch: {
         update: batchUpdateProgrammesPage,
       },
     },
+    donate: {
+      fetch: fetchDonatePage,
+      batch: {
+        update: batchUpdateDonatePage,
+      },
+    },
   },
+
   orgDetails: {
     fetch: fetchOrgDetails,
     update: updateOrgDetails,
@@ -152,6 +161,7 @@ export const myDb = {
       aboutUs: aboutUsPageTransaction,
       programmes: programmesPageTransaction,
       programme: programmePageTransaction,
+      donate: donatePageTransaction,
     },
   },
 };
