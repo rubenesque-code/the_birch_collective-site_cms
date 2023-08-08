@@ -64,7 +64,7 @@ export const createStore = (input: { initData: Store["data"] }) =>
 
         heading: nonArrAction("heading"),
 
-        subheading: nonArrAction("subHeading"),
+        subheading: nonArrAction("subheading"),
       },
     };
   });

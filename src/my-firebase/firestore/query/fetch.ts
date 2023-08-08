@@ -44,6 +44,16 @@ export const fetchDonatePage = async () => {
   return data;
 };
 
+export const fetchVolunteerPositionsPage = async () => {
+  const docRef = getDocRef("pages", "volunteerPositions");
+
+  const data = (await getDocData(
+    docRef,
+  )) as unknown as MyDb["pages"]["volunteer-positions"];
+
+  return data;
+};
+
 export const fetchOneImage = async (id: string) => {
   const docRef = getDocRef("images", id);
 
@@ -111,6 +121,26 @@ export const fetchSupporters = async () => {
   const data = (await getCollectionData(
     collectionRef,
   )) as unknown as MyDb["supporter"][];
+
+  return data;
+};
+
+export const fetchOneVolunteerPosition = async (id: string) => {
+  const docRef = getDocRef("volunteer-positions", id);
+
+  const data = (await getDocData(
+    docRef,
+  )) as unknown as MyDb["volunteer-positions"];
+
+  return data;
+};
+
+export const fetchVolunteerPositions = async () => {
+  const collectionRef = getCollectionRef("volunteer-positions");
+
+  const data = (await getCollectionData(
+    collectionRef,
+  )) as unknown as MyDb["volunteer-positions"][];
 
   return data;
 };

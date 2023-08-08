@@ -7,6 +7,7 @@ import type { Pages } from "./pages";
 import type { Programme } from "./programme";
 import type { Supporter } from "./supporter";
 import type { Testimonial } from "./testimonial";
+import type { VolunteerPosition } from "./volunteerPosition";
 
 export type MyDb = {
   pages: Pages;
@@ -14,6 +15,7 @@ export type MyDb = {
   testimonial: Testimonial;
   programme: Programme;
   supporter: Supporter;
+  ["volunteer-positions"]: VolunteerPosition;
   singles: {
     orgDetails: OrgDetails;
     linkLabels: LinkLabels;

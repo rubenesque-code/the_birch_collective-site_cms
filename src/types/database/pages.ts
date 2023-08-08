@@ -3,6 +3,7 @@ export type Pages = {
   aboutUs: AboutUs;
   programmes: Programmes;
   donate: Donate;
+  ["volunteer-positions"]: VolunteerPositions;
 };
 
 type Landing = {
@@ -184,5 +185,30 @@ type Donate = {
         y: number;
       };
     };
+  };
+};
+
+type VolunteerPositions = {
+  id: "volunteer-positions-page";
+  bannerImage: {
+    dbConnections: {
+      imageId: string | null;
+    };
+    position: {
+      x: number;
+      y: number;
+    };
+  };
+
+  heading: string;
+  mainText: string;
+
+  opportunities: {
+    heading: string;
+    entries: {
+      id: string;
+      index: number;
+      dbConnections: { volunteerPositionId: string };
+    }[];
   };
 };

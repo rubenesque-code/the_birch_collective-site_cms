@@ -70,6 +70,8 @@ const PageLinks = () => (
     <PageLink route="/" text="Home" />
     <PageLink route="/about" text="About" />
     <Programmes />
+    <PageLink route="/donate" text="Donate" />
+    <PageLink route="/volunteer-positions" text="Volunteer positions" />
     <div className="mt-sm">
       <PageLink route="/images" text="Images" />
     </div>

@@ -24,14 +24,12 @@ export function getDocRef<
 >(
   collectionName: TCollectionName,
   docId: TCollectionName extends keyof (typeof firestore_file_system_names)["docs"]
-    ? keyof (typeof firestore_file_system_names)["docs"][TCollectionName]
+    ? (typeof firestore_file_system_names)["docs"][TCollectionName][keyof (typeof firestore_file_system_names)["docs"][TCollectionName]]
     : string,
 ) {
-  return doc(
-    firestore,
-    firestore_file_system_names.collections[collectionName],
-    docId,
-  );
+  const collection = firestore_file_system_names.collections[collectionName];
+
+  return doc(firestore, collection, docId);
 }
 
 export async function getDocData(docRef: DocumentReference) {

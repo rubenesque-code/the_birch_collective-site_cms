@@ -1,35 +1,22 @@
-/* eslint-disable jsx-a11y/alt-text */
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { TextAreaForm, TextInputForm } from "~/components/forms";
-import SiteLayout from "~/components/layouts/Site";
 import { ComponentMenu } from "~/components/menus";
 import { UedCx } from "~/context/user-editable-data";
 
-const Banner = () => {
-  return (
-    <div className="relative">
-      <Headings />
-      <Image />
-    </div>
-  );
-};
-
-export default Banner;
-
-const Image = () => {
+const BannerImage = () => {
   const {
     store: {
       data: {
         bannerImage: { dbConnections, position },
       },
     },
-  } = UedCx.Pages.Donate.use();
+  } = UedCx.Pages.VolunteerPositions.use();
 
   return (
     <div className="group/bannerImage relative aspect-[21/9]">
-      <ImageMenu />
+      <Menu />
+
       <UserSelectedImageWrapper
         dbImageId={dbConnections.imageId}
         placeholderText="banner image"
@@ -46,13 +33,15 @@ const Image = () => {
   );
 };
 
-const ImageMenu = () => {
+export default BannerImage;
+
+const Menu = () => {
   const {
     store: {
       data: { bannerImage },
       actions: { bannerImage: bannerImageAction },
     },
-  } = UedCx.Pages.Donate.use();
+  } = UedCx.Pages.VolunteerPositions.use();
 
   return (
     <ComponentMenu styles="right-1 top-1 group-hover/bannerImage:opacity-40">
@@ -80,45 +69,5 @@ const ImageMenu = () => {
         }}
       />
     </ComponentMenu>
-  );
-};
-
-const Headings = () => {
-  const {
-    store: {
-      data: { heading, subheading },
-      actions,
-    },
-    revision: { undoKey },
-  } = UedCx.Pages.Donate.use();
-
-  return (
-    <div className="absolute top-1/2 z-10 -translate-y-1/2">
-      <SiteLayout.Section.Spacing>
-        <div className="text-2xl  text-white">
-          <TextAreaForm
-            localStateValue={subheading}
-            textArea={{
-              placeholder: "Subheading",
-              styles: "font-semibold",
-            }}
-            onSubmit={actions.subheading}
-            tooltip="Click to edit subheading"
-            key={undoKey}
-          />
-        </div>
-        <div className="mt-sm text-6xl font-bold text-white">
-          <TextInputForm
-            localStateValue={heading}
-            input={{
-              placeholder: "Heading",
-            }}
-            onSubmit={actions.heading}
-            tooltip="Click to edit heading"
-            key={undoKey}
-          />
-        </div>
-      </SiteLayout.Section.Spacing>
-    </div>
   );
 };

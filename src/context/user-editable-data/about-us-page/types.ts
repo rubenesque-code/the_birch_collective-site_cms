@@ -24,8 +24,6 @@ type ArrActions = {
   };
 };
 
-// type A = ArrActions['theTeam']['members']['bio']
-
 type Actions = {
   overWrite: (data: Data) => void;
 } & GenerateNonArrActions<Data> &

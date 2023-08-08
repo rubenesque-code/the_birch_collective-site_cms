@@ -4,6 +4,7 @@ import {
   batchUpdateDonatePage,
   batchUpdateLandingPage,
   batchUpdateProgrammesPage,
+  batchUpdateVolunteerPositionsPage,
 } from "./mutate/pages";
 import {
   batchCreateProgramme,
@@ -48,15 +49,27 @@ import {
   fetchOneProgramme,
   fetchOneSupporter,
   fetchOneTestimonial,
+  fetchOneVolunteerPosition,
   fetchOrgDetails,
   fetchProgrammes,
   fetchProgrammesPage,
   fetchSupporters,
   fetchTestimonials,
+  fetchVolunteerPositions,
+  fetchVolunteerPositionsPage,
 } from "./query";
 import { programmesPageTransaction } from "./mutate/transactions/programmesPage";
 import { programmePageTransaction } from "./mutate/transactions/programme";
 import { donatePageTransaction } from "./mutate/transactions/donate";
+import { volunteerPositionsPageTransaction } from "./mutate/transactions/volunteerPositionsPage";
+import {
+  batchCreateVolunteerPosition,
+  batchDeleteVolunteerPosition,
+  batchUpdateVolunteerPosition,
+  createVolunteerPosition,
+  deleteVolunteerPosition,
+  updateVolunteerPosition,
+} from "./mutate/volunteer-positions";
 
 export const myDb = {
   pages: {
@@ -82,6 +95,12 @@ export const myDb = {
       fetch: fetchDonatePage,
       batch: {
         update: batchUpdateDonatePage,
+      },
+    },
+    ["volunteer-positions"]: {
+      fetch: fetchVolunteerPositionsPage,
+      batch: {
+        update: batchUpdateVolunteerPositionsPage,
       },
     },
   },
@@ -155,6 +174,18 @@ export const myDb = {
       delete: batchDeleteSupporter,
     },
   },
+  ["volunteer-positions"]: {
+    fetchOne: fetchOneVolunteerPosition,
+    fetchAll: fetchVolunteerPositions,
+    create: createVolunteerPosition,
+    update: updateVolunteerPosition,
+    delete: deleteVolunteerPosition,
+    batch: {
+      create: batchCreateVolunteerPosition,
+      update: batchUpdateVolunteerPosition,
+      delete: batchDeleteVolunteerPosition,
+    },
+  },
   transactions: {
     pages: {
       landing: landingPageTransaction,
@@ -162,6 +193,7 @@ export const myDb = {
       programmes: programmesPageTransaction,
       programme: programmePageTransaction,
       donate: donatePageTransaction,
+      ["volunteer-positions"]: volunteerPositionsPageTransaction,
     },
   },
 };

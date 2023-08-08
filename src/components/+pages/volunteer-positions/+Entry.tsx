@@ -14,11 +14,9 @@ import CmsLayout from "~/components/layouts/Cms";
 import SiteLayout from "~/components/layouts/Site";
 import { UedCx } from "~/context/user-editable-data";
 import type { MyDb } from "~/types/database";
-import Banner from "./banner/+Entry";
-import PaymentWidget from "./payment-widget/+Entry";
-import Body from "./body/+Entry";
+import BannerImage from "./banner-image/+Entry";
 
-const DonatePage = () => (
+const VolunteerPositionsPage = () => (
   <InitDbData>
     {(initDbData) => (
       <UedProviders initDbData={initDbData}>
@@ -46,24 +44,27 @@ const DonatePage = () => (
   </InitDbData>
 );
 
-export default DonatePage;
+export default VolunteerPositionsPage;
 
 const PageSpecificContent = () => (
   <>
-    <div className="relative">
-      <Banner />
-      <SiteLayout.Section.Spacing>
-        <PaymentWidget />
-      </SiteLayout.Section.Spacing>
-      <SiteLayout.Section.Spacing>
-        <Body />
-      </SiteLayout.Section.Spacing>
+    <BannerImage />
+    {/*     <div className="mt-xl">
+      <SiteLayout.Section.Spacing.Horizontal>
+        <Headings />
+      </SiteLayout.Section.Spacing.Horizontal>
     </div>
+    <SiteLayout.Section.Spacing>
+      <MainText />
+    </SiteLayout.Section.Spacing>
+    <SiteLayout.Section.Spacing>
+      <TheTeam />
+    </SiteLayout.Section.Spacing> */}
   </>
 );
 
 type DbData = {
-  page: MyDb["pages"]["donate"];
+  page: MyDb["pages"]["volunteer-positions"];
 
   orgDetails: MyDb["singles"]["orgDetails"];
   linkLabels: MyDb["singles"]["linkLabels"];
@@ -76,7 +77,10 @@ const InitDbData = ({
 }: {
   children: (data: DbData) => ReactElement;
 }) => {
-  const pageQuery = useQuery("donate-us", myDb.pages.donate.fetch);
+  const pageQuery = useQuery(
+    "volunteer-positions",
+    myDb.pages["volunteer-positions"].fetch,
+  );
 
   const footerQuery = useQuery("footer", myDb.footer.fetch);
   const headerQuery = useQuery("header", myDb.header.fetch);
@@ -125,7 +129,7 @@ const UedProviders = ({
   children: ReactElement;
 }) => {
   return (
-    <UedCx.Pages.Donate.Provider initData={initDbData.page}>
+    <UedCx.Pages.VolunteerPositions.Provider initData={initDbData.page}>
       <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
         <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
           <UedCx.Header.Provider initData={initDbData.header}>
@@ -135,6 +139,6 @@ const UedProviders = ({
           </UedCx.Header.Provider>
         </UedCx.LinkLabels.Provider>
       </UedCx.OrgDetails.Provider>
-    </UedCx.Pages.Donate.Provider>
+    </UedCx.Pages.VolunteerPositions.Provider>
   );
 };
