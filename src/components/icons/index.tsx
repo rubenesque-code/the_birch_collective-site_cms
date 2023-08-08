@@ -48,6 +48,9 @@ import {
   Tipi,
   Sun,
   Plant,
+  ArrowsCounterClockwise,
+  ArrowDown,
+  ArrowUp,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -92,6 +95,9 @@ Icon.Instagram = InstagramLogo;
 Icon.Linkedin = LinkedinLogo;
 Icon.CaretUp = CaretUp;
 Icon.SitePreview = MonitorPlay;
+Icon.Update = ArrowsCounterClockwise;
+Icon.ArrowDown = ArrowDown;
+Icon.ArrowUp = ArrowUp;
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";

@@ -1,6 +1,7 @@
 import type { ReactElement, ReactNode } from "react";
 
 import { Icon } from "../icons";
+import { WithTooltip } from "../WithTooltip";
 
 function CmsLayout() {
   throw new Error(
@@ -18,8 +19,18 @@ const Body = ({ children }: { children: ReactNode }) => (
 
 CmsLayout.Body = Body;
 
-const EditBar = ({ children }: { children: ReactNode }) => (
-  <div className="flex items-center justify-between rounded-md border border-dashed px-4 py-2">
+const EditBar = ({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) => (
+  <div
+    className={`flex items-center justify-between rounded-md border border-dashed px-4 py-2 ${
+      className || ""
+    }`}
+  >
     {children}
   </div>
 );
@@ -51,18 +62,22 @@ const EditBarButton = ({
   icon,
   onClick,
   text,
+  tooltip,
 }: {
   onClick: () => void;
   icon: ReactElement;
   text: string;
+  tooltip?: string;
 }) => (
-  <div
-    className="my-btn my-btn-neutral flex cursor-pointer items-center gap-xs rounded-sm border-transparent"
-    onClick={onClick}
-  >
-    <span className="text-gray-400">{icon}</span>
-    <span className="">{text}</span>
-  </div>
+  <WithTooltip text={tooltip || ""} isDisabled={!tooltip}>
+    <div
+      className="my-btn my-btn-neutral flex cursor-pointer items-center gap-xs rounded-sm border-transparent"
+      onClick={onClick}
+    >
+      <span className="text-gray-400">{icon}</span>
+      <span className="">{text}</span>
+    </div>
+  </WithTooltip>
 );
 
 EditBar.Button = EditBarButton;

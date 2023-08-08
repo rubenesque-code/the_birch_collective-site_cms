@@ -1,20 +1,23 @@
+import React from "react";
+import { IconSwith } from "~/components/IconSwitch";
+import { WarningPanel } from "~/components/WarningPanel";
+import { DndKit } from "~/components/dnd-kit";
+import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
-import { UedCx } from "~/context/user-editable-data";
-import NewSectionModal from "./new-section-modal/+Entry";
-import { SectionCx } from "~/context/entities/programme/section";
-import { TextAreaForm, TextInputForm } from "~/components/forms";
-import React from "react";
-import { deepSortByIndex } from "~/helpers/data/process";
-import { textColourSwith } from "~/helpers/data/switch-to-styles";
-import { generateUid } from "~/lib/external-packages-rename";
-import { IconSwith } from "~/components/IconSwitch";
-import { DndKit } from "~/components/dnd-kit";
-import { getIds } from "~/helpers/data/query";
-import { useToast } from "~/hooks";
-import { Modal } from "~/components/styled-bases";
 import { ComponentMenu } from "~/components/menus";
-import { WarningPanel } from "~/components/WarningPanel";
+import { Modal } from "~/components/styled-bases";
+import { SectionCx } from "~/context/entities/programme/section";
+import { UedCx } from "~/context/user-editable-data";
+import { deepSortByIndex } from "~/helpers/data/process";
+import { getIds } from "~/helpers/data/query";
+import { textColourSwith } from "~/helpers/data/switch-to-styles";
+import { useToast } from "~/hooks";
+import { generateUid } from "~/lib/external-packages-rename";
+import ColourModal from "./colour-modal/+Entry";
+import IconModal from "./icon-modal/+Entry";
+import NewSectionModal from "./new-section-modal/+Entry";
+import Preview from "./preview/+Entry";
 
 const Sections = () => {
   const {
@@ -27,15 +30,23 @@ const Sections = () => {
 
   return (
     <div>
-      <CmsLayout.EditBar>
-        <NewSectionModal
-          button={({ openModal }) => (
-            <CmsLayout.EditBar.Button
-              icon={<Icon.Create />}
-              onClick={openModal}
-              text="Add section"
-            />
-          )}
+      <CmsLayout.EditBar className="opacity-50 transition-opacity duration-100 ease-in-out hover:opacity-100">
+        <div className="flex items-center gap-sm">
+          <PreviewModal />
+          <NewSectionModal
+            button={({ openModal }) => (
+              <CmsLayout.EditBar.Button
+                icon={<Icon.Create />}
+                onClick={openModal}
+                text="Add section"
+              />
+            )}
+          />
+        </div>
+
+        <CmsLayout.EditBar.Info
+          infoText="The sections below are approximate. See preview left."
+          gap="xs"
         />
       </CmsLayout.EditBar>
       <div className="mt-md">
@@ -44,11 +55,13 @@ const Sections = () => {
             No programme details sections yet.
           </p>
         ) : (
-          sorted.map((section) => (
-            <SectionCx.Provider section={section} key={section.id}>
-              <Section />
-            </SectionCx.Provider>
-          ))
+          <div className="grid grid-cols-1 gap-2xl">
+            {sorted.map((section) => (
+              <SectionCx.Provider section={section} key={section.id}>
+                <Section />
+              </SectionCx.Provider>
+            ))}
+          </div>
         )}
       </div>
     </div>
@@ -57,11 +70,53 @@ const Sections = () => {
 
 export default Sections;
 
-// add bullets
-// todo: bullets. preview section/bullet
+const PreviewModal = () => (
+  <Modal.WithVisibilityProvider
+    button={({ openModal }) => (
+      <CmsLayout.EditBar.Button
+        icon={<Icon.SitePreview />}
+        onClick={openModal}
+        text="preview sections"
+      />
+    )}
+    panelContent={({ closeModal }) => (
+      <div className="rounded-lg bg-white p-lg shadow-xl">
+        <div className="flex justify-end">
+          <h2 className="flex items-center gap-xs  text-gray-400">
+            <span>
+              <Icon.SitePreview />
+            </span>
+            <span>preview</span>
+          </h2>
+        </div>
+        <Preview />
+        <div className="mt-xl flex justify-end">
+          <button
+            className="my-btn my-btn-neutral"
+            type="button"
+            onClick={closeModal}
+          >
+            close
+          </button>
+        </div>
+      </div>
+    )}
+  />
+);
 
 const Section = () => {
-  const { id, title, bullets, colour, description } = SectionCx.use();
+  const {
+    store: {
+      data: { sections },
+    },
+  } = UedCx.Programme.use();
+
+  const sectionsSorted = React.useMemo(
+    () => deepSortByIndex(sections),
+    [sections],
+  );
+
+  const { id, title, bullets, colour, description, index } = SectionCx.use();
 
   const {
     store: {
@@ -74,12 +129,95 @@ const Section = () => {
     () => deepSortByIndex(bullets.entries),
     [bullets.entries],
   );
-  console.log("bulletsSorted:", bulletsSorted);
 
   return (
-    <div>
+    <div className="group/section">
+      <CmsLayout.EditBar className="opacity-40 transition-opacity duration-100 ease-in-out group-hover/section:opacity-80 hover:!opacity-100">
+        <div className="flex items-center gap-sm">
+          <CmsLayout.EditBar.Button
+            icon={<Icon.Create />}
+            onClick={() =>
+              sectionAction.bullets.entries.create({
+                sectionId: id,
+                newEntry: {
+                  id: generateUid(),
+                  index: bullets.entries.length,
+                  text: "",
+                  title: bullets.type === "text" ? "" : null,
+                },
+              })
+            }
+            text="Add bullet"
+          />
+
+          <IconModal
+            button={({ openModal }) => (
+              <CmsLayout.EditBar.Button
+                icon={<Icon.Update />}
+                onClick={openModal}
+                text="icon"
+                tooltip="change icon"
+              />
+            )}
+            currentColour={colour}
+            currentIconName={bullets.icon}
+            onSelect={(iconName) =>
+              sectionAction.bullets.icon({ id, updatedValue: iconName })
+            }
+          />
+
+          <ColourModal
+            button={({ openModal }) => (
+              <CmsLayout.EditBar.Button
+                icon={<Icon.Update />}
+                onClick={openModal}
+                text="colour"
+                tooltip="change colour"
+              />
+            )}
+            currentColour={colour}
+            onSelect={(colour) =>
+              sectionAction.colour({ id, updatedValue: colour })
+            }
+          />
+        </div>
+        <div className="flex items-center gap-sm">
+          <ComponentMenu.Button
+            onClick={() => {
+              const nextSection = sectionsSorted[index + 1];
+
+              if (!nextSection) {
+                return;
+              }
+
+              sectionAction.reorder({ activeId: id, overId: nextSection.id });
+            }}
+            tooltip="move section down"
+            styles={{ button: "text-gray-500 hover:text-gray-600" }}
+          >
+            <Icon.ArrowDown />
+          </ComponentMenu.Button>
+
+          <ComponentMenu.Button
+            onClick={() => {
+              const prevSection = sectionsSorted[index - 1];
+
+              if (!prevSection) {
+                return;
+              }
+
+              sectionAction.reorder({ activeId: id, overId: prevSection.id });
+            }}
+            tooltip="move section up"
+            styles={{ button: "text-gray-500 hover:text-gray-600" }}
+          >
+            <Icon.ArrowUp />
+          </ComponentMenu.Button>
+        </div>
+      </CmsLayout.EditBar>
+
       <div
-        className={`font-display text-6xl font-bold tracking-wide ${textColourSwith(
+        className={`mt-sm font-display text-6xl font-bold tracking-wide ${textColourSwith(
           colour,
         )}`}
       >
@@ -94,7 +232,8 @@ const Section = () => {
           key={undoKey}
         />
       </div>
-      <div className="custom-prose prose mt-sm max-w-full  font-medium">
+
+      <div className="custom-prose prose mt-sm max-w-full font-medium">
         <TextAreaForm
           localStateValue={description}
           textArea={{
@@ -107,23 +246,7 @@ const Section = () => {
           key={undoKey}
         />
       </div>
-      <div className="mt-xs flex">
-        <CmsLayout.EditBar.Button
-          icon={<Icon.Create />}
-          onClick={() =>
-            sectionAction.bullets.entries.create({
-              sectionId: id,
-              newEntry: {
-                id: generateUid(),
-                index: bullets.entries.length,
-                text: "",
-                title: bullets.type === "text" ? "" : null,
-              },
-            })
-          }
-          text="Add bullet"
-        />
-      </div>
+
       <div className="mt-sm grid grid-cols-1 gap-sm">
         <DndKit.Context
           elementIds={getIds(bullets.entries)}
@@ -161,42 +284,44 @@ const Bullet = () => {
         <IconSwith iconName={bullets.icon} />
         <BulletDeleteButton />
       </div>
-      {bullets.type === "text-and-title" ? (
-        <div className="w-full">
+      <div className="flex-grow flex-col">
+        {bullets.type === "text-and-title" ? (
+          <div className="custom-prose prose w-full max-w-full font-semibold">
+            <TextAreaForm
+              localStateValue={title}
+              textArea={{
+                placeholder: "Bullet header",
+              }}
+              onSubmit={(updatedValue) =>
+                sectionAction.bullets.entries.title({
+                  bulletId,
+                  sectionId,
+                  updatedValue,
+                })
+              }
+              tooltip="Click to edit bullet header"
+              key={undoKey}
+            />
+          </div>
+        ) : null}
+        <div className="custom-prose prose w-full max-w-full">
           <TextAreaForm
-            localStateValue={title}
+            localStateValue={text}
             textArea={{
-              placeholder: "Bullet header",
+              placeholder: "Bullet text",
+              // styles: "border border-blue-400",
             }}
             onSubmit={(updatedValue) =>
-              sectionAction.bullets.entries.title({
+              sectionAction.bullets.entries.text({
                 bulletId,
                 sectionId,
                 updatedValue,
               })
             }
-            tooltip="Click to edit bullet header"
+            tooltip="Click to edit bullet text"
             key={undoKey}
           />
         </div>
-      ) : null}
-      <div className="custom-prose prose w-full max-w-full">
-        <TextAreaForm
-          localStateValue={text}
-          textArea={{
-            placeholder: "Bullet text",
-            // styles: "border border-blue-400",
-          }}
-          onSubmit={(updatedValue) =>
-            sectionAction.bullets.entries.text({
-              bulletId,
-              sectionId,
-              updatedValue,
-            })
-          }
-          tooltip="Click to edit bullet text"
-          key={undoKey}
-        />
       </div>
     </div>
   );

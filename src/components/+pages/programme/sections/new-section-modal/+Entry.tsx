@@ -209,7 +209,7 @@ const NewSection = () => {
           <TextAreaForm
             localStateValue={description || ""}
             onSubmit={actions.description}
-            textArea={{ placeholder: "Section description" }}
+            textArea={{ placeholder: "Section subtitle" }}
           />
         </div>
       </div>
@@ -355,11 +355,11 @@ const IconModal = () => {
         <ModalLayout.UserEdit
           body={
             <div className="mt-xs flex flex-wrap items-center gap-lg">
-              {iconNames.map((iconName) => (
+              {iconNames.map((iconName, i) => (
                 <IconModalIcon
                   closeModal={closeModal}
                   iconName={iconName}
-                  key={iconName}
+                  key={i}
                 />
               ))}
             </div>
@@ -415,7 +415,7 @@ const IconModalIcon = ({
           closeModal();
         }}
       >
-        {<IconSwith iconName={icon} />}
+        {<IconSwith iconName={iconName} />}
       </div>
     </WithTooltip>
   );
