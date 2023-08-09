@@ -126,7 +126,7 @@ const NewPositionModalContent = ({
   return (
     <div className="relative flex flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
       <div className="flex items-center justify-between border-b border-b-gray-200 pb-sm">
-        <h3 className="leading-6">Add new position</h3>
+        <h3 className="leading-6">Create new position</h3>
       </div>
 
       <div className="mt-sm flex-grow overflow-y-auto">

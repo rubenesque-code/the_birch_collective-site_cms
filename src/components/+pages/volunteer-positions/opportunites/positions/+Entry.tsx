@@ -26,8 +26,6 @@ const Positions = () => {
     },
   } = UedCx.Pages.VolunteerPositions.use();
 
-  console.log("entries:", entries);
-
   const sorted = React.useMemo(() => deepSortByIndex(entries), [entries]);
 
   const toast = useToast();
@@ -59,11 +57,11 @@ const Positions = () => {
         />
       </CmsLayout.EditBar>
 
-      <div className="mt-md">
+      <div className="mt-lg">
         {!sorted.length ? (
           <p>No volunteer positions yet.</p>
         ) : (
-          <div className="mt-lg grid grid-cols-2 gap-lg">
+          <div className="mt-lg grid grid-cols-2 gap-x-lg gap-y-xl">
             <DndKit.Context
               elementIds={getIds(sorted)}
               onReorder={positionAction.reorder}
@@ -208,30 +206,3 @@ const Position = () => {
     </div>
   );
 };
-
-/* const PositionMenu = () => {
-  const { id,} = VolunteerPositionCx.use();
-
-  const {
-    store: { actions: {opportunities: {entries: positionAction}} },
-  } = UedCx.Pages.VolunteerPositions.use();
-
-  const toast = useToast();
-
-  return (
-    <ComponentMenu styles="right-1 top-1 group-hover/programme:opacity-40">
-      <ComponentMenu.Button
-        onClick={() => {
-          positionAction.remove({ id });
-
-          toast.neutral("programme removed from landing");
-        }}
-        tooltip="remove programme from landing"
-        styles={{ button: "hover:text-my-alert-content hover:bg-my-alert" }}
-      >
-        <Icon.Remove weight="bold" />
-      </ComponentMenu.Button>
-    </ComponentMenu>
-  );
-};
- */
