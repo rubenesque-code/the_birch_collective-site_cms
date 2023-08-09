@@ -9,7 +9,7 @@ import type { DocPartialWithId } from "~/types/database/_helpers";
 import { getDocRef } from "../_helpers";
 
 export const createVolunteerPosition = async (
-  input: MyDb["volunteer-positions"],
+  input: MyDb["volunteer-position"],
 ) => {
   const docRef = getDocRef("volunteer-positions", input.id);
 
@@ -17,7 +17,7 @@ export const createVolunteerPosition = async (
 };
 
 export const batchCreateVolunteerPosition = (
-  input: MyDb["volunteer-positions"],
+  input: MyDb["volunteer-position"],
   batch: WriteBatch,
 ) => {
   const docRef = getDocRef("volunteer-positions", input.id);
@@ -26,7 +26,7 @@ export const batchCreateVolunteerPosition = (
 };
 
 export const updateVolunteerPosition = async (
-  input: DocPartialWithId<MyDb["volunteer-positions"]>,
+  input: DocPartialWithId<MyDb["volunteer-position"]>,
 ) => {
   const docRef = getDocRef("volunteer-positions", input.id);
 
@@ -34,7 +34,7 @@ export const updateVolunteerPosition = async (
 };
 
 export const batchUpdateVolunteerPosition = (
-  input: DocPartialWithId<MyDb["volunteer-positions"]>,
+  input: DocPartialWithId<MyDb["volunteer-position"]>,
   batch: WriteBatch,
 ) => {
   const docRef = getDocRef("volunteer-positions", input.id);

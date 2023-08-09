@@ -15,8 +15,8 @@ export type VolunteerPosition = Page["opportunities"]["entries"][number];
 type ArrActions = {
   opportunities: {
     entries: {
-      create: (arg0: VolunteerPosition) => void;
-      delete: (arg0: { id: string }) => void;
+      add: (arg0: VolunteerPosition) => void;
+      remove: (arg0: { id: string }) => void;
       reorder: (arg0: { activeId: string; overId: string }) => void;
     };
   };

@@ -13,35 +13,24 @@ import type {
 } from "~/types/helpers";
 import type { MyOmit } from "~/types/utilities";
 
-type TeamMember = MyDb["pages"]["aboutUs"]["theTeam"]["members"][number];
+type VolunteerPosition = MyDb["volunteer-position"];
 
-type Actions = GenerateNonArrActions<MyOmit<TeamMember, "id">>;
+type Actions = GenerateNonArrActions<MyOmit<VolunteerPosition, "id">>;
 
 interface Store {
-  data: TeamMember;
+  data: VolunteerPosition;
   actions: {
-    resetData: (data: TeamMember) => void;
+    resetData: (data: VolunteerPosition) => void;
   } & Actions;
 }
 
-export const createInitData = (input: { index: number }): TeamMember => ({
+export const createInitData = (): VolunteerPosition => ({
   id: generateUid(),
-  index: input.index,
   name: "",
-  role: "",
-  bio: "",
-  image: {
-    dbConnections: {
-      imageId: null,
-    },
-    position: {
-      x: 50,
-      y: 50,
-    },
-  },
+  text: "",
 });
 
-const createStore = (input: { index: number }) => {
+const createStore = () => {
   return z.createStore<Store>()((set) => {
     function nonArrAction<
       TKeyStr extends ObjFieldsToStr<OmitObjArrProps<Store["data"]>>,
@@ -55,7 +44,8 @@ const createStore = (input: { index: number }) => {
     }
 
     return {
-      data: createInitData({ index: input.index }),
+      data: createInitData(),
+
       actions: {
         resetData: (input) =>
           set(
@@ -63,60 +53,51 @@ const createStore = (input: { index: number }) => {
               state.data = input;
             }),
           ),
-        bio: nonArrAction("bio"),
-        image: {
-          dbConnections: {
-            imageId: nonArrAction("image.dbConnections.imageId"),
-          },
-          position: {
-            x: nonArrAction("image.position.x"),
-            y: nonArrAction("image.position.y"),
-          },
-        },
-        index: nonArrAction("index"),
+
         name: nonArrAction("name"),
-        role: nonArrAction("role"),
+
+        text: nonArrAction("text"),
       },
     };
   });
 };
 
-type NewMemberCx = ReturnType<typeof createStore>;
+type NewPositionCx = ReturnType<typeof createStore>;
 type ContextValue = Store & {
-  isUserEntry: boolean;
+  revision: {
+    isUserEntry: boolean;
+    areRequiredFields: boolean;
+  };
 };
 
 const Context = createContext<ContextValue | null>(null);
 
 function Provider({
   children,
-  newMember,
 }: {
   children: ReactNode | ((args: ContextValue) => ReactNode);
-  newMember: {
-    index: number;
-  };
 }) {
-  const storeRef = useRef<NewMemberCx>();
+  const storeRef = useRef<NewPositionCx>();
 
   if (!storeRef.current) {
-    storeRef.current = createStore({
-      index: newMember.index,
-    });
+    storeRef.current = createStore();
   }
 
   const store = z.useStore(storeRef.current, (state) => state);
 
-  const isUserEntry = Boolean(
-    store.data.name.length ||
-      store.data.image.dbConnections.imageId ||
-      store.data.bio.length ||
-      store.data.role.length,
+  const isUserEntry = Boolean(store.data.name.length || store.data.text.length);
+
+  const areRequiredFields = Boolean(
+    store.data.name.length || store.data.text.length,
   );
 
   const value: ContextValue = {
     ...store,
-    isUserEntry,
+
+    revision: {
+      isUserEntry,
+      areRequiredFields,
+    },
   };
 
   return (
@@ -128,18 +109,18 @@ function Provider({
 
 function useCx() {
   const store = useContext(Context);
-  if (!store) throw new Error("Missing NewMemberCx.Provider in the tree");
+  if (!store) throw new Error("Missing NewPositionCx.Provider in the tree");
 
   return store;
 }
 
-function NewMemberCx() {
+function NewPositionCx() {
   throw new Error(
-    "NewMemberCx exists for naming purposes only and should not be used as a component",
+    "NewPositionCx exists for naming purposes only and should not be used as a component",
   );
 }
 
-export { NewMemberCx };
+export { NewPositionCx };
 
-NewMemberCx.Provider = Provider;
-NewMemberCx.use = useCx;
+NewPositionCx.Provider = Provider;
+NewPositionCx.use = useCx;

@@ -130,7 +130,7 @@ export const fetchOneVolunteerPosition = async (id: string) => {
 
   const data = (await getDocData(
     docRef,
-  )) as unknown as MyDb["volunteer-positions"];
+  )) as unknown as MyDb["volunteer-position"];
 
   return data;
 };
@@ -140,7 +140,7 @@ export const fetchVolunteerPositions = async () => {
 
   const data = (await getCollectionData(
     collectionRef,
-  )) as unknown as MyDb["volunteer-positions"][];
+  )) as unknown as MyDb["volunteer-position"][];
 
   return data;
 };

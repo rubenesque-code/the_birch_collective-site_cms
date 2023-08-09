@@ -27,7 +27,7 @@ const EditBar = ({
   className?: string;
 }) => (
   <div
-    className={`flex items-center justify-between rounded-md border border-dashed px-4 py-2 ${
+    className={`flex items-center justify-between rounded-md border border-dashed px-4 py-2 transition-opacity duration-100 ease-in-out  ${
       className || ""
     }`}
   >

@@ -190,6 +190,7 @@ type Donate = {
 
 type VolunteerPositions = {
   id: "volunteer-positions-page";
+
   bannerImage: {
     dbConnections: {
       imageId: string | null;
@@ -205,6 +206,7 @@ type VolunteerPositions = {
 
   opportunities: {
     heading: string;
+
     entries: {
       id: string;
       index: number;

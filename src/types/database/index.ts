@@ -15,7 +15,7 @@ export type MyDb = {
   testimonial: Testimonial;
   programme: Programme;
   supporter: Supporter;
-  ["volunteer-positions"]: VolunteerPosition;
+  ["volunteer-position"]: VolunteerPosition;
   singles: {
     orgDetails: OrgDetails;
     linkLabels: LinkLabels;

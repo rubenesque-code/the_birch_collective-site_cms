@@ -55,13 +55,13 @@ export const createStore = (input: { initData: Store["data"] }) =>
           heading: nonArrAction("opportunities.heading"),
 
           entries: {
-            create: (newEntry: VolunteerPosition) =>
+            add: (newEntry: VolunteerPosition) =>
               set(
                 produce((store: Store) => {
                   store.data.opportunities.entries.push(newEntry);
                 }),
               ),
-            delete: (input: { id: string }) =>
+            remove: (input: { id: string }) =>
               set(
                 produce((store: Store) => {
                   const entriesOrdered =

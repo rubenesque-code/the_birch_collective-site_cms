@@ -31,12 +31,15 @@ function Provider({
   const linkLabels = UedCx.LinkLabels.useRevision();
   const orgDetails = UedCx.OrgDetails.useRevision();
 
+  const { revision: volunteerPositions } = UedCx.VolunteerPositions.use();
+
   const revisionDataArr = [
     page.revision,
     footer,
     header,
     linkLabels,
     orgDetails,
+    volunteerPositions,
   ];
 
   const isChange = Boolean(revisionDataArr.find((data) => data.isChange));
@@ -64,10 +67,13 @@ function Provider({
                 id: "volunteer-positions-page",
                 ...page.revision.saveData,
               },
+
               orgDetails: orgDetails.saveData,
               linkLabels: linkLabels.saveData,
               header: header.saveData,
               footer: footer.saveData,
+
+              volunteerPositions: volunteerPositions.saveData,
             },
             {
               onSuccess() {

@@ -15,6 +15,9 @@ import SiteLayout from "~/components/layouts/Site";
 import { UedCx } from "~/context/user-editable-data";
 import type { MyDb } from "~/types/database";
 import BannerImage from "./banner-image/+Entry";
+import Heading from "./heading/+Entry";
+import MainText from "./main-text/+Entry";
+import Opportunities from "./opportunites/+Entry";
 
 const VolunteerPositionsPage = () => (
   <InitDbData>
@@ -49,17 +52,18 @@ export default VolunteerPositionsPage;
 const PageSpecificContent = () => (
   <>
     <BannerImage />
-    {/*     <div className="mt-xl">
-      <SiteLayout.Section.Spacing.Horizontal>
-        <Headings />
-      </SiteLayout.Section.Spacing.Horizontal>
-    </div>
+
     <SiteLayout.Section.Spacing>
-      <MainText />
+      <Heading />
     </SiteLayout.Section.Spacing>
+
+    <SiteLayout.Section.Spacing.Horizontal>
+      <MainText />
+    </SiteLayout.Section.Spacing.Horizontal>
+
     <SiteLayout.Section.Spacing>
-      <TheTeam />
-    </SiteLayout.Section.Spacing> */}
+      <Opportunities />
+    </SiteLayout.Section.Spacing>
   </>
 );
 
@@ -70,6 +74,8 @@ type DbData = {
   linkLabels: MyDb["singles"]["linkLabels"];
   header: MyDb["singles"]["header"];
   footer: MyDb["singles"]["footer"];
+
+  volunteerPositions: MyDb["volunteer-position"][];
 };
 
 const InitDbData = ({
@@ -78,7 +84,7 @@ const InitDbData = ({
   children: (data: DbData) => ReactElement;
 }) => {
   const pageQuery = useQuery(
-    "volunteer-positions",
+    "volunteer-positions-page",
     myDb.pages["volunteer-positions"].fetch,
   );
 
@@ -87,12 +93,18 @@ const InitDbData = ({
   const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
   const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
 
+  const volunteerPositionsQuery = useQuery(
+    "volunteer-position",
+    myDb["volunteer-positions"].fetchAll,
+  );
+
   if (
     pageQuery.isLoading ||
     linkLabelsQuery.isLoading ||
     headerQuery.isLoading ||
     footerQuery.isLoading ||
-    orgDetailsQuery.isLoading
+    orgDetailsQuery.isLoading ||
+    volunteerPositionsQuery.isLoading
   ) {
     return <PageDataFetch.Loading />;
   }
@@ -107,17 +119,22 @@ const InitDbData = ({
     footerQuery.isError ||
     !footerQuery.data ||
     orgDetailsQuery.isError ||
-    !orgDetailsQuery.data
+    !orgDetailsQuery.data ||
+    volunteerPositionsQuery.isError ||
+    !volunteerPositionsQuery.data
   ) {
     return <PageDataFetch.Error />;
   }
 
   return children({
     page: pageQuery.data,
+
     orgDetails: orgDetailsQuery.data,
     linkLabels: linkLabelsQuery.data,
     header: headerQuery.data,
     footer: footerQuery.data,
+
+    volunteerPositions: volunteerPositionsQuery.data,
   });
 };
 
@@ -127,18 +144,20 @@ const UedProviders = ({
 }: {
   initDbData: DbData;
   children: ReactElement;
-}) => {
-  return (
-    <UedCx.Pages.VolunteerPositions.Provider initData={initDbData.page}>
-      <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
-        <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
-          <UedCx.Header.Provider initData={initDbData.header}>
-            <UedCx.Footer.Provider initData={initDbData.footer}>
+}) => (
+  <UedCx.Pages.VolunteerPositions.Provider initData={initDbData.page}>
+    <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
+      <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
+        <UedCx.Header.Provider initData={initDbData.header}>
+          <UedCx.Footer.Provider initData={initDbData.footer}>
+            <UedCx.VolunteerPositions.Provider
+              initData={initDbData.volunteerPositions}
+            >
               {children}
-            </UedCx.Footer.Provider>
-          </UedCx.Header.Provider>
-        </UedCx.LinkLabels.Provider>
-      </UedCx.OrgDetails.Provider>
-    </UedCx.Pages.VolunteerPositions.Provider>
-  );
-};
+            </UedCx.VolunteerPositions.Provider>
+          </UedCx.Footer.Provider>
+        </UedCx.Header.Provider>
+      </UedCx.LinkLabels.Provider>
+    </UedCx.OrgDetails.Provider>
+  </UedCx.Pages.VolunteerPositions.Provider>
+);

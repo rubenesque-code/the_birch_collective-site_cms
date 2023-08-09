@@ -14,9 +14,9 @@ type ContextValue = { store: Store } & {
     isChange: boolean;
     undoKey: string;
     saveData: {
-      created: MyDb["volunteer-positions"][];
+      created: MyDb["volunteer-position"][];
       deleted: string[];
-      updated: DocPartialWithId<MyDb["volunteer-positions"]>[];
+      updated: DocPartialWithId<MyDb["volunteer-position"]>[];
     };
     handleUndo: () => void;
     onSaveSuccess: () => void;
@@ -30,7 +30,7 @@ function Provider({
   ...props
 }: {
   children: React.ReactNode | ((args: ContextValue) => React.ReactNode);
-  initData: MyDb["volunteer-positions"][];
+  initData: MyDb["volunteer-position"][];
 }) {
   const [initData, setInitData] = React.useState(props.initData);
   const [undoKey, setUndoKey] = React.useState(generateUid());

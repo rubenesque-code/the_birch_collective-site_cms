@@ -1,5 +1,8 @@
+import Markdown from "markdown-to-jsx";
 import { TextAreaForm } from "~/components/forms";
+import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
+import { Modal } from "~/components/styled-bases";
 import { UedCx } from "~/context/user-editable-data";
 
 const MainText = () => {
@@ -9,18 +12,22 @@ const MainText = () => {
       actions,
     },
     revision: { undoKey },
-  } = UedCx.Pages.AboutUs.use();
+  } = UedCx.Pages.VolunteerPositions.use();
 
   return (
-    <div>
-      <CmsLayout.EditBar>
-        <CmsLayout.EditBar.Info infoText="The text area below is an approximation of how the text will look on the actual site." />
+    <div className="group/main">
+      <CmsLayout.EditBar className="opacity-60 group-hover/main:opacity-90 hover:!opacity-100">
+        <PreviewModal />
+        <CmsLayout.EditBar.Info
+          infoText="The text below is an approximation. See preview left."
+          gap="xs"
+        />
       </CmsLayout.EditBar>
       <div className="custom-prose prose mt-sm w-full max-w-full">
         <TextAreaForm
           localStateValue={mainText}
           textArea={{
-            placeholder: "Main about us text",
+            placeholder: "Volunteer positions page main text",
           }}
           onSubmit={actions.mainText}
           tooltip="Click to edit main text"
@@ -32,3 +39,51 @@ const MainText = () => {
 };
 
 export default MainText;
+
+const PreviewModal = () => {
+  const {
+    store: {
+      data: { mainText },
+    },
+  } = UedCx.Pages.VolunteerPositions.use();
+
+  return (
+    <Modal.WithVisibilityProvider
+      button={({ openModal }) => (
+        <CmsLayout.EditBar.Button
+          icon={<Icon.SitePreview />}
+          onClick={openModal}
+          text="preview text"
+        />
+      )}
+      panelContent={({ closeModal }) => (
+        <div className="rounded-lg bg-white p-lg shadow-xl">
+          <div className="flex justify-end">
+            <h2 className="flex items-center gap-xs  text-gray-400">
+              <span>
+                <Icon.SitePreview />
+              </span>
+              <span>preview</span>
+            </h2>
+          </div>
+          {mainText.length ? (
+            <div className="custom-prose prose mt-lg max-w-full gap-10 md:columns-2">
+              <Markdown>{mainText}</Markdown>
+            </div>
+          ) : (
+            <p className="mt-md italic text-gray-400">No text yet.</p>
+          )}
+          <div className="mt-xl flex justify-end">
+            <button
+              className="my-btn my-btn-neutral"
+              type="button"
+              onClick={closeModal}
+            >
+              close
+            </button>
+          </div>
+        </div>
+      )}
+    />
+  );
+};

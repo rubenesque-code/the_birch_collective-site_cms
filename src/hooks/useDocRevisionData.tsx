@@ -16,5 +16,5 @@ export function useDocRevisionData<
 
   const isChange = checkObjectHasField(diff);
 
-  return { saveData: diff, isChange };
+  return { saveData: isChange ? diff : null, isChange };
 }

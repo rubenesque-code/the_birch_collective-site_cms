@@ -47,7 +47,7 @@ export const createStore = (input: { initData: Store["data"] }) =>
             }),
           ),
 
-        create: (newEntry: MyDb["volunteer-positions"]) =>
+        create: (newEntry: MyDb["volunteer-position"]) =>
           set(
             produce((store: Store) => {
               store.data.push(newEntry);

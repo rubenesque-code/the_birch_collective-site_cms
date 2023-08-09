@@ -1,18 +1,18 @@
 import { createContext, useContext, type ReactNode } from "react";
 import type { MyDb } from "~/types/database";
 
-type ContextValue = MyDb["testimonial"];
+type ContextValue = MyDb["volunteer-position"];
 
 const Context = createContext<ContextValue | null>(null);
 
 function Provider({
   children,
-  testimonial,
+  volunteerPosition,
 }: {
   children: ReactNode | ((args: ContextValue) => ReactNode);
-  testimonial: MyDb["testimonial"];
+  volunteerPosition: MyDb["volunteer-position"];
 }) {
-  const value: ContextValue = testimonial;
+  const value: ContextValue = volunteerPosition;
 
   return (
     <Context.Provider value={value}>
@@ -21,24 +21,25 @@ function Provider({
   );
 }
 
-// should use zod for instead of checkObjectHasField?
 const useThisContext = () => {
   const context = useContext(Context);
 
   if (!context) {
-    throw new Error("TestimonialCx.use must be used within its provider!");
+    throw new Error(
+      "VolunteerPositionCx.use must be used within its provider!",
+    );
   }
 
   return context;
 };
 
-function TestimonialCx() {
+function VolunteerPositionCx() {
   throw new Error(
-    "TestimonialCx exists for naming purposes only and should not be used as a component",
+    "VolunteerPositionCx exists for naming purposes only and should not be used as a component",
   );
 }
 
-export { TestimonialCx };
+export { VolunteerPositionCx };
 
-TestimonialCx.Provider = Provider;
-TestimonialCx.use = useThisContext;
+VolunteerPositionCx.Provider = Provider;
+VolunteerPositionCx.use = useThisContext;

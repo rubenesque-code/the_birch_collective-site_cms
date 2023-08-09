@@ -9,7 +9,7 @@ export type Store = {
 
 type Data = VolunteerPosition[];
 
-type VolunteerPosition = MyDb["volunteer-positions"];
+type VolunteerPosition = MyDb["volunteer-position"];
 
 export type VolunteerPositionActionFields = MyPick<
   VolunteerPosition,

@@ -52,6 +52,7 @@ import {
   ArrowDown,
   ArrowUp,
   ArrowSquareIn,
+  Gavel,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -100,6 +101,7 @@ Icon.Update = ArrowsCounterClockwise;
 Icon.ArrowDown = ArrowDown;
 Icon.ArrowUp = ArrowUp;
 Icon.InternalLink = ArrowSquareIn;
+Icon.VolunteerPositon = Gavel;
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";

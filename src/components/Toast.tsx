@@ -13,7 +13,9 @@ export const Toast = ({
         className={`inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-gray-500 `}
       >
         {type === "error" ? (
-          <Icon.Error />
+          <span className="text-my-error-content">
+            <Icon.Error />
+          </span>
         ) : type === "success" ? (
           <Icon.Success />
         ) : type === "alert" ? (

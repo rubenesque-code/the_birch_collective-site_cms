@@ -18,7 +18,7 @@ type ContextValue = { store: ReturnType<typeof createStore> } & {
   revision: {
     isChange: boolean;
     undoKey: string;
-    saveData: Partial<MyDb["singles"]["footer"]>;
+    saveData: Partial<MyDb["singles"]["footer"]> | null;
     handleUndo: () => void;
     onSaveSuccess: () => void;
   };
