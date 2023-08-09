@@ -53,6 +53,8 @@ import {
   ArrowUp,
   ArrowSquareIn,
   Gavel,
+  Clock,
+  Download,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -102,6 +104,8 @@ Icon.ArrowDown = ArrowDown;
 Icon.ArrowUp = ArrowUp;
 Icon.InternalLink = ArrowSquareIn;
 Icon.VolunteerPositon = Gavel;
+Icon.Date = Clock;
+Icon.Download = Download;
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";

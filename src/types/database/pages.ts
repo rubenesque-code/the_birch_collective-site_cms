@@ -237,7 +237,7 @@ type Careers = {
   careers: {
     heading: string;
 
-    text: string | null;
+    text: string;
 
     entries: {
       id: string;

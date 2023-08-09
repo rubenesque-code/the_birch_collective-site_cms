@@ -1,4 +1,5 @@
 import React, { type ReactNode } from "react";
+import CareersModal from "~/components/careers-modal/+Entry";
 import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
@@ -14,26 +15,24 @@ import { useToast } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
 import type { MyDb } from "~/types/database";
 
-const Positions = () => {
+const JobPosts = () => {
   const {
     store: {
       data: {
-        opportunities: { entries },
+        careers: { entries },
       },
       actions: {
-        opportunities: { entries: positionAction },
+        careers: { entries: positionAction },
       },
     },
-  } = UedCx.Pages.VolunteerPositions.use();
-
-  const sorted = React.useMemo(() => deepSortByIndex(entries), [entries]);
+  } = UedCx.Pages.Careers.use();
 
   const toast = useToast();
 
   return (
     <div>
       <CmsLayout.EditBar>
-        <VolunteerPositionsModal
+        <CareersModal
           button={({ openModal }) => (
             <CmsLayout.EditBar.Button
               icon={<Icon.Create />}
@@ -41,49 +40,37 @@ const Positions = () => {
               text="Add position"
             />
           )}
-          connectPosition={(volunteerPositionId) => {
+          connectCareer={(careerId) => {
             positionAction.add({
               id: generateUid(),
-              dbConnections: { volunteerPositionId },
-              index: entries.length,
+              dbConnections: { careerId },
             });
 
             toast.neutral("added volunteer position to page");
           }}
-          connectTooltip="add position to page"
-          usedPositionIds={entries.map(
-            (entry) => entry.dbConnections.volunteerPositionId,
-          )}
+          connectTooltip="add job post to page"
+          usedCareerIds={entries.map((entry) => entry.dbConnections.careerId)}
         />
       </CmsLayout.EditBar>
 
       <div className="mt-lg">
-        {!sorted.length ? (
-          <p>No volunteer positions yet.</p>
+        {!entries.length ? (
+          <p>No job postings yet.</p>
         ) : (
           <div className="mt-lg grid grid-cols-2 gap-x-lg gap-y-xl">
-            <DndKit.Context
-              elementIds={getIds(sorted)}
-              onReorder={positionAction.reorder}
-            >
-              {sorted.map((entry) => (
-                <DndKit.Element elementId={entry.id} key={entry.id}>
-                  <VolunteerPositionsPageCx.PositionEntry.Provider
-                    entry={entry}
-                  >
-                    <ConnectVolunteerPosition>
-                      {({ connectedPosition }) => (
-                        <VolunteerPositionCx.Provider
-                          volunteerPosition={connectedPosition}
-                        >
-                          <Position />
-                        </VolunteerPositionCx.Provider>
-                      )}
-                    </ConnectVolunteerPosition>
-                  </VolunteerPositionsPageCx.PositionEntry.Provider>
-                </DndKit.Element>
-              ))}
-            </DndKit.Context>
+            {entries.map((entry) => (
+              <VolunteerPositionsPageCx.PositionEntry.Provider entry={entry}>
+                <ConnectVolunteerPosition>
+                  {({ connectedPosition }) => (
+                    <VolunteerPositionCx.Provider
+                      volunteerPosition={connectedPosition}
+                    >
+                      <Position />
+                    </VolunteerPositionCx.Provider>
+                  )}
+                </ConnectVolunteerPosition>
+              </VolunteerPositionsPageCx.PositionEntry.Provider>
+            ))}
           </div>
         )}
       </div>
@@ -91,7 +78,7 @@ const Positions = () => {
   );
 };
 
-export default Positions;
+export default JobPosts;
 
 const ConnectVolunteerPosition = ({
   children,

@@ -17,6 +17,7 @@ import type { MyDb } from "~/types/database";
 import BannerImage from "./banner-image/+Entry";
 import Heading from "./heading/+Entry";
 import MainText from "./main-text/+Entry";
+import Careers from "./careers/+Entry";
 
 const CareersPage = () => (
   <InitDbData>
@@ -56,8 +57,12 @@ const PageSpecificContent = () => (
       <Heading />
     </SiteLayout.Section.Spacing>
 
-    <SiteLayout.Section.Spacing>
+    <SiteLayout.Section.Spacing.Horizontal>
       <MainText />
+    </SiteLayout.Section.Spacing.Horizontal>
+
+    <SiteLayout.Section.Spacing>
+      <Careers />
     </SiteLayout.Section.Spacing>
   </>
 );
