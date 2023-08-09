@@ -12,6 +12,8 @@ import { ProgrammePageDataCx } from "./programme";
 import { DonatePageDataCx } from "./donate-page";
 import { VolunteerPositionsDataCx } from "./volunteer-positions";
 import { VolunteerPositionsPageDataCx } from "./volunteer-positions-page";
+import { CareersPageDataCx } from "./careers-page";
+import { CareersDataCx } from "./careers";
 
 function UedCx() {
   throw new Error(
@@ -34,6 +36,7 @@ Pages.AboutUs = AboutUsPageDataCx;
 Pages.Programmes = ProgrammesPageDataCx;
 Pages.Donate = DonatePageDataCx;
 Pages.VolunteerPositions = VolunteerPositionsPageDataCx;
+Pages.Careers = CareersPageDataCx;
 
 UedCx.Footer = FooterDataCx;
 UedCx.Header = HeaderDataCx;
@@ -44,3 +47,4 @@ UedCx.Programme = ProgrammePageDataCx;
 UedCx.Testimonials = TestimonialsDataCx;
 UedCx.Supporters = SupportersDataCx;
 UedCx.VolunteerPositions = VolunteerPositionsDataCx;
+UedCx.Careers = CareersDataCx;

@@ -137,7 +137,10 @@ export const createStore = (input: { initData: Store["data"] }) =>
 
                   const programme = store.data[programmeIndex];
 
-                  const bulletIndex = programme.summary.bullets.findIndex(
+                  const bulletsOrdered =
+                    programme.summary.bullets.sort(sortByIndex);
+
+                  const bulletIndex = bulletsOrdered.findIndex(
                     (bullet) => bullet.id === input.bulletId,
                   );
 
@@ -146,6 +149,10 @@ export const createStore = (input: { initData: Store["data"] }) =>
                   }
 
                   programme.summary.bullets.splice(bulletIndex, 1);
+
+                  for (let i = bulletIndex; i < bulletsOrdered.length; i++) {
+                    bulletsOrdered[i].index = bulletsOrdered[i].index - 1;
+                  }
                 }),
               ),
 

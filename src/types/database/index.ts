@@ -1,3 +1,4 @@
+import type { Career } from "./career";
 import type { Footer } from "./footer";
 import type { Header } from "./header";
 import type { Image } from "./image";
@@ -16,6 +17,7 @@ export type MyDb = {
   programme: Programme;
   supporter: Supporter;
   ["volunteer-position"]: VolunteerPosition;
+  career: Career;
   singles: {
     orgDetails: OrgDetails;
     linkLabels: LinkLabels;

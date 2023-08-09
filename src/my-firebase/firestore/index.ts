@@ -1,6 +1,7 @@
 import { createImage } from "./mutate/image";
 import {
   batchUpdateAboutUsPage,
+  batchUpdateCareersPage,
   batchUpdateDonatePage,
   batchUpdateLandingPage,
   batchUpdateProgrammesPage,
@@ -39,12 +40,15 @@ import { aboutUsPageTransaction } from "./mutate/transactions/aboutUsPage";
 import { landingPageTransaction } from "./mutate/transactions/landingPage";
 import {
   fetchAboutUsPage,
+  fetchCareers,
+  fetchCareersPage,
   fetchDonatePage,
   fetchFooter,
   fetchHeader,
   fetchImages,
   fetchLandingPage,
   fetchLinkLabels,
+  fetchOneCareer,
   fetchOneImage,
   fetchOneProgramme,
   fetchOneSupporter,
@@ -70,6 +74,12 @@ import {
   deleteVolunteerPosition,
   updateVolunteerPosition,
 } from "./mutate/volunteer-positions";
+import {
+  batchCreateCareer,
+  batchDeleteCareer,
+  batchUpdateCareer,
+} from "./mutate/careers";
+import { careersPageTransaction } from "./mutate/transactions/careersPage";
 
 export const myDb = {
   pages: {
@@ -101,6 +111,12 @@ export const myDb = {
       fetch: fetchVolunteerPositionsPage,
       batch: {
         update: batchUpdateVolunteerPositionsPage,
+      },
+    },
+    career: {
+      fetch: fetchCareersPage,
+      batch: {
+        update: batchUpdateCareersPage,
       },
     },
   },
@@ -186,6 +202,19 @@ export const myDb = {
       delete: batchDeleteVolunteerPosition,
     },
   },
+  career: {
+    fetchOne: fetchOneCareer,
+    fetchAll: fetchCareers,
+    /*     create: createSupporter,
+    update: updateSupporter,
+    delete: deleteSupporter, */
+    batch: {
+      create: batchCreateCareer,
+      update: batchUpdateCareer,
+      delete: batchDeleteCareer,
+    },
+  },
+
   transactions: {
     pages: {
       landing: landingPageTransaction,
@@ -194,6 +223,7 @@ export const myDb = {
       programme: programmePageTransaction,
       donate: donatePageTransaction,
       ["volunteer-positions"]: volunteerPositionsPageTransaction,
+      careers: careersPageTransaction,
     },
   },
 };

@@ -54,6 +54,16 @@ export const fetchVolunteerPositionsPage = async () => {
   return data;
 };
 
+export const fetchCareersPage = async () => {
+  const docRef = getDocRef("pages", "careers");
+
+  const data = (await getDocData(
+    docRef,
+  )) as unknown as MyDb["pages"]["careers"];
+
+  return data;
+};
+
 export const fetchOneImage = async (id: string) => {
   const docRef = getDocRef("images", id);
 
@@ -141,6 +151,24 @@ export const fetchVolunteerPositions = async () => {
   const data = (await getCollectionData(
     collectionRef,
   )) as unknown as MyDb["volunteer-position"][];
+
+  return data;
+};
+
+export const fetchOneCareer = async (id: string) => {
+  const docRef = getDocRef("careers", id);
+
+  const data = (await getDocData(docRef)) as unknown as MyDb["career"];
+
+  return data;
+};
+
+export const fetchCareers = async () => {
+  const collectionRef = getCollectionRef("careers");
+
+  const data = (await getCollectionData(
+    collectionRef,
+  )) as unknown as MyDb["career"][];
 
   return data;
 };

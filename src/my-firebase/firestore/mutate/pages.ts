@@ -46,3 +46,12 @@ export const batchUpdateVolunteerPositionsPage = (
 
   batch.update(docRef, data);
 };
+
+export const batchUpdateCareersPage = (
+  data: Partial<MyDb["pages"]["careers"]>,
+  batch: WriteBatch,
+) => {
+  const docRef = getDocRef("pages", "careers");
+
+  batch.update(docRef, data);
+};

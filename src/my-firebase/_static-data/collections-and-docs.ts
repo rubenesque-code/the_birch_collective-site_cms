@@ -5,6 +5,7 @@ const collections = {
   programmes: "programmes",
   supporters: "supporters",
   ["volunteer-positions"]: "volunteerPositions",
+  careers: "careers",
   singles: "singles",
 } as const;
 
@@ -14,6 +15,7 @@ const pages = {
   programmes: "programmes",
   donate: "donate",
   ["volunteer-positions"]: "volunteerPositions",
+  careers: "careers",
 } as const;
 
 const singles = {

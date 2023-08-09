@@ -4,6 +4,7 @@ export type Pages = {
   programmes: Programmes;
   donate: Donate;
   ["volunteer-positions"]: VolunteerPositions;
+  careers: Careers;
 };
 
 type Landing = {
@@ -211,6 +212,36 @@ type VolunteerPositions = {
       id: string;
       index: number;
       dbConnections: { volunteerPositionId: string };
+    }[];
+  };
+};
+
+type Careers = {
+  id: "careers-page";
+
+  bannerImage: {
+    dbConnections: {
+      imageId: string | null;
+    };
+    position: {
+      x: number;
+      y: number;
+    };
+  };
+
+  heading: string;
+  mainText: string;
+
+  followOnSocialMediaText: string;
+
+  careers: {
+    heading: string;
+
+    text: string | null;
+
+    entries: {
+      id: string;
+      dbConnections: { careerId: string };
     }[];
   };
 };
