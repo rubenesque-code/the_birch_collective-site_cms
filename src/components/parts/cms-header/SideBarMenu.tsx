@@ -73,9 +73,7 @@ const PageLinks = () => (
     <PageLink route="/donate" text="Donate" />
     <PageLink route="/volunteer-positions" text="Volunteer positions" />
     <PageLink route="/careers" text="Careers" />
-    <div className="mt-sm">
-      <PageLink route="/images" text="Images" />
-    </div>
+    <Workshops />
   </div>
 );
 
@@ -144,9 +142,10 @@ const Programmes = () => {
           } overflow-hidden transition-all duration-150 ease-in-out`}
         >
           {processed.map((programme) => (
-            <ProgrammeLink
+            <NestedRouteLink
               id={programme.id}
               text={programme.title}
+              parentType="programme"
               key={programme.id}
             />
           ))}
@@ -156,8 +155,87 @@ const Programmes = () => {
   );
 };
 
-const ProgrammeLink = ({ id, text }: { text: string; id: string }) => (
-  <Link href={`/programmes/${id}`} passHref>
+const Workshops = () => {
+  const [isExpanded, setIsExpanded] = React.useState(false);
+
+  const workshopsQuery = useQuery("workshops", myDb.workshop.fetchAll);
+
+  const processed = React.useMemo(() => {
+    if (!workshopsQuery.data) {
+      return;
+    }
+
+    const valid = workshopsQuery.data.filter(
+      (workshop) => workshop.title.length,
+    );
+
+    const alphabetical = produce(valid, (draft) =>
+      draft.sort((a, b) => {
+        const titleA = a.title.toUpperCase();
+        const titleB = b.title.toUpperCase();
+
+        return titleA < titleB ? -1 : titleA > titleB ? 1 : 0;
+      }),
+    );
+
+    return alphabetical;
+  }, [workshopsQuery.data]);
+
+  return (
+    <div className={``}>
+      <div className={`flex items-center gap-lg`}>
+        <Link href="/workshops">
+          <span className="text-gray-600 transition-colors duration-75 ease-in-out hover:text-blue-600">
+            Workshops
+          </span>
+        </Link>
+        {processed?.length ? (
+          <WithTooltip text={isExpanded ? "hide workshops" : "show workshops"}>
+            <span
+              className={`cursor-pointer rounded-full p-xxs text-sm hover:bg-gray-100`}
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              {isExpanded ? <Icon.CaretUp /> : <Icon.CaretDown />}
+            </span>
+          </WithTooltip>
+        ) : null}
+      </div>
+
+      {processed?.length ? (
+        <div
+          className={`flex flex-col gap-sm border-l pl-sm ${
+            !isExpanded
+              ? `mt-0 max-h-0 opacity-10`
+              : `mt-md max-h-full opacity-100`
+          } overflow-hidden transition-all duration-150 ease-in-out`}
+        >
+          {processed.map((workshop) => (
+            <NestedRouteLink
+              id={workshop.id}
+              text={workshop.title}
+              parentType="workshop"
+              key={workshop.id}
+            />
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+const NestedRouteLink = ({
+  id,
+  text,
+  parentType,
+}: {
+  text: string;
+  id: string;
+  parentType: "programme" | "workshop";
+}) => (
+  <Link
+    href={`/${parentType === "programme" ? "programmes" : "workshops"}/${id}`}
+    passHref
+  >
     <div className="capitalize text-gray-600 transition-colors duration-75 ease-in-out hover:text-blue-600">
       {text}
     </div>

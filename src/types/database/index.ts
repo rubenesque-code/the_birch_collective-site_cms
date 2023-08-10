@@ -9,6 +9,7 @@ import type { Programme } from "./programme";
 import type { Supporter } from "./supporter";
 import type { Testimonial } from "./testimonial";
 import type { VolunteerPosition } from "./volunteerPosition";
+import type { Workshop } from "./workshop";
 
 export type MyDb = {
   pages: Pages;
@@ -18,6 +19,7 @@ export type MyDb = {
   supporter: Supporter;
   ["volunteer-position"]: VolunteerPosition;
   career: Career;
+  workshop: Workshop;
   singles: {
     orgDetails: OrgDetails;
     linkLabels: LinkLabels;

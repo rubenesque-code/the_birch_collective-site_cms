@@ -6,6 +6,7 @@ import {
   batchUpdateLandingPage,
   batchUpdateProgrammesPage,
   batchUpdateVolunteerPositionsPage,
+  batchUpdateWorkshopsPage,
 } from "./mutate/pages";
 import {
   batchCreateProgramme,
@@ -61,10 +62,12 @@ import {
   fetchTestimonials,
   fetchVolunteerPositions,
   fetchVolunteerPositionsPage,
+  fetchWorkshops,
+  fetchWorkshopsPage,
 } from "./query";
 import { programmesPageTransaction } from "./mutate/transactions/programmesPage";
-import { programmePageTransaction } from "./mutate/transactions/programme";
-import { donatePageTransaction } from "./mutate/transactions/donate";
+import { programmePageTransaction } from "./mutate/transactions/programmePage";
+import { donatePageTransaction } from "./mutate/transactions/donatePage";
 import { volunteerPositionsPageTransaction } from "./mutate/transactions/volunteerPositionsPage";
 import {
   batchCreateVolunteerPosition,
@@ -80,6 +83,12 @@ import {
   batchUpdateCareer,
 } from "./mutate/careers";
 import { careersPageTransaction } from "./mutate/transactions/careersPage";
+import {
+  batchCreateWorkshop,
+  batchDeleteWorkshop,
+  batchUpdateWorkshop,
+} from "./mutate/workshops";
+import { workshopsPageTransaction } from "./mutate/transactions/workshopsPage";
 
 export const myDb = {
   pages: {
@@ -117,6 +126,12 @@ export const myDb = {
       fetch: fetchCareersPage,
       batch: {
         update: batchUpdateCareersPage,
+      },
+    },
+    workshops: {
+      fetch: fetchWorkshopsPage,
+      batch: {
+        update: batchUpdateWorkshopsPage,
       },
     },
   },
@@ -205,13 +220,19 @@ export const myDb = {
   career: {
     fetchOne: fetchOneCareer,
     fetchAll: fetchCareers,
-    /*     create: createSupporter,
-    update: updateSupporter,
-    delete: deleteSupporter, */
     batch: {
       create: batchCreateCareer,
       update: batchUpdateCareer,
       delete: batchDeleteCareer,
+    },
+  },
+
+  workshop: {
+    fetchAll: fetchWorkshops,
+    batch: {
+      create: batchCreateWorkshop,
+      update: batchUpdateWorkshop,
+      delete: batchDeleteWorkshop,
     },
   },
 
@@ -224,6 +245,7 @@ export const myDb = {
       donate: donatePageTransaction,
       ["volunteer-positions"]: volunteerPositionsPageTransaction,
       careers: careersPageTransaction,
+      workshops: workshopsPageTransaction,
     },
   },
 };

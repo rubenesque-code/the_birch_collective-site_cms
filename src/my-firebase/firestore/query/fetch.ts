@@ -64,6 +64,16 @@ export const fetchCareersPage = async () => {
   return data;
 };
 
+export const fetchWorkshopsPage = async () => {
+  const docRef = getDocRef("pages", "workshops");
+
+  const data = (await getDocData(
+    docRef,
+  )) as unknown as MyDb["pages"]["workshops"];
+
+  return data;
+};
+
 export const fetchOneImage = async (id: string) => {
   const docRef = getDocRef("images", id);
 
@@ -169,6 +179,16 @@ export const fetchCareers = async () => {
   const data = (await getCollectionData(
     collectionRef,
   )) as unknown as MyDb["career"][];
+
+  return data;
+};
+
+export const fetchWorkshops = async () => {
+  const collectionRef = getCollectionRef("workshops");
+
+  const data = (await getCollectionData(
+    collectionRef,
+  )) as unknown as MyDb["workshop"][];
 
   return data;
 };
