@@ -34,7 +34,7 @@ const UserEdit = ({
     }`}
   >
     {title ? (
-      <div className="flex items-center justify-between border-b border-b-gray-200 pb-sm">
+      <div className="border-b border-b-gray-200 pb-sm">
         <h3 className="leading-6">{title}</h3>
       </div>
     ) : null}

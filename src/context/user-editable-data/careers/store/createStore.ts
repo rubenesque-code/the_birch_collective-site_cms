@@ -2,7 +2,7 @@ import { produce } from "immer";
 import lodash from "lodash";
 import * as z from "zustand";
 
-import { sortByIndex } from "~/helpers/data/process";
+import { getReorderedEntities, sortByIndex } from "~/helpers/data/process";
 import type {
   GetObjValue,
   ObjFieldsToStr,
@@ -52,7 +52,7 @@ export const createStore = (input: { initData: Store["data"] }) =>
             }),
           ),
 
-        delete: (input: { id: string }) =>
+        delete: (input) =>
           set(
             produce((store: Store) => {
               const entityToDeleteIndex = store.data.findIndex(
@@ -62,6 +62,36 @@ export const createStore = (input: { initData: Store["data"] }) =>
               if (entityToDeleteIndex === -1) return;
 
               store.data.splice(entityToDeleteIndex, 1);
+            }),
+          ),
+
+        reorder: (input) =>
+          set(
+            produce((store: Store) => {
+              const entriesOrdered = store.data.sort(sortByIndex);
+
+              const active = entriesOrdered.find(
+                (t) => t.id === input.activeId,
+              );
+              const over = entriesOrdered.find((t) => t.id === input.overId);
+
+              if (!active || !over) {
+                return;
+              }
+
+              const updatedEntries = getReorderedEntities({
+                active,
+                over,
+                entities: entriesOrdered,
+              });
+
+              updatedEntries.forEach((updatedEntry) => {
+                const index = store.data.findIndex(
+                  (t) => t.id === updatedEntry.id,
+                );
+                if (index !== -1)
+                  store.data[index].index = updatedEntry.newIndex;
+              });
             }),
           ),
 

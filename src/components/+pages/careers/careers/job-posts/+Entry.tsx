@@ -1,16 +1,19 @@
+import { Popover } from "@headlessui/react";
+import { produce } from "immer";
 import React, { type ReactNode } from "react";
+import { WarningPanel } from "~/components/WarningPanel";
+
+import { WithTooltip } from "~/components/WithTooltip";
 import CareersModal from "~/components/careers-modal/+Entry";
-import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
+import ModalLayout from "~/components/layouts/Modal";
 import { ComponentMenu } from "~/components/menus";
-import VolunteerPositionsModal from "~/components/volunteer-positions-modal/+Entry";
-import { VolunteerPositionCx } from "~/context/entities/VolunteerPositionCx";
-import { VolunteerPositionsPageCx } from "~/context/entities/volunteer-positions-page";
+import { Modal } from "~/components/styled-bases";
+import { DbReadCx } from "~/context/db-data-read-only";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
-import { getIds } from "~/helpers/data/query";
 import { useToast } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
 import type { MyDb } from "~/types/database";
@@ -19,13 +22,42 @@ const JobPosts = () => {
   const {
     store: {
       data: {
-        careers: { entries },
+        careers: { entries: pageEntries },
       },
       actions: {
-        careers: { entries: positionAction },
+        careers: { entries: pageEntryAction },
       },
     },
   } = UedCx.Pages.Careers.use();
+
+  const {
+    store: { data: careers },
+  } = UedCx.Careers.use();
+
+  const pageEntriesSorted = React.useMemo(() => {
+    const sorted = produce(pageEntries, (draft) => {
+      draft.sort((entryA, entryB) => {
+        const careerA = careers.find(
+          (career) => career.id === entryA.dbConnections.careerId,
+        );
+        const careerB = careers.find(
+          (career) => career.id === entryB.dbConnections.careerId,
+        );
+
+        if (!careerA && !careerB) {
+          return 0;
+        }
+        if (!careerA) {
+          return -1;
+        }
+        if (!careerB) {
+          return 1;
+        }
+        return careerA.index - careerB.index;
+      });
+    });
+    return sorted;
+  }, [pageEntries, careers]);
 
   const toast = useToast();
 
@@ -37,39 +69,42 @@ const JobPosts = () => {
             <CmsLayout.EditBar.Button
               icon={<Icon.Create />}
               onClick={openModal}
-              text="Add position"
+              text="Add job post"
             />
           )}
           connectCareer={(careerId) => {
-            positionAction.add({
+            pageEntryAction.add({
               id: generateUid(),
               dbConnections: { careerId },
             });
 
-            toast.neutral("added volunteer position to page");
+            toast.neutral("added job to page");
           }}
-          connectTooltip="add job post to page"
-          usedCareerIds={entries.map((entry) => entry.dbConnections.careerId)}
+          connectTooltip="add job posting to page"
+          usedCareerIds={pageEntries.map(
+            (entry) => entry.dbConnections.careerId,
+          )}
         />
       </CmsLayout.EditBar>
 
       <div className="mt-lg">
-        {!entries.length ? (
+        {!pageEntries.length ? (
           <p>No job postings yet.</p>
         ) : (
           <div className="mt-lg grid grid-cols-2 gap-x-lg gap-y-xl">
-            {entries.map((entry) => (
-              <VolunteerPositionsPageCx.PositionEntry.Provider entry={entry}>
+            {pageEntriesSorted.map((pageEntry) => (
+              <DbReadCx.Pages.Careers.JobPost.Provider
+                entry={pageEntry}
+                key={pageEntry.id}
+              >
                 <ConnectVolunteerPosition>
-                  {({ connectedPosition }) => (
-                    <VolunteerPositionCx.Provider
-                      volunteerPosition={connectedPosition}
-                    >
-                      <Position />
-                    </VolunteerPositionCx.Provider>
+                  {({ connectedCareer }) => (
+                    <DbReadCx.Career.Provider career={connectedCareer}>
+                      <JobPost />
+                    </DbReadCx.Career.Provider>
                   )}
                 </ConnectVolunteerPosition>
-              </VolunteerPositionsPageCx.PositionEntry.Provider>
+              </DbReadCx.Pages.Careers.JobPost.Provider>
             ))}
           </div>
         )}
@@ -83,71 +118,67 @@ export default JobPosts;
 const ConnectVolunteerPosition = ({
   children,
 }: {
-  children: (arg0: {
-    connectedPosition: MyDb["volunteer-position"];
-  }) => ReactNode;
+  children: (arg0: { connectedCareer: MyDb["career"] }) => ReactNode;
 }) => {
-  const pageEntry = VolunteerPositionsPageCx.PositionEntry.use();
+  const pageEntry = DbReadCx.Pages.Careers.JobPost.use();
 
   const {
-    store: { data: volunteerPositions },
-  } = UedCx.VolunteerPositions.use();
+    store: { data: careers },
+  } = UedCx.Careers.use();
 
-  const connectedPosition = volunteerPositions.find(
-    (position) => position.id === pageEntry.dbConnections.volunteerPositionId,
+  const connectedCareer = careers.find(
+    (position) => position.id === pageEntry.dbConnections.careerId,
   );
 
-  if (!connectedPosition) {
-    return <UnfoundPosition />;
+  if (!connectedCareer) {
+    return <UnfoundCareer />;
   }
 
-  return children({ connectedPosition });
+  return children({ connectedCareer });
 };
 
-const UnfoundPosition = () => (
-  <div className="group/position relative grid place-items-center rounded-md border-2 border-my-alert-content bg-gray-50 p-md">
-    <PositionMenu />
+const UnfoundCareer = () => (
+  <div className="group/career relative grid place-items-center rounded-md border-2 border-my-alert-content bg-gray-50 p-md">
+    <UnfoundCareerMenu />
     <div className="grid place-items-center">
       <div className="text-5xl text-gray-500">
-        <Icon.VolunteerPositon weight="light" />
+        <Icon.JobPost weight="light" />
       </div>
       <div className="mt-4 text-center text-my-alert-content">
-        <p className="mt-1">Error - could not find volunteer position.</p>
+        <p className="mt-1">Error - could not find job post.</p>
       </div>
       <div className="mt-4 max-w-[400px] text-center text-gray-500">
-        A volunteer position was added to the volunteer positions page that
-        can&apos;t be found. It may have been deleted.
+        A job post was added to the careers page that can&apos;t be found. It
+        may have been deleted.
       </div>
     </div>
   </div>
 );
 
-const PositionMenu = () => {
+const UnfoundCareerMenu = () => {
   const {
     store: {
-      data: {},
-
       actions: {
-        opportunities: { entries: positionAction },
+        careers: { entries: pageJobPostAction },
       },
     },
-  } = UedCx.Pages.VolunteerPositions.use();
+  } = UedCx.Pages.Careers.use();
 
-  const pageEntry = VolunteerPositionsPageCx.PositionEntry.use();
+  const pageJobPost = DbReadCx.Pages.Careers.JobPost.use();
 
   const toast = useToast();
 
   return (
-    <ComponentMenu styles="right-1 top-1 group-hover/position:opacity-40">
+    <ComponentMenu styles="right-1 top-1 group-hover/career:opacity-40">
       <ComponentMenu.Button
         onClick={() => {
-          positionAction.remove({
-            id: pageEntry.id,
+          pageJobPostAction.remove({
+            id: pageJobPost.id,
           });
 
-          toast.neutral("position removed");
+          toast.neutral("job posting removed");
         }}
-        tooltip="remove position"
+        tooltip="remove job post"
         styles={{ button: "hover:text-my-alert-content hover:bg-my-alert" }}
       >
         <Icon.Remove weight="bold" />
@@ -156,40 +187,305 @@ const PositionMenu = () => {
   );
 };
 
-const Position = () => {
-  const { id, name, text } = VolunteerPositionCx.use();
+const JobPost = () => {
+  const { id, closingDate, description, docLinkButtons, docLinksText, title } =
+    DbReadCx.Career.use();
 
   const {
-    store: { actions },
+    store: { actions, data: careers },
     revision: { undoKey },
-  } = UedCx.VolunteerPositions.use();
+  } = UedCx.Careers.use();
+
+  const docLinkButtonsSorted = React.useMemo(
+    () => deepSortByIndex(docLinkButtons),
+    [docLinkButtons],
+  );
 
   return (
-    <div className="group/position">
-      <PositionMenu />
-      <div className="text-center font-display text-3xl text-brandOrange">
-        <TextInputForm
-          localStateValue={name}
-          input={{
-            placeholder: "Position name",
-            styles: "font-bold tracking-wide text-center",
-          }}
-          onSubmit={(updatedValue) => actions.name({ id, updatedValue })}
-          tooltip="Click to edit position name"
-          key={undoKey}
-        />
-      </div>
-      <div className="custom-prose prose mt-sm w-full max-w-full">
-        <TextAreaForm
-          localStateValue={text}
-          textArea={{
-            placeholder: "position description",
-          }}
-          onSubmit={(updatedValue) => actions.text({ id, updatedValue })}
-          tooltip="Click to edit position description"
-          key={undoKey}
-        />
+    <div className="group/career relative">
+      <CareerMenu />
+
+      <div className="mt-sm">
+        <div className="border-b border-gray-300 pb-sm">
+          <div className="text-lg font-medium">
+            <TextInputForm
+              localStateValue={title}
+              input={{
+                placeholder: "position description",
+              }}
+              onSubmit={(updatedValue) => actions.title({ id, updatedValue })}
+              tooltip="Click to edit title"
+              key={undoKey}
+            />
+          </div>
+
+          <div className="mt-xs">
+            <div className="flex items-center gap-xs text-gray-500">
+              <span>
+                <Icon.Date />
+              </span>
+              <div className="flex gap-xs">
+                <span>closes, </span>
+                <span>
+                  <TextInputForm
+                    localStateValue={closingDate}
+                    input={{
+                      placeholder: "1 January 2031",
+                    }}
+                    onSubmit={(updatedValue) =>
+                      actions.closingDate({ id, updatedValue })
+                    }
+                    tooltip="Click to edit closing date"
+                    key={undoKey}
+                  />
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="custom-prose prose mt-sm w-full max-w-full">
+          <TextAreaForm
+            localStateValue={description}
+            textArea={{
+              placeholder: "job description",
+            }}
+            onSubmit={(updatedValue) =>
+              actions.description({ id, updatedValue })
+            }
+            tooltip="Click to edit description"
+            key={undoKey}
+          />
+        </div>
+
+        <div className="mt-md">
+          <div className="text-gray-600">
+            <TextAreaForm
+              localStateValue={docLinksText}
+              textArea={{
+                placeholder: "Doc links text (optional)",
+                styles: "font-medium italic",
+              }}
+              onSubmit={(updatedValue) =>
+                actions.docLinksText({ id, updatedValue })
+              }
+              tooltip="edit doc links text (optional)"
+              key={undoKey}
+            />
+          </div>
+          <div className="mt-sm">
+            <div className="flex flex-wrap items-center gap-x-md gap-y-sm">
+              {!docLinkButtons.length ? (
+                <p className="italic text-gray-400">No doc links yet.</p>
+              ) : (
+                docLinkButtonsSorted.map((docLinkButton) => (
+                  <DbReadCx.Career.DocLinkButton.Provider
+                    docLinkButton={docLinkButton}
+                    key={docLinkButton.id}
+                  >
+                    <DocLinkButton />
+                  </DbReadCx.Career.DocLinkButton.Provider>
+                ))
+              )}
+            </div>
+            <div className="mt-sm">
+              <div
+                className="group/add-doc-link flex cursor-pointer items-center gap-xs rounded-sm text-sm"
+                onClick={() =>
+                  actions.docLinkButtons.create({
+                    careerId: id,
+                    newEntry: {
+                      id: generateUid(),
+                      index: careers.length,
+                      link: "",
+                      text: "",
+                    },
+                  })
+                }
+              >
+                <span className="text-blue-300">
+                  <Icon.Create />
+                </span>
+                <span className="text-gray-400 transition-colors duration-75 ease-in-out group-hover/add-doc-link:text-gray-600">
+                  Add doc link button
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  );
+};
+
+const CareerMenu = () => {
+  const {
+    store: {
+      actions: {
+        careers: { entries: pageJobPostAction },
+      },
+    },
+  } = UedCx.Pages.Careers.use();
+
+  const pageJobPost = DbReadCx.Pages.Careers.JobPost.use();
+
+  const toast = useToast();
+
+  return (
+    <ComponentMenu styles="right-1 top-1 group-hover/career:opacity-40">
+      <ComponentMenu.Button
+        onClick={() => {
+          pageJobPostAction.remove({
+            id: pageJobPost.id,
+          });
+
+          toast.neutral("job posting removed");
+        }}
+        tooltip="remove job post"
+        styles={{ button: "hover:text-my-alert-content hover:bg-my-alert" }}
+      >
+        <Icon.Remove weight="bold" />
+      </ComponentMenu.Button>
+    </ComponentMenu>
+  );
+};
+
+const DocLinkButton = () => {
+  const docLinkButton = DbReadCx.Career.DocLinkButton.use();
+
+  const career = DbReadCx.Career.use();
+
+  const {
+    store: {
+      actions: { docLinkButtons: docLinkButtonAction },
+    },
+    revision: { undoKey },
+  } = UedCx.Careers.use();
+
+  return (
+    <div className="group/doc-link-button relative flex items-center gap-xs rounded-sm border border-blue-400 px-sm py-xxs transition-all duration-75 ease-in-out hover:bg-gray-100">
+      <DocLinkButtonMenu />
+
+      <DocLinkButtonLinkModal />
+
+      <span className="text-gray-600">
+        <TextInputForm
+          localStateValue={docLinkButton.text}
+          input={{
+            placeholder: "button text",
+          }}
+          onSubmit={(updatedValue) =>
+            docLinkButtonAction.text({
+              careerId: career.id,
+              docLinkButtonId: docLinkButton.id,
+              updatedValue,
+            })
+          }
+          tooltip="Click to edit download link button text"
+          key={undoKey}
+        />
+      </span>
+    </div>
+  );
+};
+
+const DocLinkButtonMenu = () => {
+  const {
+    store: {
+      actions: { docLinkButtons: docLinkButtonAction },
+    },
+  } = UedCx.Careers.use();
+
+  const career = DbReadCx.Career.use();
+
+  const docLinkButton = DbReadCx.Career.DocLinkButton.use();
+
+  const toast = useToast();
+
+  return (
+    <ComponentMenu styles="right-0 -top-1 -translate-y-full group-hover/doc-link-button:opacity-40">
+      <Modal.WithVisibilityProvider
+        button={({ openModal }) => (
+          <ComponentMenu.Button.Delete
+            tooltip="delete doc link button"
+            onClick={openModal}
+          />
+        )}
+        panelContent={({ closeModal }) => (
+          <WarningPanel
+            callback={() => {
+              docLinkButtonAction.delete({
+                careerId: career.id,
+                docLinkButtonId: docLinkButton.id,
+              });
+
+              toast.neutral("doc link button deleted");
+
+              closeModal();
+            }}
+            closeModal={closeModal}
+            text={{
+              title: "Delete doc link button",
+              body: "Are you sure?",
+            }}
+          />
+        )}
+      />
+    </ComponentMenu>
+  );
+};
+
+const DocLinkButtonLinkModal = () => {
+  const docLinkButton = DbReadCx.Career.DocLinkButton.use();
+
+  const career = DbReadCx.Career.use();
+
+  const {
+    store: {
+      actions: { docLinkButtons: docLinkButtonAction },
+    },
+    revision: { undoKey },
+  } = UedCx.Careers.use();
+
+  return (
+    <Popover className="relative z-20 grid place-items-center">
+      <Popover.Button>
+        <WithTooltip text="Click to edit link">
+          <span className="grid place-items-center text-blue-400">
+            <Icon.Download />
+          </span>
+        </WithTooltip>
+      </Popover.Button>
+
+      <Popover.Panel
+        className={`absolute -top-md left-0 w-[500px] -translate-y-full rounded-xl bg-white p-lg shadow-xl`}
+      >
+        <ModalLayout.UserEdit.Header>
+          <ModalLayout.UserEdit.Header.Title>
+            Edit doc link
+          </ModalLayout.UserEdit.Header.Title>
+          <ModalLayout.UserEdit.Header.Info>
+            Paste in download link to document
+          </ModalLayout.UserEdit.Header.Info>
+        </ModalLayout.UserEdit.Header>
+        <div className="mt-md">
+          <TextInputForm
+            localStateValue={docLinkButton.link}
+            input={{
+              placeholder: "Enter doc link",
+            }}
+            onSubmit={(updatedValue) =>
+              docLinkButtonAction.link({
+                careerId: career.id,
+                docLinkButtonId: docLinkButton.id,
+                updatedValue,
+              })
+            }
+            tooltip="Click to edit download link"
+            key={undoKey}
+          />
+        </div>
+      </Popover.Panel>
+    </Popover>
   );
 };

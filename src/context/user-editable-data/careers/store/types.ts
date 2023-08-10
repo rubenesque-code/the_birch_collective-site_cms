@@ -36,5 +36,6 @@ type Actions = {
   overWrite: (data: Data) => void;
   create: (arg0: Career) => void;
   delete: (arg0: { id: string }) => void;
+  reorder: (arg0: { activeId: string; overId: string }) => void;
 } & GenerateEntityNonArrActions<Career> &
   ArrActions;

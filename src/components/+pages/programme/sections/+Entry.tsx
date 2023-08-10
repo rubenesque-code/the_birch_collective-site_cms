@@ -115,7 +115,6 @@ const Section = () => {
     () => deepSortByIndex(sections),
     [sections],
   );
-  console.log("sectionsSorted:", sectionsSorted);
 
   const { id, title, bullets, colour, description, index } = SectionCx.use();
 

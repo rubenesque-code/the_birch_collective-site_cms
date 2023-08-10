@@ -24,8 +24,6 @@ export const volunteerPositionsPageTransaction = async (input: {
 }) => {
   const batch = writeBatch(firestore);
 
-  console.log("input:", input);
-
   if (input.page) {
     myDb.pages["volunteer-positions"].batch.update(input.page, batch);
   }

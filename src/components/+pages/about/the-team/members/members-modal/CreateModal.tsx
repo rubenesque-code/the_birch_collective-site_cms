@@ -256,7 +256,6 @@ const NewMemberMenu = () => {
     data: { image },
     actions: { image: imageAction },
   } = NewMemberCx.use();
-  console.log("image:", image);
 
   return (
     <ComponentMenu styles="right-1 top-1 group-hover/member-image:opacity-40">

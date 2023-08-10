@@ -1,4 +1,4 @@
-import { type ReactElement } from "react";
+import React, { type ReactElement } from "react";
 
 import { UedCx } from "~/context/user-editable-data";
 
@@ -9,11 +9,13 @@ import { TextAreaForm, TextInputForm } from "~/components/forms";
 import ModalLayout from "~/components/layouts/Modal";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
-import { CreateModal } from "./create-modal/CreateModal";
-import { ComponentApiCx, type ContextApiCxProps } from "./_state";
-import { Icon } from "../icons";
 import { CareerCx } from "~/context/entities";
-import { DocLinkButtonCx } from "~/context/entities/career";
+import { deepSortByIndex } from "~/helpers/data/process";
+import { getIds } from "~/helpers/data/query";
+import { DndKit } from "../dnd-kit";
+import { Icon } from "../icons";
+import { ComponentApiCx, type ContextApiCxProps } from "./_state";
+import { CreateModal } from "./create-modal/CreateModal";
 
 const CareersModal = ({
   button,
@@ -29,7 +31,17 @@ const CareersModal = ({
           body={<Content />}
           closeModal={closeModal}
           createEntityModal={<CreateModal />}
-          title="Add career"
+          header={
+            <ModalLayout.UserEdit.Header>
+              <ModalLayout.UserEdit.Header.Title>
+                Add job post
+              </ModalLayout.UserEdit.Header.Title>
+              <ModalLayout.UserEdit.Header.Info>
+                Below fields are editable. Edit all fields from the careers
+                page.
+              </ModalLayout.UserEdit.Header.Info>
+            </ModalLayout.UserEdit.Header>
+          }
         />
       )}
     />
@@ -40,20 +52,30 @@ export default CareersModal;
 
 const Content = () => {
   const {
-    store: { data },
+    store: { data, actions },
   } = UedCx.Careers.use();
+
+  const sorted = React.useMemo(() => deepSortByIndex(data), [data]);
+  console.log("sorted:", sorted);
 
   return (
     <div>
-      {!data.length ? (
-        <div className="text-gray-600">No careers yet.</div>
+      {!sorted.length ? (
+        <div className="text-gray-600">No job postings yet.</div>
       ) : (
         <div className="grid grid-cols-2 gap-sm">
-          {data.map((career) => (
-            <CareerCx.Provider career={career} key={career.id}>
-              <Career />
-            </CareerCx.Provider>
-          ))}
+          <DndKit.Context
+            elementIds={getIds(sorted)}
+            onReorder={actions.reorder}
+          >
+            {sorted.map((career) => (
+              <DndKit.Element elementId={career.id} key={career.id}>
+                <CareerCx.Provider career={career}>
+                  <Career />
+                </CareerCx.Provider>
+              </DndKit.Element>
+            ))}
+          </DndKit.Context>
         </div>
       )}
     </div>
@@ -61,8 +83,7 @@ const Content = () => {
 };
 
 const Career = () => {
-  const { id, closingDate, description, docLinkButtons, title } =
-    CareerCx.use();
+  const { id, closingDate, description, title } = CareerCx.use();
 
   const {
     store: { actions },
@@ -124,64 +145,8 @@ const Career = () => {
               key={undoKey}
             />
           </div>
-
-          <div className="mt-md">
-            <div className="text-gray-600">Download details and forms</div>
-            <div className="mt-sm flex items-center gap-md">
-              {!docLinkButtons.length ? (
-                <p className="text-gray-600">No doc links yet.</p>
-              ) : (
-                docLinkButtons.map((docLinkButton) => (
-                  <DocLinkButtonCx.Provider
-                    docLinkButton={docLinkButton}
-                    key={docLinkButton.id}
-                  >
-                    <DocLinkButton />
-                  </DocLinkButtonCx.Provider>
-                ))
-              )}
-            </div>
-          </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-const DocLinkButton = () => {
-  const docLinkButton = DocLinkButtonCx.use();
-
-  const career = CareerCx.use();
-
-  const {
-    store: {
-      actions: { docLinkButtons: docLinkButtonAction },
-    },
-    revision: { undoKey },
-  } = UedCx.Careers.use();
-
-  return (
-    <div className="flex cursor-pointer items-center gap-xs rounded-sm border border-blue-400 px-sm py-xxs transition-all duration-75 ease-in-out hover:bg-gray-100">
-      <span className="text-blue-400">
-        <Icon.Download />
-      </span>
-      <span className="text-gray-600">
-        <TextInputForm
-          localStateValue={docLinkButton.text}
-          input={{
-            placeholder: "button text",
-          }}
-          onSubmit={(updatedValue) =>
-            docLinkButtonAction.text({
-              careerId: career.id,
-              docLinkButtonId: docLinkButton.id,
-              updatedValue,
-            })
-          }
-          tooltip="Click to edit download link button text"
-          key={undoKey}
-        />
-      </span>
     </div>
   );
 };

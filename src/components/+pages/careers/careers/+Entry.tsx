@@ -1,12 +1,12 @@
 import { TextInputForm } from "~/components/forms";
 import { UedCx } from "~/context/user-editable-data";
 import JobPosts from "./job-posts/+Entry";
-import { Icon } from "~/components/icons";
 
 const Careers = () => (
   <div>
     <Heading />
     <div className="mt-md">
+      <JobPosts />
       {/* <div className="w-1/2">
         <div className="border-b border-gray-300 pb-sm">
           <div className="font-medium">Volunteer Co-ordinator</div>

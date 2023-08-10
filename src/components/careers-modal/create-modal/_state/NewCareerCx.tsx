@@ -63,7 +63,7 @@ const createStore = (input: { index: number }) => {
 
         closingDate: nonArrAction("closingDate"),
 
-        description: nonArrAction("closingDate"),
+        description: nonArrAction("description"),
 
         title: nonArrAction("title"),
       },
@@ -105,7 +105,7 @@ function Provider({
   );
 
   const areRequiredFields = Boolean(
-    store.data.description.length || store.data.title.length,
+    store.data.description.length && store.data.title.length,
   );
 
   const value: ContextValue = {

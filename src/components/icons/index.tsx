@@ -55,6 +55,7 @@ import {
   Gavel,
   Clock,
   Download,
+  ReadCvLogo,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -106,6 +107,7 @@ Icon.InternalLink = ArrowSquareIn;
 Icon.VolunteerPositon = Gavel;
 Icon.Date = Clock;
 Icon.Download = Download;
+Icon.JobPost = ReadCvLogo;
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";

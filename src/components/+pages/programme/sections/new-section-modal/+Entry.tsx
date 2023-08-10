@@ -201,7 +201,7 @@ const NewSection = () => {
         </div>
       </div>
       <div className="mt-sm">
-        <div className="textbrg flex items-center gap-md text-sm text-gray-400">
+        <div className="flex items-center gap-md text-sm text-gray-400">
           <span>Subtitle</span>
           <span className="italic text-gray-300">optional</span>
         </div>
