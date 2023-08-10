@@ -46,11 +46,23 @@ export const createStore = (input: { initData: Store["data"] }) =>
         },
 
         aboutAmy: {
-          followOnInstaText: nonArrAction("followAmy.followOnInstaText"),
+          followOnInstaText: nonArrAction("aboutAmy.followOnInstaText"),
 
-          instaLink: nonArrAction("followAmy.instaLink"),
+          heading: nonArrAction("aboutAmy.heading"),
 
-          text: nonArrAction("followAmy.text"),
+          image: {
+            dbConnections: {
+              imageId: nonArrAction("aboutAmy.image.dbConnections.imageId"),
+            },
+            position: {
+              x: nonArrAction("aboutAmy.image.position.x"),
+              y: nonArrAction("aboutAmy.image.position.y"),
+            },
+          },
+
+          instaLink: nonArrAction("aboutAmy.instaLink"),
+
+          text: nonArrAction("aboutAmy.text"),
         },
 
         heading: nonArrAction("heading"),

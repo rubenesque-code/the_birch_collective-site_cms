@@ -265,8 +265,22 @@ type Workshops = {
   mainText: string;
 
   aboutAmy: {
-    text: string;
     followOnInstaText: string;
+
+    heading: string;
+
+    image: {
+      dbConnections: {
+        imageId: string | null;
+      };
+      position: {
+        x: number;
+        y: number;
+      };
+    };
+
     instaLink: string;
+
+    text: string;
   };
 };

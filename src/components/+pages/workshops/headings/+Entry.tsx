@@ -1,22 +1,22 @@
 import { TextInputForm } from "~/components/forms";
 import { UedCx } from "~/context/user-editable-data";
 
-const Headings = () => {
+const Heading = () => {
   const {
     store: {
       data: { heading },
       actions,
     },
     revision: { undoKey },
-  } = UedCx.Pages.Programmes.use();
+  } = UedCx.Pages.Workshops.use();
 
   return (
     <div className="">
-      <div className="text-center font-display text-5xl font-bold tracking-wide text-displayGreen md:text-7xl">
+      <div className="text-center font-display text-7xl text-displayGreen">
         <TextInputForm
           localStateValue={heading}
           input={{
-            placeholder: "Programmes page heading",
+            placeholder: "Workshops page heading",
             styles: "tracking-wide font-bold text-center",
           }}
           onSubmit={actions.heading}
@@ -28,4 +28,4 @@ const Headings = () => {
   );
 };
 
-export default Headings;
+export default Heading;

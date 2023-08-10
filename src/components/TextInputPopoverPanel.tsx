@@ -1,4 +1,5 @@
 import type { ReactElement } from "react";
+import { Icon } from "./icons";
 
 const TextInputPopoverPanel = ({
   input,
@@ -8,12 +9,16 @@ const TextInputPopoverPanel = ({
   title: string;
 }) => {
   return (
-    <div className="rounded-xl bg-white p-md pr-lg shadow-lg">
-      <div className="mb-xxs whitespace-nowrap text-sm text-gray-400">
-        {title}
-      </div>
-      <div className="rounded-sm border border-gray-200 px-xs py-xxs pr-md">
+    <div className="min-w-[450px] rounded-xl bg-white p-lg pr-lg shadow-lg">
+      <div className="whitespace-nowrap  text-blue-300">{title}</div>
+      <div className="mt-sm rounded-sm border border-gray-200 px-xs py-xxs pr-md">
         {input}
+      </div>
+      <div className="mt-sm flex items-center gap-xs text-sm text-gray-400">
+        <span>
+          <Icon.Info />
+        </span>
+        <span>Updates automatically. Just click outside when done.</span>
       </div>
     </div>
   );

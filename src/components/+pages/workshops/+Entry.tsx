@@ -15,7 +15,7 @@ import SiteLayout from "~/components/layouts/Site";
 import { UedCx } from "~/context/user-editable-data";
 import type { MyDb } from "~/types/database";
 import BannerImage from "./banner-image/+Entry";
-import Headings from "./headings/+Entry";
+import Heading from "./headings/+Entry";
 import MainText from "./main-text/+Entry";
 import ProgrammesList from "./programmes-list/+Entry";
 
@@ -52,15 +52,15 @@ export default WorkshopsPage;
 const PageSpecificContent = () => (
   <>
     <BannerImage />
-    {/*     <div className="mt-xl">
+    <div className="mt-xl">
       <SiteLayout.Section.Spacing.Horizontal>
-        <Headings />
+        <Heading />
       </SiteLayout.Section.Spacing.Horizontal>
     </div>
     <SiteLayout.Section.Spacing>
       <MainText />
     </SiteLayout.Section.Spacing>
-    <SiteLayout.Section.Spacing>
+    {/* <SiteLayout.Section.Spacing>
       <ProgrammesList />
     </SiteLayout.Section.Spacing> */}
   </>
