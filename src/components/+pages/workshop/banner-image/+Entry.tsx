@@ -1,6 +1,9 @@
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { Icon } from "~/components/icons";
+import CmsLayout from "~/components/layouts/Cms";
+import SiteLayout from "~/components/layouts/Site";
 import { ComponentMenu } from "~/components/menus";
 import { UedCx } from "~/context/user-editable-data";
 
@@ -8,12 +11,24 @@ const BannerImage = () => {
   const {
     store: {
       data: {
-        bannerImage: { dbConnections, position },
+        bannerImage: { dbConnections, position, use },
       },
+      actions,
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
-  return (
+  return !use ? (
+    <SiteLayout.Section.Spacing.Horizontal>
+      <div className="-mb-sm flex justify-end opacity-50 transition-opacity duration-100 ease-in-out hover:opacity-100">
+        <CmsLayout.EditBar.Button
+          icon={<Icon.Image />}
+          onClick={() => actions.bannerImage.use(true)}
+          text="Use banner image"
+          tooltip="optional"
+        />
+      </div>
+    </SiteLayout.Section.Spacing.Horizontal>
+  ) : (
     <div className="group/bannerImage relative aspect-[21/9]">
       <Menu />
       <UserSelectedImageWrapper
@@ -40,7 +55,7 @@ const Menu = () => {
       data: { bannerImage },
       actions: { bannerImage: bannerImageAction },
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
   return (
     <ComponentMenu styles="right-1 top-1 group-hover/bannerImage:opacity-40">
@@ -67,6 +82,15 @@ const Menu = () => {
           menu: { itemsWrapper: "right-0 -bottom-1 translate-y-full" },
         }}
       />
+
+      <ComponentMenu.Divider />
+
+      <ComponentMenu.Button
+        tooltip="hide banner image"
+        onClick={() => bannerImageAction.use(false)}
+      >
+        <Icon.ToggleOff />
+      </ComponentMenu.Button>
     </ComponentMenu>
   );
 };

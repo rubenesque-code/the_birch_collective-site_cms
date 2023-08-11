@@ -31,10 +31,10 @@ function Provider({
     store: {
       data: { id },
     },
-    revision: programme,
-  } = UedCx.Programme.use();
+    revision: workshop,
+  } = UedCx.Pages.Workshop.use();
 
-  const revisionDataArr = [footer, header, linkLabels, orgDetails, programme];
+  const revisionDataArr = [footer, header, linkLabels, orgDetails, workshop];
 
   const isChange = Boolean(revisionDataArr.find((data) => data.isChange));
 
@@ -45,7 +45,7 @@ function Provider({
     arg0();
   };
 
-  const saveMutation = useMutation(myDb.transactions.pages.programme);
+  const saveMutation = useMutation(myDb.transactions.pages.workshop);
 
   const toast = useToast();
 
@@ -59,7 +59,8 @@ function Provider({
               linkLabels: linkLabels.saveData,
               header: header.saveData,
               footer: footer.saveData,
-              programme: { id, ...programme.saveData },
+
+              workshop: { id, ...workshop.saveData },
             },
             {
               onSuccess() {

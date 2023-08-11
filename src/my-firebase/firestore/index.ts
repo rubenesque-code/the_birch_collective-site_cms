@@ -55,6 +55,7 @@ import {
   fetchOneSupporter,
   fetchOneTestimonial,
   fetchOneVolunteerPosition,
+  fetchOneWorkshop,
   fetchOrgDetails,
   fetchProgrammes,
   fetchProgrammesPage,
@@ -89,6 +90,7 @@ import {
   batchUpdateWorkshop,
 } from "./mutate/workshops";
 import { workshopsPageTransaction } from "./mutate/transactions/workshopsPage";
+import { workshopPageTransaction } from "./mutate/transactions/workshopPage";
 
 export const myDb = {
   pages: {
@@ -228,6 +230,7 @@ export const myDb = {
   },
 
   workshop: {
+    fetchOne: fetchOneWorkshop,
     fetchAll: fetchWorkshops,
     batch: {
       create: batchCreateWorkshop,
@@ -245,6 +248,7 @@ export const myDb = {
       donate: donatePageTransaction,
       ["volunteer-positions"]: volunteerPositionsPageTransaction,
       careers: careersPageTransaction,
+      workshop: workshopPageTransaction,
       workshops: workshopsPageTransaction,
     },
   },

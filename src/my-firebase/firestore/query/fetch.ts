@@ -183,6 +183,14 @@ export const fetchCareers = async () => {
   return data;
 };
 
+export const fetchOneWorkshop = async (id: string) => {
+  const docRef = getDocRef("workshops", id);
+
+  const data = (await getDocData(docRef)) as unknown as MyDb["workshop"];
+
+  return data;
+};
+
 export const fetchWorkshops = async () => {
   const collectionRef = getCollectionRef("workshops");
 

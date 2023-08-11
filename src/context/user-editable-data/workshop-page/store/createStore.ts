@@ -127,6 +127,8 @@ export const createStore = (input: { initData: Store["data"] }) =>
             x: nonArrAction("bannerImage.position.x"),
             y: nonArrAction("bannerImage.position.y"),
           },
+
+          use: nonArrAction("bannerImage.use"),
         },
 
         info: {

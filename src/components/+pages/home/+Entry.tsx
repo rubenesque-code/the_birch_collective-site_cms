@@ -56,6 +56,7 @@ import type { MyDb } from "~/types/database";
 // □ option to toggle programme subtitle
 // □ component menu delete button. Need span around icon? Want to be able to have text-gray-400 on cms.editbar. text needs to go red when hover on outer wrapper - not working properly.
 // □ previews, e.g. programme section spreview, is vertically responsive?
+// □ abstraction for preview. Apply sitelayout width
 
 // STATE
 // □ could have a queryOne in state data e.g. for programmes/testimonials

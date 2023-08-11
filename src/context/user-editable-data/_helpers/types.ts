@@ -5,10 +5,11 @@ export type GenerateNonArrActions<TData extends Record<string, unknown>> = {
     | null
     | Record<string, unknown>
     | unknown[]
+    | boolean
     ? TKey extends "id" | "index"
       ? never
       : TKey
-    : never]: TData[TKey] extends string | number | null
+    : never]: TData[TKey] extends string | number | null | boolean
     ? (updatedValue: NonNullable<TData[TKey]>) => void
     : TData[TKey] extends unknown[]
     ? Record<string, unknown>
@@ -25,10 +26,11 @@ export type GenerateEntityNonArrActions<TData extends Record<string, unknown>> =
       | null
       | Record<string, unknown>
       | unknown[]
+      | boolean
       ? TKey extends "id" | "index"
         ? never
         : TKey
-      : never]: TData[TKey] extends string | number | null
+      : never]: TData[TKey] extends string | number | null | boolean
       ? (arg0: { id: string; updatedValue: NonNullable<TData[TKey]> }) => void
       : TData[TKey] extends unknown[]
       ? Record<string, unknown>
@@ -97,7 +99,7 @@ type MyGen3<
   infer TKey1 extends string,
   ...infer TRestOfKeysArr extends string[],
 ]
-  ? TObj[TKey1] extends string | number | null
+  ? TObj[TKey1] extends string | number | null | boolean
     ? NonNullable<TObj[TKey1]>
     : TObj[TKey1] extends Record<string, unknown>
     ? MyGen3<TObj[TKey1], TRestOfKeysArr>

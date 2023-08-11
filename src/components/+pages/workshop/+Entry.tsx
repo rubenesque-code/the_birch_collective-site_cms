@@ -22,7 +22,7 @@ import Info from "./info/+Entry";
 import Posters from "./posters/+Entry";
 import Sections from "./sections/+Entry";
 
-const AboutPage = () => (
+const WorkshopPage = () => (
   <AwaitParams>
     {({ paramId }) => (
       <InitDbData idParam={paramId}>
@@ -54,7 +54,7 @@ const AboutPage = () => (
   </AwaitParams>
 );
 
-export default AboutPage;
+export default WorkshopPage;
 
 const PageSpecificContent = () => (
   <>
@@ -68,7 +68,7 @@ const PageSpecificContent = () => (
       <MainText />
     </SiteLayout.Section.Spacing.Horizontal>
 
-    <SiteLayout.Section.Spacing>
+    {/* <SiteLayout.Section.Spacing>
       <div className="grid grid-cols-2 gap-lg">
         <div className="">
           <Info />
@@ -77,16 +77,17 @@ const PageSpecificContent = () => (
           <Posters />
         </div>
       </div>
-    </SiteLayout.Section.Spacing>
+    </SiteLayout.Section.Spacing> */}
 
-    <SiteLayout.Section.Spacing.Horizontal>
+    {/* <SiteLayout.Section.Spacing.Horizontal>
       <Sections />
-    </SiteLayout.Section.Spacing.Horizontal>
+    </SiteLayout.Section.Spacing.Horizontal> */}
   </>
 );
 
 type DbData = {
-  programme: MyDb["programme"];
+  workshop: MyDb["workshop"];
+
   orgDetails: MyDb["singles"]["orgDetails"];
   linkLabels: MyDb["singles"]["linkLabels"];
   header: MyDb["singles"]["header"];
@@ -114,9 +115,9 @@ const InitDbData = ({
   children: (data: DbData) => ReactElement;
   idParam: string;
 }) => {
-  const programmeQuery = useQuery(
-    "programme",
-    async () => await myDb.programme.fetchOne(idParam),
+  const workshopQuery = useQuery(
+    "workshop",
+    async () => await myDb.workshop.fetchOne(idParam),
   );
 
   const footerQuery = useQuery("footer", myDb.footer.fetch);
@@ -125,22 +126,22 @@ const InitDbData = ({
   const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
 
   if (
-    programmeQuery.isLoading ||
+    workshopQuery.isLoading ||
     linkLabelsQuery.isLoading ||
     headerQuery.isLoading ||
     footerQuery.isLoading ||
     orgDetailsQuery.isLoading ||
-    programmeQuery.isLoading
+    workshopQuery.isLoading
   ) {
     return <PageDataFetch.Loading />;
   }
 
-  if (programmeQuery.isError) {
+  if (workshopQuery.isError) {
     return <PageDataFetch.Error />;
   }
 
-  if (!programmeQuery.data) {
-    return <PageDataFetch.NotFound entityName="programme" />;
+  if (!workshopQuery.data) {
+    return <PageDataFetch.NotFound entityName="workshop" />;
   }
 
   if (
@@ -152,14 +153,15 @@ const InitDbData = ({
     !footerQuery.data ||
     orgDetailsQuery.isError ||
     !orgDetailsQuery.data ||
-    programmeQuery.isError ||
-    !programmeQuery.data
+    workshopQuery.isError ||
+    !workshopQuery.data
   ) {
     return <PageDataFetch.Error />;
   }
 
   return children({
-    programme: programmeQuery.data,
+    workshop: workshopQuery.data,
+
     orgDetails: orgDetailsQuery.data,
     linkLabels: linkLabelsQuery.data,
     header: headerQuery.data,
@@ -173,18 +175,16 @@ const UedProviders = ({
 }: {
   initDbData: DbData;
   children: ReactElement;
-}) => {
-  return (
-    <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
-      <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
-        <UedCx.Header.Provider initData={initDbData.header}>
-          <UedCx.Footer.Provider initData={initDbData.footer}>
-            <UedCx.Programme.Provider initData={initDbData.programme}>
-              {children}
-            </UedCx.Programme.Provider>
-          </UedCx.Footer.Provider>
-        </UedCx.Header.Provider>
-      </UedCx.LinkLabels.Provider>
-    </UedCx.OrgDetails.Provider>
-  );
-};
+}) => (
+  <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
+    <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
+      <UedCx.Header.Provider initData={initDbData.header}>
+        <UedCx.Footer.Provider initData={initDbData.footer}>
+          <UedCx.Pages.Workshop.Provider initData={initDbData.workshop}>
+            {children}
+          </UedCx.Pages.Workshop.Provider>
+        </UedCx.Footer.Provider>
+      </UedCx.Header.Provider>
+    </UedCx.LinkLabels.Provider>
+  </UedCx.OrgDetails.Provider>
+);

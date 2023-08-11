@@ -12,7 +12,7 @@ const MainText = () => {
       actions,
     },
     revision: { undoKey },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
   return (
     <div>
@@ -27,7 +27,7 @@ const MainText = () => {
         <TextAreaForm
           localStateValue={mainText}
           textArea={{
-            placeholder: "Main programme text",
+            placeholder: "Main workshop text",
           }}
           onSubmit={actions.mainText}
           tooltip="Click to edit main text"
@@ -45,7 +45,7 @@ const PreviewModal = () => {
     store: {
       data: { mainText },
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
   return (
     <Modal.WithVisibilityProvider

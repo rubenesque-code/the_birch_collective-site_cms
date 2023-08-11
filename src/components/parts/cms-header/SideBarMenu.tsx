@@ -236,7 +236,7 @@ const NestedRouteLink = ({
     href={`/${parentType === "programme" ? "programmes" : "workshops"}/${id}`}
     passHref
   >
-    <div className="capitalize text-gray-600 transition-colors duration-75 ease-in-out hover:text-blue-600">
+    <div className="max-w-[200px] capitalize text-gray-600 transition-colors duration-75 ease-in-out hover:text-blue-600">
       {text}
     </div>
   </Link>
