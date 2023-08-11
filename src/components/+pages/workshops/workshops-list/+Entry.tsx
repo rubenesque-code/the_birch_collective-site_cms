@@ -1,5 +1,6 @@
 import { UedCx } from "~/context/user-editable-data";
 
+import Markdown from "markdown-to-jsx";
 import Link from "next/link";
 import React from "react";
 import { CustomisableImage } from "~/components/CustomisableImage";
@@ -7,12 +8,12 @@ import { DbImageWrapper } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { WarningPanel } from "~/components/WarningPanel";
 import { DndKit } from "~/components/dnd-kit";
-import { TextAreaForm, TextInputForm } from "~/components/forms";
+import { TextAreaForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
 import { ComponentMenu } from "~/components/menus";
-import WorkshopsModal from "~/components/workshops-modal/+Entry";
 import { Modal } from "~/components/styled-bases";
+import WorkshopsModal from "~/components/workshops-modal/+Entry";
 import { DbReadCx } from "~/context/db-data-read-only";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
@@ -43,7 +44,7 @@ const WorkshopsList = () => {
         ) : null}
       </CmsLayout.EditBar>
 
-      <div className="mt-xl">
+      <div className="mt-lg">
         <Workshops />
       </div>
     </div>
@@ -64,7 +65,7 @@ const Workshops = () => {
       {!sorted.length ? (
         <p className="text-gray-600">No workshops created yet.</p>
       ) : (
-        <div className="grid grid-cols-1 gap-2xl">
+        <div className="grid grid-cols-1 gap-xl">
           <DndKit.Context
             elementIds={getIds(sorted)}
             onReorder={actions.reorder}
@@ -82,27 +83,71 @@ const Workshops = () => {
 };
 
 const Workshop = () => {
-  const { id, subtitle, summary, title } = DbReadCx.Workshop.use();
+  const { id, subtitle, summary, title, index } = DbReadCx.Workshop.use();
 
   const {
-    store: { actions },
+    store: { actions, data: workshops },
     revision: { undoKey },
   } = UedCx.Workshops.use();
+
+  const workshopsSorted = React.useMemo(
+    () => deepSortByIndex(workshops),
+    [workshops],
+  );
+
+  console.log("workshopsSorted:", workshopsSorted);
 
   const toast = useToast();
 
   return (
     <div className="group/workshop">
       <CmsLayout.EditBar className="opacity-40 transition-opacity duration-100 ease-in-out group-hover/workshop:opacity-80 hover:!opacity-100">
-        <div>
+        <div className="flex items-center gap-sm">
+          <PreviewModal />
           <Link href={`workshops/${id}`}>
             <CmsLayout.EditBar.Button
               icon={<Icon.InternalLink />}
               text="page"
+              tooltip="go to workshop page"
             />
           </Link>
         </div>
-        <div>
+
+        <div className="flex items-center gap-sm">
+          <ComponentMenu.Button
+            onClick={() => {
+              const nextWorkshop = workshopsSorted[index + 1];
+
+              if (!nextWorkshop) {
+                return;
+              }
+
+              actions.reorder({ activeId: id, overId: nextWorkshop.id });
+            }}
+            tooltip="move workshop down"
+            styles={{ button: "text-gray-500 hover:text-gray-600" }}
+          >
+            <Icon.ArrowDown />
+          </ComponentMenu.Button>
+
+          <ComponentMenu.Button
+            onClick={() => {
+              const prevWorkshop = workshopsSorted[index - 1];
+
+              if (!prevWorkshop) {
+                return;
+              }
+
+              actions.reorder({ activeId: id, overId: prevWorkshop.id });
+            }}
+            tooltip="move workshop up"
+            styles={{ button: "text-gray-500 hover:text-gray-600" }}
+          >
+            <Icon.ArrowUp />
+          </ComponentMenu.Button>
+
+          <ComponentMenu.Divider />
+
           <Modal.WithVisibilityProvider
             button={({ openModal }) => (
               <ComponentMenu.Button.Delete
@@ -133,32 +178,12 @@ const Workshop = () => {
         </div>
       </CmsLayout.EditBar>
 
-      <div className="mt-md flex gap-md">
-        <div className="w-full max-w-[350px]">
-          <div className="group/image relative aspect-[4/3] w-full ">
-            <ImageMenu />
-            <UserSelectedImageWrapper
-              dbImageId={summary.image.dbConnections.imageId}
-              placeholderText="summary image"
-            >
-              {({ dbImageId }) => (
-                <DbImageWrapper dbImageId={dbImageId}>
-                  {({ urls }) => (
-                    <CustomisableImage
-                      urls={urls}
-                      position={summary.image.position}
-                    />
-                  )}
-                </DbImageWrapper>
-              )}
-            </UserSelectedImageWrapper>
-          </div>
-        </div>
-        <div className="flex-grow">
-          <div className="font-display text-5xl text-brandOrange">
-            <TextInputForm
+      <div className="mt-md">
+        <div>
+          <div className="font-display text-5xl text-brandLightOrange">
+            <TextAreaForm
               localStateValue={title}
-              input={{
+              textArea={{
                 placeholder: "Workshop title",
                 styles: "tracking-wide font-bold",
               }}
@@ -169,12 +194,13 @@ const Workshop = () => {
               key={undoKey}
             />
           </div>
-          <div className="mt-xxs font-display text-3xl text-brandOrange">
+
+          <div className="mt-xs text-lg text-brandOrange">
             <TextAreaForm
               localStateValue={subtitle}
               textArea={{
-                placeholder: "Workshop subtitle",
-                styles: "tracking-wide font-bold",
+                placeholder: "Workshop subtitle (optional)",
+                styles: "tracking-[0.4px]",
               }}
               onSubmit={(inputValue) =>
                 actions.subtitle({ id, updatedValue: inputValue })
@@ -183,22 +209,45 @@ const Workshop = () => {
               key={undoKey}
             />
           </div>
-          <div className="custom-prose_no-p-margin prose mt-xs max-w-full font-medium">
-            <TextAreaForm
-              localStateValue={summary.mainText}
-              textArea={{
-                placeholder: "Workshop summary",
-                styles: "tracking-wide font-medium",
-              }}
-              onSubmit={(inputValue) =>
-                actions.subtitle({ id, updatedValue: inputValue })
-              }
-              tooltip="Click to edit subtitle"
-              key={undoKey}
-            />
+        </div>
+
+        <div className="mt-md flex gap-md">
+          <div className="min-w-[280px] max-w-[350px]">
+            <div className="group/image relative aspect-[4/3] w-full ">
+              <ImageMenu />
+              <UserSelectedImageWrapper
+                dbImageId={summary.image.dbConnections.imageId}
+                placeholderText="summary image"
+              >
+                {({ dbImageId }) => (
+                  <DbImageWrapper dbImageId={dbImageId}>
+                    {({ urls }) => (
+                      <CustomisableImage
+                        urls={urls}
+                        position={summary.image.position}
+                      />
+                    )}
+                  </DbImageWrapper>
+                )}
+              </UserSelectedImageWrapper>
+            </div>
           </div>
-          <div>
-            <WorkshopSummaryMainText />
+
+          <div className="flex-grow">
+            <div className="custom-prose prose max-w-full">
+              <TextAreaForm
+                localStateValue={summary.mainText}
+                textArea={{
+                  placeholder: "Workshop summary",
+                  styles: "tracking-wide",
+                }}
+                onSubmit={(inputValue) =>
+                  actions.summary.mainText({ id, updatedValue: inputValue })
+                }
+                tooltip="Click to edit summary"
+                key={undoKey}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -254,33 +303,87 @@ const ImageMenu = () => {
   );
 };
 
-const WorkshopSummaryMainText = () => {
-  const {
-    id,
-    summary: { mainText },
-  } = DbReadCx.Workshop.use();
-
-  const {
-    store: {
-      actions: { summary: summaryAction },
-    },
-    revision: { undoKey },
-  } = UedCx.Workshops.use();
+const PreviewModal = () => {
+  const { title, subtitle, summary } = DbReadCx.Workshop.use();
 
   return (
-    <div className="mt-xs">
-      <TextAreaForm
-        localStateValue={mainText}
-        textArea={{
-          placeholder: "Summary text",
-          styles: "tracking-wide leading-relaxed",
-        }}
-        onSubmit={(updatedValue) =>
-          summaryAction.mainText({ id, updatedValue })
-        }
-        tooltip="Click to edit summary text"
-        key={undoKey}
-      />
-    </div>
+    <Modal.WithVisibilityProvider
+      button={({ openModal }) => (
+        <CmsLayout.EditBar.Button
+          icon={<Icon.SitePreview />}
+          onClick={openModal}
+          text="preview"
+          tooltip="preview workshop summary"
+        />
+      )}
+      panelContent={({ closeModal }) => (
+        <div className="rounded-lg bg-white p-lg shadow-xl">
+          <div className="flex justify-end">
+            <h2 className="flex items-center gap-xs  text-gray-400">
+              <span>
+                <Icon.SitePreview />
+              </span>
+              <span>preview</span>
+            </h2>
+          </div>
+
+          <div className="">
+            <div>
+              <div className="font-display text-5xl text-brandOrange">
+                {title.length ? <Markdown>{title}</Markdown> : "Workshop title"}
+              </div>
+
+              {subtitle.length ? (
+                <div className="mt-xs text-lg text-brandOrange">
+                  <Markdown>{subtitle}</Markdown>
+                </div>
+              ) : null}
+            </div>
+
+            <div className="mt-md flex gap-md">
+              <div className="min-w-[280px] max-w-[350px]">
+                <div className="group/image relative aspect-[4/3] w-full ">
+                  <UserSelectedImageWrapper
+                    dbImageId={summary.image.dbConnections.imageId}
+                    placeholderText="summary image"
+                  >
+                    {({ dbImageId }) => (
+                      <DbImageWrapper dbImageId={dbImageId}>
+                        {({ urls }) => (
+                          <CustomisableImage
+                            urls={urls}
+                            position={summary.image.position}
+                          />
+                        )}
+                      </DbImageWrapper>
+                    )}
+                  </UserSelectedImageWrapper>
+                </div>
+              </div>
+
+              <div className="flex-grow">
+                <div className="custom-prose prose max-w-full">
+                  {summary.mainText.length ? (
+                    <Markdown>{summary.mainText}</Markdown>
+                  ) : (
+                    "Workshop summary"
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-xl flex justify-end">
+            <button
+              className="my-btn my-btn-neutral"
+              type="button"
+              onClick={closeModal}
+            >
+              close
+            </button>
+          </div>
+        </div>
+      )}
+    />
   );
 };

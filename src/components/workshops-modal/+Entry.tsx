@@ -121,7 +121,7 @@ const Workshop = () => {
         </div>
         <div className="mt-md">
           <div className="text-sm text-gray-400">Title</div>
-          <div className="font-medium">
+          <div className="max-w-full overflow-x-auto ">
             <TextInputForm
               localStateValue={title}
               onSubmit={(inputValue) =>
@@ -134,13 +134,15 @@ const Workshop = () => {
         </div>
         <div className="mt-md">
           <div className="text-sm text-gray-400">Subtitle</div>
-          <div className="overflow-auto font-medium">
+          <div className="max-w-full overflow-x-auto">
             <TextInputForm
               localStateValue={subtitle}
               onSubmit={(inputValue) =>
                 actions.subtitle({ id, updatedValue: inputValue })
               }
-              input={{ placeholder: "Workshop subtitle" }}
+              input={{
+                placeholder: "Workshop subtitle",
+              }}
               tooltip="Click to edit subtitle"
             />
           </div>

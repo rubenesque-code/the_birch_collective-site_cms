@@ -85,14 +85,17 @@ EditBar.Button = EditBarButton;
 const EditBarEditButton = ({
   buttonText,
   onClick,
+  tooltip,
 }: {
   buttonText: string;
   onClick: () => void;
+  tooltip?: string;
 }) => (
   <EditBarButton
     icon={<Icon.Configure />}
     onClick={onClick}
     text={buttonText}
+    tooltip={tooltip}
   />
 );
 

@@ -61,7 +61,7 @@ const AboutAmy = () => {
 
   return (
     <div>
-      <h3 className="font-display text-2xl text-brandOrange">
+      <h3 className="font-display text-2xl text-brandGreen">
         <TextInputForm
           localStateValue={aboutAmy.heading}
           input={{
