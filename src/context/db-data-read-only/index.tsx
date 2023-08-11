@@ -1,5 +1,6 @@
-import { Career, DocLinkButton } from "./career";
+import { Career } from "./career";
 import { CareersPage } from "./careers-page";
+import { Workshop } from "./workshop";
 
 function DbReadCx() {
   throw new Error(
@@ -11,7 +12,7 @@ export { DbReadCx };
 
 DbReadCx.Career = Career;
 
-Career.DocLinkButton = DocLinkButton;
+DbReadCx.Workshop = Workshop;
 
 function Pages() {
   throw new Error(

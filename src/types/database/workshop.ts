@@ -4,14 +4,16 @@ export type Workshop = {
   index: number;
 
   bannerImage: {
-    use: boolean;
     dbConnections: {
       imageId: string | null;
     };
+
     position: {
       x: number;
       y: number;
     };
+
+    use: boolean;
   };
 
   info: { id: string; index: number; title: string; text: string }[];

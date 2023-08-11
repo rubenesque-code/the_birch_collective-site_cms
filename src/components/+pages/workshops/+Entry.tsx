@@ -17,7 +17,7 @@ import type { MyDb } from "~/types/database";
 import BannerImage from "./banner-image/+Entry";
 import Heading from "./headings/+Entry";
 import MainText from "./main-text/+Entry";
-import ProgrammesList from "./programmes-list/+Entry";
+import WorkshopsList from "./workshops-list/+Entry";
 
 const WorkshopsPage = () => (
   <InitDbData>
@@ -60,9 +60,9 @@ const PageSpecificContent = () => (
     <SiteLayout.Section.Spacing>
       <MainText />
     </SiteLayout.Section.Spacing>
-    {/* <SiteLayout.Section.Spacing>
-      <ProgrammesList />
-    </SiteLayout.Section.Spacing> */}
+    <SiteLayout.Section.Spacing>
+      <WorkshopsList />
+    </SiteLayout.Section.Spacing>
   </>
 );
 

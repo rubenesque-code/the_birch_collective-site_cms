@@ -17,7 +17,7 @@ const ImagePositionMenu = ({
   return (
     <MyMenu
       button={
-        <ComponentMenu.Button tooltip="show position controls">
+        <ComponentMenu.Button tooltip="show image position controls">
           <Icon.ChangePos />
         </ComponentMenu.Button>
       }
