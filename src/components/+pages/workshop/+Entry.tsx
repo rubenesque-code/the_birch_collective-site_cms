@@ -13,12 +13,12 @@ import SiteHeader from "~/components/parts/site-header/+Entry";
 import CmsLayout from "~/components/layouts/Cms";
 import SiteLayout from "~/components/layouts/Site";
 import { UedCx } from "~/context/user-editable-data";
-import type { MyDb } from "~/types/database";
 import { useDynamicRouteParams } from "~/hooks";
+import type { MyDb } from "~/types/database";
 import BannerImage from "./banner-image/+Entry";
 import Headings from "./headings/+Entry";
-import MainText from "./main-text/+Entry";
 import Info from "./info/+Entry";
+import MainText from "./main-text/+Entry";
 import PhotoAlbum from "./photo-album/+Entry";
 import Sections from "./sections/+Entry";
 
@@ -67,6 +67,20 @@ const PageSpecificContent = () => (
     <SiteLayout.Section.Spacing.Horizontal>
       <MainText />
     </SiteLayout.Section.Spacing.Horizontal>
+
+    <SiteLayout.Section.Spacing>
+      <div className="flex items-center gap-sm">
+        <h4 className="font-display text-3xl font-bold tracking-wider text-brandGreen">
+          Tickets
+        </h4>
+      </div>
+      <div className="custom-prose prose mt-sm w-full max-w-full">
+        Cost: £90 for full day and lunch
+      </div>
+      <div className="mt-md inline-block cursor-pointer rounded-lg border bg-brandGreen px-sm py-xs text-white">
+        Sign up via eventbrite
+      </div>
+    </SiteLayout.Section.Spacing>
 
     <SiteLayout.Section.Spacing>
       <div className="mt-md flex gap-lg">

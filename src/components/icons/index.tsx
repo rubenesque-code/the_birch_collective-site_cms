@@ -58,6 +58,7 @@ import {
   WarningCircle,
   XSquare,
   Spinner,
+  Ticket,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -112,6 +113,7 @@ Icon.Download = Download;
 Icon.JobPost = ReadCvLogo;
 Icon.ToggleOff = ToggleLeft;
 Icon.ImageLoading = Spinner;
+Icon.Ticket = Ticket;
 
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
