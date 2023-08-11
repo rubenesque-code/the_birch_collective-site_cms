@@ -1,7 +1,7 @@
 import { useMemo, type ReactElement } from "react";
 
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { WarningPanel } from "~/components/WarningPanel";
 import { DndKit } from "~/components/dnd-kit";
@@ -99,11 +99,11 @@ const Testimonial = () => {
           placeholderText="background image"
         >
           {({ dbImageId }) => (
-            <DbImageWrapper dbImageId={dbImageId}>
+            <ConnectImage dbImageId={dbImageId}>
               {({ urls }) => (
                 <CustomisableImage urls={urls} position={image.position} />
               )}
-            </DbImageWrapper>
+            </ConnectImage>
           )}
         </UserSelectedImageWrapper>
         <Menu />

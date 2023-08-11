@@ -1,5 +1,5 @@
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { TextInputForm } from "~/components/forms";
 import { ComponentMenu } from "~/components/menus";
@@ -67,9 +67,9 @@ const LogoAndOrgName = () => {
           placeholderText="logo"
         >
           {({ dbImageId }) => (
-            <DbImageWrapper dbImageId={dbImageId}>
+            <ConnectImage dbImageId={dbImageId}>
               {({ urls }) => <CustomisableImage urls={urls} />}
-            </DbImageWrapper>
+            </ConnectImage>
           )}
         </UserSelectedImageWrapper>
         <LogoMenu />

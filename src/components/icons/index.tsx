@@ -57,6 +57,7 @@ import {
   Warning,
   WarningCircle,
   XSquare,
+  Spinner,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -110,6 +111,7 @@ Icon.Date = Clock;
 Icon.Download = Download;
 Icon.JobPost = ReadCvLogo;
 Icon.ToggleOff = ToggleLeft;
+Icon.ImageLoading = Spinner;
 
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

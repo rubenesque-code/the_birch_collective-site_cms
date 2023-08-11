@@ -1,5 +1,5 @@
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
@@ -36,11 +36,11 @@ const BannerImage = () => {
         placeholderText="banner image"
       >
         {({ dbImageId }) => (
-          <DbImageWrapper dbImageId={dbImageId}>
+          <ConnectImage dbImageId={dbImageId}>
             {({ urls }) => (
               <CustomisableImage urls={urls} position={position} />
             )}
-          </DbImageWrapper>
+          </ConnectImage>
         )}
       </UserSelectedImageWrapper>
     </div>

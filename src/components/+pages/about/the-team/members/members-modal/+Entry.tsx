@@ -9,7 +9,7 @@ import { getIds } from "~/helpers/data/query";
 import { useToast } from "~/hooks";
 
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { Modal } from "~/components/styled-bases";
 import { CreateModal } from "./CreateModal";
@@ -99,7 +99,7 @@ const Member = () => {
             isCircle
           >
             {({ dbImageId }) => (
-              <DbImageWrapper dbImageId={dbImageId}>
+              <ConnectImage dbImageId={dbImageId}>
                 {({ urls }) => (
                   <CustomisableImage
                     urls={urls}
@@ -108,7 +108,7 @@ const Member = () => {
                     isCircle
                   />
                 )}
-              </DbImageWrapper>
+              </ConnectImage>
             )}
           </UserSelectedImageWrapper>
         </div>

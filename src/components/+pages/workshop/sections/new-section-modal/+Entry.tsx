@@ -24,7 +24,7 @@ const NewSectionModal = ({
     store: {
       data: { sections },
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
   return (
     <NewSectionCx.Provider>
@@ -104,7 +104,7 @@ const NewSectionModalContent = ({
       data: { sections },
       actions: { sections: sectionsAction },
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
   const {
     store: { data: newSection, actions: newSectionAction },
@@ -387,7 +387,7 @@ const IconModalIcon = ({
   iconName,
 }: {
   closeModal: () => void;
-  iconName: MyDb["programme"]["sections"][number]["bullets"]["icon"];
+  iconName: MyDb["workshop"]["sections"][number]["bullets"]["icon"];
 }) => {
   const {
     store: {

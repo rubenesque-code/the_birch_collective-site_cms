@@ -23,7 +23,7 @@ function Provider({
     store: {
       data: { sections },
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
   const storeRef = useRef<ReturnType<typeof createStore>>();
 

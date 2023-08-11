@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
@@ -188,14 +188,14 @@ const NewTestimonial = () => {
           placeholderText="background image"
         >
           {({ dbImageId }) => (
-            <DbImageWrapper dbImageId={dbImageId}>
+            <ConnectImage dbImageId={dbImageId}>
               {({ urls }) => (
                 <CustomisableImage
                   urls={urls}
                   position={newTestimonialStore.data.image.position}
                 />
               )}
-            </DbImageWrapper>
+            </ConnectImage>
           )}
         </UserSelectedImageWrapper>
         <Menu />

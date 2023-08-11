@@ -1,7 +1,7 @@
 import React from "react";
 import Accordion from "~/components/Accordion";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import CmsLayout from "~/components/layouts/Cms";
 import { AboutCx } from "~/context/entities/about";
@@ -64,11 +64,11 @@ const Member = () => {
           isCircle
         >
           {({ dbImageId }) => (
-            <DbImageWrapper dbImageId={dbImageId}>
+            <ConnectImage dbImageId={dbImageId}>
               {({ urls }) => (
                 <CustomisableImage urls={urls} objectFit="cover" isCircle />
               )}
-            </DbImageWrapper>
+            </ConnectImage>
           )}
         </UserSelectedImageWrapper>
       </div>

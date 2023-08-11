@@ -6,7 +6,7 @@ import { UedCx } from "~/context/user-editable-data";
 import CmsLayout from "~/components/layouts/Cms";
 import ProgrammesModal from "~/components/programmes-modal/+Entry";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import React from "react";
 import { deepSortByIndex } from "~/helpers/data/process";
@@ -132,14 +132,14 @@ const Programme = () => {
               placeholderText="summary image"
             >
               {({ dbImageId }) => (
-                <DbImageWrapper dbImageId={dbImageId}>
+                <ConnectImage dbImageId={dbImageId}>
                   {({ urls }) => (
                     <CustomisableImage
                       urls={urls}
                       position={summary.image.position}
                     />
                   )}
-                </DbImageWrapper>
+                </ConnectImage>
               )}
             </UserSelectedImageWrapper>
           </div>

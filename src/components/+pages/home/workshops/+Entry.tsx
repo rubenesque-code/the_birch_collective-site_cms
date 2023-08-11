@@ -1,5 +1,5 @@
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { ComponentMenu } from "~/components/menus";
 import { Icon } from "~/components/icons";
@@ -21,11 +21,11 @@ const Workshops = () => {
             placeholderText="banner image"
           >
             {({ dbImageId }) => (
-              <DbImageWrapper dbImageId={dbImageId}>
+              <ConnectImage dbImageId={dbImageId}>
                 {({ urls }) => (
                   <CustomisableImage urls={urls} position={image.position} />
                 )}
-              </DbImageWrapper>
+              </ConnectImage>
             )}
           </UserSelectedImageWrapper>
           <TextOverlay />

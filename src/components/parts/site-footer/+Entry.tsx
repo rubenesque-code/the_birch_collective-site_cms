@@ -2,7 +2,7 @@ import { Popover } from "@headlessui/react";
 import type { ReactElement } from "react";
 
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import TextInputPopoverPanel from "~/components/TextInputPopoverPanel";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
@@ -223,9 +223,9 @@ const SecondColumn = () => {
           placeholderText="logo"
         >
           {({ dbImageId }) => (
-            <DbImageWrapper dbImageId={dbImageId}>
+            <ConnectImage dbImageId={dbImageId}>
               {({ urls }) => <CustomisableImage urls={urls} />}
-            </DbImageWrapper>
+            </ConnectImage>
           )}
         </UserSelectedImageWrapper>
         <LogoMenu />

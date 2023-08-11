@@ -2,7 +2,7 @@ import { createContext, useContext, type ReactNode } from "react";
 import type { MyDb } from "~/types/database";
 import { InfoEntry } from "./InfoEntry";
 import { PhotoAlbumEntry } from "./PhotoAlbumEntry";
-import { Section } from "./Section";
+import { Section } from "./section";
 
 type ContextValue = MyDb["workshop"];
 

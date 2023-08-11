@@ -1,7 +1,7 @@
 import { Popover } from "@headlessui/react";
 import Markdown from "markdown-to-jsx";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import TextInputPopoverPanel from "~/components/TextInputPopoverPanel";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { WithTooltip } from "~/components/WithTooltip";
@@ -158,7 +158,7 @@ const AmyImage = () => {
         isCircle
       >
         {({ dbImageId }) => (
-          <DbImageWrapper dbImageId={dbImageId}>
+          <ConnectImage dbImageId={dbImageId}>
             {({ urls }) => (
               <CustomisableImage
                 urls={urls}
@@ -167,7 +167,7 @@ const AmyImage = () => {
                 isCircle
               />
             )}
-          </DbImageWrapper>
+          </ConnectImage>
         )}
       </UserSelectedImageWrapper>
     </div>

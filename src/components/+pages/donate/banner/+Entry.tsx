@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import SiteLayout from "~/components/layouts/Site";
@@ -35,11 +35,11 @@ const Image = () => {
         placeholderText="banner image"
       >
         {({ dbImageId }) => (
-          <DbImageWrapper dbImageId={dbImageId}>
+          <ConnectImage dbImageId={dbImageId}>
             {({ urls }) => (
               <CustomisableImage urls={urls} position={position} />
             )}
-          </DbImageWrapper>
+          </ConnectImage>
         )}
       </UserSelectedImageWrapper>
     </div>

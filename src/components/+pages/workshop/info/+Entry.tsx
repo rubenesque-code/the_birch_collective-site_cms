@@ -5,7 +5,7 @@ import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
-import { InfoEntryCx } from "~/context/entities/programme";
+import { DbReadCx } from "~/context/db-data-read-only";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
@@ -18,7 +18,7 @@ const Info = () => {
       data: { info },
       actions: { info: infoAction },
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
   const sorted = React.useMemo(() => deepSortByIndex(info), [info]);
 
@@ -27,9 +27,9 @@ const Info = () => {
       <DndKit.Context elementIds={getIds(info)} onReorder={infoAction.reorder}>
         {sorted.map((infoEntry) => (
           <DndKit.Element elementId={infoEntry.id} key={infoEntry.id}>
-            <InfoEntryCx.Provider infoEntry={infoEntry}>
+            <DbReadCx.Workshop.InfoEntry.Provider infoEntry={infoEntry}>
               <Entry />
-            </InfoEntryCx.Provider>
+            </DbReadCx.Workshop.InfoEntry.Provider>
           </DndKit.Element>
         ))}
       </DndKit.Context>
@@ -46,12 +46,12 @@ const Entry = () => {
       actions: { info: infoAction },
     },
     revision: { undoKey },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
-  const { id, text, title } = InfoEntryCx.use();
+  const { id, text, title } = DbReadCx.Workshop.InfoEntry.use();
 
   return (
-    <div className="group/entry relative flex items-start gap-xs">
+    <div className="group/entry relative flex flex-col gap-xxxs">
       <div className="relative font-bold">
         <EntryDeleteButton />
         <TextInputForm
@@ -84,9 +84,9 @@ const EntryDeleteButton = () => {
     store: {
       actions: { info: infoAction },
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
-  const { id } = InfoEntryCx.use();
+  const { id } = DbReadCx.Workshop.InfoEntry.use();
 
   const toast = useToast();
 
@@ -131,7 +131,7 @@ const AddEntryForm = () => {
       data: { info: infoEntries },
       actions: { info: infoAction },
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
   return (
     <div
@@ -139,10 +139,15 @@ const AddEntryForm = () => {
         isFocused ? "border border-blue-300" : ""
       }`}
     >
-      <p className="text-sm italic text-gray-400">Add info</p>
+      <p className="flex items-center gap-xs text-sm italic text-gray-400">
+        <span>
+          <Icon.Create />
+        </span>
+        <span>Add info</span>
+      </p>
 
       <form
-        className="mt-xxs flex w-full items-center gap-sm text-sm"
+        className="mt-xxs flex w-full flex-col items-center gap-xxs text-sm"
         onSubmit={(e) => {
           e.preventDefault();
 
@@ -162,21 +167,20 @@ const AddEntryForm = () => {
         }}
         {...focusHandlers}
       >
-        <div className="text-gray-400">
-          <Icon.Create />
-        </div>
-
-        <div className="flex w-full flex-shrink items-center gap-xs ">
+        <div className="w-full">
           <input
-            className="w-auto min-w-[80px] max-w-full overflow-x-auto font-bold focus:bg-gray-100"
+            className="w-full overflow-x-auto font-bold focus:bg-gray-100"
             type="text"
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Title"
             value={title}
             size={1}
           />
+        </div>
+
+        <div className="w-full">
           <input
-            className="w-auto max-w-full flex-grow overflow-x-auto focus:bg-gray-100"
+            className="w-full flex-grow overflow-x-auto focus:bg-gray-100"
             type="text"
             onChange={(e) => setText(e.target.value)}
             value={text}

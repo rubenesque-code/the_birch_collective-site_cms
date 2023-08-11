@@ -1,7 +1,7 @@
 import { Popover } from "@headlessui/react";
 
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
@@ -24,11 +24,11 @@ const BannerImage = () => {
         placeholderText="banner image"
       >
         {({ dbImageId }) => (
-          <DbImageWrapper dbImageId={dbImageId}>
+          <ConnectImage dbImageId={dbImageId}>
             {({ urls }) => (
               <CustomisableImage urls={urls} position={position} />
             )}
-          </DbImageWrapper>
+          </ConnectImage>
         )}
       </UserSelectedImageWrapper>
       <ImageInfo />

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { WarningPanel } from "~/components/WarningPanel";
 import { Icon } from "~/components/icons";
@@ -194,14 +194,14 @@ const NewProgramme = () => {
           placeholderText="summary image"
         >
           {({ dbImageId }) => (
-            <DbImageWrapper dbImageId={dbImageId}>
+            <ConnectImage dbImageId={dbImageId}>
               {({ urls }) => (
                 <CustomisableImage
                   urls={urls}
                   position={summary.image.position}
                 />
               )}
-            </DbImageWrapper>
+            </ConnectImage>
           )}
         </UserSelectedImageWrapper>
       </div>

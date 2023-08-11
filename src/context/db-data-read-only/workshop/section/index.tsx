@@ -1,6 +1,8 @@
 import React from "react";
 import type { MyDb } from "~/types/database";
 
+import { SectionBullet } from "./SectionBullet";
+
 type Entity = MyDb["workshop"]["sections"][number];
 
 type ContextValue = Entity;
@@ -43,3 +45,5 @@ export { Section };
 
 Section.Provider = Provider;
 Section.use = useContext;
+
+Section.Bullet = SectionBullet;

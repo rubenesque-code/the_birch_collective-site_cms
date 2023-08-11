@@ -1,9 +1,9 @@
-import { type ReactElement } from "react";
+import { type ReactNode } from "react";
 
 import { ImagePlaceholder } from "./ImagePlaceholder";
 
 type Props = {
-  children: (arg0: { dbImageId: string }) => ReactElement;
+  children: (arg0: { dbImageId: string }) => ReactNode;
   dbImageId: string | null;
   placeholderText?: string;
   isCircle?: boolean;

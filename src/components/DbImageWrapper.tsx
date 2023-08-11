@@ -5,13 +5,16 @@ import { myDb } from "~/my-firebase/firestore";
 import { useQuery } from "react-query";
 import { Spinner } from "./Spinner";
 import type { MyDb } from "~/types/database";
+import type { MyPick } from "~/types/utilities";
 
 type Props = {
-  children: (arg0: { urls: MyDb["image"]["urls"] }) => ReactElement;
+  children: (
+    arg0: MyPick<MyDb["image"], "naturalDimensions" | "urls">,
+  ) => ReactElement;
   dbImageId: string;
 };
 
-export const DbImageWrapper = ({ children, dbImageId }: Props) => {
+export const ConnectImage = ({ children, dbImageId }: Props) => {
   const query = useQuery(
     ["banner-image", dbImageId],
     async () => await myDb.image.fetchOne(dbImageId),
@@ -31,7 +34,10 @@ export const DbImageWrapper = ({ children, dbImageId }: Props) => {
     return <UnfoundFirestoreImage />;
   }
 
-  return children({ urls: query.data.urls });
+  return children({
+    urls: query.data.urls,
+    naturalDimensions: query.data.naturalDimensions,
+  });
 };
 
 const UnfoundFirestoreImage = () => (

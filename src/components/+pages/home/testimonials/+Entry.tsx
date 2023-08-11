@@ -5,7 +5,7 @@ import { deepSortByIndex } from "~/helpers/data/process";
 import { useHovered } from "~/hooks";
 
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { ImagePlaceholder } from "~/components/ImagePlaceholder";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { Icon } from "~/components/icons";
@@ -132,11 +132,11 @@ const TestimonialActual = () => {
           placeholderText="background image"
         >
           {({ dbImageId }) => (
-            <DbImageWrapper dbImageId={dbImageId}>
+            <ConnectImage dbImageId={dbImageId}>
               {({ urls }) => (
                 <CustomisableImage urls={urls} position={image.position} />
               )}
-            </DbImageWrapper>
+            </ConnectImage>
           )}
         </UserSelectedImageWrapper>
       </div>

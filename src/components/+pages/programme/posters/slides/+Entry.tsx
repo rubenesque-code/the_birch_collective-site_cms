@@ -5,7 +5,7 @@ import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { Icon } from "~/components/icons";
 import { UedCx } from "~/context/user-editable-data";
@@ -48,11 +48,11 @@ const Slides = () => {
                   placeholderText="programme poster"
                 >
                   {({ dbImageId }) => (
-                    <DbImageWrapper dbImageId={dbImageId}>
+                    <ConnectImage dbImageId={dbImageId}>
                       {({ urls }) => (
                         <CustomisableImage urls={urls} objectFit="contain" />
                       )}
-                    </DbImageWrapper>
+                    </ConnectImage>
                   )}
                 </UserSelectedImageWrapper>
               </SwiperSlide>

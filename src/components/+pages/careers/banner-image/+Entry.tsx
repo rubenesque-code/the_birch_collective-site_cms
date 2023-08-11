@@ -1,5 +1,5 @@
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { ComponentMenu } from "~/components/menus";
 import { UedCx } from "~/context/user-editable-data";
@@ -22,11 +22,11 @@ const BannerImage = () => {
         placeholderText="banner image"
       >
         {({ dbImageId }) => (
-          <DbImageWrapper dbImageId={dbImageId}>
+          <ConnectImage dbImageId={dbImageId}>
             {({ urls }) => (
               <CustomisableImage urls={urls} position={position} />
             )}
-          </DbImageWrapper>
+          </ConnectImage>
         )}
       </UserSelectedImageWrapper>
     </div>

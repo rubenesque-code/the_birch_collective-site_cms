@@ -19,7 +19,7 @@ import BannerImage from "./banner-image/+Entry";
 import Headings from "./headings/+Entry";
 import MainText from "./main-text/+Entry";
 import Info from "./info/+Entry";
-import Posters from "./posters/+Entry";
+import PhotoAlbum from "./photo-album/+Entry";
 import Sections from "./sections/+Entry";
 
 const WorkshopPage = () => (
@@ -68,20 +68,20 @@ const PageSpecificContent = () => (
       <MainText />
     </SiteLayout.Section.Spacing.Horizontal>
 
-    {/* <SiteLayout.Section.Spacing>
-      <div className="grid grid-cols-2 gap-lg">
+    <SiteLayout.Section.Spacing>
+      <div className="mt-md flex gap-lg">
         <div className="">
           <Info />
         </div>
-        <div className="">
-          <Posters />
+        <div className="flex-grow">
+          <PhotoAlbum />
         </div>
       </div>
-    </SiteLayout.Section.Spacing> */}
+    </SiteLayout.Section.Spacing>
 
-    {/* <SiteLayout.Section.Spacing.Horizontal>
+    <SiteLayout.Section.Spacing>
       <Sections />
-    </SiteLayout.Section.Spacing.Horizontal> */}
+    </SiteLayout.Section.Spacing>
   </>
 );
 

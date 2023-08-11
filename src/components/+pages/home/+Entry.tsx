@@ -57,6 +57,8 @@ import type { MyDb } from "~/types/database";
 // □ component menu delete button. Need span around icon? Want to be able to have text-gray-400 on cms.editbar. text needs to go red when hover on outer wrapper - not working properly.
 // □ previews, e.g. programme section spreview, is vertically responsive?
 // □ abstraction for preview. Apply sitelayout width
+// □ dbreadcx is misnamed I think. It doesn't receive data from db directly. It just passes data.
+// □ add info on programme and workshop pg should be a modal
 
 // STATE
 // □ could have a queryOne in state data e.g. for programmes/testimonials

@@ -2,7 +2,7 @@
 import { useMemo, type ReactElement } from "react";
 
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { WarningPanel } from "~/components/WarningPanel";
 import { DndKit } from "~/components/dnd-kit";
@@ -10,7 +10,7 @@ import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { ImageUploadAndLibrary } from "~/components/parts/upload-image-and-library";
 import { Modal } from "~/components/styled-bases";
-import { PosterCx } from "~/context/entities";
+import { DbReadCx } from "~/context/db-data-read-only";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
@@ -40,17 +40,21 @@ export const EditModal = ({
 const Content = () => {
   const {
     store: {
-      data: { posters },
-      actions: { posters: postersAction },
+      data: {
+        photoAlbum: { entries: images },
+      },
+      actions: {
+        photoAlbum: { entries: imageAction },
+      },
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
   const { closeModal } = Modal.VisibilityCx.use();
 
   return (
     <div className="relative flex h-[1000px] max-h-[70vh] w-[90vw] max-w-[1200px] flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
       <div className="flex items-center justify-between border-b border-b-gray-200 pb-sm">
-        <h3 className="leading-6">Programme posters</h3>
+        <h3 className="leading-6">Workshop images</h3>
       </div>
       <div className="mt-sm">
         <ImageUploadAndLibrary.Complete
@@ -61,22 +65,22 @@ const Content = () => {
               <span className="text-sm">
                 <Icon.Create />
               </span>
-              <span className="text-sm font-medium">Add new poster</span>
+              <span className="text-sm font-medium">Add new image</span>
             </div>
           }
           onUploadOrSelect={({ dbImageId }) =>
-            postersAction.create({
+            imageAction.create({
               id: generateUid(),
               image: {
                 dbConnections: { imageId: dbImageId },
               },
-              index: posters.length,
+              index: images.length,
             })
           }
         />
       </div>
       <div className="mt-sm flex-grow overflow-y-auto">
-        <Posters />
+        <Images />
       </div>
       <div className="mt-xl">
         <button
@@ -91,35 +95,39 @@ const Content = () => {
   );
 };
 
-const Posters = () => {
+const Images = () => {
   const {
     store: {
-      data: { posters },
-      actions: { posters: postersAction },
+      data: {
+        photoAlbum: { entries: images },
+      },
+      actions: {
+        photoAlbum: { entries: imageAction },
+      },
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
-  const sorted = useMemo(() => deepSortByIndex(posters), [posters]);
+  const sorted = useMemo(() => deepSortByIndex(images), [images]);
 
   return (
     <div className="mt-xs">
-      {!posters.length ? (
-        <p className="text-gray-800">No posters yet.</p>
+      {!images.length ? (
+        <p className="text-gray-800">No images yet.</p>
       ) : (
         <div className="grid grid-cols-2 gap-sm pr-sm">
           <DndKit.Context
             elementIds={getIds(sorted)}
-            onReorder={postersAction.reorder}
+            onReorder={imageAction.reorder}
           >
-            {sorted.map((poster) => (
+            {sorted.map((image) => (
               <DndKit.Element
-                elementId={poster.id}
+                elementId={image.id}
                 styles={{ handle: "bg-white" }}
-                key={poster.id}
+                key={image.id}
               >
-                <PosterCx.Provider poster={poster}>
-                  <Poster />
-                </PosterCx.Provider>
+                <DbReadCx.Workshop.PhotoAlbumEntry.Provider infoEntry={image}>
+                  <Image />
+                </DbReadCx.Workshop.PhotoAlbumEntry.Provider>
               </DndKit.Element>
             ))}
           </DndKit.Context>
@@ -129,8 +137,8 @@ const Posters = () => {
   );
 };
 
-const Poster = () => {
-  const { image } = PosterCx.use();
+const Image = () => {
+  const { image } = DbReadCx.Workshop.PhotoAlbumEntry.use();
 
   return (
     <div className="group/entry relative aspect-square rounded-lg border p-sm">
@@ -141,11 +149,11 @@ const Poster = () => {
             placeholderText="background image"
           >
             {({ dbImageId }) => (
-              <DbImageWrapper dbImageId={dbImageId}>
+              <ConnectImage dbImageId={dbImageId}>
                 {({ urls }) => (
                   <CustomisableImage urls={urls} objectFit="contain" />
                 )}
-              </DbImageWrapper>
+              </ConnectImage>
             )}
           </UserSelectedImageWrapper>
         </div>
@@ -158,11 +166,13 @@ const Poster = () => {
 const Menu = () => {
   const {
     store: {
-      actions: { posters: postersAction },
+      actions: {
+        photoAlbum: { entries: imageAction },
+      },
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
-  const { id } = PosterCx.use();
+  const { id } = DbReadCx.Workshop.PhotoAlbumEntry.use();
 
   const toast = useToast();
 
@@ -170,7 +180,7 @@ const Menu = () => {
     <ComponentMenu styles="left-1 top-1 group-hover/entry:opacity-60">
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
-          postersAction.image.dbConnections.imageId({
+          imageAction.image.dbConnections.imageId({
             id,
             updatedValue: dbImageId,
           });
@@ -185,19 +195,19 @@ const Menu = () => {
         button={({ openModal }) => (
           <ComponentMenu.Button.Delete
             onClick={openModal}
-            tooltip="delete poster"
+            tooltip="delete image"
           />
         )}
         panelContent={({ closeModal }) => (
           <WarningPanel
             callback={() => {
-              postersAction.delete({ id });
+              imageAction.delete({ id });
               closeModal();
-              toast.neutral("deleted poster");
+              toast.neutral("deleted image");
             }}
             closeModal={closeModal}
             text={{
-              title: "Delete poster",
+              title: "Delete image",
               body: "Are you sure?",
             }}
           />

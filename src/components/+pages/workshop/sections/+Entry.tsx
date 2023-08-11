@@ -1,4 +1,5 @@
 import React from "react";
+
 import { IconSwith } from "~/components/IconSwitch";
 import { WarningPanel } from "~/components/WarningPanel";
 import { DndKit } from "~/components/dnd-kit";
@@ -7,7 +8,6 @@ import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
-import { SectionCx } from "~/context/entities/programme/section";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
@@ -18,19 +18,20 @@ import ColourModal from "./colour-modal/+Entry";
 import IconModal from "./icon-modal/+Entry";
 import NewSectionModal from "./new-section-modal/+Entry";
 import Preview from "./preview/+Entry";
+import { DbReadCx } from "~/context/db-data-read-only";
 
 const Sections = () => {
   const {
     store: {
       data: { sections },
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
   const sorted = React.useMemo(() => deepSortByIndex(sections), [sections]);
 
   return (
-    <div>
-      <CmsLayout.EditBar className="opacity-50 transition-opacity duration-100 ease-in-out hover:opacity-100">
+    <div className="group/sections">
+      <CmsLayout.EditBar className="opacity-50 transition-opacity duration-100 ease-in-out group-hover/sections:opacity-80 hover:!opacity-100">
         <div className="flex items-center gap-sm">
           {sections.length ? <PreviewModal /> : null}
           <NewSectionModal
@@ -44,22 +45,30 @@ const Sections = () => {
           />
         </div>
 
-        <CmsLayout.EditBar.Info
-          infoText="The sections below are approximate. See preview left."
-          gap="xs"
-        />
+        {sorted.length ? (
+          <CmsLayout.EditBar.Info
+            infoText="The sections below are approximate. See preview left."
+            gap="xs"
+          />
+        ) : (
+          <CmsLayout.EditBar.Info infoText="optional" gap="xs" />
+        )}
       </CmsLayout.EditBar>
+
       <div className="mt-md">
         {!sections.length ? (
           <p className="italic text-gray-600">
-            No programme details sections yet.
+            No workshop details sections yet.
           </p>
         ) : (
           <div className="grid grid-cols-1 gap-2xl">
             {sorted.map((section) => (
-              <SectionCx.Provider section={section} key={section.id}>
+              <DbReadCx.Workshop.Section.Provider
+                section={section}
+                key={section.id}
+              >
                 <Section />
-              </SectionCx.Provider>
+              </DbReadCx.Workshop.Section.Provider>
             ))}
           </div>
         )}
@@ -109,21 +118,22 @@ const Section = () => {
     store: {
       data: { sections },
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
   const sectionsSorted = React.useMemo(
     () => deepSortByIndex(sections),
     [sections],
   );
 
-  const { id, title, bullets, colour, description, index } = SectionCx.use();
+  const { id, title, bullets, colour, description, index } =
+    DbReadCx.Workshop.Section.use();
 
   const {
     store: {
       actions: { sections: sectionAction },
     },
     revision: { undoKey },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
   const bulletsSorted = React.useMemo(
     () => deepSortByIndex(bullets.entries),
@@ -236,11 +246,11 @@ const Section = () => {
 
                   closeModal();
 
-                  toast.neutral("deleted programme");
+                  toast.neutral("deleted workshop");
                 }}
                 closeModal={closeModal}
                 text={{
-                  title: "Delete programme",
+                  title: "Delete workshop",
                   body: "Are you sure?",
                 }}
               />
@@ -289,9 +299,9 @@ const Section = () => {
         >
           {bulletsSorted.map((bullet) => (
             <DndKit.Element elementId={bullet.id} key={bullet.id}>
-              <SectionCx.Bullet.Provider bullet={bullet}>
+              <DbReadCx.Workshop.Section.Bullet.Provider bullet={bullet}>
                 <Bullet />
-              </SectionCx.Bullet.Provider>
+              </DbReadCx.Workshop.Section.Bullet.Provider>
             </DndKit.Element>
           ))}
         </DndKit.Context>
@@ -301,15 +311,16 @@ const Section = () => {
 };
 
 const Bullet = () => {
-  const { id: sectionId, bullets, colour } = SectionCx.use();
-  const { id: bulletId, text, title } = SectionCx.Bullet.use();
+  const { id: sectionId, bullets, colour } = DbReadCx.Workshop.Section.use();
+
+  const { id: bulletId, text, title } = DbReadCx.Workshop.Section.Bullet.use();
 
   const {
     store: {
       actions: { sections: sectionAction },
     },
     revision: { undoKey },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
   return (
     <div className="group/bullet flex items-center gap-sm">
@@ -361,14 +372,15 @@ const Bullet = () => {
 };
 
 const BulletDeleteButton = () => {
-  const { id: sectionId } = SectionCx.use();
-  const { id: bulletId } = SectionCx.Bullet.use();
+  const { id: sectionId } = DbReadCx.Workshop.Section.use();
+
+  const { id: bulletId } = DbReadCx.Workshop.Section.Bullet.use();
 
   const {
     store: {
       actions: { sections: sectionAction },
     },
-  } = UedCx.Programme.use();
+  } = UedCx.Pages.Workshop.use();
 
   const toast = useToast();
 
@@ -388,11 +400,11 @@ const BulletDeleteButton = () => {
 
               closeModal();
 
-              toast.neutral("deleted programme bullet");
+              toast.neutral("deleted workshop bullet");
             }}
             closeModal={closeModal}
             text={{
-              title: "Delete programme bullet",
+              title: "Delete workshop bullet",
               body: "Are you sure?",
             }}
           />

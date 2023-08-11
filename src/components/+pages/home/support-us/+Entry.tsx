@@ -1,6 +1,6 @@
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { DbImageWrapper } from "~/components/DbImageWrapper";
+import { ConnectImage } from "~/components/DbImageWrapper";
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { ComponentMenu } from "~/components/menus";
 import { UedCx } from "~/context/user-editable-data";
@@ -67,11 +67,11 @@ const DonateImage = () => {
       placeholderText="donate image"
     >
       {({ dbImageId }) => (
-        <DbImageWrapper dbImageId={dbImageId}>
+        <ConnectImage dbImageId={dbImageId}>
           {({ urls }) => (
             <CustomisableImage urls={urls} position={donate.image.position} />
           )}
-        </DbImageWrapper>
+        </ConnectImage>
       )}
     </UserSelectedImageWrapper>
   );
@@ -196,14 +196,14 @@ const VolunteerImage = () => {
       placeholderText="volunteer image"
     >
       {({ dbImageId }) => (
-        <DbImageWrapper dbImageId={dbImageId}>
+        <ConnectImage dbImageId={dbImageId}>
           {({ urls }) => (
             <CustomisableImage
               urls={urls}
               position={volunteer.image.position}
             />
           )}
-        </DbImageWrapper>
+        </ConnectImage>
       )}
     </UserSelectedImageWrapper>
   );
