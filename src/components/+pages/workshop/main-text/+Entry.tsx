@@ -15,8 +15,8 @@ const MainText = () => {
   } = UedCx.Pages.Workshop.use();
 
   return (
-    <div>
-      <CmsLayout.EditBar>
+    <div className="group/main">
+      <CmsLayout.EditBar className="opacity-60 group-hover/main:opacity-90 hover:!opacity-100">
         <PreviewModal />
         <CmsLayout.EditBar.Info
           infoText="The text below is an approximation. See preview left."

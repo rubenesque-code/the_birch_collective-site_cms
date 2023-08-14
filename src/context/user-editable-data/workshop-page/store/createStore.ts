@@ -487,12 +487,12 @@ export const createStore = (input: { initData: Store["data"] }) =>
           title: sectionNonArrAction("title"),
         },
 
-        signUpLink: {
-          heading: nonArrAction("signUpLink.heading"),
+        signUp: {
+          buttonText: nonArrAction("signUp.buttonText"),
 
-          link: nonArrAction("signUpLink.link"),
+          heading: nonArrAction("signUp.heading"),
 
-          text: nonArrAction("signUpLink.text"),
+          text: nonArrAction("signUp.text"),
         },
 
         subtitle: nonArrAction("subtitle"),
@@ -510,6 +510,8 @@ export const createStore = (input: { initData: Store["data"] }) =>
         },
 
         title: nonArrAction("title"),
+
+        type: nonArrAction("type"),
       },
     };
   });

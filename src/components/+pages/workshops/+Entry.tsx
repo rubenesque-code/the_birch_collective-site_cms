@@ -52,14 +52,17 @@ export default WorkshopsPage;
 const PageSpecificContent = () => (
   <>
     <BannerImage />
+
     <div className="mt-xl">
       <SiteLayout.Section.Spacing.Horizontal>
         <Heading />
       </SiteLayout.Section.Spacing.Horizontal>
     </div>
+
     <SiteLayout.Section.Spacing>
       <MainText />
     </SiteLayout.Section.Spacing>
+
     <SiteLayout.Section.Spacing>
       <WorkshopsList />
     </SiteLayout.Section.Spacing>

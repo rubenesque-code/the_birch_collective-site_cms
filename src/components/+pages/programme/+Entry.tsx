@@ -179,7 +179,10 @@ const UedProviders = ({
       <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
         <UedCx.Header.Provider initData={initDbData.header}>
           <UedCx.Footer.Provider initData={initDbData.footer}>
-            <UedCx.Programme.Provider initData={initDbData.programme}>
+            <UedCx.Programme.Provider
+              initData={initDbData.programme}
+              key={initDbData.programme.id}
+            >
               {children}
             </UedCx.Programme.Provider>
           </UedCx.Footer.Provider>

@@ -56,7 +56,6 @@ const Content = () => {
   } = UedCx.Careers.use();
 
   const sorted = React.useMemo(() => deepSortByIndex(data), [data]);
-  console.log("sorted:", sorted);
 
   return (
     <div>

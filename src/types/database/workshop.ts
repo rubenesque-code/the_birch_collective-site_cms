@@ -75,12 +75,12 @@ export type Workshop = {
     description: string | null;
   }[];
 
-  signUpLink: {
+  signUp: {
     heading: string;
 
     text: string;
 
-    link: string;
+    buttonText: string;
   };
 
   summary: {
@@ -110,4 +110,6 @@ export type Workshop = {
   };
 
   title: string;
+
+  type: "paid" | "free";
 };

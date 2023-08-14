@@ -109,15 +109,17 @@ const Slides = ({ heading }: { heading: ReactElement }) => {
         )}
       </div>
 
-      <div className="mt-xs flex justify-end gap-xl">
-        {sorted.length > 1 ? (
-          <Navigation
-            swipeLeft={() => swiper?.slidePrev()}
-            swipeRight={() => swiper?.slideNext()}
-          />
-        ) : null}
+      <div className="flex justify-end">
+        <div className="mt-xs inline-flex justify-end gap-xl bg-white/40 px-sm">
+          {sorted.length > 1 ? (
+            <Navigation
+              swipeLeft={() => swiper?.slidePrev()}
+              swipeRight={() => swiper?.slideNext()}
+            />
+          ) : null}
 
-        <div>{heading}</div>
+          <div>{heading}</div>
+        </div>
       </div>
     </div>
   );

@@ -22,6 +22,7 @@ import MainText from "./main-text/+Entry";
 import PhotoAlbum from "./photo-album/+Entry";
 import Sections from "./sections/+Entry";
 import Tickets from "./tickets/+Entry";
+import TopEditBar from "./top-edit-bar/+Entry";
 
 const WorkshopPage = () => (
   <AwaitParams>
@@ -57,38 +58,54 @@ const WorkshopPage = () => (
 
 export default WorkshopPage;
 
-const PageSpecificContent = () => (
-  <>
-    <BannerImage />
+const PageSpecificContent = () => {
+  const {
+    store: {
+      data: { type },
+    },
+  } = UedCx.Pages.Workshop.use();
 
-    <SiteLayout.Section.Spacing>
-      <Headings />
-    </SiteLayout.Section.Spacing>
+  return (
+    <>
+      <SiteLayout.Section.Spacing.Horizontal>
+        <TopEditBar />
+      </SiteLayout.Section.Spacing.Horizontal>
 
-    <SiteLayout.Section.Spacing.Horizontal>
-      <MainText />
-    </SiteLayout.Section.Spacing.Horizontal>
-
-    <SiteLayout.Section.Spacing>
-      <Tickets />
-    </SiteLayout.Section.Spacing>
-
-    <SiteLayout.Section.Spacing>
-      <div className="mt-md flex gap-lg">
-        <div className="">
-          <Info />
-        </div>
-        <div className="flex-grow">
-          <PhotoAlbum />
-        </div>
+      <div className="mt-sm">
+        <BannerImage />
       </div>
-    </SiteLayout.Section.Spacing>
 
-    <SiteLayout.Section.Spacing>
-      <Sections />
-    </SiteLayout.Section.Spacing>
-  </>
-);
+      <SiteLayout.Section.Spacing>
+        <Headings />
+      </SiteLayout.Section.Spacing>
+
+      <SiteLayout.Section.Spacing.Horizontal>
+        <MainText />
+      </SiteLayout.Section.Spacing.Horizontal>
+
+      {type === "paid" ? (
+        <SiteLayout.Section.Spacing>
+          <Tickets />
+        </SiteLayout.Section.Spacing>
+      ) : null}
+
+      <SiteLayout.Section.Spacing>
+        <div className="mt-md flex gap-lg">
+          <div className="">
+            <Info />
+          </div>
+          <div className="flex-grow">
+            <PhotoAlbum />
+          </div>
+        </div>
+      </SiteLayout.Section.Spacing>
+
+      <SiteLayout.Section.Spacing>
+        <Sections />
+      </SiteLayout.Section.Spacing>
+    </>
+  );
+};
 
 type DbData = {
   workshop: MyDb["workshop"];
@@ -121,7 +138,7 @@ const InitDbData = ({
   idParam: string;
 }) => {
   const workshopQuery = useQuery(
-    "workshop",
+    ["workshop", idParam],
     async () => await myDb.workshop.fetchOne(idParam),
   );
 
@@ -180,16 +197,21 @@ const UedProviders = ({
 }: {
   initDbData: DbData;
   children: ReactElement;
-}) => (
-  <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
-    <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
-      <UedCx.Header.Provider initData={initDbData.header}>
-        <UedCx.Footer.Provider initData={initDbData.footer}>
-          <UedCx.Pages.Workshop.Provider initData={initDbData.workshop}>
-            {children}
-          </UedCx.Pages.Workshop.Provider>
-        </UedCx.Footer.Provider>
-      </UedCx.Header.Provider>
-    </UedCx.LinkLabels.Provider>
-  </UedCx.OrgDetails.Provider>
-);
+}) => {
+  return (
+    <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
+      <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
+        <UedCx.Header.Provider initData={initDbData.header}>
+          <UedCx.Footer.Provider initData={initDbData.footer}>
+            <UedCx.Pages.Workshop.Provider
+              initData={initDbData.workshop}
+              key={initDbData.workshop.id}
+            >
+              {children}
+            </UedCx.Pages.Workshop.Provider>
+          </UedCx.Footer.Provider>
+        </UedCx.Header.Provider>
+      </UedCx.LinkLabels.Provider>
+    </UedCx.OrgDetails.Provider>
+  );
+};

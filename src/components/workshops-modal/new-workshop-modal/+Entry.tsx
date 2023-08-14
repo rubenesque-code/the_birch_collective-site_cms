@@ -11,6 +11,7 @@ import { useToast } from "~/hooks";
 import { NewWorkshopCx, createInitData } from "./_state";
 import { UedCx } from "~/context/user-editable-data";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
+import { WithTooltip } from "~/components/WithTooltip";
 
 // □ refactor
 
@@ -180,8 +181,8 @@ const NewWorkshopModalContent = ({
 
 const NewWorkshop = () => {
   const {
-    data: { subtitle, summary, title },
-    actions: newWorkshop,
+    data: { subtitle, summary, title, type },
+    actions: newWorkshopAction,
   } = NewWorkshopCx.use();
 
   return (
@@ -210,30 +211,46 @@ const NewWorkshop = () => {
         <div className="font-medium">
           <TextInputForm
             localStateValue={title}
-            onSubmit={newWorkshop.title}
+            onSubmit={newWorkshopAction.title}
             input={{ placeholder: "Workshop title" }}
           />
         </div>
       </div>
+
+      <div className="mt-md">
+        <div className="text-sm text-gray-500">Type</div>
+        <WithTooltip text="Click to change workshop type">
+          <div
+            className="inline-block cursor-pointer"
+            onClick={() =>
+              newWorkshopAction.type(type === "free" ? "paid" : "free")
+            }
+          >
+            {type === "free" ? "Free" : "Paid"}
+          </div>
+        </WithTooltip>
+      </div>
+
       <div className="mt-md">
         <div className="flex items-center gap-md text-sm text-gray-500">
           <span>Subtitle</span>
           <span className="italic text-gray-400">optional</span>
         </div>
-        <div className="font-medium">
+        <div className="">
           <TextInputForm
             localStateValue={subtitle}
-            onSubmit={newWorkshop.subtitle}
+            onSubmit={newWorkshopAction.subtitle}
             input={{ placeholder: "Workshop subtitle" }}
           />
         </div>
       </div>
+
       <div className="mt-md">
         <div className="text-sm text-gray-500">Summary text</div>
         <div className="max-h-[400px] overflow-y-auto">
           <TextAreaForm
             localStateValue={summary.mainText}
-            onSubmit={newWorkshop.summary.mainText}
+            onSubmit={newWorkshopAction.summary.mainText}
             textArea={{ placeholder: "Workshop summary" }}
           />
         </div>

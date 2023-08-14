@@ -17,7 +17,6 @@ const Members = () => {
       },
     },
   } = UedCx.Pages.AboutUs.use();
-  console.log("members:", members);
 
   const sorted = React.useMemo(() => deepSortByIndex(members), [members]);
 

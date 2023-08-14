@@ -20,6 +20,7 @@ import CreateModal from "./new-workshop-modal/+Entry";
 import { ComponentApiCx, type ContextApiCxProps } from "./_state";
 import { Icon } from "../icons";
 import { DbReadCx } from "~/context/db-data-read-only";
+import { WithTooltip } from "../WithTooltip";
 
 const WorkshopsModal = ({
   button,
@@ -92,7 +93,7 @@ const Workshops = () => {
 };
 
 const Workshop = () => {
-  const { id, subtitle, summary, title } = DbReadCx.Workshop.use();
+  const { id, subtitle, summary, title, type } = DbReadCx.Workshop.use();
 
   const {
     store: { actions },
@@ -119,6 +120,7 @@ const Workshop = () => {
             )}
           </UserSelectedImageWrapper>
         </div>
+
         <div className="mt-md">
           <div className="text-sm text-gray-400">Title</div>
           <div className="max-w-full overflow-x-auto ">
@@ -132,6 +134,24 @@ const Workshop = () => {
             />
           </div>
         </div>
+
+        <div className="mt-md">
+          <div className="text-sm text-gray-500">Type</div>
+          <WithTooltip text="Click to change workshop type">
+            <div
+              className="inline-block cursor-pointer"
+              onClick={() =>
+                actions.type({
+                  id,
+                  updatedValue: type === "free" ? "paid" : "free",
+                })
+              }
+            >
+              {type === "free" ? "Free" : "Paid"}
+            </div>
+          </WithTooltip>
+        </div>
+
         <div className="mt-md">
           <div className="text-sm text-gray-400">Subtitle</div>
           <div className="max-w-full overflow-x-auto">
@@ -147,6 +167,7 @@ const Workshop = () => {
             />
           </div>
         </div>
+
         <div className="mt-md">
           <div className="text-sm text-gray-400">Summary text</div>
           <div className="max-h-[200px] overflow-y-auto">

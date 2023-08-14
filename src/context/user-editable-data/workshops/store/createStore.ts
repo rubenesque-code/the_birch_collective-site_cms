@@ -121,6 +121,8 @@ export const createStore = (input: { initData: Store["data"] }) =>
         },
 
         title: nonArrAction("title"),
+
+        type: nonArrAction("type"),
       },
     };
   });

@@ -83,7 +83,7 @@ const Workshops = () => {
 };
 
 const Workshop = () => {
-  const { id, subtitle, summary, title, index } = DbReadCx.Workshop.use();
+  const { id, subtitle, summary, title, index, type } = DbReadCx.Workshop.use();
 
   const {
     store: { actions, data: workshops },
@@ -94,8 +94,6 @@ const Workshop = () => {
     () => deepSortByIndex(workshops),
     [workshops],
   );
-
-  console.log("workshopsSorted:", workshopsSorted);
 
   const toast = useToast();
 
@@ -114,6 +112,31 @@ const Workshop = () => {
         </div>
 
         <div className="flex items-center gap-sm">
+          <ComponentMenu.Button
+            onClick={() =>
+              actions.type({
+                id,
+                updatedValue: type === "free" ? "paid" : "free",
+              })
+            }
+            tooltip={
+              type === "free"
+                ? "Click to set workshop type to paid"
+                : "Click to set workshop type to free"
+            }
+            styles={{ button: "text-gray-500 hover:text-gray-600" }}
+          >
+            <div className="relative">
+              <Icon.Paid />
+
+              {type === "free" ? (
+                <div className="absolute left-1/2 top-1/2 z-10 h-[14px] w-[2.5px] -translate-x-1/2 -translate-y-1/2 rotate-45 bg-gray-400" />
+              ) : null}
+            </div>
+          </ComponentMenu.Button>
+
+          <ComponentMenu.Divider />
+
           <ComponentMenu.Button
             onClick={() => {
               const nextWorkshop = workshopsSorted[index + 1];

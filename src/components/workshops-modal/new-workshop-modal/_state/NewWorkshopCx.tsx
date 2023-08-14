@@ -15,7 +15,7 @@ import type { MyOmit, MyPick } from "~/types/utilities";
 
 type Workshop = MyDb["workshop"];
 
-type ActionFields = MyPick<Workshop, "subtitle" | "summary" | "title">;
+type ActionFields = MyPick<Workshop, "subtitle" | "summary" | "title" | "type">;
 
 type Actions = GenerateNonArrActions<ActionFields>;
 
@@ -40,7 +40,7 @@ export const createInitData = (input: { index: number }): Workshop => ({
   mainText: "",
   photoAlbum: { entries: [], heading: "" },
   sections: [],
-  signUpLink: {
+  signUp: {
     heading: "",
     link: "",
     text: "",
@@ -58,7 +58,16 @@ export const createInitData = (input: { index: number }): Workshop => ({
     },
     mainText: "",
   },
+  tickets: {
+    heading: "",
+    signUpButton: {
+      link: "",
+      text: "",
+    },
+    text: "",
+  },
   title: "",
+  type: "paid",
 });
 
 const createStore = (input: { index: number }) => {
@@ -102,6 +111,8 @@ const createStore = (input: { index: number }) => {
           mainText: nonArrAction("summary.mainText"),
         },
         title: nonArrAction("title"),
+
+        type: nonArrAction("type"),
       },
     };
   });

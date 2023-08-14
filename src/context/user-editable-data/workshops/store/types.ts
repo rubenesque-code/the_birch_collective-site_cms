@@ -13,7 +13,7 @@ type Workshop = MyDb["workshop"];
 
 export type WorkshopActionFields = MyPick<
   Workshop,
-  "subtitle" | "summary" | "title"
+  "subtitle" | "summary" | "title" | "type"
 >;
 
 type Actions = {

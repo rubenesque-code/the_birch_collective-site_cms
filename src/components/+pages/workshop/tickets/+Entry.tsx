@@ -64,7 +64,7 @@ const TicketsLinkModal = () => {
       data: {
         tickets: { signUpButton },
       },
-      actions,
+      actions: { tickets: ticketAction },
     },
     revision: { undoKey },
   } = UedCx.Pages.Workshop.use();
@@ -84,7 +84,7 @@ const TicketsLinkModal = () => {
           input={
             <TextInputForm
               localStateValue={signUpButton.link}
-              onSubmit={actions.signUpLink.link}
+              onSubmit={ticketAction.signUpButton.link}
               input={{ placeholder: "Enter eventbrite link" }}
               tooltip="Click to update eventbrite link"
               key={undoKey}

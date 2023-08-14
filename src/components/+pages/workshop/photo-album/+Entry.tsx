@@ -28,8 +28,8 @@ const PhotoAlbum = () => {
           )}
         />
       </ComponentMenu>
-      <div>
-        <div className="relative ml-md h-[400px] overflow-visible">
+      <div className="ml-md rounded-md bg-[#b1cd84] p-sm">
+        <div className="relative h-[400px] overflow-visible">
           <Slides
             heading={
               <div className="text-sm text-gray-500">
