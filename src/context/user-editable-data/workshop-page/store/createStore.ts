@@ -497,6 +497,18 @@ export const createStore = (input: { initData: Store["data"] }) =>
 
         subtitle: nonArrAction("subtitle"),
 
+        tickets: {
+          heading: nonArrAction("tickets.heading"),
+
+          signUpButton: {
+            link: nonArrAction("tickets.signUpButton.link"),
+
+            text: nonArrAction("tickets.signUpButton.text"),
+          },
+
+          text: nonArrAction("tickets.text"),
+        },
+
         title: nonArrAction("title"),
       },
     };

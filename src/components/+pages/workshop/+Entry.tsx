@@ -21,6 +21,7 @@ import Info from "./info/+Entry";
 import MainText from "./main-text/+Entry";
 import PhotoAlbum from "./photo-album/+Entry";
 import Sections from "./sections/+Entry";
+import Tickets from "./tickets/+Entry";
 
 const WorkshopPage = () => (
   <AwaitParams>
@@ -69,17 +70,7 @@ const PageSpecificContent = () => (
     </SiteLayout.Section.Spacing.Horizontal>
 
     <SiteLayout.Section.Spacing>
-      <div className="flex items-center gap-sm">
-        <h4 className="font-display text-3xl font-bold tracking-wider text-brandGreen">
-          Tickets
-        </h4>
-      </div>
-      <div className="custom-prose prose mt-sm w-full max-w-full">
-        Cost: £90 for full day and lunch
-      </div>
-      <div className="mt-md inline-block cursor-pointer rounded-lg border bg-brandGreen px-sm py-xs text-white">
-        Sign up via eventbrite
-      </div>
+      <Tickets />
     </SiteLayout.Section.Spacing>
 
     <SiteLayout.Section.Spacing>

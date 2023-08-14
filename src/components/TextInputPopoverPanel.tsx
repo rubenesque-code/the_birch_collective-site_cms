@@ -14,11 +14,9 @@ const TextInputPopoverPanel = ({
       <div className="mt-sm rounded-sm border border-gray-200 px-xs py-xxs pr-md">
         {input}
       </div>
-      <div className="mt-sm flex items-center gap-xs text-sm text-gray-400">
-        <span>
-          <Icon.Info />
-        </span>
-        <span>Updates automatically. Just click outside when done.</span>
+      <div className="mt-sm flex items-center justify-end gap-xs text-sm text-gray-300">
+        <Icon.Info />
+        <span>Click outside when done</span>
       </div>
     </div>
   );

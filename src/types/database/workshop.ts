@@ -100,5 +100,14 @@ export type Workshop = {
 
   subtitle: string;
 
+  tickets: {
+    heading: string;
+    text: string;
+    signUpButton: {
+      link: string;
+      text: string;
+    };
+  };
+
   title: string;
 };

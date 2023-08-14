@@ -59,6 +59,7 @@ import {
   XSquare,
   Spinner,
   Ticket,
+  ArrowSquareOut,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -114,6 +115,7 @@ Icon.JobPost = ReadCvLogo;
 Icon.ToggleOff = ToggleLeft;
 Icon.ImageLoading = Spinner;
 Icon.Ticket = Ticket;
+Icon.ExternalLink = ArrowSquareOut;
 
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
