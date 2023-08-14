@@ -23,6 +23,7 @@ import PhotoAlbum from "./photo-album/+Entry";
 import Sections from "./sections/+Entry";
 import Tickets from "./tickets/+Entry";
 import TopEditBar from "./top-edit-bar/+Entry";
+import SignUp from "./sign-up/+Entry";
 
 const WorkshopPage = () => (
   <AwaitParams>
@@ -83,11 +84,9 @@ const PageSpecificContent = () => {
         <MainText />
       </SiteLayout.Section.Spacing.Horizontal>
 
-      {type === "paid" ? (
-        <SiteLayout.Section.Spacing>
-          <Tickets />
-        </SiteLayout.Section.Spacing>
-      ) : null}
+      <SiteLayout.Section.Spacing>
+        {type === "paid" ? <Tickets /> : <SignUp />}
+      </SiteLayout.Section.Spacing>
 
       <SiteLayout.Section.Spacing>
         <div className="mt-md flex gap-lg">
