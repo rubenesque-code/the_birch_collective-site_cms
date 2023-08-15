@@ -1,15 +1,15 @@
 import "swiper/css";
 
-import React, { ReactNode, useEffect } from "react";
+import React from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import { isFinite } from "lodash";
+import { useImmer, type Updater } from "use-immer";
 import { Icon } from "~/components/icons";
 import { WithTooltip } from "../WithTooltip";
 
-type FormData = {
-  name: string;
-};
+type DateOfBirth = { day: number; month: number; year: number };
 
 const Slides = () => {
   const [swiper, setSwiper] = React.useState<SwiperType | null>(null);
@@ -17,9 +17,64 @@ const Slides = () => {
 
   const [numViewedSlides, setNumViewedSlides] = React.useState(1);
 
-  const [formData, setFormData] = React.useState<FormData>({ name: "" });
+  const [name, setName] = React.useState("");
+  const [dateOfBirth, setDateOfBirth] = useImmer({
+    day: 1,
+    month: 1,
+    year: 2000,
+  });
+  console.log("dateOfBirth:", dateOfBirth);
+
+  const [showErrorMessage, setShowErrorMessage] = React.useState(false);
 
   const numSlides = 10;
+
+  const handleGoNext = () => {
+    if (currentSlideIndex + 1 === numSlides) {
+      return;
+    }
+
+    swiper?.slideNext();
+
+    setCurrentSlideIndex(currentSlideIndex + 1);
+
+    if (
+      numViewedSlides < numSlides &&
+      currentSlideIndex + 1 === numViewedSlides
+    ) {
+      setNumViewedSlides(numViewedSlides + 1);
+    }
+  };
+
+  const handleSubmitSlide = () => {
+    if (currentSlideIndex < 3) {
+      handleGoNext();
+      return;
+    }
+
+    if (currentSlideIndex === 3) {
+      if (!name.length) {
+        setShowErrorMessage(true);
+        return;
+      }
+      handleGoNext();
+    }
+
+    if (currentSlideIndex === 4) {
+      if (
+        dateOfBirth.day < 1 ||
+        dateOfBirth.day > 31 ||
+        dateOfBirth.month < 1 ||
+        dateOfBirth.month > 12 ||
+        dateOfBirth.year < 1900 ||
+        dateOfBirth.year > 3000
+      ) {
+        setShowErrorMessage(true);
+        return;
+      }
+      handleGoNext();
+    }
+  };
 
   return (
     <SlidesContainer
@@ -44,15 +99,7 @@ const Slides = () => {
           ? "I understand"
           : "Okay"
       }
-      goNext={() => {
-        if (currentSlideIndex + 1 === numSlides) {
-          return;
-        }
-
-        swiper?.slideNext();
-
-        setCurrentSlideIndex(currentSlideIndex + 1);
-      }}
+      goNext={handleGoNext}
       goPrev={() => {
         if (currentSlideIndex === 0) {
           return;
@@ -62,7 +109,8 @@ const Slides = () => {
 
         swiper?.slidePrev();
       }}
-      showQuickNextButton
+      onClickGoNextButton={handleSubmitSlide}
+      showQuickNextButton={currentSlideIndex + 1 < numViewedSlides}
       showQuickPrevButton={currentSlideIndex > 0}
       textSlides={
         <Swiper
@@ -76,13 +124,47 @@ const Slides = () => {
             height: "100%",
           }}
         >
-          {[Slide1, Slide2, Slide3].map((SlideContent, i) => {
-            return (
-              <SwiperSlide key={i}>
-                <SlideContent />
-              </SwiperSlide>
-            );
-          })}
+          [
+          <SwiperSlide key="slide-1">
+            <SlideWrapper>
+              <Slide1 />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-2">
+            <SlideWrapper>
+              <Slide2 />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-3">
+            <SlideWrapper>
+              <Slide3 />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-4">
+            <SlideWrapper>
+              <Slide4
+                name={name}
+                setName={setName}
+                showErrorMessage={showErrorMessage}
+                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-5">
+            <SlideWrapper>
+              <Slide5
+                dateOfBirth={dateOfBirth}
+                setDateOfBirth={setDateOfBirth}
+                showErrorMessage={showErrorMessage}
+                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              />
+            </SlideWrapper>
+          </SwiperSlide>
+          ]
         </Swiper>
       }
     />
@@ -91,14 +173,6 @@ const Slides = () => {
 
 export default Slides;
 
-type SlideProps = {
-  goNext: () => void;
-  goPrev: () => void;
-  showQuickNextButton: boolean;
-  formData: FormData;
-  setFormData: (formData: FormData) => void;
-};
-
 const SlidesContainer = (props: {
   goNext: () => void;
   goPrev: () => void;
@@ -106,7 +180,8 @@ const SlidesContainer = (props: {
   showQuickPrevButton: boolean;
   textSlides: React.ReactElement;
   buttonText: string;
-  bottomPanel?: ReactNode;
+  bottomPanel?: React.ReactNode;
+  onClickGoNextButton: () => void;
 }) => {
   return (
     <div className="flex h-[400px] max-h-[400px] w-[600px] flex-col ">
@@ -114,17 +189,29 @@ const SlidesContainer = (props: {
         Birch Events
       </div>
 
-      <div className="relative mt-sm max-h-full max-w-full flex-grow  ">
+      <div className="relative mt-sm max-w-full flex-grow">
         {props.textSlides}
       </div>
 
       <div className="relative mt-lg w-full flex-shrink-0 ">
         <div className="flex w-full items-end justify-between">
-          <span></span>
+          <div className="pointer-events-none flex gap-xxs opacity-0">
+            <div
+              className={`cursor-pointer rounded-sm bg-brandLightOrange text-lg text-white opacity-80 transition-opacity ease-in-out hover:opacity-100`}
+            >
+              <Icon.CaretUp weight="bold" />
+            </div>
+
+            <div
+              className={`cursor-pointer rounded-sm bg-brandLightOrange text-lg text-white opacity-80 transition-opacity ease-in-out hover:opacity-100`}
+            >
+              <Icon.CaretDown weight="bold" />
+            </div>
+          </div>
 
           <div
             className="cursor-pointer rounded-sm bg-brandLightOrange px-sm py-xs text-xl font-semibold text-white"
-            onClick={props.goNext}
+            onClick={props.onClickGoNextButton}
           >
             {props.buttonText}
           </div>
@@ -163,8 +250,17 @@ const SlidesContainer = (props: {
   );
 };
 
+const SlideWrapper = ({ children }: { children: React.ReactElement }) => (
+  <div className="absolute h-full w-full overflow-y-auto p-xs">{children}</div>
+);
+
+type SlideErrorProps = {
+  showErrorMessage: boolean;
+  resetShowErrorMessage: () => void;
+};
+
 const Slide1 = () => (
-  <div className="absolute h-full w-full overflow-y-auto p-xs">
+  <>
     <div className="text-center text-xl font-bold text-[#2F4858]">
       Thanks for showing an interest in one of our events.
     </div>
@@ -175,44 +271,11 @@ const Slide1 = () => (
       means we can get in touch with you so we can discuss getting started - so
       please double-check the details you&apos;re giving us are correct!
     </div>
-
-    {/* <div className="mt-lg flex flex-col items-center">
-      <div className="flex w-full items-end justify-between">
-        <span></span>
-
-        <div
-          className="cursor-pointer rounded-sm bg-brandLightOrange px-sm py-xs text-xl font-semibold text-white"
-          onClick={goNext}
-        >
-          Start
-        </div>
-
-        <div>
-          {showQuickNextButton ? (
-            <WithTooltip text="next slide">
-              <div
-                className="cursor-pointer rounded-sm bg-brandLightOrange text-lg text-white opacity-80 transition-opacity ease-in-out hover:opacity-100"
-                onClick={goNext}
-              >
-                <Icon.CaretDown weight="bold" />
-              </div>
-            </WithTooltip>
-          ) : null}
-        </div>
-      </div>
-
-      <div className="mt-sm flex items-center gap-xxs text-sm text-gray-500">
-        <span>
-          <Icon.Time />
-        </span>
-        <span>Takes 2 minutes</span>
-      </div>
-    </div> */}
-  </div>
+  </>
 );
 
 const Slide2 = () => (
-  <div className="absolute h-full w-full overflow-y-auto p-xs">
+  <>
     <div className="text-center text-lg  text-[#2F4858]">
       First up, we need you to read and understand our confidentiality
       statement: Anything you talk about with one of our team is kept totally
@@ -225,11 +288,11 @@ const Slide2 = () => (
       not want us to share anything, but we will support you through the whole
       thing.
     </div>
-  </div>
+  </>
 );
 
 const Slide3 = () => (
-  <div className="absolute h-full w-full overflow-y-auto p-xs">
+  <>
     <div className="text-center text-lg  text-[#2F4858]">
       By signing this form, you are giving us permission to contact you about
       opportunities and events from the Birch Collective. In order to comply
@@ -253,80 +316,152 @@ const Slide3 = () => (
 
       <div className="italic">07492923273</div>
     </div>
-  </div>
+  </>
 );
 
 const Slide4 = ({
-  goNext,
-  goPrev,
-  showQuickNextButton,
-  formData,
-  setFormData,
-}: SlideProps) => {
-  const [showError, setShowError] = React.useState(false);
-
-  const handleSubmit = () => {
-    if (!name.length) {
-      setShowError(true);
-
-      return;
-    }
-
-    // submit
-  };
-
+  name,
+  setName,
+  resetShowErrorMessage,
+  showErrorMessage,
+}: {
+  name: string;
+  setName: (name: string) => void;
+} & SlideErrorProps) => {
   return (
-    <form
-      className="mt-lg w-4/5"
-      onSubmit={(e) => {
-        e.preventDefault();
+    <>
+      <div className="text-lg text-[#2F4858]">1.</div>
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        Your full name:
+      </div>
+      <div className="mt-md">
+        <input
+          className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
 
-        handleSubmit();
-      }}
-    >
-      <div>
-        <div className="text-lg text-[#2F4858]">1.</div>
-        <div className="mt-sm text-xl font-medium text-brandOrange">
-          Your full name:
+            if (showErrorMessage) {
+              resetShowErrorMessage();
+            }
+          }}
+          type="text"
+          placeholder="Enter full name here"
+        />
+
+        <div className="mt-xs flex justify-between">
+          {showErrorMessage ? (
+            <p className="text-[#FF8983]">Oops...please enter your full name</p>
+          ) : (
+            <span></span>
+          )}
+          <span className="italic text-gray-500">required</span>
         </div>
-        <div className="mt-md">
-          <input
-            className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
+      </div>
+    </>
+  );
+};
 
-              if (showError) {
-                setShowError(false);
+const Slide5 = ({
+  dateOfBirth,
+  setDateOfBirth,
+  resetShowErrorMessage,
+  showErrorMessage,
+}: {
+  dateOfBirth: DateOfBirth;
+  setDateOfBirth: Updater<DateOfBirth>;
+} & SlideErrorProps) => {
+  return (
+    <>
+      <div className="text-lg text-[#2F4858]">1.</div>
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        Your date of birth:
+      </div>
+      <div className="mt-md flex gap-md">
+        <div className="flex flex-col gap-xs text-[#2F4858]">
+          <label className="text-gray-400" htmlFor="day">
+            day
+          </label>
+          <input
+            className="w-[80px]  text-lg"
+            id="day"
+            value={dateOfBirth.day}
+            onChange={(e) => {
+              const number = Number(e.target.value);
+
+              if (!isFinite(number)) {
+                return;
               }
+
+              resetShowErrorMessage();
+
+              setDateOfBirth((draft) => {
+                draft.day = number;
+              });
             }}
             type="text"
-            placeholder="Enter full name here"
           />
-          <div className="mt-xs flex justify-between">
-            {showError ? (
-              <p className="text-[#FF8983]">
-                Oops...please enter your full name
-              </p>
-            ) : (
-              <span></span>
-            )}
-            <span className="italic text-gray-500">required</span>
-          </div>
+        </div>
+
+        <div className="flex flex-col gap-xs text-[#2F4858]">
+          <label className="text-gray-400" htmlFor="month">
+            month
+          </label>
+          <input
+            className="w-[80px] text-lg"
+            id="month"
+            value={dateOfBirth.month}
+            onChange={(e) => {
+              const number = Number(e.target.value);
+
+              if (!isFinite(number)) {
+                return;
+              }
+
+              resetShowErrorMessage();
+
+              setDateOfBirth((draft) => {
+                draft.month = number;
+              });
+            }}
+            type="text"
+          />
+        </div>
+
+        <div className="flex flex-col gap-xs text-[#2F4858]">
+          <label className="text-gray-400" htmlFor="year">
+            year
+          </label>
+          <input
+            className="w-[80px] text-lg"
+            id="year"
+            value={dateOfBirth.year}
+            onChange={(e) => {
+              const number = Number(e.target.value);
+
+              if (!isFinite(number)) {
+                return;
+              }
+
+              resetShowErrorMessage();
+
+              setDateOfBirth((draft) => {
+                draft.year = number;
+              });
+            }}
+            type="text"
+          />
         </div>
       </div>
 
-      <div className="mt-lg flex justify-center">
-        <button
-          className="inline-flex cursor-pointer items-center gap-sm rounded-sm bg-brandLightOrange px-sm py-xs text-xl font-semibold text-white"
-          type="submit"
-        >
-          <span>Ok</span>
-          <span>
-            <Icon.Success />
-          </span>
-        </button>
+      <div className="mt-xs flex justify-between">
+        {showErrorMessage ? (
+          <p className="text-[#FF8983]">Oops...please enter a valid date.</p>
+        ) : (
+          <span></span>
+        )}
+        <span className="italic text-gray-500">required</span>
       </div>
-    </form>
+    </>
   );
 };
