@@ -5,19 +5,16 @@ import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { isFinite } from "lodash";
+import { useQuery } from "react-query";
 import { useImmer, type Updater } from "use-immer";
 import { Icon } from "~/components/icons";
-import { WithTooltip } from "../WithTooltip";
 import { validateEmail, validatePhoneNumber } from "~/helpers/form";
-import { useQuery } from "react-query";
 import { myDb } from "~/my-firebase/firestore";
+import { WithTooltip } from "../WithTooltip";
 
 // todo: should probs place error message beside the submit form
-// todo: prevent going next/prev if is error?
-// todo: go to error slide if is error
-// todo: questionnaire numbers
 // todo: on site, will have to validate programmes + workshops
-// todo: should have slide ids. Will need to skip events slide if couldn't fetch
+// todo: if no events, need to skip slide. Will affect number
 
 type DateOfBirth = { day: number; month: number; year: number };
 type EmergencyContact = {
@@ -229,26 +226,9 @@ const Slides = () => {
 
   const numSlides = 19;
 
-  const handleGoNext = () => {
-    if (currentSlideIndex + 1 === numSlides) {
-      return;
-    }
-
-    swiper?.slideNext();
-
-    setCurrentSlideIndex(currentSlideIndex + 1);
-
-    if (
-      numViewedSlides < numSlides &&
-      currentSlideIndex + 1 === numViewedSlides
-    ) {
-      setNumViewedSlides(numViewedSlides + 1);
-    }
-  };
-
-  const handleSubmitSlide = () => {
+  const handleSubmitSlide = (input: { onGoToSlide: () => void }) => {
     if (currentSlideIndex < 3) {
-      handleGoNext();
+      input.onGoToSlide();
       return;
     }
 
@@ -257,7 +237,7 @@ const Slides = () => {
         setShowErrorMessage(true);
         return;
       }
-      handleGoNext();
+      input.onGoToSlide();
     }
 
     if (currentSlideIndex === 4) {
@@ -272,7 +252,7 @@ const Slides = () => {
         setShowErrorMessage(true);
         return;
       }
-      handleGoNext();
+      input.onGoToSlide();
     }
 
     if (currentSlideIndex === 5) {
@@ -280,7 +260,7 @@ const Slides = () => {
         setShowErrorMessage(true);
         return;
       }
-      handleGoNext();
+      input.onGoToSlide();
     }
 
     if (currentSlideIndex === 6) {
@@ -288,11 +268,11 @@ const Slides = () => {
         setShowErrorMessage(true);
         return;
       }
-      handleGoNext();
+      input.onGoToSlide();
     }
 
     if (currentSlideIndex === 7) {
-      handleGoNext();
+      input.onGoToSlide();
     }
 
     if (currentSlideIndex === 8) {
@@ -300,23 +280,23 @@ const Slides = () => {
         setShowErrorMessage(true);
         return;
       }
-      handleGoNext();
+      input.onGoToSlide();
     }
 
     if (currentSlideIndex === 9) {
-      handleGoNext();
+      input.onGoToSlide();
     }
 
     if (currentSlideIndex === 10) {
-      handleGoNext();
+      input.onGoToSlide();
     }
 
     if (currentSlideIndex === 11) {
-      handleGoNext();
+      input.onGoToSlide();
     }
 
     if (currentSlideIndex === 12) {
-      handleGoNext();
+      input.onGoToSlide();
     }
 
     if (currentSlideIndex === 13) {
@@ -324,15 +304,15 @@ const Slides = () => {
         setShowErrorMessage(true);
         return;
       }
-      handleGoNext();
+      input.onGoToSlide();
     }
 
     if (currentSlideIndex === 14) {
-      handleGoNext();
+      input.onGoToSlide();
     }
 
     if (currentSlideIndex === 15) {
-      handleGoNext();
+      input.onGoToSlide();
     }
 
     if (currentSlideIndex === 16) {
@@ -340,7 +320,7 @@ const Slides = () => {
         setShowErrorMessage(true);
         return;
       }
-      handleGoNext();
+      input.onGoToSlide();
     }
 
     if (currentSlideIndex === 17) {
@@ -348,8 +328,47 @@ const Slides = () => {
         setShowErrorMessage(true);
         return;
       }
-      handleGoNext();
+      input.onGoToSlide();
     }
+
+    if (currentSlideIndex === 18) {
+      input.onGoToSlide();
+    }
+  };
+
+  const handleGoPrev = () => {
+    if (currentSlideIndex - 1 === 0) {
+      return;
+    }
+
+    handleSubmitSlide({
+      onGoToSlide: () => {
+        swiper?.slidePrev();
+
+        setCurrentSlideIndex(currentSlideIndex - 1);
+      },
+    });
+  };
+
+  const handleGoNext = () => {
+    if (currentSlideIndex + 1 === numSlides) {
+      return;
+    }
+
+    handleSubmitSlide({
+      onGoToSlide: () => {
+        swiper?.slideNext();
+
+        setCurrentSlideIndex(currentSlideIndex + 1);
+
+        if (
+          numViewedSlides < numSlides &&
+          currentSlideIndex + 1 === numViewedSlides
+        ) {
+          setNumViewedSlides(numViewedSlides + 1);
+        }
+      },
+    });
   };
 
   return (
@@ -378,16 +397,8 @@ const Slides = () => {
           : "Okay"
       }
       goNext={handleGoNext}
-      goPrev={() => {
-        if (currentSlideIndex === 0) {
-          return;
-        }
-
-        setCurrentSlideIndex(currentSlideIndex - 1);
-
-        swiper?.slidePrev();
-      }}
-      onClickGoNextButton={handleSubmitSlide}
+      goPrev={handleGoPrev}
+      isFinalSlide={currentSlideIndex + 1 === numSlides}
       showQuickNextButton={currentSlideIndex + 1 < numViewedSlides}
       showQuickPrevButton={currentSlideIndex > 0}
       textSlides={
@@ -423,146 +434,285 @@ const Slides = () => {
           ,
           <SwiperSlide key="slide-4">
             <SlideWrapper>
-              <Slide4
-                name={name}
-                setName={setName}
-                showErrorMessage={showErrorMessage}
-                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              <QuestionnaireSlideWrapper
+                errorMessage={{
+                  message: "Oops...please enter your full name",
+                  show: showErrorMessage,
+                }}
+                heading="Your full name:"
+                inputs={
+                  <Slide4
+                    name={name}
+                    setName={setName}
+                    handleResetShowErrorMessage={() =>
+                      showErrorMessage && setShowErrorMessage(false)
+                    }
+                  />
+                }
+                isRequired
+                questionNumber={1}
               />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-5">
             <SlideWrapper>
-              <Slide5
-                dateOfBirth={dateOfBirth}
-                setDateOfBirth={setDateOfBirth}
-                showErrorMessage={showErrorMessage}
-                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              <QuestionnaireSlideWrapper
+                errorMessage={{
+                  message: "Oops...please enter a valid date.",
+                  show: showErrorMessage,
+                }}
+                heading="Your date of birth:"
+                inputs={
+                  <Slide5
+                    dateOfBirth={dateOfBirth}
+                    setDateOfBirth={setDateOfBirth}
+                    handleResetShowErrorMessage={() =>
+                      showErrorMessage && setShowErrorMessage(false)
+                    }
+                  />
+                }
+                isRequired
+                questionNumber={2}
               />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-6">
             <SlideWrapper>
-              <Slide6
-                email={email}
-                setEmail={setEmail}
-                showErrorMessage={showErrorMessage}
-                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              <QuestionnaireSlideWrapper
+                errorMessage={{
+                  message: "Oops...please enter a valid email.",
+                  show: showErrorMessage,
+                }}
+                heading="Your email address:"
+                inputs={
+                  <Slide6
+                    email={email}
+                    setEmail={setEmail}
+                    handleResetShowErrorMessage={() =>
+                      showErrorMessage && setShowErrorMessage(false)
+                    }
+                  />
+                }
+                isRequired
+                questionNumber={3}
               />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-7">
             <SlideWrapper>
-              <Slide7
-                number={phoneNumber}
-                setNumber={setPhoneNumber}
-                showErrorMessage={showErrorMessage}
-                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              <QuestionnaireSlideWrapper
+                errorMessage={{
+                  message: "Oops...please enter a valid phone number.",
+                  show: showErrorMessage,
+                }}
+                heading="Your phone number:"
+                inputs={
+                  <Slide7
+                    number={phoneNumber}
+                    setNumber={setPhoneNumber}
+                    handleResetShowErrorMessage={() =>
+                      showErrorMessage && setShowErrorMessage(false)
+                    }
+                  />
+                }
+                isRequired
+                questionNumber={4}
               />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-8">
             <SlideWrapper>
-              <Slide8
-                emergencyContact={emergencyContact}
-                setEmergencyContact={setEmergencyContact}
+              <QuestionnaireSlideWrapper
+                heading="Emergency contact details:"
+                inputs={
+                  <Slide8
+                    emergencyContact={emergencyContact}
+                    setEmergencyContact={setEmergencyContact}
+                  />
+                }
+                questionNumber={5}
               />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-9">
             <SlideWrapper>
-              <Slide9
-                identities={identities}
-                setIdentities={setIdentities}
-                showErrorMessage={showErrorMessage}
-                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              <QuestionnaireSlideWrapper
+                heading="Do you identify as any of the following?"
+                inputs={
+                  <Slide9
+                    identities={identities}
+                    setIdentities={setIdentities}
+                    handleResetShowErrorMessage={() =>
+                      showErrorMessage && setShowErrorMessage(false)
+                    }
+                  />
+                }
+                questionNumber={6}
+                errorMessage={{
+                  message: "Oops...please enter one of the options",
+                  show: showErrorMessage,
+                }}
+                isRequired
+                subheading="Tick all that apply to you."
               />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-10">
             <SlideWrapper>
-              <Slide10 ethnicity={ethnicity} setEthnicity={setEthnicity} />
+              <QuestionnaireSlideWrapper
+                heading="Your ethnicity"
+                inputs={
+                  <Slide10 ethnicity={ethnicity} setEthnicity={setEthnicity} />
+                }
+                questionNumber={7}
+              />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-11">
             <SlideWrapper>
-              <Slide11 genders={genders} setGenders={setGenders} />
+              <QuestionnaireSlideWrapper
+                heading="Do you identify as any of the following?"
+                inputs={<Slide11 genders={genders} setGenders={setGenders} />}
+                questionNumber={8}
+                subheading="Tick all that apply to you."
+              />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-12">
             <SlideWrapper>
-              <Slide12
-                healthIssues={healthIssues}
-                setHealthIssues={setHealthIssues}
+              <QuestionnaireSlideWrapper
+                heading="Do you consider yourself to have any physical health issues or medical conditions, e.g ASD, Asthma or allergies, ?"
+                inputs={
+                  <Slide12
+                    healthIssues={healthIssues}
+                    setHealthIssues={setHealthIssues}
+                  />
+                }
+                questionNumber={9}
+                subheading="If yes, please provide us with some detail."
               />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-13">
             <SlideWrapper>
-              <Slide13
-                lifeSavingMedication={lifeSavingMedications}
-                setLifeSavingMedication={setLifeSavingMedications}
+              <QuestionnaireSlideWrapper
+                heading="Do you require any regular life saving medication, e.g inhalers, epipen or other?"
+                inputs={
+                  <Slide13
+                    lifeSavingMedication={lifeSavingMedications}
+                    setLifeSavingMedication={setLifeSavingMedications}
+                  />
+                }
+                questionNumber={10}
+                subheading="If yes, please provide us with some detail."
               />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-14">
             <SlideWrapper>
-              <Slide14
-                events={events}
-                setEvents={setEvents}
-                showErrorMessage={showErrorMessage}
-                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              <QuestionnaireSlideWrapper
+                heading="Which programmes and workshops are you interested in and would like some more information about?"
+                inputs={
+                  <Slide14
+                    events={events}
+                    setEvents={setEvents}
+                    handleResetShowErrorMessage={() =>
+                      showErrorMessage && setShowErrorMessage(false)
+                    }
+                  />
+                }
+                questionNumber={11}
+                errorMessage={{
+                  message: "Oops...please enter at least one option.",
+                  show: showErrorMessage,
+                }}
+                isRequired
               />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-15">
             <SlideWrapper>
-              <Slide15 hopeToGet={hopeToGet} setHopeToGet={setHopeToGet} />
+              <QuestionnaireSlideWrapper
+                heading="What do you hope to get out of going to The Birch Collective's sessions or programmes?"
+                inputs={
+                  <Slide15 hopeToGet={hopeToGet} setHopeToGet={setHopeToGet} />
+                }
+                questionNumber={12}
+              />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-16">
             <SlideWrapper>
-              <Slide16 setSources={setSources} sources={sources} />
+              <QuestionnaireSlideWrapper
+                heading="How did you hear about The Birch Collective"
+                inputs={<Slide16 setSources={setSources} sources={sources} />}
+                questionNumber={13}
+                subheading="Tick all that apply."
+              />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-17">
             <SlideWrapper>
-              <Slide17
-                receiveNewsLetter={receiveNewsLetter}
-                setReceiveNewsLetter={setReceiveNewsLetter}
-                showErrorMessage={showErrorMessage}
-                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              <QuestionnaireSlideWrapper
+                heading="Would you like to be added to the Birch Collectives monthly newsletter to hear about new workshops, programmes and services we are running?"
+                inputs={
+                  <Slide17
+                    receiveNewsLetter={receiveNewsLetter}
+                    setReceiveNewsLetter={setReceiveNewsLetter}
+                    handleResetShowErrorMessage={() =>
+                      showErrorMessage && setShowErrorMessage(false)
+                    }
+                  />
+                }
+                questionNumber={14}
+                errorMessage={{
+                  message: "Oops...please enter one of the options",
+                  show: showErrorMessage,
+                }}
+                isRequired
               />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-18">
             <SlideWrapper>
-              <Slide18
-                imagePermission={imagePermission}
-                setImagePermission={setImagePermission}
-                showErrorMessage={showErrorMessage}
-                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              <QuestionnaireSlideWrapper
+                heading="Would you like to be added to the Birch Collectives monthly newsletter to hear about new workshops, programmes and services we are running?"
+                inputs={
+                  <Slide18
+                    imagePermission={imagePermission}
+                    setImagePermission={setImagePermission}
+                    handleResetShowErrorMessage={() =>
+                      showErrorMessage && setShowErrorMessage(false)
+                    }
+                  />
+                }
+                questionNumber={14}
+                errorMessage={{
+                  message: "Oops...please enter one of the options",
+                  show: showErrorMessage,
+                }}
+                isRequired
               />
             </SlideWrapper>
           </SwiperSlide>
           ,
           <SwiperSlide key="slide-19">
             <SlideWrapper>
-              <Slide19 />
+              <Slide19 submit={() => null} />
             </SlideWrapper>
           </SwiperSlide>
           ]
@@ -582,13 +732,15 @@ const SlidesContainer = (props: {
   textSlides: React.ReactElement;
   buttonText: string;
   bottomPanel?: React.ReactNode;
-  onClickGoNextButton: () => void;
+  isFinalSlide: boolean;
 }) => {
   return (
-    <div className="flex h-[400px] max-h-[400px] w-[600px] flex-col ">
-      <div className="mt-xs flex-shrink-0 text-center font-display text-5xl font-bold tracking-wide text-orangeLight">
-        Birch Events
-      </div>
+    <div className="flex h-[400px] max-h-[400px] w-[600px] flex-col">
+      {!props.isFinalSlide ? (
+        <div className="mt-xs flex-shrink-0 text-center font-display text-5xl font-bold tracking-wide text-orangeLight">
+          Birch Events
+        </div>
+      ) : null}
 
       <div className="relative mt-sm max-w-full flex-grow">
         {props.textSlides}
@@ -610,12 +762,14 @@ const SlidesContainer = (props: {
             </div>
           </div>
 
-          <div
-            className="cursor-pointer rounded-sm bg-brandLightOrange px-sm py-xs text-xl font-semibold text-white"
-            onClick={props.onClickGoNextButton}
-          >
-            {props.buttonText}
-          </div>
+          {!props.isFinalSlide ? (
+            <div
+              className="cursor-pointer rounded-sm bg-brandLightOrange px-sm py-xs text-xl font-semibold text-white"
+              onClick={props.goNext}
+            >
+              {props.buttonText}
+            </div>
+          ) : null}
 
           <div className="flex gap-xxs">
             <WithTooltip text="previous slide">
@@ -652,12 +806,13 @@ const SlidesContainer = (props: {
 };
 
 const SlideWrapper = ({ children }: { children: React.ReactElement }) => (
-  <div className="absolute h-full w-full overflow-y-auto p-xs">{children}</div>
+  <div className="absolute grid h-full w-full place-items-center overflow-y-auto p-xs">
+    <div className="w-full">{children}</div>
+  </div>
 );
 
 type SlideErrorProps = {
-  showErrorMessage: boolean;
-  resetShowErrorMessage: () => void;
+  handleResetShowErrorMessage: () => void;
 };
 
 const Slide1 = () => (
@@ -720,64 +875,78 @@ const Slide3 = () => (
   </>
 );
 
-const Slide4 = ({
-  name,
-  setName,
-  resetShowErrorMessage,
-  showErrorMessage,
+const QuestionnaireSlideWrapper = ({
+  questionNumber,
+  heading,
+  subheading,
+  errorMessage,
+  isRequired,
+  inputs,
 }: {
-  name: string;
-  setName: (name: string) => void;
-} & SlideErrorProps) => {
-  return (
-    <>
-      <div className="text-lg text-[#2F4858]">1.</div>
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        Your full name:
-      </div>
-      <div className="mt-md">
-        <input
-          className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
+  questionNumber: number;
+  heading: string;
+  subheading?: string;
+  errorMessage?: { show: boolean; message: string };
+  isRequired?: boolean;
+  inputs: React.ReactNode;
+}) => (
+  <>
+    <div className="text-lg text-[#2F4858]">{questionNumber}.</div>
 
-            if (showErrorMessage) {
-              resetShowErrorMessage();
-            }
-          }}
-          type="text"
-          placeholder="Enter full name here"
-        />
+    <div className="mt-sm text-xl font-medium text-brandOrange">{heading}</div>
 
+    {subheading ? <p className="mt-xs text-gray-500">{subheading}</p> : null}
+
+    <div className="mt-md">
+      {inputs}
+
+      {errorMessage || isRequired ? (
         <div className="mt-xs flex justify-between">
-          {showErrorMessage ? (
-            <p className="text-[#FF8983]">Oops...please enter your full name</p>
+          {errorMessage?.show ? (
+            <p className="text-[#FF8983]">{errorMessage.message}</p>
           ) : (
             <span></span>
           )}
-          <span className="italic text-gray-500">required</span>
+          {isRequired ? (
+            <span className="italic text-gray-500">required</span>
+          ) : null}
         </div>
-      </div>
-    </>
-  );
-};
+      ) : null}
+    </div>
+  </>
+);
+
+const Slide4 = ({
+  name,
+  setName,
+  handleResetShowErrorMessage,
+}: {
+  name: string;
+  setName: (name: string) => void;
+} & SlideErrorProps) => (
+  <input
+    className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+    value={name}
+    onChange={(e) => {
+      setName(e.target.value);
+
+      handleResetShowErrorMessage();
+    }}
+    type="text"
+    placeholder="Enter full name here"
+  />
+);
 
 const Slide5 = ({
   dateOfBirth,
   setDateOfBirth,
-  resetShowErrorMessage,
-  showErrorMessage,
+  handleResetShowErrorMessage,
 }: {
   dateOfBirth: DateOfBirth;
   setDateOfBirth: Updater<DateOfBirth>;
 } & SlideErrorProps) => {
   return (
     <>
-      <div className="text-lg text-[#2F4858]">2.</div>
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        Your date of birth:
-      </div>
       <div className="mt-md flex gap-md">
         <div className="flex flex-col gap-xs text-[#2F4858]">
           <label className="text-gray-400" htmlFor="day">
@@ -794,7 +963,7 @@ const Slide5 = ({
                 return;
               }
 
-              resetShowErrorMessage();
+              handleResetShowErrorMessage();
 
               setDateOfBirth((draft) => {
                 draft.day = number;
@@ -819,7 +988,7 @@ const Slide5 = ({
                 return;
               }
 
-              resetShowErrorMessage();
+              handleResetShowErrorMessage();
 
               setDateOfBirth((draft) => {
                 draft.month = number;
@@ -844,7 +1013,7 @@ const Slide5 = ({
                 return;
               }
 
-              resetShowErrorMessage();
+              handleResetShowErrorMessage();
 
               setDateOfBirth((draft) => {
                 draft.year = number;
@@ -854,15 +1023,6 @@ const Slide5 = ({
           />
         </div>
       </div>
-
-      <div className="mt-xs flex justify-between">
-        {showErrorMessage ? (
-          <p className="text-[#FF8983]">Oops...please enter a valid date.</p>
-        ) : (
-          <span></span>
-        )}
-        <span className="italic text-gray-500">required</span>
-      </div>
     </>
   );
 };
@@ -870,90 +1030,44 @@ const Slide5 = ({
 const Slide6 = ({
   email,
   setEmail,
-  resetShowErrorMessage,
-  showErrorMessage,
+  handleResetShowErrorMessage,
 }: {
   email: string;
   setEmail: (name: string) => void;
-} & SlideErrorProps) => {
-  return (
-    <>
-      <div className="text-lg text-[#2F4858]">3.</div>
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        Your email address:
-      </div>
-      <div className="mt-md">
-        <input
-          className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
+} & SlideErrorProps) => (
+  <input
+    className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+    value={email}
+    onChange={(e) => {
+      setEmail(e.target.value);
 
-            if (showErrorMessage) {
-              resetShowErrorMessage();
-            }
-          }}
-          type="text"
-          placeholder="Enter email here"
-        />
-
-        <div className="mt-xs flex justify-between">
-          {showErrorMessage ? (
-            <p className="text-[#FF8983]">Oops...please enter a valid email</p>
-          ) : (
-            <span></span>
-          )}
-          <span className="italic text-gray-500">required</span>
-        </div>
-      </div>
-    </>
-  );
-};
+      handleResetShowErrorMessage();
+    }}
+    type="text"
+    placeholder="Enter email here"
+  />
+);
 
 const Slide7 = ({
   number,
   setNumber,
-  resetShowErrorMessage,
-  showErrorMessage,
+  handleResetShowErrorMessage,
 }: {
   number: string;
   setNumber: (number: string) => void;
-} & SlideErrorProps) => {
-  return (
-    <>
-      <div className="text-lg text-[#2F4858]">4.</div>
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        Your phone number:
-      </div>
-      <div className="mt-md">
-        <input
-          className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
-          value={number}
-          onChange={(e) => {
-            setNumber(e.target.value);
+} & SlideErrorProps) => (
+  <input
+    className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+    value={number}
+    onChange={(e) => {
+      setNumber(e.target.value);
 
-            if (showErrorMessage) {
-              resetShowErrorMessage();
-            }
-          }}
-          type="number"
-          placeholder="Enter phone number here"
-        />
-
-        <div className="mt-xs flex justify-between">
-          {showErrorMessage ? (
-            <p className="text-[#FF8983]">
-              Oops...please enter a valid phone number
-            </p>
-          ) : (
-            <span></span>
-          )}
-          <span className="italic text-gray-500">required</span>
-        </div>
-      </div>
-    </>
-  );
-};
+      handleResetShowErrorMessage();
+    }}
+    type="number"
+    placeholder="Enter phone number here"
+  />
+);
 
 const Slide8 = ({
   emergencyContact,
@@ -961,152 +1075,119 @@ const Slide8 = ({
 }: {
   emergencyContact: EmergencyContact;
   setEmergencyContact: Updater<EmergencyContact>;
-}) => {
-  return (
-    <>
-      <div className="text-lg text-[#2F4858]">5.</div>
+}) => (
+  <div className="flex flex-col gap-sm">
+    <div>
+      <label className="text-sm text-gray-500" htmlFor="emergency-name">
+        Name
+      </label>
+      <input
+        id="emergency-name"
+        className="mt-xs w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+        value={emergencyContact.name}
+        onChange={(e) => {
+          setEmergencyContact((draft) => {
+            draft.name = e.target.value;
+          });
+        }}
+        type="text"
+        placeholder="Enter name here"
+      />
+    </div>
 
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        Emergency contact details
-      </div>
-      <div className="mt-md flex flex-col gap-sm">
-        <div>
-          <label className="text-sm text-gray-500" htmlFor="emergency-name">
-            Name
-          </label>
-          <input
-            id="emergency-name"
-            className="mt-xs w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
-            value={emergencyContact.name}
-            onChange={(e) => {
-              setEmergencyContact((draft) => {
-                draft.name = e.target.value;
-              });
-            }}
-            type="text"
-            placeholder="Enter name here"
-          />
-        </div>
-
-        <div>
-          <label className="text-sm text-gray-500" htmlFor="emergency-phone">
-            Phone number
-          </label>
-          <input
-            className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
-            id="emergency-phone"
-            value={emergencyContact.phoneNumber}
-            onChange={(e) => {
-              setEmergencyContact((draft) => {
-                draft.phoneNumber = e.target.value;
-              });
-            }}
-            type="text"
-            placeholder="Enter phone number here"
-          />
-        </div>
-        <div>
-          <label className="text-sm text-gray-500" htmlFor="emergency-phone">
-            Relationship
-          </label>
-          <input
-            className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
-            id="emergency-relationship"
-            value={emergencyContact.relationship}
-            onChange={(e) => {
-              setEmergencyContact((draft) => {
-                draft.relationship = e.target.value;
-              });
-            }}
-            type="text"
-            placeholder="Enter relationship here"
-          />
-        </div>
-      </div>
-    </>
-  );
-};
+    <div>
+      <label className="text-sm text-gray-500" htmlFor="emergency-phone">
+        Phone number
+      </label>
+      <input
+        className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+        id="emergency-phone"
+        value={emergencyContact.phoneNumber}
+        onChange={(e) => {
+          setEmergencyContact((draft) => {
+            draft.phoneNumber = e.target.value;
+          });
+        }}
+        type="text"
+        placeholder="Enter phone number here"
+      />
+    </div>
+    <div>
+      <label className="text-sm text-gray-500" htmlFor="emergency-phone">
+        Relationship
+      </label>
+      <input
+        className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+        id="emergency-relationship"
+        value={emergencyContact.relationship}
+        onChange={(e) => {
+          setEmergencyContact((draft) => {
+            draft.relationship = e.target.value;
+          });
+        }}
+        type="text"
+        placeholder="Enter relationship here"
+      />
+    </div>
+  </div>
+);
 
 const Slide9 = ({
   identities,
   setIdentities,
-  resetShowErrorMessage,
-  showErrorMessage,
+  handleResetShowErrorMessage,
 }: {
   identities: Identity[];
   setIdentities: Updater<Identity[]>;
-} & SlideErrorProps) => {
-  return (
-    <>
-      <div className="text-lg text-[#2F4858]">5.</div>
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        Do you identify as any of the following?
-      </div>
-      <p className="mt-xs text-gray-500">Tick all that apply to you.</p>
+} & SlideErrorProps) => (
+  <div className="mt-md flex flex-col gap-xs">
+    {identities.map((option) => (
+      <div className="flex items-center gap-sm" key={option.label}>
+        <div>
+          <input
+            id={option.label}
+            checked={option.isSelected}
+            onChange={(e) => {
+              handleResetShowErrorMessage();
 
-      <div className="mt-md flex flex-col gap-xs">
-        {identities.map((option) => (
-          <div className="flex items-center gap-sm" key={option.label}>
-            <div>
-              <input
-                id={option.label}
-                checked={option.isSelected}
-                onChange={(e) => {
-                  if (showErrorMessage) {
-                    resetShowErrorMessage();
-                  }
+              const labelStr = e.currentTarget.id;
 
-                  const labelStr = e.currentTarget.id;
+              setIdentities((draft) => {
+                const index = draft.findIndex(
+                  (option) => option.label === labelStr,
+                );
 
-                  setIdentities((draft) => {
-                    const index = draft.findIndex(
-                      (option) => option.label === labelStr,
-                    );
+                if (index < 0) {
+                  return;
+                }
 
-                    if (index < 0) {
+                if (labelStr === "none of the above") {
+                  draft.forEach((option, i) => {
+                    if (i === index) {
                       return;
                     }
-
-                    if (labelStr === "none of the above") {
-                      draft.forEach((option, i) => {
-                        if (i === index) {
-                          return;
-                        }
-                        option.isSelected = false;
-                      });
-                    } else {
-                      const noneOptionIndex = draft.findIndex(
-                        (option) => option.label === "none of the above",
-                      );
-                      draft[noneOptionIndex].isSelected = false;
-                    }
-
-                    draft[index].isSelected = !draft[index].isSelected;
+                    option.isSelected = false;
                   });
-                }}
-                type="checkbox"
-              />
-            </div>
-            <label className="text-lg text-[#2F4858]" htmlFor={option.label}>
-              {option.label}
-            </label>
-          </div>
-        ))}
+                } else {
+                  const noneOptionIndex = draft.findIndex(
+                    (option) => option.label === "none of the above",
+                  );
+                  draft[noneOptionIndex].isSelected = false;
+                }
 
-        <div className="mt-xs flex justify-between">
-          {showErrorMessage ? (
-            <p className="text-[#FF8983]">
-              Oops...please enter one of the options
-            </p>
-          ) : (
-            <span></span>
-          )}
-          <span className="italic text-gray-500">required</span>
+                draft[index].isSelected = !draft[index].isSelected;
+              });
+            }}
+            type="checkbox"
+          />
         </div>
+        <label className="text-lg text-[#2F4858]" htmlFor={option.label}>
+          {option.label}
+        </label>
       </div>
-    </>
-  );
-};
+    ))}
+  </div>
+);
 
 const Slide10 = ({
   ethnicity,
@@ -1114,26 +1195,17 @@ const Slide10 = ({
 }: {
   ethnicity: string;
   setEthnicity: (ethnicity: string) => void;
-}) => {
-  return (
-    <>
-      <div className="text-lg text-[#2F4858]">5.</div>
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        Your ethnicity
-      </div>
-
-      <input
-        className="mt-sm w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
-        value={ethnicity}
-        onChange={(e) => {
-          setEthnicity(e.target.value);
-        }}
-        type="text"
-        placeholder="Enter ethnicity here"
-      />
-    </>
-  );
-};
+}) => (
+  <input
+    className="mt-sm w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+    value={ethnicity}
+    onChange={(e) => {
+      setEthnicity(e.target.value);
+    }}
+    type="text"
+    placeholder="Enter ethnicity here"
+  />
+);
 
 const Slide11 = ({
   genders,
@@ -1141,55 +1213,45 @@ const Slide11 = ({
 }: {
   genders: Gender[];
   setGenders: Updater<Gender[]>;
-}) => {
-  return (
-    <>
-      <div className="text-lg text-[#2F4858]">5.</div>
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        Do you identify as any of the following?
+}) => (
+  <div className="flex flex-col gap-xs">
+    {genders.map((option) => (
+      <div className="flex items-center gap-sm" key={option.label}>
+        <div>
+          <input
+            id={option.label}
+            checked={option.isSelected}
+            onChange={(e) => {
+              const labelStr = e.currentTarget.id;
+
+              setGenders((draft) => {
+                const index = draft.findIndex(
+                  (option) => option.label === labelStr,
+                );
+
+                if (index < 0) {
+                  return;
+                }
+
+                draft.forEach((option, i) => {
+                  if (i === index) {
+                    option.isSelected = !option.isSelected;
+                  } else {
+                    option.isSelected = false;
+                  }
+                });
+              });
+            }}
+            type="checkbox"
+          />
+        </div>
+        <label className="text-lg text-[#2F4858]" htmlFor={option.label}>
+          {option.label}
+        </label>
       </div>
-      <p className="mt-xs text-gray-500">Tick all that apply to you.</p>
-
-      <div className="mt-md flex flex-col gap-xs">
-        {genders.map((option) => (
-          <div className="flex items-center gap-sm" key={option.label}>
-            <div>
-              <input
-                id={option.label}
-                checked={option.isSelected}
-                onChange={(e) => {
-                  const labelStr = e.currentTarget.id;
-
-                  setGenders((draft) => {
-                    const index = draft.findIndex(
-                      (option) => option.label === labelStr,
-                    );
-
-                    if (index < 0) {
-                      return;
-                    }
-
-                    draft.forEach((option, i) => {
-                      if (i === index) {
-                        option.isSelected = !option.isSelected;
-                      } else {
-                        option.isSelected = false;
-                      }
-                    });
-                  });
-                }}
-                type="checkbox"
-              />
-            </div>
-            <label className="text-lg text-[#2F4858]" htmlFor={option.label}>
-              {option.label}
-            </label>
-          </div>
-        ))}
-      </div>
-    </>
-  );
-};
+    ))}
+  </div>
+);
 
 const Slide12 = ({
   healthIssues,
@@ -1197,29 +1259,14 @@ const Slide12 = ({
 }: {
   healthIssues: string;
   setHealthIssues: (value: string) => void;
-}) => {
-  return (
-    <>
-      <div className="text-lg text-[#2F4858]">5.</div>
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        Do you consider yourself to have any physical health issues or medical
-        conditions, e.g ASD, Asthma or allergies, ?
-      </div>
-      <p className="mt-xs text-gray-500">
-        If yes, please provide us with some detail.
-      </p>
-
-      <div className="mt-sm">
-        <textarea
-          className="w-full resize-none border-b border-b-[#2F4858] text-lg text-[#2F4858]"
-          value={healthIssues}
-          onChange={(e) => setHealthIssues(e.currentTarget.value)}
-          placeholder="Enter health issues here"
-        />
-      </div>
-    </>
-  );
-};
+}) => (
+  <textarea
+    className="w-full resize-none border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+    value={healthIssues}
+    onChange={(e) => setHealthIssues(e.currentTarget.value)}
+    placeholder="Enter health issues here"
+  />
+);
 
 const Slide13 = ({
   lifeSavingMedication,
@@ -1227,50 +1274,25 @@ const Slide13 = ({
 }: {
   lifeSavingMedication: string;
   setLifeSavingMedication: (value: string) => void;
-}) => {
-  return (
-    <>
-      <div className="text-lg text-[#2F4858]">5.</div>
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        Do you require any regular life saving medication, e.g inhalers, epipen
-        or other?
-      </div>
-      <p className="mt-xs text-gray-500">
-        If yes, please provide us with some detail.
-      </p>
-
-      <div className="mt-sm">
-        <textarea
-          className="w-full resize-none border-b border-b-[#2F4858] text-lg text-[#2F4858]"
-          value={lifeSavingMedication}
-          onChange={(e) => setLifeSavingMedication(e.currentTarget.value)}
-          placeholder="Enter life saving medication here"
-        />
-      </div>
-    </>
-  );
-};
+}) => (
+  <textarea
+    className="w-full resize-none border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+    value={lifeSavingMedication}
+    onChange={(e) => setLifeSavingMedication(e.currentTarget.value)}
+    placeholder="Enter life saving medication here"
+  />
+);
 
 const Slide14 = ({
   events,
   setEvents,
-  resetShowErrorMessage,
-  showErrorMessage,
+  handleResetShowErrorMessage,
 }: {
   events: Event[];
   setEvents: Updater<Event[]>;
 } & SlideErrorProps) => {
   return (
     <>
-      <div className="text-lg text-[#2F4858]">5.</div>
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        Which programmes and workshops are you interested in and would like some
-        more information about?
-      </div>
-      <p className="mt-xs text-gray-500">
-        Tick all that you are interested in.
-      </p>
-
       <div className="mt-md flex flex-col gap-xs">
         {events.map((option) => (
           <div className="flex items-center gap-sm" key={option.name}>
@@ -1292,7 +1314,7 @@ const Slide14 = ({
 
                     draft[index].isSelected = !draft[index].isSelected;
 
-                    resetShowErrorMessage();
+                    handleResetShowErrorMessage();
                   });
                 }}
                 type="checkbox"
@@ -1304,17 +1326,6 @@ const Slide14 = ({
           </div>
         ))}
       </div>
-
-      <div className="mt-xs flex justify-between">
-        {showErrorMessage ? (
-          <p className="text-[#FF8983]">
-            Oops...please enter at least one option.
-          </p>
-        ) : (
-          <span></span>
-        )}
-        <span className="italic text-gray-500">required</span>
-      </div>
     </>
   );
 };
@@ -1325,26 +1336,14 @@ const Slide15 = ({
 }: {
   hopeToGet: string;
   setHopeToGet: (value: string) => void;
-}) => {
-  return (
-    <>
-      <div className="text-lg text-[#2F4858]">5.</div>
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        What do you hope to get out of going to The Birch Collective’s sessions
-        or programmes?
-      </div>
-
-      <div className="mt-sm">
-        <textarea
-          className="w-full resize-none border-b border-b-[#2F4858] text-lg text-[#2F4858]"
-          value={hopeToGet}
-          onChange={(e) => setHopeToGet(e.currentTarget.value)}
-          placeholder="Enter what you hope to get here"
-        />
-      </div>
-    </>
-  );
-};
+}) => (
+  <textarea
+    className="w-full resize-none border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+    value={hopeToGet}
+    onChange={(e) => setHopeToGet(e.currentTarget.value)}
+    placeholder="Enter what you hope to get here"
+  />
+);
 
 const Slide16 = ({
   setSources,
@@ -1352,119 +1351,99 @@ const Slide16 = ({
 }: {
   sources: Sources;
   setSources: Updater<Sources>;
-}) => {
-  return (
-    <>
-      <div className="text-lg text-[#2F4858]">5.</div>
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        How did you hear about The Birch Collective
-      </div>
-      <p className="mt-xs text-gray-500">Tick all that apply.</p>
+}) => (
+  <div className="mt-md flex flex-col gap-xs">
+    {sources.entries.map((option) => (
+      <div key={option.label}>
+        <div className="flex items-center gap-sm">
+          <input
+            id={option.label}
+            checked={option.isSelected}
+            onChange={(e) => {
+              const label = e.currentTarget.id;
 
-      <div className="mt-md flex flex-col gap-xs">
-        {sources.entries.map((option) => (
-          <div key={option.label}>
-            <div className="flex items-center gap-sm">
-              <input
-                id={option.label}
-                checked={option.isSelected}
-                onChange={(e) => {
-                  const label = e.currentTarget.id;
+              setSources((draft) => {
+                const index = draft.entries.findIndex(
+                  (option) => option.label === label,
+                );
 
-                  setSources((draft) => {
-                    const index = draft.entries.findIndex(
-                      (option) => option.label === label,
-                    );
+                if (index < 0) {
+                  return;
+                }
 
-                    if (index < 0) {
-                      return;
-                    }
+                draft.entries[index].isSelected =
+                  !draft.entries[index].isSelected;
+              });
+            }}
+            type="checkbox"
+          />
+          <label className="text-lg text-[#2F4858]" htmlFor={option.label}>
+            {option.label}
+          </label>
+        </div>
 
-                    draft.entries[index].isSelected =
-                      !draft.entries[index].isSelected;
-                  });
-                }}
-                type="checkbox"
-              />
-              <label className="text-lg text-[#2F4858]" htmlFor={option.label}>
-                {option.label}
-              </label>
-            </div>
-
-            {option.label === "GP or other medical professional" &&
-            option.isSelected ? (
-              <div className="mb-xs mt-xs pl-lg">
-                <input
-                  className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
-                  value={sources.medicalProDetails}
-                  onChange={(e) => {
-                    setSources(
-                      (draft) =>
-                        (draft.medicalProDetails = e.currentTarget.value),
-                    );
-                  }}
-                  type="text"
-                  placeholder="Enter medical professional details"
-                />
-                <p className="mt-xs text-sm text-gray-500">
-                  Please give name, organisation and email address if you can.
-                </p>
-              </div>
-            ) : null}
-
-            {option.label === "Other" && option.isSelected ? (
-              <div className="mt-xs pl-lg">
-                <input
-                  className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
-                  value={sources.otherDetails}
-                  onChange={(e) => {
-                    setSources(
-                      (draft) => (draft.otherDetails = e.currentTarget.value),
-                    );
-                  }}
-                  type="text"
-                  placeholder="Enter details"
-                />
-                <p className="mt-xs text-sm text-gray-500">
-                  Please give any details you can.
-                </p>
-              </div>
-            ) : null}
+        {option.label === "GP or other medical professional" &&
+        option.isSelected ? (
+          <div className="mb-xs mt-xs pl-lg">
+            <input
+              className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+              value={sources.medicalProDetails}
+              onChange={(e) => {
+                setSources(
+                  (draft) => (draft.medicalProDetails = e.currentTarget.value),
+                );
+              }}
+              type="text"
+              placeholder="Enter medical professional details"
+            />
+            <p className="mt-xs text-sm text-gray-500">
+              Please give name, organisation and email address if you can.
+            </p>
           </div>
-        ))}
+        ) : null}
+
+        {option.label === "Other" && option.isSelected ? (
+          <div className="mt-xs pl-lg">
+            <input
+              className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+              value={sources.otherDetails}
+              onChange={(e) => {
+                setSources(
+                  (draft) => (draft.otherDetails = e.currentTarget.value),
+                );
+              }}
+              type="text"
+              placeholder="Enter details"
+            />
+            <p className="mt-xs text-sm text-gray-500">
+              Please give any details you can.
+            </p>
+          </div>
+        ) : null}
       </div>
-    </>
-  );
-};
+    ))}
+  </div>
+);
 
 const Slide17 = ({
   receiveNewsLetter,
   setReceiveNewsLetter,
-  resetShowErrorMessage,
-  showErrorMessage,
+  handleResetShowErrorMessage,
 }: {
   receiveNewsLetter: boolean | null;
   setReceiveNewsLetter: (value: boolean) => void;
 } & SlideErrorProps) => {
   return (
     <>
-      <div className="text-lg text-[#2F4858]">5.</div>
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        Would you like to be added to the Birch Collectives monthly newsletter
-        to hear about new workshops, programmes and services we are running?
-      </div>
-      <p className="mt-xs text-gray-500">
-        You can opt-out at any time in the future.
-      </p>
-
-      <div className="mt-sm flex flex-col gap-sm">
+      <div className="flex flex-col gap-sm">
         <div className="flex items-center gap-xs">
           <input
             id="news-yes"
             checked={receiveNewsLetter === true}
             onChange={() => {
               setReceiveNewsLetter(true);
-              resetShowErrorMessage();
+
+              handleResetShowErrorMessage();
             }}
             type="checkbox"
           />
@@ -1480,7 +1459,8 @@ const Slide17 = ({
             checked={receiveNewsLetter === false}
             onChange={() => {
               setReceiveNewsLetter(false);
-              resetShowErrorMessage();
+
+              handleResetShowErrorMessage();
             }}
             type="checkbox"
           />
@@ -1490,17 +1470,6 @@ const Slide17 = ({
           </label>
         </div>
       </div>
-
-      <div className="mt-xs flex justify-between">
-        {showErrorMessage ? (
-          <p className="text-[#FF8983]">
-            Oops...please enter one of the options
-          </p>
-        ) : (
-          <span></span>
-        )}
-        <span className="italic text-gray-500">required</span>
-      </div>
     </>
   );
 };
@@ -1508,83 +1477,65 @@ const Slide17 = ({
 const Slide18 = ({
   imagePermission,
   setImagePermission,
-  resetShowErrorMessage,
-  showErrorMessage,
+  handleResetShowErrorMessage,
 }: {
   imagePermission: boolean | null;
   setImagePermission: (value: boolean) => void;
-} & SlideErrorProps) => {
-  return (
-    <>
-      <div className="text-lg text-[#2F4858]">5.</div>
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        Do you give The Birch Collective permission to take photographs or
-        videos of you with the intention to use in publicity materials, social
-        media sites, website, reporting to funders, newspapers and magazine
-        articles?
-      </div>
-      <p className="mt-xs text-gray-500">
-        Images will not be given to third parties.
-      </p>
+} & SlideErrorProps) => (
+  <div className="flex flex-col gap-sm">
+    <div className="flex items-center gap-xs">
+      <input
+        id="image-yes"
+        checked={imagePermission === true}
+        onChange={() => {
+          setImagePermission(true);
+          handleResetShowErrorMessage();
+        }}
+        type="checkbox"
+      />
 
-      <div className="mt-sm flex flex-col gap-sm">
-        <div className="flex items-center gap-xs">
-          <input
-            id="image-yes"
-            checked={imagePermission === true}
-            onChange={() => {
-              setImagePermission(true);
-              resetShowErrorMessage();
-            }}
-            type="checkbox"
-          />
-
-          <label className="text-lg text-[#2F4858]" htmlFor="image-yes">
-            Yes
-          </label>
-        </div>
-
-        <div className="flex items-center gap-xs">
-          <input
-            id="image-no"
-            checked={imagePermission === false}
-            onChange={() => {
-              setImagePermission(false);
-              resetShowErrorMessage();
-            }}
-            type="checkbox"
-          />
-
-          <label htmlFor="image-no" className="text-lg text-[#2F4858]">
-            No
-          </label>
-        </div>
-      </div>
-
-      <div className="mt-xs flex justify-between">
-        {showErrorMessage ? (
-          <p className="text-[#FF8983]">
-            Oops...please enter one of the options
-          </p>
-        ) : (
-          <span></span>
-        )}
-        <span className="italic text-gray-500">required</span>
-      </div>
-    </>
-  );
-};
-
-const Slide19 = () => {
-  return (
-    <div className="text-center">
-      <div className="mt-sm text-xl font-medium text-brandOrange">
-        Thanks! All done. Now just click submit below.
-      </div>
-      <p className="mt-xs text-gray-500">
-        After submitting, one of the Birch team will be in touch with you
-        shortly about the next steps in joining our programmes.
-      </p>
+      <label className="text-lg text-[#2F4858]" htmlFor="image-yes">
+        Yes
+      </label>
     </div>
-  );
-};
+
+    <div className="flex items-center gap-xs">
+      <input
+        id="image-no"
+        checked={imagePermission === false}
+        onChange={() => {
+          setImagePermission(false);
+          handleResetShowErrorMessage();
+        }}
+        type="checkbox"
+      />
+
+      <label htmlFor="image-no" className="text-lg text-[#2F4858]">
+        No
+      </label>
+    </div>
+  </div>
+);
+
+const Slide19 = ({ submit }: { submit: () => void }) => (
+  <div className="">
+    <div className="mt-lg text-center  text-gray-400">
+      To finish, click submit:
+    </div>
+
+    <div className="mt-lg text-center">
+      <div
+        className="inline-flex cursor-pointer items-center gap-xs rounded-sm bg-brandLightOrange px-sm py-xs text-xl font-semibold text-white"
+        onClick={submit}
+      >
+        <span>Submit</span>
+      </div>
+    </div>
+
+    <div className="mt-lg text-center text-xl text-[#2F4858]">
+      Thanks for taking the time to get in touch with us. One of the Birch team
+      will be in touch with you shortly about the next steps in joining our
+      programmes.
+    </div>
+  </div>
+);
