@@ -334,6 +334,7 @@ const SlideIdentities = () => {
           Do you identify as any of the following?
         </div>
         <p className="mt-xs text-gray-500">Tick all that apply to you.</p>
+
         <div className="mt-md">
           <div className="flex flex-col gap-xs text-[#2F4858]">
             {options.map((option) => (

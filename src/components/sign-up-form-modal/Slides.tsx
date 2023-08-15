@@ -1,6 +1,6 @@
 import "swiper/css";
 
-import React from "react";
+import React, { useEffect } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -9,8 +9,42 @@ import { useImmer, type Updater } from "use-immer";
 import { Icon } from "~/components/icons";
 import { WithTooltip } from "../WithTooltip";
 import { validateEmail, validatePhoneNumber } from "~/helpers/form";
+import { useQuery } from "react-query";
+import { myDb } from "~/my-firebase/firestore";
+
+// todo: should probs place error message beside the submit form
+// todo: prevent going next/prev if is error?
+// todo: go to error slide if is error
+// todo: questionnaire numbers
+// todo: on site, will have to validate programmes + workshops
+// todo: should have slide ids. Will need to skip events slide if couldn't fetch
 
 type DateOfBirth = { day: number; month: number; year: number };
+type EmergencyContact = {
+  name: string;
+  phoneNumber: string;
+  relationship: string;
+};
+type Identity = {
+  label: string;
+  isSelected: boolean;
+};
+type Gender = {
+  label: string;
+  isSelected: boolean;
+};
+type Event = {
+  name: string;
+  isSelected: boolean;
+};
+type Sources = {
+  entries: {
+    label: string;
+    isSelected: boolean;
+  }[];
+  medicalProDetails: string;
+  otherDetails: string;
+};
 
 const Slides = () => {
   const [swiper, setSwiper] = React.useState<SwiperType | null>(null);
@@ -26,10 +60,174 @@ const Slides = () => {
   });
   const [email, setEmail] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [emergencyContact, setEmergencyContact] = useImmer({
+    name: "",
+    phoneNumber: "",
+    relationship: "",
+  });
+  const [identities, setIdentities] = useImmer([
+    {
+      label: "working class",
+      isSelected: false,
+    },
+
+    {
+      label: "someone with a disablity",
+      isSelected: false,
+    },
+
+    {
+      label: "male or male identifying",
+      isSelected: false,
+    },
+
+    {
+      label: "care experienced",
+      isSelected: false,
+    },
+
+    {
+      label: "lgbtq+",
+      isSelected: false,
+    },
+
+    {
+      label: "english as a second language",
+      isSelected: false,
+    },
+
+    {
+      label: "black or a person of colours",
+      isSelected: false,
+    },
+
+    {
+      label: "unemployed or not in education or training",
+      isSelected: false,
+    },
+
+    {
+      label: "none of the above",
+      isSelected: false,
+    },
+  ]);
+  const [ethnicity, setEthnicity] = React.useState("");
+  const [genders, setGenders] = useImmer([
+    {
+      label: "girl/woman/female",
+      isSelected: false,
+    },
+
+    {
+      label: "bay/man/male",
+      isSelected: false,
+    },
+
+    {
+      label: "non-binary",
+      isSelected: false,
+    },
+
+    {
+      label: "queer",
+      isSelected: false,
+    },
+
+    {
+      label: "other",
+      isSelected: false,
+    },
+
+    {
+      label: "prefer not to say",
+      isSelected: false,
+    },
+  ]);
+  const [healthIssues, setHealthIssues] = React.useState("");
+  const [lifeSavingMedications, setLifeSavingMedications] = React.useState("");
+  const [events, setEvents] = useImmer<Event[]>([]);
+  const [hopeToGet, setHopeToGet] = React.useState("");
+  const [sources, setSources] = useImmer<Sources>({
+    entries: [
+      {
+        label: "The Birch Collective social media",
+        isSelected: false,
+      },
+      {
+        label: "Other social media",
+        isSelected: false,
+      },
+      {
+        label: "Web search",
+        isSelected: false,
+      },
+      {
+        label: "Teacher",
+        isSelected: false,
+      },
+      {
+        label: "GP or other medical professional",
+        isSelected: false,
+      },
+      {
+        label: "Friend",
+        isSelected: false,
+      },
+      {
+        label: "Parent or carer",
+        isSelected: false,
+      },
+      {
+        label: "Other",
+        isSelected: false,
+      },
+    ],
+    medicalProDetails: "",
+    otherDetails: "",
+  });
+  const [receiveNewsLetter, setReceiveNewsLetter] = React.useState<
+    boolean | null
+  >(null);
+  const [imagePermission, setImagePermission] = React.useState<boolean | null>(
+    null,
+  );
 
   const [showErrorMessage, setShowErrorMessage] = React.useState(false);
 
-  const numSlides = 10;
+  const programmesQuery = useQuery("programmes", myDb.programme.fetchAll);
+  const workshopsQuery = useQuery("workshops", myDb.workshop.fetchAll);
+
+  useEffect(() => {
+    if (
+      programmesQuery.isError ||
+      !programmesQuery.data ||
+      workshopsQuery.isError ||
+      !workshopsQuery.data ||
+      events.length
+    ) {
+      return;
+    }
+
+    const programmes = programmesQuery.data
+      .filter((programme) => programme.title.length)
+      .map((programme) => ({
+        name: programme.title,
+        isSelected: false,
+      }));
+
+    const workshops = workshopsQuery.data
+      .filter((workshop) => workshop.type === "free" && workshop.title.length)
+      .map((workshop) => ({
+        name: workshop.title,
+        isSelected: false,
+      }));
+
+    setEvents([...programmes, ...workshops]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [programmesQuery, workshopsQuery]);
+
+  const numSlides = 19;
 
   const handleGoNext = () => {
     if (currentSlideIndex + 1 === numSlides) {
@@ -92,6 +290,66 @@ const Slides = () => {
       }
       handleGoNext();
     }
+
+    if (currentSlideIndex === 7) {
+      handleGoNext();
+    }
+
+    if (currentSlideIndex === 8) {
+      if (!identities.find((option) => option.isSelected)) {
+        setShowErrorMessage(true);
+        return;
+      }
+      handleGoNext();
+    }
+
+    if (currentSlideIndex === 9) {
+      handleGoNext();
+    }
+
+    if (currentSlideIndex === 10) {
+      handleGoNext();
+    }
+
+    if (currentSlideIndex === 11) {
+      handleGoNext();
+    }
+
+    if (currentSlideIndex === 12) {
+      handleGoNext();
+    }
+
+    if (currentSlideIndex === 13) {
+      if (!events.find((option) => option.isSelected)) {
+        setShowErrorMessage(true);
+        return;
+      }
+      handleGoNext();
+    }
+
+    if (currentSlideIndex === 14) {
+      handleGoNext();
+    }
+
+    if (currentSlideIndex === 15) {
+      handleGoNext();
+    }
+
+    if (currentSlideIndex === 16) {
+      if (receiveNewsLetter === null) {
+        setShowErrorMessage(true);
+        return;
+      }
+      handleGoNext();
+    }
+
+    if (currentSlideIndex === 17) {
+      if (imagePermission === null) {
+        setShowErrorMessage(true);
+        return;
+      }
+      handleGoNext();
+    }
   };
 
   return (
@@ -115,6 +373,8 @@ const Slides = () => {
           ? "Got it"
           : currentSlideIndex === 2
           ? "I understand"
+          : currentSlideIndex === numSlides - 1
+          ? "Submit"
           : "Okay"
       }
       goNext={handleGoNext}
@@ -202,6 +462,107 @@ const Slides = () => {
                 showErrorMessage={showErrorMessage}
                 resetShowErrorMessage={() => setShowErrorMessage(false)}
               />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-8">
+            <SlideWrapper>
+              <Slide8
+                emergencyContact={emergencyContact}
+                setEmergencyContact={setEmergencyContact}
+              />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-9">
+            <SlideWrapper>
+              <Slide9
+                identities={identities}
+                setIdentities={setIdentities}
+                showErrorMessage={showErrorMessage}
+                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-10">
+            <SlideWrapper>
+              <Slide10 ethnicity={ethnicity} setEthnicity={setEthnicity} />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-11">
+            <SlideWrapper>
+              <Slide11 genders={genders} setGenders={setGenders} />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-12">
+            <SlideWrapper>
+              <Slide12
+                healthIssues={healthIssues}
+                setHealthIssues={setHealthIssues}
+              />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-13">
+            <SlideWrapper>
+              <Slide13
+                lifeSavingMedication={lifeSavingMedications}
+                setLifeSavingMedication={setLifeSavingMedications}
+              />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-14">
+            <SlideWrapper>
+              <Slide14
+                events={events}
+                setEvents={setEvents}
+                showErrorMessage={showErrorMessage}
+                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-15">
+            <SlideWrapper>
+              <Slide15 hopeToGet={hopeToGet} setHopeToGet={setHopeToGet} />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-16">
+            <SlideWrapper>
+              <Slide16 setSources={setSources} sources={sources} />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-17">
+            <SlideWrapper>
+              <Slide17
+                receiveNewsLetter={receiveNewsLetter}
+                setReceiveNewsLetter={setReceiveNewsLetter}
+                showErrorMessage={showErrorMessage}
+                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-18">
+            <SlideWrapper>
+              <Slide18
+                imagePermission={imagePermission}
+                setImagePermission={setImagePermission}
+                showErrorMessage={showErrorMessage}
+                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-19">
+            <SlideWrapper>
+              <Slide19 />
             </SlideWrapper>
           </SwiperSlide>
           ]
@@ -519,7 +880,7 @@ const Slide6 = ({
     <>
       <div className="text-lg text-[#2F4858]">3.</div>
       <div className="mt-sm text-xl font-medium text-brandOrange">
-        Your full name:
+        Your email address:
       </div>
       <div className="mt-md">
         <input
@@ -591,5 +952,639 @@ const Slide7 = ({
         </div>
       </div>
     </>
+  );
+};
+
+const Slide8 = ({
+  emergencyContact,
+  setEmergencyContact,
+}: {
+  emergencyContact: EmergencyContact;
+  setEmergencyContact: Updater<EmergencyContact>;
+}) => {
+  return (
+    <>
+      <div className="text-lg text-[#2F4858]">5.</div>
+
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        Emergency contact details
+      </div>
+      <div className="mt-md flex flex-col gap-sm">
+        <div>
+          <label className="text-sm text-gray-500" htmlFor="emergency-name">
+            Name
+          </label>
+          <input
+            id="emergency-name"
+            className="mt-xs w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+            value={emergencyContact.name}
+            onChange={(e) => {
+              setEmergencyContact((draft) => {
+                draft.name = e.target.value;
+              });
+            }}
+            type="text"
+            placeholder="Enter name here"
+          />
+        </div>
+
+        <div>
+          <label className="text-sm text-gray-500" htmlFor="emergency-phone">
+            Phone number
+          </label>
+          <input
+            className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+            id="emergency-phone"
+            value={emergencyContact.phoneNumber}
+            onChange={(e) => {
+              setEmergencyContact((draft) => {
+                draft.phoneNumber = e.target.value;
+              });
+            }}
+            type="text"
+            placeholder="Enter phone number here"
+          />
+        </div>
+        <div>
+          <label className="text-sm text-gray-500" htmlFor="emergency-phone">
+            Relationship
+          </label>
+          <input
+            className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+            id="emergency-relationship"
+            value={emergencyContact.relationship}
+            onChange={(e) => {
+              setEmergencyContact((draft) => {
+                draft.relationship = e.target.value;
+              });
+            }}
+            type="text"
+            placeholder="Enter relationship here"
+          />
+        </div>
+      </div>
+    </>
+  );
+};
+
+const Slide9 = ({
+  identities,
+  setIdentities,
+  resetShowErrorMessage,
+  showErrorMessage,
+}: {
+  identities: Identity[];
+  setIdentities: Updater<Identity[]>;
+} & SlideErrorProps) => {
+  return (
+    <>
+      <div className="text-lg text-[#2F4858]">5.</div>
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        Do you identify as any of the following?
+      </div>
+      <p className="mt-xs text-gray-500">Tick all that apply to you.</p>
+
+      <div className="mt-md flex flex-col gap-xs">
+        {identities.map((option) => (
+          <div className="flex items-center gap-sm" key={option.label}>
+            <div>
+              <input
+                id={option.label}
+                checked={option.isSelected}
+                onChange={(e) => {
+                  if (showErrorMessage) {
+                    resetShowErrorMessage();
+                  }
+
+                  const labelStr = e.currentTarget.id;
+
+                  setIdentities((draft) => {
+                    const index = draft.findIndex(
+                      (option) => option.label === labelStr,
+                    );
+
+                    if (index < 0) {
+                      return;
+                    }
+
+                    if (labelStr === "none of the above") {
+                      draft.forEach((option, i) => {
+                        if (i === index) {
+                          return;
+                        }
+                        option.isSelected = false;
+                      });
+                    } else {
+                      const noneOptionIndex = draft.findIndex(
+                        (option) => option.label === "none of the above",
+                      );
+                      draft[noneOptionIndex].isSelected = false;
+                    }
+
+                    draft[index].isSelected = !draft[index].isSelected;
+                  });
+                }}
+                type="checkbox"
+              />
+            </div>
+            <label className="text-lg text-[#2F4858]" htmlFor={option.label}>
+              {option.label}
+            </label>
+          </div>
+        ))}
+
+        <div className="mt-xs flex justify-between">
+          {showErrorMessage ? (
+            <p className="text-[#FF8983]">
+              Oops...please enter one of the options
+            </p>
+          ) : (
+            <span></span>
+          )}
+          <span className="italic text-gray-500">required</span>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const Slide10 = ({
+  ethnicity,
+  setEthnicity,
+}: {
+  ethnicity: string;
+  setEthnicity: (ethnicity: string) => void;
+}) => {
+  return (
+    <>
+      <div className="text-lg text-[#2F4858]">5.</div>
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        Your ethnicity
+      </div>
+
+      <input
+        className="mt-sm w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+        value={ethnicity}
+        onChange={(e) => {
+          setEthnicity(e.target.value);
+        }}
+        type="text"
+        placeholder="Enter ethnicity here"
+      />
+    </>
+  );
+};
+
+const Slide11 = ({
+  genders,
+  setGenders,
+}: {
+  genders: Gender[];
+  setGenders: Updater<Gender[]>;
+}) => {
+  return (
+    <>
+      <div className="text-lg text-[#2F4858]">5.</div>
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        Do you identify as any of the following?
+      </div>
+      <p className="mt-xs text-gray-500">Tick all that apply to you.</p>
+
+      <div className="mt-md flex flex-col gap-xs">
+        {genders.map((option) => (
+          <div className="flex items-center gap-sm" key={option.label}>
+            <div>
+              <input
+                id={option.label}
+                checked={option.isSelected}
+                onChange={(e) => {
+                  const labelStr = e.currentTarget.id;
+
+                  setGenders((draft) => {
+                    const index = draft.findIndex(
+                      (option) => option.label === labelStr,
+                    );
+
+                    if (index < 0) {
+                      return;
+                    }
+
+                    draft.forEach((option, i) => {
+                      if (i === index) {
+                        option.isSelected = !option.isSelected;
+                      } else {
+                        option.isSelected = false;
+                      }
+                    });
+                  });
+                }}
+                type="checkbox"
+              />
+            </div>
+            <label className="text-lg text-[#2F4858]" htmlFor={option.label}>
+              {option.label}
+            </label>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+};
+
+const Slide12 = ({
+  healthIssues,
+  setHealthIssues,
+}: {
+  healthIssues: string;
+  setHealthIssues: (value: string) => void;
+}) => {
+  return (
+    <>
+      <div className="text-lg text-[#2F4858]">5.</div>
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        Do you consider yourself to have any physical health issues or medical
+        conditions, e.g ASD, Asthma or allergies, ?
+      </div>
+      <p className="mt-xs text-gray-500">
+        If yes, please provide us with some detail.
+      </p>
+
+      <div className="mt-sm">
+        <textarea
+          className="w-full resize-none border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+          value={healthIssues}
+          onChange={(e) => setHealthIssues(e.currentTarget.value)}
+          placeholder="Enter health issues here"
+        />
+      </div>
+    </>
+  );
+};
+
+const Slide13 = ({
+  lifeSavingMedication,
+  setLifeSavingMedication,
+}: {
+  lifeSavingMedication: string;
+  setLifeSavingMedication: (value: string) => void;
+}) => {
+  return (
+    <>
+      <div className="text-lg text-[#2F4858]">5.</div>
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        Do you require any regular life saving medication, e.g inhalers, epipen
+        or other?
+      </div>
+      <p className="mt-xs text-gray-500">
+        If yes, please provide us with some detail.
+      </p>
+
+      <div className="mt-sm">
+        <textarea
+          className="w-full resize-none border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+          value={lifeSavingMedication}
+          onChange={(e) => setLifeSavingMedication(e.currentTarget.value)}
+          placeholder="Enter life saving medication here"
+        />
+      </div>
+    </>
+  );
+};
+
+const Slide14 = ({
+  events,
+  setEvents,
+  resetShowErrorMessage,
+  showErrorMessage,
+}: {
+  events: Event[];
+  setEvents: Updater<Event[]>;
+} & SlideErrorProps) => {
+  return (
+    <>
+      <div className="text-lg text-[#2F4858]">5.</div>
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        Which programmes and workshops are you interested in and would like some
+        more information about?
+      </div>
+      <p className="mt-xs text-gray-500">
+        Tick all that you are interested in.
+      </p>
+
+      <div className="mt-md flex flex-col gap-xs">
+        {events.map((option) => (
+          <div className="flex items-center gap-sm" key={option.name}>
+            <div>
+              <input
+                id={option.name}
+                checked={option.isSelected}
+                onChange={(e) => {
+                  const name = e.currentTarget.id;
+
+                  setEvents((draft) => {
+                    const index = draft.findIndex(
+                      (option) => option.name === name,
+                    );
+
+                    if (index < 0) {
+                      return;
+                    }
+
+                    draft[index].isSelected = !draft[index].isSelected;
+
+                    resetShowErrorMessage();
+                  });
+                }}
+                type="checkbox"
+              />
+            </div>
+            <label className="text-lg text-[#2F4858]" htmlFor={option.name}>
+              {option.name}
+            </label>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-xs flex justify-between">
+        {showErrorMessage ? (
+          <p className="text-[#FF8983]">
+            Oops...please enter at least one option.
+          </p>
+        ) : (
+          <span></span>
+        )}
+        <span className="italic text-gray-500">required</span>
+      </div>
+    </>
+  );
+};
+
+const Slide15 = ({
+  hopeToGet,
+  setHopeToGet,
+}: {
+  hopeToGet: string;
+  setHopeToGet: (value: string) => void;
+}) => {
+  return (
+    <>
+      <div className="text-lg text-[#2F4858]">5.</div>
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        What do you hope to get out of going to The Birch Collective’s sessions
+        or programmes?
+      </div>
+
+      <div className="mt-sm">
+        <textarea
+          className="w-full resize-none border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+          value={hopeToGet}
+          onChange={(e) => setHopeToGet(e.currentTarget.value)}
+          placeholder="Enter what you hope to get here"
+        />
+      </div>
+    </>
+  );
+};
+
+const Slide16 = ({
+  setSources,
+  sources,
+}: {
+  sources: Sources;
+  setSources: Updater<Sources>;
+}) => {
+  return (
+    <>
+      <div className="text-lg text-[#2F4858]">5.</div>
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        How did you hear about The Birch Collective
+      </div>
+      <p className="mt-xs text-gray-500">Tick all that apply.</p>
+
+      <div className="mt-md flex flex-col gap-xs">
+        {sources.entries.map((option) => (
+          <div key={option.label}>
+            <div className="flex items-center gap-sm">
+              <input
+                id={option.label}
+                checked={option.isSelected}
+                onChange={(e) => {
+                  const label = e.currentTarget.id;
+
+                  setSources((draft) => {
+                    const index = draft.entries.findIndex(
+                      (option) => option.label === label,
+                    );
+
+                    if (index < 0) {
+                      return;
+                    }
+
+                    draft.entries[index].isSelected =
+                      !draft.entries[index].isSelected;
+                  });
+                }}
+                type="checkbox"
+              />
+              <label className="text-lg text-[#2F4858]" htmlFor={option.label}>
+                {option.label}
+              </label>
+            </div>
+
+            {option.label === "GP or other medical professional" &&
+            option.isSelected ? (
+              <div className="mb-xs mt-xs pl-lg">
+                <input
+                  className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+                  value={sources.medicalProDetails}
+                  onChange={(e) => {
+                    setSources(
+                      (draft) =>
+                        (draft.medicalProDetails = e.currentTarget.value),
+                    );
+                  }}
+                  type="text"
+                  placeholder="Enter medical professional details"
+                />
+                <p className="mt-xs text-sm text-gray-500">
+                  Please give name, organisation and email address if you can.
+                </p>
+              </div>
+            ) : null}
+
+            {option.label === "Other" && option.isSelected ? (
+              <div className="mt-xs pl-lg">
+                <input
+                  className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+                  value={sources.otherDetails}
+                  onChange={(e) => {
+                    setSources(
+                      (draft) => (draft.otherDetails = e.currentTarget.value),
+                    );
+                  }}
+                  type="text"
+                  placeholder="Enter details"
+                />
+                <p className="mt-xs text-sm text-gray-500">
+                  Please give any details you can.
+                </p>
+              </div>
+            ) : null}
+          </div>
+        ))}
+      </div>
+    </>
+  );
+};
+
+const Slide17 = ({
+  receiveNewsLetter,
+  setReceiveNewsLetter,
+  resetShowErrorMessage,
+  showErrorMessage,
+}: {
+  receiveNewsLetter: boolean | null;
+  setReceiveNewsLetter: (value: boolean) => void;
+} & SlideErrorProps) => {
+  return (
+    <>
+      <div className="text-lg text-[#2F4858]">5.</div>
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        Would you like to be added to the Birch Collectives monthly newsletter
+        to hear about new workshops, programmes and services we are running?
+      </div>
+      <p className="mt-xs text-gray-500">
+        You can opt-out at any time in the future.
+      </p>
+
+      <div className="mt-sm flex flex-col gap-sm">
+        <div className="flex items-center gap-xs">
+          <input
+            id="news-yes"
+            checked={receiveNewsLetter === true}
+            onChange={() => {
+              setReceiveNewsLetter(true);
+              resetShowErrorMessage();
+            }}
+            type="checkbox"
+          />
+
+          <label className="text-lg text-[#2F4858]" htmlFor="news-yes">
+            Yes
+          </label>
+        </div>
+
+        <div className="flex items-center gap-xs">
+          <input
+            id="news-no"
+            checked={receiveNewsLetter === false}
+            onChange={() => {
+              setReceiveNewsLetter(false);
+              resetShowErrorMessage();
+            }}
+            type="checkbox"
+          />
+
+          <label htmlFor="news-no" className="text-lg text-[#2F4858]">
+            No
+          </label>
+        </div>
+      </div>
+
+      <div className="mt-xs flex justify-between">
+        {showErrorMessage ? (
+          <p className="text-[#FF8983]">
+            Oops...please enter one of the options
+          </p>
+        ) : (
+          <span></span>
+        )}
+        <span className="italic text-gray-500">required</span>
+      </div>
+    </>
+  );
+};
+
+const Slide18 = ({
+  imagePermission,
+  setImagePermission,
+  resetShowErrorMessage,
+  showErrorMessage,
+}: {
+  imagePermission: boolean | null;
+  setImagePermission: (value: boolean) => void;
+} & SlideErrorProps) => {
+  return (
+    <>
+      <div className="text-lg text-[#2F4858]">5.</div>
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        Do you give The Birch Collective permission to take photographs or
+        videos of you with the intention to use in publicity materials, social
+        media sites, website, reporting to funders, newspapers and magazine
+        articles?
+      </div>
+      <p className="mt-xs text-gray-500">
+        Images will not be given to third parties.
+      </p>
+
+      <div className="mt-sm flex flex-col gap-sm">
+        <div className="flex items-center gap-xs">
+          <input
+            id="image-yes"
+            checked={imagePermission === true}
+            onChange={() => {
+              setImagePermission(true);
+              resetShowErrorMessage();
+            }}
+            type="checkbox"
+          />
+
+          <label className="text-lg text-[#2F4858]" htmlFor="image-yes">
+            Yes
+          </label>
+        </div>
+
+        <div className="flex items-center gap-xs">
+          <input
+            id="image-no"
+            checked={imagePermission === false}
+            onChange={() => {
+              setImagePermission(false);
+              resetShowErrorMessage();
+            }}
+            type="checkbox"
+          />
+
+          <label htmlFor="image-no" className="text-lg text-[#2F4858]">
+            No
+          </label>
+        </div>
+      </div>
+
+      <div className="mt-xs flex justify-between">
+        {showErrorMessage ? (
+          <p className="text-[#FF8983]">
+            Oops...please enter one of the options
+          </p>
+        ) : (
+          <span></span>
+        )}
+        <span className="italic text-gray-500">required</span>
+      </div>
+    </>
+  );
+};
+
+const Slide19 = () => {
+  return (
+    <div className="text-center">
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        Thanks! All done. Now just click submit below.
+      </div>
+      <p className="mt-xs text-gray-500">
+        After submitting, one of the Birch team will be in touch with you
+        shortly about the next steps in joining our programmes.
+      </p>
+    </div>
   );
 };
