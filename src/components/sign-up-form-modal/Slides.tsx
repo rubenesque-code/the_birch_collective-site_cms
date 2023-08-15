@@ -8,6 +8,7 @@ import { isFinite } from "lodash";
 import { useImmer, type Updater } from "use-immer";
 import { Icon } from "~/components/icons";
 import { WithTooltip } from "../WithTooltip";
+import { validateEmail, validatePhoneNumber } from "~/helpers/form";
 
 type DateOfBirth = { day: number; month: number; year: number };
 
@@ -19,11 +20,12 @@ const Slides = () => {
 
   const [name, setName] = React.useState("");
   const [dateOfBirth, setDateOfBirth] = useImmer({
-    day: 1,
-    month: 1,
+    day: 0,
+    month: 0,
     year: 2000,
   });
-  console.log("dateOfBirth:", dateOfBirth);
+  const [email, setEmail] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState("");
 
   const [showErrorMessage, setShowErrorMessage] = React.useState(false);
 
@@ -69,6 +71,22 @@ const Slides = () => {
         dateOfBirth.year < 1900 ||
         dateOfBirth.year > 3000
       ) {
+        setShowErrorMessage(true);
+        return;
+      }
+      handleGoNext();
+    }
+
+    if (currentSlideIndex === 5) {
+      if (!validateEmail(email)) {
+        setShowErrorMessage(true);
+        return;
+      }
+      handleGoNext();
+    }
+
+    if (currentSlideIndex === 6) {
+      if (!validatePhoneNumber(phoneNumber)) {
         setShowErrorMessage(true);
         return;
       }
@@ -159,6 +177,28 @@ const Slides = () => {
               <Slide5
                 dateOfBirth={dateOfBirth}
                 setDateOfBirth={setDateOfBirth}
+                showErrorMessage={showErrorMessage}
+                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-6">
+            <SlideWrapper>
+              <Slide6
+                email={email}
+                setEmail={setEmail}
+                showErrorMessage={showErrorMessage}
+                resetShowErrorMessage={() => setShowErrorMessage(false)}
+              />
+            </SlideWrapper>
+          </SwiperSlide>
+          ,
+          <SwiperSlide key="slide-7">
+            <SlideWrapper>
+              <Slide7
+                number={phoneNumber}
+                setNumber={setPhoneNumber}
                 showErrorMessage={showErrorMessage}
                 resetShowErrorMessage={() => setShowErrorMessage(false)}
               />
@@ -373,7 +413,7 @@ const Slide5 = ({
 } & SlideErrorProps) => {
   return (
     <>
-      <div className="text-lg text-[#2F4858]">1.</div>
+      <div className="text-lg text-[#2F4858]">2.</div>
       <div className="mt-sm text-xl font-medium text-brandOrange">
         Your date of birth:
       </div>
@@ -461,6 +501,94 @@ const Slide5 = ({
           <span></span>
         )}
         <span className="italic text-gray-500">required</span>
+      </div>
+    </>
+  );
+};
+
+const Slide6 = ({
+  email,
+  setEmail,
+  resetShowErrorMessage,
+  showErrorMessage,
+}: {
+  email: string;
+  setEmail: (name: string) => void;
+} & SlideErrorProps) => {
+  return (
+    <>
+      <div className="text-lg text-[#2F4858]">3.</div>
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        Your full name:
+      </div>
+      <div className="mt-md">
+        <input
+          className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+
+            if (showErrorMessage) {
+              resetShowErrorMessage();
+            }
+          }}
+          type="text"
+          placeholder="Enter email here"
+        />
+
+        <div className="mt-xs flex justify-between">
+          {showErrorMessage ? (
+            <p className="text-[#FF8983]">Oops...please enter a valid email</p>
+          ) : (
+            <span></span>
+          )}
+          <span className="italic text-gray-500">required</span>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const Slide7 = ({
+  number,
+  setNumber,
+  resetShowErrorMessage,
+  showErrorMessage,
+}: {
+  number: string;
+  setNumber: (number: string) => void;
+} & SlideErrorProps) => {
+  return (
+    <>
+      <div className="text-lg text-[#2F4858]">4.</div>
+      <div className="mt-sm text-xl font-medium text-brandOrange">
+        Your phone number:
+      </div>
+      <div className="mt-md">
+        <input
+          className="w-full border-b border-b-[#2F4858] text-lg text-[#2F4858]"
+          value={number}
+          onChange={(e) => {
+            setNumber(e.target.value);
+
+            if (showErrorMessage) {
+              resetShowErrorMessage();
+            }
+          }}
+          type="number"
+          placeholder="Enter phone number here"
+        />
+
+        <div className="mt-xs flex justify-between">
+          {showErrorMessage ? (
+            <p className="text-[#FF8983]">
+              Oops...please enter a valid phone number
+            </p>
+          ) : (
+            <span></span>
+          )}
+          <span className="italic text-gray-500">required</span>
+        </div>
       </div>
     </>
   );
