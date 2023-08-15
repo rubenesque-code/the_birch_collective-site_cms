@@ -3,6 +3,8 @@ import { Icon } from "../icons";
 import { Modal } from "../styled-bases";
 import { ComponentApiCx, type ContextApiCxProps } from "./_state";
 import DateOfBirthModal from "./date-of-birth-modal/+Entry";
+import { produce } from "immer";
+import Slides from "./Slides";
 
 const SignUpFormModal = ({
   button,
@@ -27,14 +29,7 @@ const SignUpFormModal = ({
 export default SignUpFormModal;
 
 const SignUpForm = () => {
-  return (
-    <div className="w-full max-w-[620px]">
-      <div className="mt-xs text-center font-display text-5xl font-bold tracking-wide text-orangeLight">
-        Birch Events
-      </div>
-      <SlideIdentities />
-    </div>
-  );
+  return <Slides />;
 };
 
 const Slide1 = () => (
@@ -263,11 +258,59 @@ const SlideDateOfBirth = () => {
 };
 
 const SlideIdentities = () => {
-  const [name, setName] = useState("");
+  const [options, setOptions] = useState([
+    {
+      label: "working class",
+      isSelected: false,
+    },
+
+    {
+      label: "someone with a disablity",
+      isSelected: false,
+    },
+
+    {
+      label: "male or male identifying",
+      isSelected: false,
+    },
+
+    {
+      label: "care experienced",
+      isSelected: false,
+    },
+
+    {
+      label: "lgbtq+",
+      isSelected: false,
+    },
+
+    {
+      label: "english as a second language",
+      isSelected: false,
+    },
+
+    {
+      label: "black or a person of colours",
+      isSelected: false,
+    },
+
+    {
+      label: "unemployed or not in education or training",
+      isSelected: false,
+    },
+
+    {
+      label: "none of the above",
+      isSelected: false,
+    },
+  ]);
+
   const [showError, setShowError] = useState(false);
 
   const handleSubmit = () => {
-    if (!name.length) {
+    const isSelection = options.find((option) => option.isSelected);
+
+    if (!isSelection) {
       setShowError(true);
 
       return;
@@ -288,16 +331,60 @@ const SlideIdentities = () => {
       <div>
         <div className="text-lg text-[#2F4858]">1.</div>
         <div className="mt-sm text-xl font-medium text-brandOrange">
-          Do you identify as any of the following (tick all that apply to you):
+          Do you identify as any of the following?
         </div>
+        <p className="mt-xs text-gray-500">Tick all that apply to you.</p>
         <div className="mt-md">
-          <div className="flex flex-col gap-xs">
-            <div className="flex items-center gap-sm">
-              <div>
-                <input type="checkbox" />
+          <div className="flex flex-col gap-xs text-[#2F4858]">
+            {options.map((option) => (
+              <div className="flex items-center gap-sm" key={option.label}>
+                <div>
+                  <input
+                    id={option.label}
+                    checked={option.isSelected}
+                    onChange={(e) => {
+                      if (showError) {
+                        setShowError(false);
+                      }
+
+                      const labelStr = e.currentTarget.id;
+
+                      setOptions((options) => {
+                        const updated = produce(options, (draft) => {
+                          const index = draft.findIndex(
+                            (option) => option.label === labelStr,
+                          );
+
+                          if (index < 0) {
+                            return;
+                          }
+
+                          if (labelStr === "none of the above") {
+                            draft.forEach((option, i) => {
+                              if (i === index) {
+                                return;
+                              }
+                              option.isSelected = false;
+                            });
+                          } else {
+                            const noneOptionIndex = draft.findIndex(
+                              (option) => option.label === "none of the above",
+                            );
+                            draft[noneOptionIndex].isSelected = false;
+                          }
+
+                          draft[index].isSelected = !draft[index].isSelected;
+                        });
+
+                        return updated;
+                      });
+                    }}
+                    type="checkbox"
+                  />
+                </div>
+                <label htmlFor={option.label}>{option.label}</label>
               </div>
-              <div>Working class</div>
-            </div>
+            ))}
           </div>
           <div className="mt-xs flex justify-between">
             {showError ? (
@@ -309,6 +396,54 @@ const SlideIdentities = () => {
             )}
             <span className="italic text-gray-500">required</span>
           </div>
+        </div>
+      </div>
+
+      <div className="mt-lg flex justify-center">
+        <button
+          className="inline-flex cursor-pointer items-center gap-sm rounded-sm bg-brandLightOrange px-sm py-xs text-xl font-semibold text-white"
+          type="submit"
+        >
+          <span>Ok</span>
+          <span>
+            <Icon.Success />
+          </span>
+        </button>
+      </div>
+    </form>
+  );
+};
+
+const SlideTextArea = () => {
+  const [text, setText] = useState("");
+
+  const handleSubmit = () => {
+    // submit
+  };
+
+  return (
+    <form
+      className="mt-lg w-full"
+      onSubmit={(e) => {
+        e.preventDefault();
+
+        handleSubmit();
+      }}
+    >
+      <div>
+        <div className="text-lg text-[#2F4858]">2.</div>
+        <div className="mt-sm text-xl font-medium text-brandOrange">
+          Do you consider yourself to have any physical health issues or medical
+          conditions? e.g ASD? Asthma? Allergies? <br />
+          If yes please provide us with some detail:
+        </div>
+        <div className="mt-md">
+          <textarea
+            className="w-full resize-none"
+            value={text}
+            onChange={(e) => setText(e.currentTarget.value)}
+            placeholder="Write here"
+          />
         </div>
       </div>
 

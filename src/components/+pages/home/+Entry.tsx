@@ -59,6 +59,7 @@ import type { MyDb } from "~/types/database";
 // □ abstraction for preview. Apply sitelayout width
 // □ dbreadcx is misnamed I think. It doesn't receive data from db directly. It just passes data.
 // □ add info on programme and workshop pg should be a modal
+// □ make form nicer. Only silde the text. Keep button in place but animate text within.
 
 // STATE
 // □ could have a queryOne in state data e.g. for programmes/testimonials
