@@ -1,7 +1,7 @@
 import { createContext, useContext, type ReactNode } from "react";
 import type { MyDb } from "~/types/database";
 
-type ContextValue = MyDb["testimonial"];
+type ContextValue = MyDb["participant-testimonial"];
 
 const Context = createContext<ContextValue | null>(null);
 
@@ -10,7 +10,7 @@ function Provider({
   testimonial,
 }: {
   children: ReactNode | ((args: ContextValue) => ReactNode);
-  testimonial: MyDb["testimonial"];
+  testimonial: MyDb["participant-testimonial"];
 }) {
   const value: ContextValue = testimonial;
 

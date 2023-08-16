@@ -22,7 +22,7 @@ import PhotoAlbum from "./photo-album/+Entry";
 import Programmes from "./programmes/+Entry";
 import SupportUs from "./support-us/+Entry";
 import Supporters from "./supporters/+Entry";
-import Testimonials from "./testimonials/+Entry";
+import ParticipantTestimonials from "./participant-testimonials/+Entry";
 import Workshops from "./workshops/+Entry";
 import type { MyDb } from "~/types/database";
 import Partners from "./partners/+Entry";
@@ -86,7 +86,7 @@ const HomePage = () => (
                   <OrgHeadings />
                 </SiteLayout.Section.Spacing>
                 <SiteLayout.Section.Spacing>
-                  <Testimonials />
+                  <ParticipantTestimonials />
                 </SiteLayout.Section.Spacing>
                 <SiteLayout.Section.Spacing>
                   <AboutUs />
@@ -130,7 +130,7 @@ export default HomePage;
 
 type DbData = {
   page: MyDb["pages"]["landing"];
-  testimonials: MyDb["testimonial"][];
+  "participant-testimonials": MyDb["participant-testimonial"][];
   programmes: MyDb["programme"][];
   supporters: MyDb["supporter"][];
   partners: MyDb["partner"][];
@@ -152,14 +152,17 @@ const InitDbData = ({
   const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
   const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
 
-  const testimonialsQuery = useQuery("testimonials", myDb.testimonial.fetchAll);
+  const participantTestimonialsQuery = useQuery(
+    "participant-testimonials",
+    myDb["participant-testimonial"].fetchAll,
+  );
   const programmesQuery = useQuery("programmes", myDb.programme.fetchAll);
   const supportersQuery = useQuery("supporters", myDb.supporter.fetchAll);
   const partnersQuery = useQuery("partners", myDb.partner.fetchAll);
 
   if (
     pageQuery.isLoading ||
-    testimonialsQuery.isLoading ||
+    participantTestimonialsQuery.isLoading ||
     programmesQuery.isLoading ||
     supportersQuery.isLoading ||
     partnersQuery.isLoading ||
@@ -174,8 +177,8 @@ const InitDbData = ({
   if (
     pageQuery.isError ||
     !pageQuery.data ||
-    testimonialsQuery.isError ||
-    !testimonialsQuery.data ||
+    participantTestimonialsQuery.isError ||
+    !participantTestimonialsQuery.data ||
     programmesQuery.isError ||
     !programmesQuery.data ||
     supportersQuery.isError ||
@@ -196,14 +199,17 @@ const InitDbData = ({
 
   return children({
     page: pageQuery.data,
-    testimonials: testimonialsQuery.data,
-    programmes: programmesQuery.data,
-    supporters: supportersQuery.data,
-    partners: partnersQuery.data,
+
     orgDetails: orgDetailsQuery.data,
     linkLabels: linkLabelsQuery.data,
     header: headerQuery.data,
     footer: footerQuery.data,
+
+    "participant-testimonials": participantTestimonialsQuery.data,
+
+    programmes: programmesQuery.data,
+    supporters: supportersQuery.data,
+    partners: partnersQuery.data,
   });
 };
 
@@ -221,13 +227,15 @@ const UedProviders = ({
           <UedCx.Header.Provider initData={initDbData.header}>
             <UedCx.Footer.Provider initData={initDbData.footer}>
               <UedCx.Programmes.Provider initData={initDbData.programmes}>
-                <UedCx.Testimonials.Provider initData={initDbData.testimonials}>
+                <UedCx.ParticipantTestimonials.Provider
+                  initData={initDbData["participant-testimonials"]}
+                >
                   <UedCx.Supporters.Provider initData={initDbData.supporters}>
                     <UedCx.Partners.Provider initData={initDbData.partners}>
                       {children}
                     </UedCx.Partners.Provider>
                   </UedCx.Supporters.Provider>
-                </UedCx.Testimonials.Provider>
+                </UedCx.ParticipantTestimonials.Provider>
               </UedCx.Programmes.Provider>
             </UedCx.Footer.Provider>
           </UedCx.Header.Provider>

@@ -1,11 +1,11 @@
 const collections = {
   pages: "pages",
   images: "images",
-  testimonials: "testimonials",
+  "participant-testimonials": "testimonials",
   programmes: "programmes",
   supporters: "supporters",
   partners: "partners",
-  ["volunteer-positions"]: "volunteerPositions",
+  "volunteer-positions": "volunteerPositions",
   careers: "careers",
   workshops: "workshops",
   singles: "singles",
@@ -19,6 +19,7 @@ const pages = {
   ["volunteer-positions"]: "volunteerPositions",
   careers: "careers",
   workshops: "workshops",
+  testimonials: "testimonials",
 } as const;
 
 const singles = {

@@ -2,7 +2,7 @@ export * from "./AboutUsEntryCx";
 export * from "./programme";
 export * from "./SupporterCx";
 export * from "./PartnerCx";
-export * from "./TestimonialCx";
+export * from "./ParticipantTestimonialCx";
 export * from "./landing";
 export * from "./career/CareerCx";
 export * from "./careers-page";

@@ -8,14 +8,14 @@ import type { Pages } from "./pages";
 import type { Partner } from "./partner";
 import type { Programme } from "./programme";
 import type { Supporter } from "./supporter";
-import type { Testimonial } from "./testimonial";
+import type { ParticipantTestimonial } from "./participant-testimonial";
 import type { VolunteerPosition } from "./volunteerPosition";
 import type { Workshop } from "./workshop";
 
 export type MyDb = {
   pages: Pages;
   image: Image;
-  testimonial: Testimonial;
+  "participant-testimonial": ParticipantTestimonial;
   programme: Programme;
   supporter: Supporter;
   partner: Partner;

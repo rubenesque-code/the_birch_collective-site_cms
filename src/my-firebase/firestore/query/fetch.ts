@@ -26,6 +26,16 @@ export const fetchAboutUsPage = async () => {
   return data;
 };
 
+export const fetchTestimonialsPage = async () => {
+  const docRef = getDocRef("pages", "testimonials");
+
+  const data = (await getDocData(
+    docRef,
+  )) as unknown as MyDb["pages"]["testimonials"];
+
+  return data;
+};
+
 export const fetchProgrammesPage = async () => {
   const docRef = getDocRef("pages", "programmes");
 
@@ -92,20 +102,12 @@ export const fetchImages = async () => {
   return data;
 };
 
-export const fetchOneTestimonial = async (id: string) => {
-  const docRef = getDocRef("testimonials", id);
-
-  const data = (await getDocData(docRef)) as unknown as MyDb["testimonial"];
-
-  return data;
-};
-
-export const fetchTestimonials = async () => {
-  const collectionRef = getCollectionRef("testimonials");
+export const fetchParticipantTestimonials = async () => {
+  const collectionRef = getCollectionRef("participant-testimonials");
 
   const data = (await getCollectionData(
     collectionRef,
-  )) as unknown as MyDb["testimonial"][];
+  )) as unknown as MyDb["participant-testimonial"][];
 
   return data;
 };

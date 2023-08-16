@@ -80,7 +80,7 @@ const Heading = () => {
         localStateValue={aboutUs.heading}
         textArea={{
           placeholder: "About us heading",
-          styles: "uppercase text-center",
+          styles: "text-center",
         }}
         onSubmit={aboutUsAction.heading}
         tooltip="Click to edit about us heading"

@@ -7,7 +7,13 @@ import type {
   ObjFieldsToStr,
   OmitObjArrProps,
 } from "../../_helpers/types";
-import type { Store, Info, Section, Poster } from "./types";
+import type {
+  Store,
+  Info,
+  Section,
+  Poster,
+  PhotoAlbumEntryActionFields,
+} from "./types";
 import type { MyOmit } from "~/types/utilities";
 import { getReorderedEntities, sortByIndex } from "~/helpers/data/process";
 
@@ -106,6 +112,34 @@ export const createStore = (input: { initData: Store["data"] }) =>
         );
     }
 
+    function photoAlbumNonArrAction<
+      TKeyStr extends ObjFieldsToStr<
+        OmitObjArrProps<PhotoAlbumEntryActionFields>
+      >,
+    >(keys: TKeyStr) {
+      return (input: {
+        id: string;
+        updatedValue: GetObjValue<PhotoAlbumEntryActionFields, TKeyStr>;
+      }) =>
+        set(
+          produce((store: Store) => {
+            const entityIndex = store.data.photoAlbum.entries.findIndex(
+              (section) => section.id === input.id,
+            );
+
+            if (entityIndex < 0) {
+              return;
+            }
+
+            lodash.set(
+              store.data.photoAlbum.entries[entityIndex],
+              keys,
+              input.updatedValue,
+            );
+          }),
+        );
+    }
+
     return {
       data: input.initData,
 
@@ -116,6 +150,8 @@ export const createStore = (input: { initData: Store["data"] }) =>
               store.data = updatedData;
             }),
           ),
+
+        usePosters: nonArrAction("usePosters"),
 
         bannerImage: {
           dbConnections: {
@@ -260,6 +296,88 @@ export const createStore = (input: { initData: Store["data"] }) =>
               imageId: posterNonArrAction("image.dbConnections.imageId"),
             },
           },
+        },
+
+        photoAlbum: {
+          use: nonArrAction("photoAlbum.use"),
+
+          entries: {
+            create: (newEntry) =>
+              set(
+                produce((store: Store) => {
+                  store.data.photoAlbum.entries.push(newEntry);
+                }),
+              ),
+
+            delete: (input) =>
+              set(
+                produce((store: Store) => {
+                  const entriesOrdered =
+                    store.data.photoAlbum.entries.sort(sortByIndex);
+
+                  const entityToDeleteIndex = entriesOrdered.findIndex(
+                    (t) => t.id === input.id,
+                  );
+                  if (entityToDeleteIndex === -1) return;
+
+                  entriesOrdered.splice(entityToDeleteIndex, 1);
+
+                  for (
+                    let i = entityToDeleteIndex;
+                    i < entriesOrdered.length;
+                    i++
+                  ) {
+                    entriesOrdered[i].index = entriesOrdered[i].index - 1;
+                  }
+                }),
+              ),
+
+            reorder: (input) =>
+              set(
+                produce((store: Store) => {
+                  const entriesOrdered =
+                    store.data.photoAlbum.entries.sort(sortByIndex);
+
+                  const active = entriesOrdered.find(
+                    (t) => t.id === input.activeId,
+                  );
+                  const over = entriesOrdered.find(
+                    (t) => t.id === input.overId,
+                  );
+
+                  if (!active || !over) {
+                    return;
+                  }
+
+                  const updatedEntries = getReorderedEntities({
+                    active,
+                    over,
+                    entities: entriesOrdered,
+                  });
+
+                  updatedEntries.forEach((updatedEntry) => {
+                    const index = store.data.photoAlbum.entries.findIndex(
+                      (t) => t.id === updatedEntry.id,
+                    );
+                    if (index !== -1)
+                      store.data.photoAlbum.entries[index].index =
+                        updatedEntry.newIndex;
+                  });
+                }),
+              ),
+
+            image: {
+              dbConnections: {
+                imageId: photoAlbumNonArrAction("image.dbConnections.imageId"),
+              },
+              position: {
+                x: photoAlbumNonArrAction("image.position.x"),
+                y: photoAlbumNonArrAction("image.position.y"),
+              },
+            },
+          },
+
+          heading: nonArrAction("photoAlbum.heading"),
         },
 
         sections: {

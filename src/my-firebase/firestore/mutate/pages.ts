@@ -11,6 +11,15 @@ export const batchUpdateLandingPage = (
   batch.update(docRef, data);
 };
 
+export const batchUpdateTestimonialsPage = (
+  data: Partial<MyDb["pages"]["testimonials"]>,
+  batch: WriteBatch,
+) => {
+  const docRef = getDocRef("pages", "testimonials");
+
+  batch.update(docRef, data);
+};
+
 export const batchUpdateAboutUsPage = (
   data: Partial<MyDb["pages"]["aboutUs"]>,
   batch: WriteBatch,

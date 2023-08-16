@@ -13,7 +13,7 @@ import { useToast } from "~/hooks";
 import { UedCx } from "~/context/user-editable-data";
 
 export const CreateModal = () => {
-  const { store } = UedCx.Testimonials.use();
+  const { store } = UedCx.ParticipantTestimonials.use();
 
   return (
     <NewTestimonialCx.Provider newTestimonial={{ index: store.data.length }}>
@@ -97,7 +97,7 @@ const NewTestimonialModalContent = ({
   const [showIncompleteErrorMessage, setShowIncompleteErrorMessage] =
     useState(false);
 
-  const { store } = UedCx.Testimonials.use();
+  const { store } = UedCx.ParticipantTestimonials.use();
 
   const newTestimonialCx = NewTestimonialCx.use();
 

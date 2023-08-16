@@ -63,6 +63,8 @@ import {
   Money,
   HandPointing,
   Handshake,
+  Slideshow,
+  Images,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -73,7 +75,9 @@ const Icon = () => {
 
 export { Icon };
 
+Icon.Slides = Slideshow;
 Icon.Image = Image;
+Icon.Images = Images;
 Icon.Upload = Upload;
 Icon.FileImage = FileImage;
 Icon.Success = Check;

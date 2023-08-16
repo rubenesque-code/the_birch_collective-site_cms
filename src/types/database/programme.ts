@@ -17,6 +17,8 @@ export type Programme = {
 
   mainText: string;
 
+  usePosters: boolean;
+
   posters: {
     id: string;
     index: number;
@@ -26,6 +28,26 @@ export type Programme = {
       };
     };
   }[];
+
+  photoAlbum: {
+    use: boolean;
+
+    entries: {
+      id: string;
+      index: number;
+      image: {
+        dbConnections: {
+          imageId: string | null;
+        };
+        position: {
+          x: number;
+          y: number;
+        };
+      };
+    }[];
+
+    heading: string;
+  };
 
   sections: {
     id: string;

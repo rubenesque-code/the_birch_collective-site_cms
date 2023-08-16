@@ -32,7 +32,7 @@ function Provider({
   const linkLabels = UedCx.LinkLabels.useRevision();
 
   const { revision: programmes } = UedCx.Programmes.use();
-  const { revision: testimonials } = UedCx.Testimonials.use();
+  const { revision: testimonials } = UedCx.ParticipantTestimonials.use();
   const { revision: supporters } = UedCx.Supporters.use();
   const { revision: partners } = UedCx.Partners.use();
 

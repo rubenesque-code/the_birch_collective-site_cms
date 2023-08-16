@@ -148,6 +148,7 @@ const AmyImage = () => {
       data: { aboutAmy },
     },
   } = UedCx.Pages.Workshops.use();
+  console.log("aboutAmy:", aboutAmy);
 
   return (
     <div className="group/amy-image relative h-[120px] w-[120px] shrink-0 rounded-full">

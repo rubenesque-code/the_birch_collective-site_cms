@@ -22,6 +22,8 @@ import Info from "./info/+Entry";
 import Posters from "./posters/+Entry";
 import Sections from "./sections/+Entry";
 import SignUp from "./sign-up/+Entry";
+import TopEditBar from "./top-edit-bar/+Entry";
+import PhotoAlbum from "./photo-album/+Entry";
 
 const AboutPage = () => (
   <AwaitParams>
@@ -57,38 +59,60 @@ const AboutPage = () => (
 
 export default AboutPage;
 
-const PageSpecificContent = () => (
-  <>
-    <BannerImage />
+const PageSpecificContent = () => {
+  const {
+    store: {
+      data: { usePosters, photoAlbum },
+    },
+  } = UedCx.Programme.use();
 
-    <SiteLayout.Section.Spacing>
-      <Headings />
-    </SiteLayout.Section.Spacing>
+  return (
+    <>
+      <SiteLayout.Section.Spacing.Horizontal>
+        <TopEditBar />
+      </SiteLayout.Section.Spacing.Horizontal>
 
-    <SiteLayout.Section.Spacing.Horizontal>
-      <MainText />
-    </SiteLayout.Section.Spacing.Horizontal>
-
-    <SiteLayout.Section.Spacing>
-      <SignUp />
-    </SiteLayout.Section.Spacing>
-
-    <SiteLayout.Section.Spacing>
-      <div className="grid grid-cols-2 gap-lg">
-        <div className="">
-          <Info />
-        </div>
-        <div className="">
-          <Posters />
-        </div>
+      <div className="mt-sm">
+        <BannerImage />
       </div>
-    </SiteLayout.Section.Spacing>
 
-    <SiteLayout.Section.Spacing.Horizontal>
-      <Sections />
-    </SiteLayout.Section.Spacing.Horizontal>
-  </>
-);
+      <SiteLayout.Section.Spacing>
+        <Headings />
+      </SiteLayout.Section.Spacing>
+
+      <SiteLayout.Section.Spacing.Horizontal>
+        <MainText />
+      </SiteLayout.Section.Spacing.Horizontal>
+
+      <SiteLayout.Section.Spacing>
+        <SignUp />
+      </SiteLayout.Section.Spacing>
+
+      <SiteLayout.Section.Spacing>
+        <div className="grid grid-cols-2 gap-lg">
+          <div className="">
+            <Info />
+          </div>
+          {usePosters ? (
+            <div className="">
+              <Posters />
+            </div>
+          ) : null}
+        </div>
+      </SiteLayout.Section.Spacing>
+
+      {photoAlbum.use ? (
+        <SiteLayout.Section.Spacing>
+          <PhotoAlbum />
+        </SiteLayout.Section.Spacing>
+      ) : null}
+
+      <SiteLayout.Section.Spacing>
+        <Sections />
+      </SiteLayout.Section.Spacing>
+    </>
+  );
+};
 
 type DbData = {
   programme: MyDb["programme"];

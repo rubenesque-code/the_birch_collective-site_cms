@@ -14,9 +14,9 @@ type ContextValue = { store: Store } & {
     isChange: boolean;
     undoKey: string;
     saveData: {
-      created: MyDb["testimonial"][];
+      created: MyDb["participant-testimonial"][];
       deleted: string[];
-      updated: DocPartialWithId<MyDb["testimonial"]>[];
+      updated: DocPartialWithId<MyDb["participant-testimonial"]>[];
     };
     handleUndo: () => void;
     onSaveSuccess: () => void;
@@ -81,18 +81,20 @@ function Provider({
 function useContext() {
   const context = React.useContext(Context);
   if (!context)
-    throw new Error("Missing TestimogrammesDataCx.Provider in the tree");
+    throw new Error(
+      "Missing ParticipantTestimonialDataCx.Provider in the tree",
+    );
 
   return context;
 }
 
-function TestimonialsDataCx() {
+function ParticipantTestimonialsDataCx() {
   throw new Error(
-    "TestimogrammesDataCx exists for naming purposes only and should not be used as a component",
+    "ParticipantTestimonialDataCx exists for naming purposes only and should not be used as a component",
   );
 }
 
-export { TestimonialsDataCx };
+export { ParticipantTestimonialsDataCx };
 
-TestimonialsDataCx.Provider = Provider;
-TestimonialsDataCx.use = useContext;
+ParticipantTestimonialsDataCx.Provider = Provider;
+ParticipantTestimonialsDataCx.use = useContext;

@@ -62,7 +62,7 @@ export default WorkshopPage;
 const PageSpecificContent = () => {
   const {
     store: {
-      data: { type },
+      data: { type, photoAlbum },
     },
   } = UedCx.Pages.Workshop.use();
 
@@ -93,9 +93,11 @@ const PageSpecificContent = () => {
           <div className="">
             <Info />
           </div>
-          <div className="flex-grow">
-            <PhotoAlbum />
-          </div>
+          {photoAlbum.use ? (
+            <div className="flex-grow">
+              <PhotoAlbum />
+            </div>
+          ) : null}
         </div>
       </SiteLayout.Section.Spacing>
 

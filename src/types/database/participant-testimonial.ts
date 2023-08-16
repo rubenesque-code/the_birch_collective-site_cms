@@ -1,4 +1,4 @@
-export type Testimonial = {
+export type ParticipantTestimonial = {
   id: string;
   image: {
     dbConnect: {

@@ -5,9 +5,18 @@ import {
   batchUpdateDonatePage,
   batchUpdateLandingPage,
   batchUpdateProgrammesPage,
+  batchUpdateTestimonialsPage,
   batchUpdateVolunteerPositionsPage,
   batchUpdateWorkshopsPage,
 } from "./mutate/pages";
+import {
+  batchCreatePartner,
+  batchDeletePartner,
+  batchUpdatePartner,
+  createPartner,
+  deletePartner,
+  updatePartner,
+} from "./mutate/partner";
 import {
   batchCreateProgramme,
   batchDeleteProgramme,
@@ -24,30 +33,45 @@ import {
   deleteSupporter,
   updateSupporter,
 } from "./mutate/supporter";
-import {
-  batchCreatePartner,
-  batchDeletePartner,
-  batchUpdatePartner,
-  createPartner,
-  deletePartner,
-  updatePartner,
-} from "./mutate/partner";
 
 import {
-  batchCreateTestimonial,
-  batchDeleteTestimonial,
-  batchUpdateTestimonial,
-  createTestimonial,
-  deleteTestimonial,
-  updateTestimonial,
-} from "./mutate/testimonial";
+  batchCreateParticipantTestimonial,
+  batchDeleteParticipantTestimonial,
+  batchUpdateParticipantTestimonial,
+} from "./mutate/participant-testimonial";
 
+import {
+  batchCreateCareer,
+  batchDeleteCareer,
+  batchUpdateCareer,
+} from "./mutate/careers";
 import { batchUpdateFooter, updateFooter } from "./mutate/footer";
 import { batchUpdateHeader, updateHeader } from "./mutate/header";
 import { batchUpdateLinkLabels, updateLinkLabels } from "./mutate/linkLabels";
 import { batchUpdateOrgDetails, updateOrgDetails } from "./mutate/orgDetails";
 import { aboutUsPageTransaction } from "./mutate/transactions/aboutUsPage";
+import { careersPageTransaction } from "./mutate/transactions/careersPage";
+import { donatePageTransaction } from "./mutate/transactions/donatePage";
 import { landingPageTransaction } from "./mutate/transactions/landingPage";
+import { programmePageTransaction } from "./mutate/transactions/programmePage";
+import { programmesPageTransaction } from "./mutate/transactions/programmesPage";
+import { testimonialsPageTransaction } from "./mutate/transactions/testimonialsPage";
+import { volunteerPositionsPageTransaction } from "./mutate/transactions/volunteerPositionsPage";
+import { workshopPageTransaction } from "./mutate/transactions/workshopPage";
+import { workshopsPageTransaction } from "./mutate/transactions/workshopsPage";
+import {
+  batchCreateVolunteerPosition,
+  batchDeleteVolunteerPosition,
+  batchUpdateVolunteerPosition,
+  createVolunteerPosition,
+  deleteVolunteerPosition,
+  updateVolunteerPosition,
+} from "./mutate/volunteer-positions";
+import {
+  batchCreateWorkshop,
+  batchDeleteWorkshop,
+  batchUpdateWorkshop,
+} from "./mutate/workshops";
 import {
   fetchAboutUsPage,
   fetchCareers,
@@ -60,48 +84,23 @@ import {
   fetchLinkLabels,
   fetchOneCareer,
   fetchOneImage,
+  fetchOnePartner,
   fetchOneProgramme,
   fetchOneSupporter,
-  fetchOneTestimonial,
   fetchOneVolunteerPosition,
   fetchOneWorkshop,
   fetchOrgDetails,
+  fetchParticipantTestimonials,
+  fetchPartners,
   fetchProgrammes,
   fetchProgrammesPage,
   fetchSupporters,
-  fetchOnePartner,
-  fetchPartners,
-  fetchTestimonials,
+  fetchTestimonialsPage,
   fetchVolunteerPositions,
   fetchVolunteerPositionsPage,
   fetchWorkshops,
   fetchWorkshopsPage,
 } from "./query";
-import { programmesPageTransaction } from "./mutate/transactions/programmesPage";
-import { programmePageTransaction } from "./mutate/transactions/programmePage";
-import { donatePageTransaction } from "./mutate/transactions/donatePage";
-import { volunteerPositionsPageTransaction } from "./mutate/transactions/volunteerPositionsPage";
-import {
-  batchCreateVolunteerPosition,
-  batchDeleteVolunteerPosition,
-  batchUpdateVolunteerPosition,
-  createVolunteerPosition,
-  deleteVolunteerPosition,
-  updateVolunteerPosition,
-} from "./mutate/volunteer-positions";
-import {
-  batchCreateCareer,
-  batchDeleteCareer,
-  batchUpdateCareer,
-} from "./mutate/careers";
-import { careersPageTransaction } from "./mutate/transactions/careersPage";
-import {
-  batchCreateWorkshop,
-  batchDeleteWorkshop,
-  batchUpdateWorkshop,
-} from "./mutate/workshops";
-import { workshopsPageTransaction } from "./mutate/transactions/workshopsPage";
-import { workshopPageTransaction } from "./mutate/transactions/workshopPage";
 
 export const myDb = {
   pages: {
@@ -109,6 +108,12 @@ export const myDb = {
       fetch: fetchLandingPage,
       batch: {
         update: batchUpdateLandingPage,
+      },
+    },
+    testimonials: {
+      fetch: fetchTestimonialsPage,
+      batch: {
+        update: batchUpdateTestimonialsPage,
       },
     },
     aboutUs: {
@@ -182,16 +187,12 @@ export const myDb = {
     fetchOne: fetchOneImage,
     fetchAll: fetchImages,
   },
-  testimonial: {
-    fetchOne: fetchOneTestimonial,
-    fetchAll: fetchTestimonials,
-    create: createTestimonial,
-    update: updateTestimonial,
-    delete: deleteTestimonial,
+  "participant-testimonial": {
+    fetchAll: fetchParticipantTestimonials,
     batch: {
-      create: batchCreateTestimonial,
-      update: batchUpdateTestimonial,
-      delete: batchDeleteTestimonial,
+      create: batchCreateParticipantTestimonial,
+      update: batchUpdateParticipantTestimonial,
+      delete: batchDeleteParticipantTestimonial,
     },
   },
   programme: {
@@ -265,6 +266,7 @@ export const myDb = {
   transactions: {
     pages: {
       landing: landingPageTransaction,
+      testimonials: testimonialsPageTransaction,
       aboutUs: aboutUsPageTransaction,
       programmes: programmesPageTransaction,
       programme: programmePageTransaction,

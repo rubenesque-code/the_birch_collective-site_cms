@@ -6,6 +6,7 @@ export type Pages = {
   ["volunteer-positions"]: VolunteerPositions;
   careers: Careers;
   workshops: Workshops;
+  testimonials: Testimonials;
 };
 
 type Landing = {
@@ -290,6 +291,36 @@ type Workshops = {
 
     instaLink: string;
 
+    text: string;
+  };
+};
+
+type Testimonials = {
+  id: "testimonials-page";
+
+  bannerImage: {
+    dbConnections: {
+      imageId: string | null;
+    };
+    position: {
+      x: number;
+      y: number;
+    };
+  };
+
+  heading: string;
+
+  mainText: string;
+
+  participants: {
+    heading: string;
+    subheading: string;
+    text: string;
+  };
+
+  professionals: {
+    heading: string;
+    subheading: string;
     text: string;
   };
 };

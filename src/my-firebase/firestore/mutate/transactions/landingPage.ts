@@ -16,8 +16,8 @@ export const landingPageTransaction = async (input: {
   header: Partial<MyDb["singles"]["header"]> | null;
   footer: Partial<MyDb["singles"]["footer"]> | null;
   testimonials: {
-    updated: DocPartialWithId<MyDb["testimonial"]>[];
-    created: MyDb["testimonial"][];
+    updated: DocPartialWithId<MyDb["participant-testimonial"]>[];
+    created: MyDb["participant-testimonial"][];
     deleted: string[];
   };
   programmes: {
@@ -57,17 +57,17 @@ export const landingPageTransaction = async (input: {
 
   if (input.testimonials.created.length) {
     input.testimonials.created.forEach((testimonial) =>
-      myDb.testimonial.batch.create(testimonial, batch),
+      myDb["participant-testimonial"].batch.create(testimonial, batch),
     );
   }
   if (input.testimonials.updated.length) {
     input.testimonials.updated.forEach((testimonial) =>
-      myDb.testimonial.batch.update(testimonial, batch),
+      myDb["participant-testimonial"].batch.update(testimonial, batch),
     );
   }
   if (input.testimonials.deleted.length) {
     input.testimonials.deleted.forEach((id) =>
-      myDb.testimonial.batch.delete(id, batch),
+      myDb["participant-testimonial"].batch.delete(id, batch),
     );
   }
 

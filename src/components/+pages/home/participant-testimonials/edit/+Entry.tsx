@@ -14,7 +14,7 @@ import { useToast } from "~/hooks";
 import { CreateModal } from "./CreateModal";
 import ModalLayout from "~/components/layouts/Modal";
 import { UedCx } from "~/context/user-editable-data";
-import { TestimonialCx } from "~/context/entities";
+import { ParticipantTestimonialCx } from "~/context/entities";
 
 export const EditModal = ({
   button,
@@ -52,7 +52,7 @@ const Content = () => {
 const Testimonials = () => {
   const {
     store: { data: testimonials, actions },
-  } = UedCx.Testimonials.use();
+  } = UedCx.ParticipantTestimonials.use();
 
   const sorted = useMemo(() => deepSortByIndex(testimonials), [testimonials]);
 
@@ -72,9 +72,9 @@ const Testimonials = () => {
                 styles={{ handle: "bg-white" }}
                 key={testimonial.id}
               >
-                <TestimonialCx.Provider testimonial={testimonial}>
+                <ParticipantTestimonialCx.Provider testimonial={testimonial}>
                   <Testimonial />
-                </TestimonialCx.Provider>
+                </ParticipantTestimonialCx.Provider>
               </DndKit.Element>
             ))}
           </DndKit.Context>
@@ -85,11 +85,11 @@ const Testimonials = () => {
 };
 
 const Testimonial = () => {
-  const { endorserName, image, id, text } = TestimonialCx.use();
+  const { endorserName, image, id, text } = ParticipantTestimonialCx.use();
 
   const {
     store: { actions },
-  } = UedCx.Testimonials.use();
+  } = UedCx.ParticipantTestimonials.use();
 
   return (
     <div className="group/testimonialImage relative aspect-[3/4]">
@@ -137,11 +137,11 @@ const Testimonial = () => {
 };
 
 const Menu = () => {
-  const { image, id } = TestimonialCx.use();
+  const { image, id } = ParticipantTestimonialCx.use();
 
   const {
     store: { actions },
-  } = UedCx.Testimonials.use();
+  } = UedCx.ParticipantTestimonials.use();
 
   const toast = useToast();
 

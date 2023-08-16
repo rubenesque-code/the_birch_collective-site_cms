@@ -199,6 +199,8 @@ export const createStore = (input: { initData: Store["data"] }) =>
         mainText: nonArrAction("mainText"),
 
         photoAlbum: {
+          use: nonArrAction("photoAlbum.use"),
+
           entries: {
             create: (newEntry) =>
               set(

@@ -5,7 +5,7 @@ export type Store = {
   actions: Actions;
 };
 
-export type Testimonial = MyDb["testimonial"];
+export type Testimonial = MyDb["participant-testimonial"];
 type Data = Testimonial[];
 
 type Actions = {

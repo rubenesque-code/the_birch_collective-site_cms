@@ -10,14 +10,14 @@ import { ImagePlaceholder } from "~/components/ImagePlaceholder";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
-import { TestimonialCx } from "~/context/entities";
+import { ParticipantTestimonialCx } from "~/context/entities";
 import { EditModal } from "./edit/+Entry";
 import { Slides } from "./slides/+Entry";
 
-const Testimonials = () => {
+const ParticipantTestimonials = () => {
   const {
     store: { data: testimonials },
-  } = UedCx.Testimonials.use();
+  } = UedCx.ParticipantTestimonials.use();
 
   const slidesInitData = [
     ...deepSortByIndex(testimonials),
@@ -58,9 +58,9 @@ const Testimonials = () => {
               {testimonial === "dummy" ? (
                 <TestimonialDummy />
               ) : (
-                <TestimonialCx.Provider testimonial={testimonial}>
+                <ParticipantTestimonialCx.Provider testimonial={testimonial}>
                   <TestimonialActual />
-                </TestimonialCx.Provider>
+                </ParticipantTestimonialCx.Provider>
               )}
             </TestimonialWrapper>
           ))
@@ -70,7 +70,7 @@ const Testimonials = () => {
   );
 };
 
-export default Testimonials;
+export default ParticipantTestimonials;
 
 const TestimonialWrapper = ({
   children,
@@ -123,7 +123,7 @@ const TestimonialDummy = () => (
 );
 
 const TestimonialActual = () => {
-  const { endorserName, image, text } = TestimonialCx.use();
+  const { endorserName, image, text } = ParticipantTestimonialCx.use();
   return (
     <>
       <div className="absolute h-full w-full">

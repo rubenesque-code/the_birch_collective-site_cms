@@ -14,10 +14,19 @@ export type Programme = MyOmit<MyDb["programme"], "summary">;
 export type Info = Programme["info"][number];
 export type Poster = Programme["posters"][number];
 export type Section = Programme["sections"][number];
+type PhotoAlbumEntry = Programme["photoAlbum"]["entries"][number];
+
+export type PhotoAlbumEntryActionFields = MyOmit<
+  PhotoAlbumEntry,
+  "id" | "index"
+>;
 
 type InfoNonArrActions = GenerateEntityNonArrActions<Info>;
 type PosterNonArrActions = GenerateEntityNonArrActions<Poster>;
 type SectionNonArrActions = GenerateEntityNonArrActions<Section>;
+
+type PhotoAlbumEntryNonArrActions =
+  GenerateEntityNonArrActions<PhotoAlbumEntryActionFields>;
 
 type ArrActions = {
   info: {
@@ -31,6 +40,14 @@ type ArrActions = {
     delete: (arg0: { id: string }) => void;
     reorder: (arg0: { activeId: string; overId: string }) => void;
   } & PosterNonArrActions;
+
+  photoAlbum: {
+    entries: {
+      create: (arg0: PhotoAlbumEntry) => void;
+      delete: (arg0: { id: string }) => void;
+      reorder: (arg0: { activeId: string; overId: string }) => void;
+    } & PhotoAlbumEntryNonArrActions;
+  };
 
   sections: {
     create: (arg0: Section) => void;

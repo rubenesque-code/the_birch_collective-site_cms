@@ -181,6 +181,7 @@ const Menu = () => {
           <ComponentMenu.Divider />
         </>
       ) : null}
+
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
           entriesAction.image.dbConnections.imageId({

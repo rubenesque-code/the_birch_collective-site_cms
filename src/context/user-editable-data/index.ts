@@ -4,7 +4,7 @@ import { OrgDetailsDataCx } from "./org-details";
 import { LinkLabelsDataCx } from "./link-labels";
 import { HeaderDataCx } from "./header";
 import { ProgrammesDataCx } from "./programmes";
-import { TestimonialsDataCx } from "./testimonials";
+import { ParticipantTestimonialsDataCx } from "./participant-testimonials";
 import { SupportersDataCx } from "./supporters";
 import { AboutUsPageDataCx } from "./about-us-page";
 import { ProgrammesPageDataCx } from "./programmes-page";
@@ -18,6 +18,7 @@ import { WorkshopsPageDataCx } from "./workshops-page";
 import { WorkshopsDataCx } from "./workshops";
 import { WorkshopPageDataCx } from "./workshop-page";
 import { PartnersDataCx } from "./partners";
+import { TestimonialsPageDataCx } from "./testimonials-page";
 
 function UedCx() {
   throw new Error(
@@ -37,6 +38,7 @@ UedCx.Pages = Pages;
 
 Pages.Landing = LandingPageDataCx;
 Pages.AboutUs = AboutUsPageDataCx;
+Pages.Testimonials = TestimonialsPageDataCx;
 Pages.Programmes = ProgrammesPageDataCx;
 Pages.Donate = DonatePageDataCx;
 Pages.VolunteerPositions = VolunteerPositionsPageDataCx;
@@ -50,7 +52,7 @@ UedCx.OrgDetails = OrgDetailsDataCx;
 UedCx.LinkLabels = LinkLabelsDataCx;
 UedCx.Programmes = ProgrammesDataCx;
 UedCx.Programme = ProgrammePageDataCx;
-UedCx.Testimonials = TestimonialsDataCx;
+UedCx.ParticipantTestimonials = ParticipantTestimonialsDataCx;
 UedCx.Supporters = SupportersDataCx;
 UedCx.Partners = PartnersDataCx;
 UedCx.VolunteerPositions = VolunteerPositionsDataCx;

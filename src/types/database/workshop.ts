@@ -21,6 +21,8 @@ export type Workshop = {
   mainText: string;
 
   photoAlbum: {
+    use: boolean;
+
     entries: {
       id: string;
       index: number;
