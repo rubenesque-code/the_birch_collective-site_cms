@@ -111,6 +111,15 @@ export const fetchParticipantTestimonials = async () => {
 
   return data;
 };
+export const fetchProfessionalTestimonials = async () => {
+  const collectionRef = getCollectionRef("professional-testimonials");
+
+  const data = (await getCollectionData(
+    collectionRef,
+  )) as unknown as MyDb["professional-testimonial"][];
+
+  return data;
+};
 export const fetchOneProgramme = async (id: string) => {
   const docRef = getDocRef("programmes", id);
 

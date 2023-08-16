@@ -78,6 +78,7 @@ type DbData = {
   page: MyDb["pages"]["testimonials"];
 
   "participant-testimonials": MyDb["participant-testimonial"][];
+  "professional-testimonials": MyDb["professional-testimonial"][];
 
   orgDetails: MyDb["singles"]["orgDetails"];
   linkLabels: MyDb["singles"]["linkLabels"];
@@ -104,6 +105,10 @@ const InitDbData = ({
     "participant-testimonials",
     myDb["participant-testimonial"].fetchAll,
   );
+  const professionalTestimonialsQuery = useQuery(
+    "professional-testimonials",
+    myDb["professional-testimonial"].fetchAll,
+  );
 
   if (
     pageQuery.isLoading ||
@@ -128,7 +133,9 @@ const InitDbData = ({
     orgDetailsQuery.isError ||
     !orgDetailsQuery.data ||
     participantTestimonialsQuery.isError ||
-    !participantTestimonialsQuery.data
+    !participantTestimonialsQuery.data ||
+    professionalTestimonialsQuery.isError ||
+    !professionalTestimonialsQuery.data
   ) {
     return <PageDataFetch.Error />;
   }
@@ -142,6 +149,7 @@ const InitDbData = ({
     footer: footerQuery.data,
 
     "participant-testimonials": participantTestimonialsQuery.data,
+    "professional-testimonials": professionalTestimonialsQuery.data,
   });
 };
 
@@ -161,7 +169,11 @@ const UedProviders = ({
               <UedCx.ParticipantTestimonials.Provider
                 initData={initDbData["participant-testimonials"]}
               >
-                {children}
+                <UedCx.ProfessionalTestimonials.Provider
+                  initData={initDbData["professional-testimonials"]}
+                >
+                  {children}
+                </UedCx.ProfessionalTestimonials.Provider>
               </UedCx.ParticipantTestimonials.Provider>
             </UedCx.Footer.Provider>
           </UedCx.Header.Provider>

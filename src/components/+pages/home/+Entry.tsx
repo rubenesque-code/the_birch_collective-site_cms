@@ -62,6 +62,7 @@ import Partners from "./partners/+Entry";
 // □ add info on programme and workshop pg should be a modal
 // □ make form nicer. Only silde the text. Keep button in place but animate text within.
 // □ workshop subtitle option on workshops page. put toggle button? Would have to be on modal too.
+// □ short main texts shouldn't go to double columns
 
 // STATE
 // □ could have a queryOne in state data e.g. for programmes/testimonials

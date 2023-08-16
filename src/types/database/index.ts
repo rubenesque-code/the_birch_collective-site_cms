@@ -11,11 +11,13 @@ import type { Supporter } from "./supporter";
 import type { ParticipantTestimonial } from "./participant-testimonial";
 import type { VolunteerPosition } from "./volunteerPosition";
 import type { Workshop } from "./workshop";
+import type { ProfessionalTestimonial } from "./professional-testimonial";
 
 export type MyDb = {
   pages: Pages;
   image: Image;
   "participant-testimonial": ParticipantTestimonial;
+  "professional-testimonial": ProfessionalTestimonial;
   programme: Programme;
   supporter: Supporter;
   partner: Partner;

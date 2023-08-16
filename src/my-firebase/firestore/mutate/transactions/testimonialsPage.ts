@@ -17,9 +17,15 @@ export const testimonialsPageTransaction = async (input: {
   header: Partial<MyDb["singles"]["header"]> | null;
   footer: Partial<MyDb["singles"]["footer"]> | null;
 
-  testimonials: {
-    updated: DocPartialWithId<MyDb["testimonial"]>[];
-    created: MyDb["testimonial"][];
+  "participant-testimonials": {
+    updated: DocPartialWithId<MyDb["participant-testimonial"]>[];
+    created: MyDb["participant-testimonial"][];
+    deleted: string[];
+  };
+
+  "professional-testimonials": {
+    updated: DocPartialWithId<MyDb["professional-testimonial"]>[];
+    created: MyDb["professional-testimonial"][];
     deleted: string[];
   };
 }) => {
@@ -40,6 +46,38 @@ export const testimonialsPageTransaction = async (input: {
   }
   if (input.linkLabels) {
     myDb.linkLabels.batch.update(input.linkLabels, batch);
+  }
+
+  if (input["participant-testimonials"].created.length) {
+    input["participant-testimonials"].created.forEach((testimonial) =>
+      myDb["participant-testimonial"].batch.create(testimonial, batch),
+    );
+  }
+  if (input["participant-testimonials"].updated.length) {
+    input["participant-testimonials"].updated.forEach((testimonial) =>
+      myDb["participant-testimonial"].batch.update(testimonial, batch),
+    );
+  }
+  if (input["participant-testimonials"].deleted.length) {
+    input["participant-testimonials"].deleted.forEach((id) =>
+      myDb["participant-testimonial"].batch.delete(id, batch),
+    );
+  }
+
+  if (input["professional-testimonials"].created.length) {
+    input["professional-testimonials"].created.forEach((testimonial) =>
+      myDb["professional-testimonial"].batch.create(testimonial, batch),
+    );
+  }
+  if (input["professional-testimonials"].updated.length) {
+    input["professional-testimonials"].updated.forEach((testimonial) =>
+      myDb["professional-testimonial"].batch.update(testimonial, batch),
+    );
+  }
+  if (input["professional-testimonials"].deleted.length) {
+    input["professional-testimonials"].deleted.forEach((id) =>
+      myDb["professional-testimonial"].batch.delete(id, batch),
+    );
   }
 
   await batch.commit();

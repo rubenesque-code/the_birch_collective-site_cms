@@ -56,6 +56,14 @@ export const createStore = (input: { initData: Store["data"] }) =>
 
           text: nonArrAction("participants.text"),
         },
+
+        professionals: {
+          heading: nonArrAction("professionals.heading"),
+
+          subheading: nonArrAction("professionals.subheading"),
+
+          text: nonArrAction("professionals.text"),
+        },
       },
     };
   });

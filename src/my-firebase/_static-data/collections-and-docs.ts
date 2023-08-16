@@ -2,6 +2,7 @@ const collections = {
   pages: "pages",
   images: "images",
   "participant-testimonials": "testimonials",
+  "professional-testimonials": "professionalTestimonials",
   programmes: "programmes",
   supporters: "supporters",
   partners: "partners",

@@ -92,6 +92,7 @@ import {
   fetchOrgDetails,
   fetchParticipantTestimonials,
   fetchPartners,
+  fetchProfessionalTestimonials,
   fetchProgrammes,
   fetchProgrammesPage,
   fetchSupporters,
@@ -101,6 +102,11 @@ import {
   fetchWorkshops,
   fetchWorkshopsPage,
 } from "./query";
+import {
+  batchCreateProfessionalTestimonial,
+  batchDeleteProfessionalTestimonial,
+  batchUpdateProfessionalTestimonial,
+} from "./mutate/professional-testimonial";
 
 export const myDb = {
   pages: {
@@ -193,6 +199,14 @@ export const myDb = {
       create: batchCreateParticipantTestimonial,
       update: batchUpdateParticipantTestimonial,
       delete: batchDeleteParticipantTestimonial,
+    },
+  },
+  "professional-testimonial": {
+    fetchAll: fetchProfessionalTestimonials,
+    batch: {
+      create: batchCreateProfessionalTestimonial,
+      update: batchUpdateProfessionalTestimonial,
+      delete: batchDeleteProfessionalTestimonial,
     },
   },
   programme: {

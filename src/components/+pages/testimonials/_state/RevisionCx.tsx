@@ -31,7 +31,10 @@ function Provider({
   const linkLabels = UedCx.LinkLabels.useRevision();
   const orgDetails = UedCx.OrgDetails.useRevision();
 
-  const { revision: testimonials } = UedCx.ParticipantTestimonials.use();
+  const { revision: participantTestimonials } =
+    UedCx.ParticipantTestimonials.use();
+  const { revision: professionalTestimonials } =
+    UedCx.ProfessionalTestimonials.use();
 
   const revisionDataArr = [
     page.revision,
@@ -39,7 +42,8 @@ function Provider({
     header,
     linkLabels,
     orgDetails,
-    testimonials,
+    participantTestimonials,
+    professionalTestimonials,
   ];
 
   const isChange = Boolean(revisionDataArr.find((data) => data.isChange));
@@ -62,11 +66,14 @@ function Provider({
           saveMutation.mutateAsync(
             {
               page: { id: "testimonials-page", ...page.revision.saveData },
+
               orgDetails: orgDetails.saveData,
               linkLabels: linkLabels.saveData,
               header: header.saveData,
               footer: footer.saveData,
-              testimonials: testimonials.saveData,
+
+              "participant-testimonials": participantTestimonials.saveData,
+              "professional-testimonials": professionalTestimonials.saveData,
             },
             {
               onSuccess() {
