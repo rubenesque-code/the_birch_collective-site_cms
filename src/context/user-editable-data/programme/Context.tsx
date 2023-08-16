@@ -15,7 +15,7 @@ type ContextValue = { store: Store } & {
   revision: {
     isChange: boolean;
     undoKey: string;
-    saveData: Partial<Store["data"]>;
+    saveData: Partial<Store["data"]> | null;
     handleUndo: () => void;
     onSaveSuccess: () => void;
   };

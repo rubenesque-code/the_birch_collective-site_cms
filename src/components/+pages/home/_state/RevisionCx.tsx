@@ -34,6 +34,7 @@ function Provider({
   const { revision: programmes } = UedCx.Programmes.use();
   const { revision: testimonials } = UedCx.Testimonials.use();
   const { revision: supporters } = UedCx.Supporters.use();
+  const { revision: partners } = UedCx.Partners.use();
 
   const revisionDataArr = [
     page,
@@ -44,6 +45,7 @@ function Provider({
     programmes,
     testimonials,
     supporters,
+    partners,
   ];
 
   const isChange = Boolean(revisionDataArr.find((data) => data.isChange));
@@ -73,6 +75,7 @@ function Provider({
               linkLabels: linkLabels.saveData,
               header: header.saveData,
               footer: footer.saveData,
+              partners: partners.saveData,
             },
             {
               onSuccess() {

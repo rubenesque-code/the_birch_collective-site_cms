@@ -145,6 +145,24 @@ export const fetchSupporters = async () => {
   return data;
 };
 
+export const fetchOnePartner = async (id: string) => {
+  const docRef = getDocRef("partners", id);
+
+  const data = (await getDocData(docRef)) as unknown as MyDb["partner"];
+
+  return data;
+};
+
+export const fetchPartners = async () => {
+  const collectionRef = getCollectionRef("partners");
+
+  const data = (await getCollectionData(
+    collectionRef,
+  )) as unknown as MyDb["partner"][];
+
+  return data;
+};
+
 export const fetchOneVolunteerPosition = async (id: string) => {
   const docRef = getDocRef("volunteer-positions", id);
 

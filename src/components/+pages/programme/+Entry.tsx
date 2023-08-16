@@ -21,6 +21,7 @@ import MainText from "./main-text/+Entry";
 import Info from "./info/+Entry";
 import Posters from "./posters/+Entry";
 import Sections from "./sections/+Entry";
+import SignUp from "./sign-up/+Entry";
 
 const AboutPage = () => (
   <AwaitParams>
@@ -67,6 +68,10 @@ const PageSpecificContent = () => (
     <SiteLayout.Section.Spacing.Horizontal>
       <MainText />
     </SiteLayout.Section.Spacing.Horizontal>
+
+    <SiteLayout.Section.Spacing>
+      <SignUp />
+    </SiteLayout.Section.Spacing>
 
     <SiteLayout.Section.Spacing>
       <div className="grid grid-cols-2 gap-lg">

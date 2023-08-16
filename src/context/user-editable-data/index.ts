@@ -17,6 +17,7 @@ import { CareersDataCx } from "./careers";
 import { WorkshopsPageDataCx } from "./workshops-page";
 import { WorkshopsDataCx } from "./workshops";
 import { WorkshopPageDataCx } from "./workshop-page";
+import { PartnersDataCx } from "./partners";
 
 function UedCx() {
   throw new Error(
@@ -51,6 +52,7 @@ UedCx.Programmes = ProgrammesDataCx;
 UedCx.Programme = ProgrammePageDataCx;
 UedCx.Testimonials = TestimonialsDataCx;
 UedCx.Supporters = SupportersDataCx;
+UedCx.Partners = PartnersDataCx;
 UedCx.VolunteerPositions = VolunteerPositionsDataCx;
 UedCx.Careers = CareersDataCx;
 UedCx.Workshops = WorkshopsDataCx;

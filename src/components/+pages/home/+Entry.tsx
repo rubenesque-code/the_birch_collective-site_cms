@@ -25,6 +25,7 @@ import Supporters from "./supporters/+Entry";
 import Testimonials from "./testimonials/+Entry";
 import Workshops from "./workshops/+Entry";
 import type { MyDb } from "~/types/database";
+import Partners from "./partners/+Entry";
 
 // CHECK
 // □ check image blur up works.
@@ -102,9 +103,15 @@ const HomePage = () => (
                 <SiteLayout.Section.Spacing>
                   <SupportUs />
                 </SiteLayout.Section.Spacing>
+
+                <SiteLayout.Section.Spacing>
+                  <Partners />
+                </SiteLayout.Section.Spacing>
+
                 <SiteLayout.Section.Spacing>
                   <Supporters />
                 </SiteLayout.Section.Spacing>
+
                 <SiteLayout.Section.Spacing.Horizontal>
                   <div className="mt-2xl pb-xl">
                     <SiteFooter />
@@ -126,6 +133,7 @@ type DbData = {
   testimonials: MyDb["testimonial"][];
   programmes: MyDb["programme"][];
   supporters: MyDb["supporter"][];
+  partners: MyDb["partner"][];
   orgDetails: MyDb["singles"]["orgDetails"];
   linkLabels: MyDb["singles"]["linkLabels"];
   header: MyDb["singles"]["header"];
@@ -147,12 +155,14 @@ const InitDbData = ({
   const testimonialsQuery = useQuery("testimonials", myDb.testimonial.fetchAll);
   const programmesQuery = useQuery("programmes", myDb.programme.fetchAll);
   const supportersQuery = useQuery("supporters", myDb.supporter.fetchAll);
+  const partnersQuery = useQuery("partners", myDb.partner.fetchAll);
 
   if (
     pageQuery.isLoading ||
     testimonialsQuery.isLoading ||
     programmesQuery.isLoading ||
     supportersQuery.isLoading ||
+    partnersQuery.isLoading ||
     linkLabelsQuery.isLoading ||
     headerQuery.isLoading ||
     footerQuery.isLoading ||
@@ -170,6 +180,8 @@ const InitDbData = ({
     !programmesQuery.data ||
     supportersQuery.isError ||
     !supportersQuery.data ||
+    partnersQuery.isError ||
+    !partnersQuery.data ||
     linkLabelsQuery.isError ||
     !linkLabelsQuery.data ||
     headerQuery.isError ||
@@ -187,6 +199,7 @@ const InitDbData = ({
     testimonials: testimonialsQuery.data,
     programmes: programmesQuery.data,
     supporters: supportersQuery.data,
+    partners: partnersQuery.data,
     orgDetails: orgDetailsQuery.data,
     linkLabels: linkLabelsQuery.data,
     header: headerQuery.data,
@@ -210,7 +223,9 @@ const UedProviders = ({
               <UedCx.Programmes.Provider initData={initDbData.programmes}>
                 <UedCx.Testimonials.Provider initData={initDbData.testimonials}>
                   <UedCx.Supporters.Provider initData={initDbData.supporters}>
-                    {children}
+                    <UedCx.Partners.Provider initData={initDbData.partners}>
+                      {children}
+                    </UedCx.Partners.Provider>
                   </UedCx.Supporters.Provider>
                 </UedCx.Testimonials.Provider>
               </UedCx.Programmes.Provider>

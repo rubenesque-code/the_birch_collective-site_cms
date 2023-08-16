@@ -23,6 +23,7 @@
     "@react-spring/web": "^9.7.3",
     "dompurify": "^3.0.3",
     "firebase": "^9.22.2",
+    "googleapis": "^125.0.0",
     "immer": "^10.0.2",
     "jsondiffpatch": "^0.4.1",
     "lodash": "^4.17.21",

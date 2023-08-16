@@ -16,6 +16,9 @@ import { WithTooltip } from "../WithTooltip";
 // todo: on site, will have to validate programmes + workshops
 // todo: if no events, need to skip slide. Will affect number
 
+// todo: update google sheet?
+// todo: send to birch emails
+
 type DateOfBirth = { day: number; month: number; year: number };
 type EmergencyContact = {
   name: string;
@@ -392,8 +395,6 @@ const Slides = () => {
           ? "Got it"
           : currentSlideIndex === 2
           ? "I understand"
-          : currentSlideIndex === numSlides - 1
-          ? "Submit"
           : "Okay"
       }
       goNext={handleGoNext}
@@ -762,14 +763,14 @@ const SlidesContainer = (props: {
             </div>
           </div>
 
-          {!props.isFinalSlide ? (
-            <div
-              className="cursor-pointer rounded-sm bg-brandLightOrange px-sm py-xs text-xl font-semibold text-white"
-              onClick={props.goNext}
-            >
-              {props.buttonText}
-            </div>
-          ) : null}
+          <div
+            className={`cursor-pointer rounded-sm bg-brandLightOrange px-sm py-xs text-xl font-semibold text-white transition-opacity ease-in-out 
+              ${props.isFinalSlide ? "pointer-events-none !opacity-0" : ""}
+              `}
+            onClick={props.goNext}
+          >
+            {props.buttonText}
+          </div>
 
           <div className="flex gap-xxs">
             <WithTooltip text="previous slide">

@@ -49,6 +49,13 @@ type ArrActions = {
       remove: (arg0: { id: string }) => void;
     };
   };
+
+  partners: {
+    entries: {
+      add: (arg0: { dbConnections: { partnerId: string } }) => void;
+      remove: (arg0: { id: string }) => void;
+    };
+  };
 };
 
 type Actions = {

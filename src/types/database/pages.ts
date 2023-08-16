@@ -106,6 +106,15 @@ type Landing = {
       dbConnections: { supporterId: string };
     }[];
   };
+
+  partners: {
+    heading: string;
+    subheading: string;
+    entries: {
+      id: string;
+      dbConnections: { partnerId: string };
+    }[];
+  };
 };
 
 type AboutUs = {

@@ -300,6 +300,35 @@ export const createStore = (input: { initData: Store["data"] }) =>
           subheading: nonArrAction("supporters.subheading"),
         },
 
+        partners: {
+          entries: {
+            add: (input) =>
+              set(
+                produce((store: Store) => {
+                  store.data.partners.entries.push({
+                    dbConnections: {
+                      partnerId: input.dbConnections.partnerId,
+                    },
+                    id: generateUid(),
+                  });
+                }),
+              ),
+            remove: (input) =>
+              set(
+                produce((store: Store) => {
+                  const entityToRemoveIndex =
+                    store.data.partners.entries.findIndex(
+                      (p) => p.id === input.id,
+                    );
+                  if (entityToRemoveIndex !== -1)
+                    store.data.partners.entries.splice(entityToRemoveIndex, 1);
+                }),
+              ),
+          },
+          heading: nonArrAction("partners.heading"),
+          subheading: nonArrAction("partners.subheading"),
+        },
+
         supportUs: {
           donate: {
             buttonText: nonArrAction("supportUs.donate.buttonText"),

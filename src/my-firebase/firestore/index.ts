@@ -25,6 +25,15 @@ import {
   updateSupporter,
 } from "./mutate/supporter";
 import {
+  batchCreatePartner,
+  batchDeletePartner,
+  batchUpdatePartner,
+  createPartner,
+  deletePartner,
+  updatePartner,
+} from "./mutate/partner";
+
+import {
   batchCreateTestimonial,
   batchDeleteTestimonial,
   batchUpdateTestimonial,
@@ -60,6 +69,8 @@ import {
   fetchProgrammes,
   fetchProgrammesPage,
   fetchSupporters,
+  fetchOnePartner,
+  fetchPartners,
   fetchTestimonials,
   fetchVolunteerPositions,
   fetchVolunteerPositionsPage,
@@ -205,6 +216,18 @@ export const myDb = {
       create: batchCreateSupporter,
       update: batchUpdateSupporter,
       delete: batchDeleteSupporter,
+    },
+  },
+  partner: {
+    fetchOne: fetchOnePartner,
+    fetchAll: fetchPartners,
+    create: createPartner,
+    update: updatePartner,
+    delete: deletePartner,
+    batch: {
+      create: batchCreatePartner,
+      update: batchUpdatePartner,
+      delete: batchDeletePartner,
     },
   },
   ["volunteer-positions"]: {

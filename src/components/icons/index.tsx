@@ -62,6 +62,7 @@ import {
   ArrowSquareOut,
   Money,
   HandPointing,
+  Handshake,
 } from "@phosphor-icons/react";
 
 const Icon = () => {
@@ -100,6 +101,7 @@ Icon.Remove = Minus;
 Icon.CaretLeft = CaretLeft;
 Icon.Programme = Tree;
 Icon.Supporter = PiggyBank;
+Icon.Partner = Handshake;
 Icon.ConnectEntity = FlowArrow;
 Icon.Facebook = FacebookLogo;
 Icon.Instagram = InstagramLogo;

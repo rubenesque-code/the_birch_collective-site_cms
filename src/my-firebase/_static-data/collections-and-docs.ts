@@ -4,6 +4,7 @@ const collections = {
   testimonials: "testimonials",
   programmes: "programmes",
   supporters: "supporters",
+  partners: "partners",
   ["volunteer-positions"]: "volunteerPositions",
   careers: "careers",
   workshops: "workshops",

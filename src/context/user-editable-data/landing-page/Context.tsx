@@ -64,7 +64,7 @@ function Provider({
     revision: {
       isChange,
       undoKey,
-      saveData,
+      saveData: { id: "landing-page", ...saveData },
       handleUndo,
       onSaveSuccess: () => {
         setInitData(store.data);

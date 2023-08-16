@@ -68,6 +68,14 @@ export type Programme = {
     description: string | null;
   }[];
 
+  signUp: {
+    heading: string;
+
+    text: string;
+
+    buttonText: string;
+  };
+
   subtitle: string;
 
   summary: {

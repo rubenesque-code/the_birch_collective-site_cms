@@ -9,7 +9,7 @@ const SignUp = () => {
       actions: { signUp: signUpAction },
     },
     revision: { undoKey },
-  } = UedCx.Pages.Workshop.use();
+  } = UedCx.Programme.use();
 
   return (
     <div className="">
