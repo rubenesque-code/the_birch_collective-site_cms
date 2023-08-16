@@ -11,14 +11,13 @@ import type { MyDb } from "~/types/database";
 
 import { useDocRevisionData } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
-import { createStore } from "./createStore";
-import type { Store } from "./types";
+import { type Store, createStore } from "./store";
 
 type ContextValue = { store: Store } & {
   revision: {
     isChange: boolean;
     undoKey: string;
-    saveData: Partial<MyDb["pages"]["aboutUs"]>;
+    saveData: Partial<MyDb["pages"]["theory-of-change"]>;
     handleUndo: () => void;
     onSaveSuccess: () => void;
   };
@@ -31,7 +30,7 @@ function Provider({
   ...props
 }: {
   children: ReactNode | ((args: ContextValue) => ReactNode);
-  initData: MyDb["pages"]["aboutUs"];
+  initData: MyDb["pages"]["theory-of-change"];
 }) {
   const [initData, setInitData] = useState(props.initData);
   const [undoKey, setUndoKey] = useState(generateUid());
@@ -64,7 +63,7 @@ function Provider({
     revision: {
       isChange,
       undoKey,
-      saveData: { id: "about-page", ...saveData },
+      saveData: { id: "theory-of-change-page", ...saveData },
       handleUndo,
       onSaveSuccess: () => {
         setInitData(store.data);
@@ -82,18 +81,18 @@ function Provider({
 function useThisContext() {
   const context = useContext(Context);
   if (!context)
-    throw new Error("Missing AboutUsPageDataCx.Provider in the tree");
+    throw new Error("Missing TheoryOfChangePageDataCx.Provider in the tree");
 
   return context;
 }
 
-function AboutUsPageDataCx() {
+function TheoryOfChangePageDataCx() {
   throw new Error(
-    "AboutUsPageDataCx exists for naming purposes only and should not be used as a component",
+    "TheoryOfChangePageDataCx exists for naming purposes only and should not be used as a component",
   );
 }
 
-export { AboutUsPageDataCx };
+export { TheoryOfChangePageDataCx };
 
-AboutUsPageDataCx.Provider = Provider;
-AboutUsPageDataCx.use = useThisContext;
+TheoryOfChangePageDataCx.Provider = Provider;
+TheoryOfChangePageDataCx.use = useThisContext;

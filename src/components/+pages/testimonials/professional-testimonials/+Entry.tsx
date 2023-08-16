@@ -65,7 +65,7 @@ const Text = () => {
       <TextAreaForm
         localStateValue={professionals.text}
         textArea={{
-          placeholder: "Professionals testimonials text",
+          placeholder: "Professionals testimonials text (optional)",
         }}
         onSubmit={professionalsAction.text}
         tooltip="Click to edit professionals testimonials text"
@@ -164,7 +164,7 @@ const Testimonial = ({ align }: { align: "left" | "right" }) => {
             />
           </div>
           <div
-            className={`mt-xxs text-lg text-brandBrown ${
+            className={`mt-xxs  text-lg text-brandBrown ${
               align === "right" ? "text-right" : ""
             }`}
           >
@@ -183,8 +183,8 @@ const Testimonial = ({ align }: { align: "left" | "right" }) => {
       </div>
 
       <div
-        className={`custom-prose prose mt-sm  w-[600px] ${
-          align === "right" ? "ml-auto" : ""
+        className={`custom-prose prose mt-sm w-[600px] border-gray-100 ${
+          align === "right" ? "ml-auto border-r-4 pr-md" : "border-l-4 pl-md"
         }`}
       >
         <TextAreaForm

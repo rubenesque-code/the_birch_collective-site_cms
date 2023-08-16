@@ -73,3 +73,12 @@ export const batchUpdateWorkshopsPage = (
 
   batch.update(docRef, data);
 };
+
+export const batchUpdateTheoryOfChangePage = (
+  data: Partial<MyDb["pages"]["theory-of-change"]>,
+  batch: WriteBatch,
+) => {
+  const docRef = getDocRef("pages", "theoryOfChange");
+
+  batch.update(docRef, data);
+};

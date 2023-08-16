@@ -21,6 +21,7 @@ const pages = {
   careers: "careers",
   workshops: "workshops",
   testimonials: "testimonials",
+  "theory-of-change": "theoryOfChange",
 } as const;
 
 const singles = {

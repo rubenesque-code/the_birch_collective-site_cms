@@ -6,7 +6,7 @@ export type Store = {
   actions: Actions;
 };
 
-export type Section = MyDb["workshop"]["sections"][number];
+export type Section = MyDb["pages"]["theory-of-change"]["sections"][number];
 
 type NonArrActions = GenerateNonArrActions<Section>;
 

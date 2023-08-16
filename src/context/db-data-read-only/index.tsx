@@ -1,5 +1,6 @@
 import { Career } from "./career";
 import { CareersPage } from "./careers-page";
+import { TheoryOfChangePage } from "./theory-of-change-page";
 import { Workshop } from "./workshop";
 
 function DbReadCx() {
@@ -23,3 +24,4 @@ function Pages() {
 DbReadCx.Pages = Pages;
 
 Pages.Careers = CareersPage;
+Pages.TheoryOfChange = TheoryOfChangePage;

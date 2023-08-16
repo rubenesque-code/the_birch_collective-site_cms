@@ -26,6 +26,16 @@ export const fetchAboutUsPage = async () => {
   return data;
 };
 
+export const fetchTheoryOfChangePage = async () => {
+  const docRef = getDocRef("pages", "theoryOfChange");
+
+  const data = (await getDocData(
+    docRef,
+  )) as unknown as MyDb["pages"]["theory-of-change"];
+
+  return data;
+};
+
 export const fetchTestimonialsPage = async () => {
   const docRef = getDocRef("pages", "testimonials");
 

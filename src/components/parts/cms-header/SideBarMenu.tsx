@@ -74,7 +74,7 @@ const PageLinks = () => (
     <PageLink route="/donate" text="Donate" />
     <PageLink route="/volunteer-positions" text="Volunteer positions" />
     <PageLink route="/careers" text="Careers" />
-    <PageLink route="/impact" text="Impact" />
+    <PageLink route="/theory-of-change" text="Theory of change" />
     <Workshops />
   </div>
 );

@@ -17,10 +17,9 @@ import type { MyDb } from "~/types/database";
 import BannerImage from "./banner-image/+Entry";
 import Headings from "./headings/+Entry";
 import MainText from "./main-text/+Entry";
-import ParticipantTestimonials from "./participant-testimonials/+Entry";
-import ProfessionalTestimonials from "./professional-testimonials/+Entry";
+import Sections from "./sections/+Entry";
 
-const TestimonialsPage = () => (
+const TheoryOfChangePage = () => (
   <InitDbData>
     {(initDbData) => (
       <UedProviders initDbData={initDbData}>
@@ -48,7 +47,7 @@ const TestimonialsPage = () => (
   </InitDbData>
 );
 
-export default TestimonialsPage;
+export default TheoryOfChangePage;
 
 const PageSpecificContent = () => (
   <>
@@ -65,20 +64,13 @@ const PageSpecificContent = () => (
     </SiteLayout.Section.Spacing>
 
     <SiteLayout.Section.Spacing>
-      <ProfessionalTestimonials />
-    </SiteLayout.Section.Spacing>
-
-    <SiteLayout.Section.Spacing>
-      <ParticipantTestimonials />
+      <Sections />
     </SiteLayout.Section.Spacing>
   </>
 );
 
 type DbData = {
-  page: MyDb["pages"]["testimonials"];
-
-  "participant-testimonials": MyDb["participant-testimonial"][];
-  "professional-testimonials": MyDb["professional-testimonial"][];
+  page: MyDb["pages"]["theory-of-change"];
 
   orgDetails: MyDb["singles"]["orgDetails"];
   linkLabels: MyDb["singles"]["linkLabels"];
@@ -92,8 +84,8 @@ const InitDbData = ({
   children: (data: DbData) => ReactElement;
 }) => {
   const pageQuery = useQuery(
-    "testimonials-page",
-    myDb.pages.testimonials.fetch,
+    "theory-of-change-page",
+    myDb.pages["theory-of-change"].fetch,
   );
 
   const footerQuery = useQuery("footer", myDb.footer.fetch);
@@ -101,23 +93,12 @@ const InitDbData = ({
   const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
   const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
 
-  const participantTestimonialsQuery = useQuery(
-    "participant-testimonials",
-    myDb["participant-testimonial"].fetchAll,
-  );
-  const professionalTestimonialsQuery = useQuery(
-    "professional-testimonials",
-    myDb["professional-testimonial"].fetchAll,
-  );
-
   if (
     pageQuery.isLoading ||
     linkLabelsQuery.isLoading ||
     headerQuery.isLoading ||
     footerQuery.isLoading ||
-    orgDetailsQuery.isLoading ||
-    participantTestimonialsQuery.isLoading ||
-    professionalTestimonialsQuery.isLoading
+    orgDetailsQuery.isLoading
   ) {
     return <PageDataFetch.Loading />;
   }
@@ -132,11 +113,7 @@ const InitDbData = ({
     footerQuery.isError ||
     !footerQuery.data ||
     orgDetailsQuery.isError ||
-    !orgDetailsQuery.data ||
-    participantTestimonialsQuery.isError ||
-    !participantTestimonialsQuery.data ||
-    professionalTestimonialsQuery.isError ||
-    !professionalTestimonialsQuery.data
+    !orgDetailsQuery.data
   ) {
     return <PageDataFetch.Error />;
   }
@@ -148,9 +125,6 @@ const InitDbData = ({
     linkLabels: linkLabelsQuery.data,
     header: headerQuery.data,
     footer: footerQuery.data,
-
-    "participant-testimonials": participantTestimonialsQuery.data,
-    "professional-testimonials": professionalTestimonialsQuery.data,
   });
 };
 
@@ -162,24 +136,16 @@ const UedProviders = ({
   children: ReactElement;
 }) => {
   return (
-    <UedCx.Pages.Testimonials.Provider initData={initDbData.page}>
+    <UedCx.Pages.TheoryOfChange.Provider initData={initDbData.page}>
       <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
         <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
           <UedCx.Header.Provider initData={initDbData.header}>
             <UedCx.Footer.Provider initData={initDbData.footer}>
-              <UedCx.ParticipantTestimonials.Provider
-                initData={initDbData["participant-testimonials"]}
-              >
-                <UedCx.ProfessionalTestimonials.Provider
-                  initData={initDbData["professional-testimonials"]}
-                >
-                  {children}
-                </UedCx.ProfessionalTestimonials.Provider>
-              </UedCx.ParticipantTestimonials.Provider>
+              {children}
             </UedCx.Footer.Provider>
           </UedCx.Header.Provider>
         </UedCx.LinkLabels.Provider>
       </UedCx.OrgDetails.Provider>
-    </UedCx.Pages.Testimonials.Provider>
+    </UedCx.Pages.TheoryOfChange.Provider>
   );
 };

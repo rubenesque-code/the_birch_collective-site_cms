@@ -25,7 +25,7 @@ const Sections = () => {
     store: {
       data: { sections },
     },
-  } = UedCx.Pages.Workshop.use();
+  } = UedCx.Pages.TheoryOfChange.use();
 
   const sorted = React.useMemo(() => deepSortByIndex(sections), [sections]);
 
@@ -58,17 +58,17 @@ const Sections = () => {
       <div className="mt-md">
         {!sections.length ? (
           <p className="italic text-gray-600">
-            No workshop details sections yet.
+            No theory of change details sections yet.
           </p>
         ) : (
           <div className="grid grid-cols-1 gap-2xl">
             {sorted.map((section) => (
-              <DbReadCx.Workshop.Section.Provider
+              <DbReadCx.Pages.TheoryOfChange.Section.Provider
                 section={section}
                 key={section.id}
               >
                 <Section />
-              </DbReadCx.Workshop.Section.Provider>
+              </DbReadCx.Pages.TheoryOfChange.Section.Provider>
             ))}
           </div>
         )}
@@ -118,7 +118,7 @@ const Section = () => {
     store: {
       data: { sections },
     },
-  } = UedCx.Pages.Workshop.use();
+  } = UedCx.Pages.TheoryOfChange.use();
 
   const sectionsSorted = React.useMemo(
     () => deepSortByIndex(sections),
@@ -126,14 +126,14 @@ const Section = () => {
   );
 
   const { id, title, bullets, colour, description, index } =
-    DbReadCx.Workshop.Section.use();
+    DbReadCx.Pages.TheoryOfChange.Section.use();
 
   const {
     store: {
       actions: { sections: sectionAction },
     },
     revision: { undoKey },
-  } = UedCx.Pages.Workshop.use();
+  } = UedCx.Pages.TheoryOfChange.use();
 
   const bulletsSorted = React.useMemo(
     () => deepSortByIndex(bullets.entries),
@@ -276,16 +276,16 @@ const Section = () => {
         />
       </div>
 
-      <div className="custom-prose prose mt-sm max-w-full font-medium">
+      <div className="custom-prose prose mt-sm max-w-full">
         <TextAreaForm
           localStateValue={description}
           textArea={{
-            placeholder: "Section subtitle (optional)",
+            placeholder: "Section text (optional)",
           }}
           onSubmit={(updatedValue) =>
             sectionAction.description({ id, updatedValue })
           }
-          tooltip="Click to edit subtitle"
+          tooltip="Click to edit text"
           key={undoKey}
         />
       </div>
@@ -299,9 +299,11 @@ const Section = () => {
         >
           {bulletsSorted.map((bullet) => (
             <DndKit.Element elementId={bullet.id} key={bullet.id}>
-              <DbReadCx.Workshop.Section.Bullet.Provider bullet={bullet}>
+              <DbReadCx.Pages.TheoryOfChange.Section.Bullet.Provider
+                bullet={bullet}
+              >
                 <Bullet />
-              </DbReadCx.Workshop.Section.Bullet.Provider>
+              </DbReadCx.Pages.TheoryOfChange.Section.Bullet.Provider>
             </DndKit.Element>
           ))}
         </DndKit.Context>
@@ -311,16 +313,24 @@ const Section = () => {
 };
 
 const Bullet = () => {
-  const { id: sectionId, bullets, colour } = DbReadCx.Workshop.Section.use();
+  const {
+    id: sectionId,
+    bullets,
+    colour,
+  } = DbReadCx.Pages.TheoryOfChange.Section.use();
 
-  const { id: bulletId, text, title } = DbReadCx.Workshop.Section.Bullet.use();
+  const {
+    id: bulletId,
+    text,
+    title,
+  } = DbReadCx.Pages.TheoryOfChange.Section.Bullet.use();
 
   const {
     store: {
       actions: { sections: sectionAction },
     },
     revision: { undoKey },
-  } = UedCx.Pages.Workshop.use();
+  } = UedCx.Pages.TheoryOfChange.use();
 
   return (
     <div className="group/bullet flex items-center gap-sm">
@@ -372,15 +382,15 @@ const Bullet = () => {
 };
 
 const BulletDeleteButton = () => {
-  const { id: sectionId } = DbReadCx.Workshop.Section.use();
+  const { id: sectionId } = DbReadCx.Pages.TheoryOfChange.Section.use();
 
-  const { id: bulletId } = DbReadCx.Workshop.Section.Bullet.use();
+  const { id: bulletId } = DbReadCx.Pages.TheoryOfChange.Section.Bullet.use();
 
   const {
     store: {
       actions: { sections: sectionAction },
     },
-  } = UedCx.Pages.Workshop.use();
+  } = UedCx.Pages.TheoryOfChange.use();
 
   const toast = useToast();
 
@@ -404,7 +414,7 @@ const BulletDeleteButton = () => {
             }}
             closeModal={closeModal}
             text={{
-              title: "Delete workshop bullet",
+              title: "Delete section bullet",
               body: "Are you sure?",
             }}
           />

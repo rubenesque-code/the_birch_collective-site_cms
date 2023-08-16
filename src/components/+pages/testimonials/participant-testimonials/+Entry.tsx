@@ -105,7 +105,7 @@ const Text = () => {
         <TextAreaForm
           localStateValue={participants.text}
           textArea={{
-            placeholder: "Participants testimonials text",
+            placeholder: "Participants testimonials text (optional)",
           }}
           onSubmit={participantsAction.text}
           tooltip="Click to edit participants testimonials text"

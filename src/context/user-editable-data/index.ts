@@ -20,6 +20,7 @@ import { WorkshopPageDataCx } from "./workshop-page";
 import { PartnersDataCx } from "./partners";
 import { TestimonialsPageDataCx } from "./testimonials-page";
 import { ProfessionalTestimonialsDataCx } from "./professional-testimonials";
+import { TheoryOfChangePageDataCx } from "./theory-of-change-page";
 
 function UedCx() {
   throw new Error(
@@ -40,6 +41,7 @@ UedCx.Pages = Pages;
 Pages.Landing = LandingPageDataCx;
 Pages.AboutUs = AboutUsPageDataCx;
 Pages.Testimonials = TestimonialsPageDataCx;
+Pages.TheoryOfChange = TheoryOfChangePageDataCx;
 Pages.Programmes = ProgrammesPageDataCx;
 Pages.Donate = DonatePageDataCx;
 Pages.VolunteerPositions = VolunteerPositionsPageDataCx;

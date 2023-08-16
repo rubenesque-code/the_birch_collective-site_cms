@@ -8,6 +8,7 @@ import {
   batchUpdateTestimonialsPage,
   batchUpdateVolunteerPositionsPage,
   batchUpdateWorkshopsPage,
+  batchUpdateTheoryOfChangePage,
 } from "./mutate/pages";
 import {
   batchCreatePartner,
@@ -74,6 +75,7 @@ import {
 } from "./mutate/workshops";
 import {
   fetchAboutUsPage,
+  fetchTheoryOfChangePage,
   fetchCareers,
   fetchCareersPage,
   fetchDonatePage,
@@ -107,6 +109,7 @@ import {
   batchDeleteProfessionalTestimonial,
   batchUpdateProfessionalTestimonial,
 } from "./mutate/professional-testimonial";
+import { theoryOfChangePageTransaction } from "./mutate/transactions/theory-of-change-page";
 
 export const myDb = {
   pages: {
@@ -126,6 +129,12 @@ export const myDb = {
       fetch: fetchAboutUsPage,
       batch: {
         update: batchUpdateAboutUsPage,
+      },
+    },
+    "theory-of-change": {
+      fetch: fetchTheoryOfChangePage,
+      batch: {
+        update: batchUpdateTheoryOfChangePage,
       },
     },
     programmes: {
@@ -289,6 +298,7 @@ export const myDb = {
       careers: careersPageTransaction,
       workshop: workshopPageTransaction,
       workshops: workshopsPageTransaction,
+      "theory-of-change": theoryOfChangePageTransaction,
     },
   },
 };
