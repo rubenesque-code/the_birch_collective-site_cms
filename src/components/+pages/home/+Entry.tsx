@@ -1,5 +1,3 @@
-// logo, org name - not editable
-// banner image + title needn't be movable
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
@@ -66,6 +64,9 @@ import Partners from "./partners/+Entry";
 
 // STATE
 // □ could have a queryOne in state data e.g. for programmes/testimonials
+
+// NEW SITE (if funding)
+// □ living wage employer section in about us
 
 // todo: Will have to remove undo keys from text-input/area form? Re-work revision daat? make an unod key context?
 

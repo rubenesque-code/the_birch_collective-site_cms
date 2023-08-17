@@ -69,12 +69,12 @@ const PageLinks = () => (
   <div className="flex flex-col gap-sm">
     <PageLink route="/" text="Home" />
     <PageLink route="/about" text="About" />
-    <PageLink route="/testimonials" text="Testimonials" />
-    <Programmes />
-    <PageLink route="/donate" text="Donate" />
-    <PageLink route="/volunteer-positions" text="Volunteer positions" />
     <PageLink route="/careers" text="Careers" />
+    <PageLink route="/donate" text="Donate" />
+    <Programmes />
+    <PageLink route="/testimonials" text="Testimonials" />
     <PageLink route="/theory-of-change" text="Theory of change" />
+    <PageLink route="/volunteer-positions" text="Volunteer positions" />
     <Workshops />
   </div>
 );

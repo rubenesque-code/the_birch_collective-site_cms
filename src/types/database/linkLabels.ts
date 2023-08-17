@@ -8,4 +8,6 @@ export type LinkLabels = {
   meetTheTeam: string;
   getInTouch: string;
   careers: string;
+  theoryOfChange: string;
+  testimonials: string;
 };

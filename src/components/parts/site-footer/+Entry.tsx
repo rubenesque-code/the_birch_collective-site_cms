@@ -119,13 +119,20 @@ const SocialMediaLink = ({
 );
 
 const PageLinks = () => {
-  const { programmes, workshops, donate, volunteer, aboutUs } =
-    UedCx.LinkLabels.useData();
+  const {
+    programmes,
+    workshops,
+    donate,
+    volunteer,
+    aboutUs,
+    testimonials,
+    theoryOfChange,
+  } = UedCx.LinkLabels.useData();
 
   const linkLabelsAction = UedCx.LinkLabels.useAction();
 
   return (
-    <div className="flex items-center gap-lg">
+    <div className="flex max-w-[500px] flex-wrap items-center gap-x-lg gap-y-md">
       <div className="font-medium text-brandGreen">
         <TextInputForm
           localStateValue={programmes}
@@ -164,6 +171,26 @@ const PageLinks = () => {
           onSubmit={linkLabelsAction.aboutUs}
           input={{ placeholder: "About us link text", styles: "underline" }}
           tooltip="Click to edit about us link text"
+        />
+      </div>
+
+      <div className="font-medium text-brandGreen">
+        <TextInputForm
+          localStateValue={theoryOfChange}
+          onSubmit={linkLabelsAction.theoryOfChange}
+          input={{
+            placeholder: "Theory of change link text",
+            styles: "underline",
+          }}
+          tooltip="Click to edit theory of change link text"
+        />
+      </div>
+      <div className="font-medium text-brandGreen">
+        <TextInputForm
+          localStateValue={testimonials}
+          onSubmit={linkLabelsAction.testimonials}
+          input={{ placeholder: "Testimonials link text", styles: "underline" }}
+          tooltip="Click to edit testimonials link text"
         />
       </div>
     </div>

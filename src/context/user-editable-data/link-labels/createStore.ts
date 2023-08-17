@@ -44,6 +44,8 @@ export const createStore = (input: { initData: Store["data"] }) =>
         programmes: nonArrAction("programmes"),
         volunteer: nonArrAction("volunteer"),
         workshops: nonArrAction("workshops"),
+        testimonials: nonArrAction("testimonials"),
+        theoryOfChange: nonArrAction("theoryOfChange"),
       },
     };
   });
