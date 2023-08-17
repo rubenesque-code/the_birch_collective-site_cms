@@ -2,14 +2,16 @@ import { TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
 import SiteLayout from "~/components/layouts/Site";
-import { UedCx } from "~/context/user-editable-data";
+
 import Slides from "./slides/+Entry";
 import { EditModal } from "./slides/edit/+Entry";
 
+import { UedCx } from "~/context/user-editable-data";
+
 const PhotoAlbum = () => (
-  <div>
+  <div className="group/album">
     <SiteLayout.Section.Spacing.Horizontal>
-      <CmsLayout.EditBar>
+      <CmsLayout.EditBar className="opacity-40 group-hover/album:opacity-80 hover:!opacity-100">
         <EditModal
           button={({ openModal }) => (
             <div

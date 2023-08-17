@@ -1,23 +1,22 @@
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
-import { myDb } from "~/my-firebase/firestore";
-
-import { RevisionCx } from "./_state/RevisionCx";
-
+import CmsLayout from "~/components/layouts/Cms";
+import SiteLayout from "~/components/layouts/Site";
 import { PageDataFetch } from "~/components/PageDataFetch";
 import CmsHeader from "~/components/parts/cms-header/+Entry";
 import SiteFooter from "~/components/parts/site-footer/+Entry";
 import SiteHeader from "~/components/parts/site-header/+Entry";
 
-import CmsLayout from "~/components/layouts/Cms";
-import SiteLayout from "~/components/layouts/Site";
-import { UedCx } from "~/context/user-editable-data";
-import type { MyDb } from "~/types/database";
+import { RevisionCx } from "./_state";
 import BannerImage from "./banner-image/+Entry";
+import Careers from "./careers/+Entry";
 import Heading from "./heading/+Entry";
 import MainText from "./main-text/+Entry";
-import Careers from "./careers/+Entry";
+
+import { UedCx } from "~/context/user-editable-data";
+import { myDb } from "~/my-firebase/firestore";
+import type { MyDb } from "~/types/database";
 
 const CareersPage = () => (
   <InitDbData>

@@ -2,39 +2,43 @@ import { useState } from "react";
 
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
-import { NewTestimonialCx, createInitData } from "./_state/NewTestimonialCx";
-import { TextAreaForm, TextInputForm } from "~/components/forms";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { WarningPanel } from "~/components/WarningPanel";
-import { useToast } from "~/hooks";
-import { UedCx } from "~/context/user-editable-data";
 
-export const CreateModal = () => {
-  const { store } = UedCx.ParticipantTestimonials.use();
+import { CreateCx, createInitData } from "./_state";
+
+import { UedCx } from "~/context/user-editable-data";
+import { useToast } from "~/hooks";
+
+const CreateModal = () => {
+  const {
+    store: { data: testimonials },
+  } = UedCx.ParticipantTestimonials.use();
 
   return (
-    <NewTestimonialCx.Provider newTestimonial={{ index: store.data.length }}>
-      {(newTestimonialCx) => (
+    <CreateCx.Provider newTestimonial={{ index: testimonials.length }}>
+      {(createCx) => (
         <Modal.VisibilityCx.Provider>
-          {(newTestimonialModal) => (
+          {(createModal) => (
             <Modal.VisibilityCx.Provider>
               {(warningModal) => {
-                const handleCloseNewTestimonial = () => {
-                  if (newTestimonialCx.isUserEntry) {
+                const handleCloseCreateModal = () => {
+                  if (createCx.revision.isUserEntry) {
                     warningModal.openModal();
                     return;
                   }
-                  newTestimonialModal.closeModal();
+                  createModal.closeModal();
                 };
 
                 return (
                   <>
                     <button
                       className={`group my-btn-create mb-sm flex items-center gap-xs rounded-md px-sm py-1.5 text-white`}
-                      onClick={newTestimonialModal.openModal}
+                      onClick={createModal.openModal}
                       type="button"
                     >
                       <span className="text-sm">
@@ -44,14 +48,12 @@ export const CreateModal = () => {
                     </button>
 
                     <Modal.OverlayAndPanelWrapper
-                      onClickOutside={handleCloseNewTestimonial}
-                      isOpen={newTestimonialModal.isOpen}
+                      onClickOutside={handleCloseCreateModal}
+                      isOpen={createModal.isOpen}
                       panelContent={
-                        <NewTestimonialModalContent
-                          onClose={handleCloseNewTestimonial}
-                          closeNewTestimonialModal={
-                            newTestimonialModal.closeModal
-                          }
+                        <CreateModalContent
+                          onClose={handleCloseCreateModal}
+                          closeCreateModal={createModal.closeModal}
                         />
                       }
                     />
@@ -62,10 +64,10 @@ export const CreateModal = () => {
                       panelContent={
                         <WarningPanel
                           callback={() => {
-                            newTestimonialCx.actions.resetData(
-                              createInitData({ index: store.data.length }),
+                            createCx.actions.resetData(
+                              createInitData({ index: testimonials.length }),
                             );
-                            newTestimonialModal.closeModal();
+                            createModal.closeModal();
                             warningModal.closeModal();
                           }}
                           closeModal={warningModal.closeModal}
@@ -83,61 +85,38 @@ export const CreateModal = () => {
           )}
         </Modal.VisibilityCx.Provider>
       )}
-    </NewTestimonialCx.Provider>
+    </CreateCx.Provider>
   );
 };
 
-const NewTestimonialModalContent = ({
+export default CreateModal;
+
+const CreateModalContent = ({
   onClose,
-  closeNewTestimonialModal,
+  closeCreateModal,
 }: {
   onClose: () => void;
-  closeNewTestimonialModal: () => void;
+  closeCreateModal: () => void;
 }) => {
   const [showIncompleteErrorMessage, setShowIncompleteErrorMessage] =
     useState(false);
 
-  const { store } = UedCx.ParticipantTestimonials.use();
+  const {
+    store: { data: testimonials, actions: testimonialAction },
+  } = UedCx.ParticipantTestimonials.use();
 
-  const newTestimonialCx = NewTestimonialCx.use();
+  const {
+    data: newTestimonial,
+    actions: newTestimonialAction,
+    revision,
+  } = CreateCx.use();
 
   const toast = useToast();
-
-  const handleCreate = () => {
-    const formIsComplete = Boolean(
-      newTestimonialCx.data.endorserName.length &&
-        newTestimonialCx.data.image.dbConnect.imageId &&
-        newTestimonialCx.data.text.length,
-    );
-
-    if (!formIsComplete) {
-      setShowIncompleteErrorMessage(true);
-      setTimeout(() => {
-        setShowIncompleteErrorMessage(false);
-      }, 7000);
-      return;
-    }
-
-    store.actions.create({
-      ...newTestimonialCx.data,
-      index: store.data.length,
-    });
-
-    toast.neutral("Added testimonial");
-
-    closeNewTestimonialModal();
-
-    setTimeout(() => {
-      newTestimonialCx.actions.resetData(
-        createInitData({ index: store.data.length + 1 }),
-      );
-    }, 200);
-  };
 
   return (
     <div className="relative flex flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
       <div className="flex items-center justify-between border-b border-b-gray-200 pb-sm">
-        <h3 className="leading-6">Add new testimonial</h3>
+        <h3 className="leading-6">Create testimonial</h3>
       </div>
 
       <div className="mt-sm flex-grow overflow-y-auto">
@@ -147,8 +126,7 @@ const NewTestimonialModalContent = ({
       {showIncompleteErrorMessage ? (
         <div className="mt-sm w-[346px] text-sm">
           <p className="text-my-error-content">
-            Can&apos;t create testimonial. Requirements: image, text and
-            endorser name.
+            Can&apos;t create testimonial. Requirements: name, title, text.
           </p>
         </div>
       ) : null}
@@ -168,7 +146,30 @@ const NewTestimonialModalContent = ({
         <button
           className="my-btn my-btn-action"
           type="button"
-          onClick={handleCreate}
+          onClick={() => {
+            if (!revision.areRequiredFields) {
+              setShowIncompleteErrorMessage(true);
+              setTimeout(() => {
+                setShowIncompleteErrorMessage(false);
+              }, 7000);
+              return;
+            }
+
+            testimonialAction.create({
+              ...newTestimonial,
+              index: testimonials.length,
+            });
+
+            toast.neutral("Added testimonial");
+
+            closeCreateModal();
+
+            setTimeout(() => {
+              newTestimonialAction.resetData(
+                createInitData({ index: testimonials.length + 1 }),
+              );
+            }, 200);
+          }}
         >
           create
         </button>
@@ -178,63 +179,74 @@ const NewTestimonialModalContent = ({
 };
 
 const NewTestimonial = () => {
-  const newTestimonialStore = NewTestimonialCx.use();
+  const {
+    data: { endorserName, image, text },
+    actions: newTestimonialAction,
+  } = CreateCx.use();
 
   return (
-    <div className="relative h-[465px] w-[346px]">
-      <div className="group/testimonialImage absolute h-full w-full">
+    <div className="relative w-[700px]">
+      <span className="italic text-gray-300">optional</span>
+      <div className="group/testimonial-image relative aspect-square w-[160px] rounded-full">
+        <NewTestimonialMenu />
+
         <UserSelectedImageWrapper
-          dbImageId={newTestimonialStore.data.image.dbConnect.imageId}
-          placeholderText="background image"
+          dbImageId={image.dbConnect.imageId}
+          placeholderText=""
+          isCircle
         >
           {({ dbImageId }) => (
             <ConnectImage dbImageId={dbImageId}>
               {({ urls }) => (
                 <CustomisableImage
                   urls={urls}
-                  position={newTestimonialStore.data.image.position}
+                  position={image.position}
+                  isCircle
                 />
               )}
             </ConnectImage>
           )}
         </UserSelectedImageWrapper>
-        <Menu />
       </div>
-      <div className="absolute bottom-0 z-20 flex h-3/5 w-full flex-col justify-end gap-sm rounded-b-md bg-gradient-to-t from-black to-transparent p-sm text-center text-lg text-white">
-        <div className="overflow-y-auto scrollbar-hide">
-          <TextAreaForm
-            localStateValue={newTestimonialStore.data.text}
-            onSubmit={newTestimonialStore.actions.text.update}
-            textArea={{ placeholder: "Testimonial text..." }}
-          />
-        </div>
-        <div className="shrink-0 font-medium">
+
+      <div className="mt-md">
+        <div className="text-sm text-gray-500">Endorser name</div>
+        <div className="font-medium">
           <TextInputForm
-            localStateValue={newTestimonialStore.data.endorserName}
-            onSubmit={newTestimonialStore.actions.endorserName.update}
-            input={{ placeholder: "Endorser name" }}
+            localStateValue={endorserName}
+            onSubmit={newTestimonialAction.endorserName}
+            input={{ placeholder: "Name" }}
           />
         </div>
+      </div>
+
+      <div className="mt-md">
+        <div className="text-sm text-gray-500">Text</div>
+        <TextAreaForm
+          localStateValue={text}
+          onSubmit={newTestimonialAction.text}
+          textArea={{ placeholder: "Text" }}
+        />
       </div>
     </div>
   );
 };
 
-const Menu = () => {
+const NewTestimonialMenu = () => {
   const {
-    actions: { image: imageAction },
     data: { image },
-  } = NewTestimonialCx.use();
+    actions: { image: imageAction },
+  } = CreateCx.use();
 
   return (
-    <div className="absolute right-1 top-1 z-20 flex items-center gap-sm rounded-md bg-white px-xs py-xxs opacity-30 shadow-lg transition-opacity duration-75 ease-in-out group-hover/testimonialImage:opacity-40 hover:!opacity-100 ">
+    <ComponentMenu styles="right-1 top-1 group-hover/testimonial-image:opacity-40">
       {image.dbConnect.imageId ? (
         <>
           <ComponentMenu.Image.PositionMenu
             position={image.position}
-            updateX={imageAction.position.x.update}
-            updateY={imageAction.position.y.update}
-            styles={{ wrapper: "left-0 top-0" }}
+            updateX={(updatedValue) => imageAction.position.x(updatedValue)}
+            updateY={(updatedValue) => imageAction.position.y(updatedValue)}
+            styles={{ wrapper: "right-0 top-0", menuItemsWrapper: "right-0" }}
           />
 
           <ComponentMenu.Divider />
@@ -243,14 +255,12 @@ const Menu = () => {
 
       <ComponentMenu.Image.UploadAndLibraryModal
         onUploadOrSelect={({ dbImageId }) => {
-          imageAction.dbConnect.imageId.update(dbImageId);
-          imageAction.position.x.update(50);
-          imageAction.position.y.update(50);
+          imageAction.dbConnect.imageId(dbImageId);
         }}
         styles={{
           menu: { itemsWrapper: "right-0 -bottom-1 translate-y-full" },
         }}
       />
-    </div>
+    </ComponentMenu>
   );
 };

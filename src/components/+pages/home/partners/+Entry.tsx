@@ -1,23 +1,22 @@
-import { produce } from "immer";
 import React, { type ReactNode } from "react";
-
-import type { MyDb } from "~/types/database";
-
-import { LandingCx, PartnerCx } from "~/context/entities";
-import { useToast } from "~/hooks";
+import { produce } from "immer";
 
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
+import CmsLayout from "~/components/layouts/Cms";
 import { ComponentMenu } from "~/components/menus";
 import PartnersModal from "~/components/partners-modal/+Entry";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+
+import { LandingCx, PartnerCx } from "~/context/entities";
 import { UedCx } from "~/context/user-editable-data";
-import CmsLayout from "~/components/layouts/Cms";
+import { useToast } from "~/hooks";
+import type { MyDb } from "~/types/database";
 
 const Partners = () => (
-  <div>
+  <div className="group/partners">
     <Headings />
     <Entries />
   </div>
@@ -104,7 +103,7 @@ const Entries = () => {
 
   return (
     <div className="mt-md">
-      <CmsLayout.EditBar>
+      <CmsLayout.EditBar className="opacity-40 group-hover/testimonials:opacity-80 hover:!opacity-100">
         <PartnersModal
           button={({ openModal }) => (
             <div

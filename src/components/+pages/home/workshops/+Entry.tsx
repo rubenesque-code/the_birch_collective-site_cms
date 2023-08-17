@@ -1,9 +1,10 @@
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { ComponentMenu } from "~/components/menus";
-import { Icon } from "~/components/icons";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
+import { Icon } from "~/components/icons";
+import { ComponentMenu } from "~/components/menus";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+
 import { UedCx } from "~/context/user-editable-data";
 
 const Workshops = () => {
@@ -102,7 +103,7 @@ const TextOverlay = () => {
         <TextAreaForm
           localStateValue={textOverlay.body}
           onSubmit={textOverlayAction.body}
-          tooltip="click to edit body"
+          tooltip="click to edit text"
           textArea={{
             placeholder: "workshops banner body",
           }}

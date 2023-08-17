@@ -1,18 +1,17 @@
-import { produce } from "immer";
 import React, { type ReactNode } from "react";
-
-import { ProgrammeCx } from "~/context/entities";
-import { LandingCx } from "~/context/entities/landing";
-import { UedCx } from "~/context/user-editable-data";
-
-import type { MyDb } from "~/types/database";
-import { useToast } from "~/hooks";
+import { produce } from "immer";
 
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
 import { ComponentMenu } from "~/components/menus";
 import ProgrammesModal from "~/components/programmes-modal/+Entry";
+
+import { ProgrammeCx } from "~/context/entities";
+import { LandingCx } from "~/context/entities/landing";
+import { UedCx } from "~/context/user-editable-data";
+import { useToast } from "~/hooks";
+import type { MyDb } from "~/types/database";
 
 const Programmes = () => (
   <div className="group/programmes">
@@ -104,7 +103,7 @@ const EntriesSection = () => {
 
   return (
     <div className="mt-md">
-      <CmsLayout.EditBar>
+      <CmsLayout.EditBar className="opacity-40 group-hover/programmes:opacity-80 hover:!opacity-100">
         <ProgrammesModal
           button={({ openModal }) => (
             <CmsLayout.EditBar.Button.Edit

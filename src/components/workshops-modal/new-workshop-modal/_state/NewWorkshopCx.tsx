@@ -1,7 +1,7 @@
-import { produce } from "immer";
 import { createContext, useContext, useRef, type ReactNode } from "react";
-import * as z from "zustand";
+import { produce } from "immer";
 import _ from "lodash";
+import * as z from "zustand";
 
 import { generateUid } from "~/lib/external-packages-rename";
 import type { MyDb } from "~/types/database";
@@ -38,11 +38,11 @@ export const createInitData = (input: { index: number }): Workshop => ({
   },
   info: [],
   mainText: "",
-  photoAlbum: { entries: [], heading: "" },
+  photoAlbum: { entries: [], heading: "", use: true },
   sections: [],
   signUp: {
     heading: "",
-    link: "",
+    buttonText: "",
     text: "",
   },
   subtitle: "",

@@ -7,12 +7,12 @@ import {
 } from "react";
 import { useStore } from "zustand";
 
-import type { MyDb } from "~/types/database";
+import { createStore } from "./createStore";
+import type { Store } from "./types";
 
 import { useDocRevisionData } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
-import { createStore } from "./createStore";
-import type { Store } from "./types";
+import type { MyDb } from "~/types/database";
 
 type ContextValue = { store: Store } & {
   revision: {
@@ -64,7 +64,7 @@ function Provider({
     revision: {
       isChange,
       undoKey,
-      saveData,
+      saveData: { id: "programmes-page", ...saveData },
       handleUndo,
       onSaveSuccess: () => {
         setInitData(store.data);

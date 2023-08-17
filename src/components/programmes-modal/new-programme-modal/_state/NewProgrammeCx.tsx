@@ -1,7 +1,7 @@
-import { produce } from "immer";
 import { createContext, useContext, useRef, type ReactNode } from "react";
-import * as z from "zustand";
+import { produce } from "immer";
 import _ from "lodash";
+import * as z from "zustand";
 
 import { generateUid } from "~/lib/external-packages-rename";
 import type { MyDb } from "~/types/database";
@@ -54,6 +54,17 @@ export const createInitData = (input: { index: number }): Programme => ({
     mainText: "",
   },
   title: "",
+  photoAlbum: {
+    entries: [],
+    heading: "",
+    use: true,
+  },
+  signUp: {
+    buttonText: "",
+    heading: "",
+    text: "",
+  },
+  usePosters: true,
 });
 
 const createStore = (input: { index: number }) => {

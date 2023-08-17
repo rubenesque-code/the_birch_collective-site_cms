@@ -1,20 +1,21 @@
-import ReactTextareaAutosize from "react-textarea-autosize";
 import { useMemo, useState } from "react";
+import ReactTextareaAutosize from "react-textarea-autosize";
 
-import { WarningPanel } from "~/components/WarningPanel";
 import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
+import { WarningPanel } from "~/components/WarningPanel";
+import { WithTooltip } from "~/components/WithTooltip";
+
 import { AboutUsEntryCx } from "~/context/entities";
+import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
 import { useToast } from "~/hooks";
-import { generateUid } from "~/lib/external-packages-rename";
 import { useFocused } from "~/hooks/useFocused";
-import { UedCx } from "~/context/user-editable-data";
-import { WithTooltip } from "~/components/WithTooltip";
+import { generateUid } from "~/lib/external-packages-rename";
 
 const AboutUs = () => {
   const {
@@ -28,7 +29,7 @@ const AboutUs = () => {
   const sorted = useMemo(() => deepSortByIndex(entries), [entries]);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="group/about flex flex-col items-center">
       <Heading />
       <div className="flex w-full flex-col items-center pl-2xl">
         {!entries.length ? (
@@ -103,7 +104,7 @@ const AddEntryForm = () => {
   } = UedCx.Pages.Landing.useAction();
 
   return (
-    <div className="pl-xl">
+    <div className="pl-xl opacity-50 group-hover/about:opacity-80 hover:!opacity-100">
       <div
         className={`rounded-md px-4 py-2 transition-all duration-100 ease-in-out ${
           isFocused ? "border border-blue-300" : ""

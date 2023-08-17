@@ -1,4 +1,5 @@
 // /** @typedef  {import("@trivago/prettier-plugin-sort-imports").PluginConfig} SortImportsConfig*/
+/** @type {import("@ianvs/prettier-plugin-sort-imports").PrettierConfig} */
 /** @typedef  {import("prettier").Config} PrettierConfig*/
 
 /** @type { PrettierConfig | SortImportsConfig } */
@@ -11,26 +12,45 @@ const config = {
   trailingComma: "all",
   tabWidth: 2,
   plugins: [
-    // "@trivago/prettier-plugin-sort-imports",
+    "@ianvs/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss",
   ],
+
+  /*   importOrder: ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+  importOrderSeparation: true,
+  importOrderSortSpecifiers: true, */
+
+  /*   importOrder: [
+    "^@core/(.*)$",
+    "",
+    "^@server/(.*)$",
+    "",
+    "^@ui/(.*)$",
+    "",
+    "^[./]",
+  ], */
+
   importOrder: [
     "^(react/(.*)$)|^(react$)|^(react-native(.*)$)",
     "^(next/(.*)$)|^(next$)",
     "<THIRD_PARTY_MODULES>",
     "",
-    "^~/utils/(.*)$",
     "^~/components/(.*)$",
+    "",
+    "^[./*]",
+    "",
+    "^~/utils/(.*)$",
     "^~/styles/(.*)$",
     "^~/(.*)$",
-    "^[./]",
   ],
-  importOrderSeparation: true,
-  importOrderSortSpecifiers: true,
-  importOrderBuiltinModulesToTop: true,
+
+  importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
+  importOrderTypeScriptVersion: "5.0.0",
+
+  /*   importOrderBuiltinModulesToTop: true,
   importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
   importOrderMergeDuplicateImports: true,
-  importOrderCombineTypeAndValueImports: true,
+  importOrderCombineTypeAndValueImports: true, */
 };
 
 module.exports = config;

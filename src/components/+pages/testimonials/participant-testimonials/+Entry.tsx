@@ -1,19 +1,20 @@
 import type { ReactElement } from "react";
 
+import { CustomisableImage } from "~/components/CustomisableImage";
+import { ConnectImage } from "~/components/DbImageWrapper";
+import { TextAreaForm } from "~/components/forms";
+import { Icon } from "~/components/icons";
+import { ImagePlaceholder } from "~/components/ImagePlaceholder";
+import CmsLayout from "~/components/layouts/Cms";
+import ParticipantTestimonialsModal from "~/components/participant-testimonials-modal/+Entry";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+
+import { Slides } from "./slides/+Entry";
+
+import { ParticipantTestimonialCx } from "~/context/entities";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { useHovered } from "~/hooks";
-
-import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import { ImagePlaceholder } from "~/components/ImagePlaceholder";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { Icon } from "~/components/icons";
-import CmsLayout from "~/components/layouts/Cms";
-import { ParticipantTestimonialCx } from "~/context/entities";
-import { EditModal } from "./edit/+Entry";
-import { Slides } from "./slides/+Entry";
-import { TextAreaForm } from "~/components/forms";
 
 const ParticipantTestimonials = () => {
   const {
@@ -33,7 +34,7 @@ const ParticipantTestimonials = () => {
 
       <div className="mt-lg">
         <CmsLayout.EditBar>
-          <EditModal
+          <ParticipantTestimonialsModal
             button={({ openModal }) => (
               <div
                 className="my-btn my-btn-neutral flex cursor-pointer items-center gap-xs rounded-sm border-transparent"

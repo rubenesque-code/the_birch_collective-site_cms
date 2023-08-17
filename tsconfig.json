@@ -25,7 +25,8 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
-    "**/*.mjs"
+    "**/*.mjs",
+    "src/pages/api/sheets.ts"
   ],
   "exclude": ["node_modules"]
 }

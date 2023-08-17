@@ -2,23 +2,23 @@ import {
   createContext,
   useContext,
   useRef,
-  type ReactNode,
   useState,
+  type ReactNode,
 } from "react";
 import { useStore } from "zustand";
 
-import type { Store } from "./types";
-import type { MyDb } from "~/types/database";
-
 import { createStore } from "./createStore";
-import { generateUid } from "~/lib/external-packages-rename";
+import type { Store } from "./types";
+
 import { useDocRevisionData } from "~/hooks";
+import { generateUid } from "~/lib/external-packages-rename";
+import type { MyDb } from "~/types/database";
 
 type ContextValue = { store: ReturnType<typeof createStore> } & {
   revision: {
     isChange: boolean;
     undoKey: string;
-    saveData: Partial<MyDb["singles"]["header"]>;
+    saveData: Partial<MyDb["singles"]["header"]> | null;
     handleUndo: () => void;
     onSaveSuccess: () => void;
   };
