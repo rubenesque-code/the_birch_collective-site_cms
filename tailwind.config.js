@@ -13,6 +13,7 @@ module.exports = {
     fontFamily: {
       display: ["Amatic SC", "serif"],
       sans: ["Karla", "sans-serif"],
+      mono: ["IBM Plex Mono", "monospace"],
     },
     screens: {
       xs: "410px",
@@ -61,6 +62,9 @@ module.exports = {
         ["my-error"]: "hsl(28 94.4% 92.9%)",
         ["my-error-content"]: "hsl(16 100% 56.1%)",
         "green-active": "#4ade80",
+        overlayLight: "rgba(237, 242, 247, 0.2)",
+        overlayMid: "rgba(237, 242, 247, 0.6)",
+        overlayDark: "rgba(0, 0, 0, 0.65)",
       },
       backgroundImage: {
         donate: "url('/images/fern.jpg')",

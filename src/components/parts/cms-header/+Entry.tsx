@@ -1,9 +1,10 @@
-import { MyMenu } from "~/components/styled-bases";
-import { SideBarMenu } from "./SideBarMenu";
-import { WithTooltip } from "~/components/WithTooltip";
 import { Icon } from "~/components/icons";
-import { RevisionButtons } from "./RevisionButtons";
+import { MyMenu } from "~/components/styled-bases";
+import { WithTooltip } from "~/components/WithTooltip";
+
 import { ComponentApiCx, type ContextApiCxProps } from "./_state";
+import { RevisionButtons } from "./RevisionButtons";
+import { SideBarMenu } from "./SideBarMenu";
 
 const CmsHeader = (props: ContextApiCxProps) => (
   <ComponentApiCx.Provider {...props}>

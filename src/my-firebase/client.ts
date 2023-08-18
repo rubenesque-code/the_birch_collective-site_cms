@@ -4,6 +4,7 @@ import {
   connectFirestoreEmulator,
   getFirestore,
 } from "firebase/firestore/lite";
+import { getFunctions } from "firebase/functions";
 import { connectStorageEmulator, getStorage } from "firebase/storage";
 
 const config = {
@@ -18,6 +19,7 @@ const app = !getApps().length ? initializeApp(config) : getApp();
 const firestore = getFirestore(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
+const functions = getFunctions(app, "europe-west2");
 
 if (process.env.NODE_ENV === "development" && app) {
   connectAuthEmulator(auth, "http://127.0.0.1:9099/");
@@ -31,4 +33,4 @@ if (process.env.NODE_ENV === "development" && app) {
   }
 }
 
-export { auth, firestore, storage };
+export { auth, firestore, storage, functions };

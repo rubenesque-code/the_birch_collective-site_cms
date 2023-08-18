@@ -24,6 +24,11 @@ import { UedCx } from "~/context/user-editable-data";
 import { myDb } from "~/my-firebase/firestore";
 import type { MyDb } from "~/types/database";
 
+// MUST DO
+// □ use new database?
+// □ if so, add admin functions
+// □ update domain in domain.ts. Will probably deploy this site seperately.
+
 // CHECK
 // □ check image blur up works.
 
@@ -60,6 +65,7 @@ import type { MyDb } from "~/types/database";
 // □ make form nicer. Only silde the text. Keep button in place but animate text within.
 // □ workshop subtitle option on workshops page. put toggle button? Would have to be on modal too.
 // □ short main texts shouldn't go to double columns
+// □ apply e.g. responsive changes form frontend to this cms.
 
 // STATE
 // □ could have a queryOne in state data e.g. for programmes/testimonials

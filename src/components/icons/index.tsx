@@ -1,3 +1,6 @@
+import type { ComponentProps } from "react";
+import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   ArrowCounterClockwise,
   ArrowDown,
@@ -6,10 +9,11 @@ import {
   ArrowLineRight,
   ArrowLineUp,
   ArrowRight,
-  ArrowSquareIn,
-  ArrowUp,
   ArrowsCounterClockwise,
   ArrowsOutCardinal,
+  ArrowSquareIn,
+  ArrowSquareOut,
+  ArrowUp,
   CaretDown,
   CaretLeft,
   CaretRight,
@@ -30,13 +34,18 @@ import {
   Gavel,
   GearSix,
   Grains,
+  HandPointing,
+  Handshake,
   Image,
+  Images,
   Info,
   InstagramLogo,
   Leaf,
   LinkedinLogo,
   List,
+  Lock,
   Minus,
+  Money,
   MonitorPlay,
   Moon,
   Mountains,
@@ -47,8 +56,11 @@ import {
   PottedPlant,
   ReadCvLogo,
   SignOut,
+  Slideshow,
+  Spinner,
   Star,
   Sun,
+  Ticket,
   Tipi,
   ToggleLeft,
   Trash,
@@ -57,15 +69,9 @@ import {
   Warning,
   WarningCircle,
   XSquare,
-  Spinner,
-  Ticket,
-  ArrowSquareOut,
-  Money,
-  HandPointing,
-  Handshake,
-  Slideshow,
-  Images,
 } from "@phosphor-icons/react";
+
+import type { MyOmit } from "~/types/utilities";
 
 const Icon = () => {
   throw new Error(
@@ -127,11 +133,7 @@ Icon.ExternalLink = ArrowSquareOut;
 Icon.Paid = Money;
 Icon.SignUp = HandPointing;
 Icon.Time = Clock;
-
-import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import type { ComponentProps } from "react";
-import type { MyOmit } from "~/types/utilities";
+Icon.Lock = Lock;
 
 const AboutUsIcon = (
   props: MyOmit<ComponentProps<typeof FontAwesomeIcon>, "icon">,

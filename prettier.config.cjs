@@ -1,4 +1,3 @@
-// /** @typedef  {import("@trivago/prettier-plugin-sort-imports").PluginConfig} SortImportsConfig*/
 /** @type {import("@ianvs/prettier-plugin-sort-imports").PrettierConfig} */
 /** @typedef  {import("prettier").Config} PrettierConfig*/
 
@@ -16,20 +15,6 @@ const config = {
     "prettier-plugin-tailwindcss",
   ],
 
-  /*   importOrder: ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
-  importOrderSeparation: true,
-  importOrderSortSpecifiers: true, */
-
-  /*   importOrder: [
-    "^@core/(.*)$",
-    "",
-    "^@server/(.*)$",
-    "",
-    "^@ui/(.*)$",
-    "",
-    "^[./]",
-  ], */
-
   importOrder: [
     "^(react/(.*)$)|^(react$)|^(react-native(.*)$)",
     "^(next/(.*)$)|^(next$)",
@@ -46,11 +31,6 @@ const config = {
 
   importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
   importOrderTypeScriptVersion: "5.0.0",
-
-  /*   importOrderBuiltinModulesToTop: true,
-  importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
-  importOrderMergeDuplicateImports: true,
-  importOrderCombineTypeAndValueImports: true, */
 };
 
 module.exports = config;

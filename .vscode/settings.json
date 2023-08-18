@@ -1,9 +1,5 @@
 {
   "window.title": "birch - cms - jun 2023",
-  /*   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  }, */
   "editor.formatOnSave": true,
-  // "editor.defaultFormatter": "esbenp.prettier-vscode",
   "css.lint.unknownAtRules": "ignore"
 }
