@@ -1,11 +1,19 @@
-import Link from "next/link";
-import { Menu, Transition } from "@headlessui/react";
-import { Icon } from "~/components/icons";
 import React from "react";
-import { useQuery } from "react-query";
-import { myDb } from "~/my-firebase/firestore";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { Menu, Transition } from "@headlessui/react";
 import { produce } from "immer";
+import { useQuery } from "react-query";
+
+import { Icon } from "~/components/icons";
+import { Modal } from "~/components/styled-bases";
+import UnsavedWarningPanel from "~/components/UnsavedWarningPanel";
 import { WithTooltip } from "~/components/WithTooltip";
+
+import { ComponentApiCx } from "./_state";
+
+import { myDb } from "~/my-firebase/firestore";
+
 // import { signOut } from "next-auth/react";
 
 // import { MainMenuIcon, SignOutIcon } from "~/components/ui-elements";
@@ -79,13 +87,47 @@ const PageLinks = () => (
   </div>
 );
 
-const PageLink = ({ route, text }: { text: string; route: string }) => (
-  <Link href={route} passHref>
-    <div className="text-gray-600 transition-colors duration-75 ease-in-out hover:text-blue-600">
-      {text}
-    </div>
-  </Link>
-);
+const PageLink = (props: { text: string; route: string }) => {
+  const {
+    data: { isChange },
+  } = ComponentApiCx.use();
+
+  const router = useRouter();
+
+  const currentRoute = router.pathname;
+
+  const goToPage = () => router.push(props.route);
+
+  return (
+    <Modal.WithVisibilityProvider
+      button={({ openModal: openWarningModal }) => (
+        <div
+          className="cursor-pointer text-gray-600 transition-colors duration-75 ease-in-out hover:text-blue-600"
+          onClick={() => {
+            if (currentRoute === props.route) {
+              return;
+            }
+
+            if (isChange) {
+              openWarningModal();
+              return;
+            }
+
+            void goToPage();
+          }}
+        >
+          {props.text}
+        </div>
+      )}
+      panelContent={({ closeModal }) => (
+        <UnsavedWarningPanel
+          callback={() => void goToPage()}
+          closeModal={closeModal}
+        />
+      )}
+    />
+  );
+};
 
 const Programmes = () => {
   const [isExpanded, setIsExpanded] = React.useState(false);
@@ -233,16 +275,55 @@ const NestedRouteLink = ({
   text: string;
   id: string;
   parentType: "programme" | "workshop";
-}) => (
-  <Link
-    href={`/${parentType === "programme" ? "programmes" : "workshops"}/${id}`}
-    passHref
-  >
-    <div className="max-w-[200px] capitalize text-gray-600 transition-colors duration-75 ease-in-out hover:text-blue-600">
-      {text}
-    </div>
-  </Link>
-);
+}) => {
+  const {
+    data: { isChange },
+  } = ComponentApiCx.use();
+
+  const router = useRouter();
+
+  const currentRoute = !router.query.id
+    ? "not-nested-route"
+    : `/${parentType === "programme" ? "programmes" : "workshops"}/${
+        router.query.id as string
+      }`;
+
+  const destinationRoute = `/${
+    parentType === "programme" ? "programmes" : "workshops"
+  }/${id}`;
+
+  const goToPage = () => router.push(destinationRoute);
+
+  return (
+    <Modal.WithVisibilityProvider
+      button={({ openModal: openWarningModal }) => (
+        <div
+          className="max-w-[200px] cursor-pointer capitalize text-gray-600 transition-colors duration-75 ease-in-out hover:text-blue-600"
+          onClick={() => {
+            if (currentRoute === destinationRoute) {
+              return;
+            }
+
+            if (isChange) {
+              openWarningModal();
+              return;
+            }
+
+            void goToPage();
+          }}
+        >
+          {text}
+        </div>
+      )}
+      panelContent={({ closeModal }) => (
+        <UnsavedWarningPanel
+          callback={() => void goToPage()}
+          closeModal={closeModal}
+        />
+      )}
+    />
+  );
+};
 
 const Logout = () => (
   <button

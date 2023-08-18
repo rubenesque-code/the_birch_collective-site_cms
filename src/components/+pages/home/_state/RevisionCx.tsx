@@ -5,8 +5,6 @@ import { UedCx } from "~/context/user-editable-data";
 import { useToast } from "~/hooks";
 import { myDb } from "~/my-firebase/firestore";
 
-// TODO: seperate stores for each data type?
-
 type ContextValue = {
   data: {
     isChange: boolean;

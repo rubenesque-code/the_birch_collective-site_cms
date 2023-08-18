@@ -7,6 +7,7 @@ import { isDevMode } from "~/helpers/environment";
 import { domain, routes } from "~/static-data";
 import type { AuthPersistence } from "~/types/auth";
 
+// · if same email gets validated using func below twice (e.g. in useEffect in dev mode), the email link will be invalidated.
 const sendSignInLinkToEmail = (input: { email: string }) => {
   const actionCodeSettings = {
     url: `${domain}/${routes.sign_in_validation}`,

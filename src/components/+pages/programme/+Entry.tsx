@@ -1,29 +1,28 @@
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
-import { myDb } from "~/my-firebase/firestore";
-
-import { RevisionCx } from "./_state";
-
+import CmsLayout from "~/components/layouts/Cms";
+import SiteLayout from "~/components/layouts/Site";
 import { PageDataFetch } from "~/components/PageDataFetch";
 import CmsHeader from "~/components/parts/cms-header/+Entry";
 import SiteFooter from "~/components/parts/site-footer/+Entry";
 import SiteHeader from "~/components/parts/site-header/+Entry";
 
-import CmsLayout from "~/components/layouts/Cms";
-import SiteLayout from "~/components/layouts/Site";
-import { UedCx } from "~/context/user-editable-data";
-import type { MyDb } from "~/types/database";
-import { useDynamicRouteParams } from "~/hooks";
+import { RevisionCx } from "./_state";
 import BannerImage from "./banner-image/+Entry";
 import Headings from "./headings/+Entry";
-import MainText from "./main-text/+Entry";
 import Info from "./info/+Entry";
+import MainText from "./main-text/+Entry";
+import PhotoAlbum from "./photo-album/+Entry";
 import Posters from "./posters/+Entry";
 import Sections from "./sections/+Entry";
 import SignUp from "./sign-up/+Entry";
 import TopEditBar from "./top-edit-bar/+Entry";
-import PhotoAlbum from "./photo-album/+Entry";
+
+import { UedCx } from "~/context/user-editable-data";
+import { useDynamicRouteParams } from "~/hooks";
+import { myDb } from "~/my-firebase/firestore";
+import type { MyDb } from "~/types/database";
 
 const AboutPage = () => (
   <AwaitParams>
@@ -144,7 +143,7 @@ const InitDbData = ({
   idParam: string;
 }) => {
   const programmeQuery = useQuery(
-    "programme",
+    ["programme", idParam],
     async () => await myDb.programme.fetchOne(idParam),
   );
 

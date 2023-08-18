@@ -1,10 +1,13 @@
 import { Icon } from "~/components/icons";
-import { MyMenu } from "~/components/styled-bases";
+import { Modal, MyMenu } from "~/components/styled-bases";
+import UnsavedWarningPanel from "~/components/UnsavedWarningPanel";
 import { WithTooltip } from "~/components/WithTooltip";
 
 import { ComponentApiCx, type ContextApiCxProps } from "./_state";
 import { RevisionButtons } from "./RevisionButtons";
 import { SideBarMenu } from "./SideBarMenu";
+
+import fbAuth from "~/my-firebase/auth";
 
 const CmsHeader = (props: ContextApiCxProps) => (
   <ComponentApiCx.Provider {...props}>
@@ -39,18 +42,44 @@ const UserStatusButton = () => (
   </WithTooltip>
 );
 
-const StatusMenuContent = () => (
-  <div className="bg-white p-6">
-    <h3>Admin</h3>
-    <div className="ml-[20px] mt-6 flex flex-col gap-4">
-      <div className="flex cursor-pointer items-center gap-7 rounded-lg px-4 py-1 hover:bg-gray-100">
-        <div className="text-2xl text-gray-400">
-          <Icon.SignOut />
-        </div>
-        <div className="whitespace-nowrap text-sm font-light text-gray-500">
-          Sign out
-        </div>
+const StatusMenuContent = () => {
+  const {
+    data: { isChange },
+  } = ComponentApiCx.use();
+
+  return (
+    <div className="bg-white p-6">
+      <h3>Admin</h3>
+      <div className="ml-[20px] mt-6 flex flex-col gap-4">
+        <Modal.WithVisibilityProvider
+          button={({ openModal: openWarningModal }) => (
+            <div
+              className="flex cursor-pointer items-center gap-7 rounded-lg px-4 py-1 hover:bg-gray-100"
+              onClick={() => {
+                if (isChange) {
+                  openWarningModal();
+                  return;
+                }
+
+                void fbAuth.mutate.signOut();
+              }}
+            >
+              <div className="text-2xl text-gray-400">
+                <Icon.SignOut />
+              </div>
+              <div className="whitespace-nowrap text-sm font-light text-gray-500">
+                Sign out
+              </div>
+            </div>
+          )}
+          panelContent={({ closeModal }) => (
+            <UnsavedWarningPanel
+              callback={() => void fbAuth.mutate.signOut()}
+              closeModal={closeModal}
+            />
+          )}
+        />
       </div>
     </div>
-  </div>
-);
+  );
+};
