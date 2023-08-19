@@ -15,15 +15,6 @@ import type { AuthPersistence } from "~/types/auth";
 const SignInPage = () => (
   <div className="grid h-screen place-items-center">
     <div>
-      <div>
-        <button
-          onClick={() =>
-            void fbFunctions.auth.addAdmin("a.ruben00001@gmail.com")
-          }
-        >
-          Add admin
-        </button>
-      </div>
       <div className="flex flex-col items-center">
         <h1 className="font-display text-6xl font-bold tracking-wider text-brandLightOrange">
           The Birch Collective
