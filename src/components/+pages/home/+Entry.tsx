@@ -25,19 +25,20 @@ import { myDb } from "~/my-firebase/firestore";
 import type { MyDb } from "~/types/database";
 
 // MUST DO
-// □ add admin emails.
 
 // CHECK
-// □ check image blur up works.
+// □ check image blur up works
 // □ remove sheet url from .env.local
+
+// TO DO
 
 // REFACTOR
 // □ abstraction for react-query onMutate, onSuccess, etc.?
 // □ image abstraction?
 // □ abstraction for unfound entity: e.g. image, programme, supporter.
-// □ programmes modal on home page should be different. Same as one on programmes page?
 
 // OTHER
+
 // □ need to have production values in env.local?
 // □ use zod in saving to db?
 // □ should be able to work out by aspect ratio of image container and aspect ratio of image natural dimensions whether can move up/down and/or left/right.
@@ -65,6 +66,7 @@ import type { MyDb } from "~/types/database";
 // □ workshop subtitle option on workshops page. put toggle button? Would have to be on modal too.
 // □ short main texts shouldn't go to double columns
 // □ apply e.g. responsive changes form frontend to this cms.
+// □ clean up firestore functs. Some unneccessary. Apply helpers.
 
 // STATE
 // □ could have a queryOne in state data e.g. for programmes/testimonials

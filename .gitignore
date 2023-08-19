@@ -37,6 +37,3 @@ next-env.d.ts
 
 # google
 secrets.json
-
-#firebase
-/functions

@@ -7,6 +7,7 @@ import { ComponentApiCx, type ContextApiCxProps } from "./_state";
 import { RevisionButtons } from "./RevisionButtons";
 import { SideBarMenu } from "./SideBarMenu";
 
+import AuthCx from "~/context/AuthenticationContext";
 import fbAuth from "~/my-firebase/auth";
 
 const CmsHeader = (props: ContextApiCxProps) => (
@@ -47,14 +48,19 @@ const StatusMenuContent = () => {
     data: { isChange },
   } = ComponentApiCx.use();
 
+  const { user } = AuthCx.use();
+
   return (
-    <div className="bg-white p-6">
+    <div className="rounded-md bg-white p-lg">
       <h3>Admin</h3>
-      <div className="ml-[20px] mt-6 flex flex-col gap-4">
+
+      <p className="mt-xxs text-sm text-gray-400">{user.email}</p>
+
+      <div className="ml-[20px] mt-lg flex flex-col gap-4">
         <Modal.WithVisibilityProvider
           button={({ openModal: openWarningModal }) => (
             <div
-              className="flex cursor-pointer items-center gap-7 rounded-lg px-4 py-1 hover:bg-gray-100"
+              className="group/button flex cursor-pointer items-center gap-7 rounded-lg px-4 py-1 transition-all duration-100 ease-in-out hover:bg-gray-100"
               onClick={() => {
                 if (isChange) {
                   openWarningModal();
@@ -67,7 +73,8 @@ const StatusMenuContent = () => {
               <div className="text-2xl text-gray-400">
                 <Icon.SignOut />
               </div>
-              <div className="whitespace-nowrap text-sm font-light text-gray-500">
+
+              <div className="whitespace-nowrap text-sm font-light text-gray-500 transition-colors duration-100 ease-in-out group-hover/button:text-blue-400">
                 Sign out
               </div>
             </div>

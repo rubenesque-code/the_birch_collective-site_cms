@@ -331,7 +331,7 @@ const Logout = () => (
     // onClick={() => void signOut()}
     type="button"
   >
-    <span className="text-2xl text-gray-400 transition-colors duration-75 ease-in-out group-hover:text-my-alert-content">
+    <span className="text-2xl text-gray-400 transition-colors duration-75 ease-in-out group-hover:text-blue-400">
       <Icon.SignOut />
     </span>
     <span className="transition-colors duration-75 ease-in-out hover:text-gray-800">

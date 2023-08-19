@@ -1,15 +1,17 @@
 import { Popover } from "@headlessui/react";
 import Markdown from "markdown-to-jsx";
+
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { ConnectImage } from "~/components/DbImageWrapper";
-import TextInputPopoverPanel from "~/components/TextInputPopoverPanel";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { WithTooltip } from "~/components/WithTooltip";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
+import TextInputPopoverPanel from "~/components/TextInputPopoverPanel";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { WithTooltip } from "~/components/WithTooltip";
+
 import { UedCx } from "~/context/user-editable-data";
 
 const MainText = () => {
@@ -148,7 +150,6 @@ const AmyImage = () => {
       data: { aboutAmy },
     },
   } = UedCx.Pages.Workshops.use();
-  console.log("aboutAmy:", aboutAmy);
 
   return (
     <div className="group/amy-image relative h-[120px] w-[120px] shrink-0 rounded-full">

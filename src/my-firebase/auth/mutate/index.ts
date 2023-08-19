@@ -3,9 +3,8 @@ import * as firebaseAuth from "firebase/auth";
 import { auth } from "../../client";
 import query from "../query";
 
-import { isDevMode } from "~/helpers/environment";
 import { domain, routes } from "~/static-data";
-import type { AuthPersistence } from "~/types/auth";
+import type { AuthPersistence, User } from "~/types/auth";
 
 // · if same email gets validated using func below twice (e.g. in useEffect in dev mode), the email link will be invalidated.
 const sendSignInLinkToEmail = (input: { email: string }) => {
@@ -40,16 +39,10 @@ const signInWithEmailLink = async ({
   emailLink: string;
 }) => {
   try {
-    const signInRes = await firebaseAuth.signInWithEmailLink(
-      auth,
-      email,
-      emailLink,
-    );
-    console.log("signInRes:", signInRes);
+    await firebaseAuth.signInWithEmailLink(auth, email, emailLink);
 
     return true;
   } catch (err) {
-    console.log("err:", err);
     return false;
   }
 };
@@ -62,7 +55,7 @@ const initAuthStateListener = ({
   onInit,
   onUnauthenticated,
 }: {
-  onAuthenticated: () => void;
+  onAuthenticated: (arg0: { user: User }) => void;
   onInit: () => void;
   onUnauthenticated: () => void;
 }) =>
@@ -73,10 +66,13 @@ const initAuthStateListener = ({
 
       await signOut();
     } else {
-      const isAdmin = isDevMode ? true : await query.checkUserIsAdmin(user);
+      const isAdmin = await query.checkUserIsAdmin(user);
+
+      console.log("user:", user.email);
 
       if (isAdmin) {
-        onAuthenticated();
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        onAuthenticated({ user: { email: user.email! } });
       } else {
         onUnauthenticated();
 
