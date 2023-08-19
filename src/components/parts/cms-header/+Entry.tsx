@@ -54,7 +54,8 @@ const StatusMenuContent = () => {
     <div className="rounded-md bg-white p-lg">
       <h3>Admin</h3>
 
-      <p className="mt-xxs text-sm text-gray-400">{user.email}</p>
+      {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion*/}
+      <p className="mt-xxs text-sm text-gray-400">{user!.email}</p>
 
       <div className="ml-[20px] mt-lg flex flex-col gap-4">
         <Modal.WithVisibilityProvider

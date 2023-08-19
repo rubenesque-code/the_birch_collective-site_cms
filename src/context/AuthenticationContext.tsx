@@ -14,7 +14,7 @@ export default function AuthCx() {
 type Value = {
   authListenerIsInit: boolean;
   isAuthenticated: boolean;
-  user: User;
+  user: User | null;
 };
 
 const AuthenticationContext = React.createContext<Value | null>(null);
@@ -63,7 +63,7 @@ AuthCx.Provider = function AuthenticationProvider({
     });
   }, [authListenerIsInit]);
 
-  if (!authListenerIsInit || !user) {
+  if (!authListenerIsInit) {
     return (
       <div className="fixed inset-0 grid place-items-center">
         <div className="flex flex-col items-center gap-md">

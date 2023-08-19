@@ -29,6 +29,7 @@ import type { MyDb } from "~/types/database";
 // CHECK
 // □ check image blur up works
 // □ remove sheet url from .env.local
+// □ firestore + storage rules - open reads is unavoidable?
 
 // TO DO
 
