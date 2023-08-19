@@ -15,12 +15,21 @@ import type { AuthPersistence } from "~/types/auth";
 const SignInPage = () => (
   <div className="grid h-screen place-items-center">
     <div>
+      <div>
+        <button
+          onClick={() =>
+            void fbFunctions.auth.addAdmin("a.ruben00001@gmail.com")
+          }
+        >
+          Add admin
+        </button>
+      </div>
       <div className="flex flex-col items-center">
         <h1 className="font-display text-6xl font-bold tracking-wider text-brandLightOrange">
           The Birch Collective
         </h1>
         <div className="mt-xl flex flex-col items-start rounded-lg border p-md">
-          <div className="border-b pb-sm">
+          <div className="w-full border-b pb-sm">
             <p className="text-gray-300">Content Managment System</p>
 
             <h2 className="mt-xs font-serif text-xl tracking-wide text-gray-700">
@@ -132,7 +141,10 @@ const SignInForm = () => {
             value={staySignedIn}
           />
 
-          <button className="my-btn my-btn-neutral mt-md" type="submit">
+          <button
+            className="mt-md rounded-md bg-[#599483] px-[0.75rem] py-xxs text-sm font-medium text-white transition-colors ease-in-out hover:bg-brandGreen"
+            type="submit"
+          >
             Submit
           </button>
         </fieldset>

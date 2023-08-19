@@ -7,6 +7,7 @@ import { functions } from "~/my-firebase/client";
 const addAdmin = async (email: string) => {
   const addAdminFirebaseFunc = httpsCallable(functions, "addAdminRole");
   const res = await addAdminFirebaseFunc(email);
+  console.log("res:", res);
   return res;
 };
 

@@ -25,12 +25,11 @@ import { myDb } from "~/my-firebase/firestore";
 import type { MyDb } from "~/types/database";
 
 // MUST DO
-// □ use new database?
-// □ if so, add admin functions
-// □ update domain in domain.ts. Will probably deploy this site seperately.
+// □ add admin emails.
 
 // CHECK
 // □ check image blur up works.
+// □ remove sheet url from .env.local
 
 // REFACTOR
 // □ abstraction for react-query onMutate, onSuccess, etc.?
