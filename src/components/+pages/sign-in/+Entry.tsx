@@ -1,5 +1,6 @@
 import React from "react";
 import { Transition } from "@headlessui/react";
+import { GoogleLogo } from "@phosphor-icons/react";
 import { useQuery } from "react-query";
 
 import { Icon } from "~/components/icons";
@@ -11,21 +12,40 @@ import fbFunctions from "~/my-firebase/functions";
 import { localStorage } from "~/static-data";
 import type { AuthPersistence } from "~/types/auth";
 
-const SignInPage = () => {
-  return (
-    <div className="grid h-screen place-items-center">
-      <div>
-        <h1 className="font-display text-5xl font-bold tracking-wide text-brandBrown">
+const SignInPage = () => (
+  <div className="grid h-screen place-items-center">
+    <div>
+      <div className="flex flex-col items-center">
+        <h1 className="font-display text-6xl font-bold tracking-wider text-brandLightOrange">
           The Birch Collective
         </h1>
-        <p className="mt-xs text-gray-400">Content Managment System</p>
-        <div className="mt-xl">
-          <SignInForm />
+        <div className="mt-xl flex flex-col items-start rounded-lg border p-md">
+          <div className="border-b pb-sm">
+            <p className="text-gray-300">Content Managment System</p>
+
+            <h2 className="mt-xs font-serif text-xl tracking-wide text-gray-700">
+              Sign in
+            </h2>
+          </div>
+
+          <div className="mt-lg">
+            <SignInForm />
+          </div>
         </div>
       </div>
+
+      <div className="mt-sm pl-xl">
+        <div className="flex items-center text-lg leading-none text-gray-300">
+          <span className="text-blue-300">
+            <GoogleLogo />
+          </span>
+          <span className="tracking-wide">oogle</span>
+        </div>
+        <p className="pl-md text-sm text-gray-300">Authentication</p>
+      </div>
     </div>
-  );
-};
+  </div>
+);
 
 export default SignInPage;
 
@@ -83,31 +103,38 @@ const SignInForm = () => {
 
           void onSendSignInLinkSubmit();
         }}
-        className={`mt-md flex flex-col`}
+        className={`relative mt-md flex flex-col`}
       >
         <fieldset disabled={isFetchingAdminCheck}>
-          <EmailInput
-            onChange={(email) => {
-              setEmail(email);
+          <div className="relative">
+            <EmailInput
+              onChange={(email) => {
+                setEmail(email);
 
-              if (showEmailError) {
-                setShowEmailError(false);
-              }
-            }}
-            value={email}
-          />
+                if (showEmailError) {
+                  setShowEmailError(false);
+                }
+              }}
+              value={email}
+            />
+
+            <p
+              className={`absolute -bottom-xs mt-xs translate-y-full text-my-error-content transition-opacity ease-in-out ${
+                showEmailError ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              Invalid email
+            </p>
+          </div>
+
           <StaySignedInCheckbox
             setValue={setStaySignedIn}
             value={staySignedIn}
           />
 
-          <p
-            className={`mt-xs text-my-error-content transition-opacity ease-in-out ${
-              showEmailError ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            Invalid email
-          </p>
+          <button className="my-btn my-btn-neutral mt-md" type="submit">
+            Submit
+          </button>
         </fieldset>
       </form>
 
@@ -154,7 +181,7 @@ const StaySignedInCheckbox = ({
   setValue: (staySignedIn: boolean) => void;
 }) => (
   <div className={`mt-xs flex items-center justify-end gap-xs `}>
-    <label className={`text-gray-400`} htmlFor={staySignedInCheckboxId}>
+    <label className={`text-sm text-gray-400`} htmlFor={staySignedInCheckboxId}>
       Stay signed in
     </label>
     <input

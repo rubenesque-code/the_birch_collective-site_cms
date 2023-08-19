@@ -14,6 +14,7 @@ module.exports = {
       display: ["Amatic SC", "serif"],
       sans: ["Karla", "sans-serif"],
       mono: ["IBM Plex Mono", "monospace"],
+      serif: ["Open Sans", "sans-serify"],
     },
     screens: {
       xs: "410px",
