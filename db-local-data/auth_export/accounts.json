@@ -1,0 +1,34 @@
+{
+  "kind": "identitytoolkit#DownloadAccountResponse",
+  "users": [
+    {
+      "localId": "CDzmwbCqdNhkRxG8FRJT8s6OGXfr",
+      "createdAt": "1646670711263",
+      "lastLoginAt": "1646670711280",
+      "providerUserInfo": [],
+      "validSince": "1692368059",
+      "email": "a.ruben00001@gmail.com",
+      "emailVerified": true,
+      "disabled": false
+    },
+    {
+      "localId": "q7NH828YP4YYmjjoafTzSeqfTmSb",
+      "createdAt": "1646825947196",
+      "lastLoginAt": "1692377587709",
+      "providerUserInfo": [
+        {
+          "providerId": "password",
+          "email": "admin@email.com",
+          "federatedId": "admin@email.com",
+          "rawId": "admin@email.com"
+        }
+      ],
+      "validSince": "1692368059",
+      "email": "admin@email.com",
+      "emailVerified": true,
+      "disabled": false,
+      "emailLinkSignin": true,
+      "lastRefreshAt": "2023-08-18T16:53:07.709Z"
+    }
+  ]
+}

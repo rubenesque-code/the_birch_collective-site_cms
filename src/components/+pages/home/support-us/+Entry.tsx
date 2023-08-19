@@ -1,21 +1,20 @@
-import { TextAreaForm, TextInputForm } from "~/components/forms";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { ConnectImage } from "~/components/DbImageWrapper";
 import { CustomisableImage } from "~/components/CustomisableImage";
+import { ConnectImage } from "~/components/DbImageWrapper";
+import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { ComponentMenu } from "~/components/menus";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+
 import { UedCx } from "~/context/user-editable-data";
 
-const SupportUs = () => {
-  return (
-    <div className="">
-      <Heading />
-      <div className="mt-xl grid grid-cols-2 gap-md">
-        <Donate />
-        <Volunteer />
-      </div>
+const SupportUs = () => (
+  <div className="">
+    <Heading />
+    <div className="mt-xl grid grid-cols-2 gap-md">
+      <Donate />
+      <Volunteer />
     </div>
-  );
-};
+  </div>
+);
 
 export default SupportUs;
 
@@ -41,20 +40,18 @@ const Heading = () => {
   );
 };
 
-const Donate = () => {
-  return (
-    <div>
-      <div className="group/donate-image relative aspect-square">
-        <DonateImageMenu />
-        <DonateImage />
-        <DonateButton />
-      </div>
-      <div className="mt-5 xs:mt-6 md:mt-8">
-        <DonateDescription />
-      </div>
+const Donate = () => (
+  <div>
+    <div className="group/donate-image relative aspect-square">
+      <DonateImageMenu />
+      <DonateImage />
+      <DonateButton />
     </div>
-  );
-};
+    <div className="mt-5 xs:mt-6 md:mt-8">
+      <DonateDescription />
+    </div>
+  </div>
+);
 
 const DonateImage = () => {
   const {
@@ -174,7 +171,7 @@ const DonateDescription = () => {
 
 const Volunteer = () => (
   <div>
-    <div className="group/donate-image relative aspect-square">
+    <div className="group/volunteer-image relative aspect-square">
       <VolunteerImageMenu />
       <VolunteerImage />
       <VolunteerButton />
