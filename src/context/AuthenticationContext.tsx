@@ -28,7 +28,6 @@ AuthCx.Provider = function AuthenticationProvider({
   const [authListenerIsInit, setAuthListenerIsInit] = React.useState(false);
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const [user, setUser] = React.useState<User | null>(null);
-  console.log("user:", user);
 
   // · workaround for nextjs production warning
   if (typeof document === "undefined") {

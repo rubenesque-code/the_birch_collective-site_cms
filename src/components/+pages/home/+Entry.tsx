@@ -30,6 +30,7 @@ import type { MyDb } from "~/types/database";
 // □ check image blur up works
 // □ remove sheet url from .env.local
 // □ firestore + storage rules - open reads is unavoidable?
+// □ remove unneeded users (ruben@virt....com) from firebase console
 
 // TO DO
 
@@ -40,6 +41,7 @@ import type { MyDb } from "~/types/database";
 
 // OTHER
 
+// □ AuthContext logic, along with firebase initauthstate, seems flawed. Probs need to extract initauthstate into its own context
 // □ need to have production values in env.local?
 // □ use zod in saving to db?
 // □ should be able to work out by aspect ratio of image container and aspect ratio of image natural dimensions whether can move up/down and/or left/right.
@@ -90,25 +92,32 @@ const HomePage = () => (
               />
               <SiteLayout.Body>
                 <SiteHeader />
+
                 <BannerImage />
                 <SiteLayout.Section.Spacing>
                   <OrgHeadings />
                 </SiteLayout.Section.Spacing>
+
                 <SiteLayout.Section.Spacing>
                   <ParticipantTestimonials />
                 </SiteLayout.Section.Spacing>
+
                 <SiteLayout.Section.Spacing>
                   <AboutUs />
                 </SiteLayout.Section.Spacing>
+
                 <SiteLayout.Section.Spacing>
                   <Workshops />
                 </SiteLayout.Section.Spacing>
+
                 <SiteLayout.Section.Spacing>
                   <Programmes />
                 </SiteLayout.Section.Spacing>
+
                 <SiteLayout.Section.Spacing.Vertical>
                   <PhotoAlbum />
                 </SiteLayout.Section.Spacing.Vertical>
+
                 <SiteLayout.Section.Spacing>
                   <SupportUs />
                 </SiteLayout.Section.Spacing>

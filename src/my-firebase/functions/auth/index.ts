@@ -6,7 +6,8 @@ import { functions } from "~/my-firebase/client";
 
 const addAdmin = async (email: string) => {
   const addAdminFirebaseFunc = httpsCallable(functions, "addAdminRole");
-  await addAdminFirebaseFunc(email);
+  const res = await addAdminFirebaseFunc(email);
+  console.log("res:", res);
 };
 
 type CheckIsAdminRes = {
@@ -29,8 +30,11 @@ const checkIsAdmin = async (email: string) => {
       functions,
       "computeIsAdminByEmail",
     );
+
     const isAdminRes = (await checkIsAdminByEmail(email)) as CheckIsAdminRes;
+
     const isAdmin = isAdminRes.data.isAdmin;
+
     return { isAdmin };
   }
 };
