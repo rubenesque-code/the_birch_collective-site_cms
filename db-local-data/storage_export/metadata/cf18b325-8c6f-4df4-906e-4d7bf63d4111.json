@@ -1,0 +1,21 @@
+{
+  "name": "resized/e1571d87-299e-41cb-833f-f40504a78262_2400x1600",
+  "bucket": "birch-collective-develop.appspot.com",
+  "metageneration": 1,
+  "generation": 1688381225790,
+  "contentType": "image/webp",
+  "storageClass": "STANDARD",
+  "contentDisposition": "",
+  "downloadTokens": [
+    "f3877ac8-3250-453c-9a37-650b2d62565f"
+  ],
+  "etag": "zsy9AmbUEXBbaxM5NAO+CzYigNE",
+  "customMetadata": {
+    "resizedImage": "true"
+  },
+  "timeCreated": "2023-07-03T10:47:05.790Z",
+  "updated": "2023-07-03T10:47:05.790Z",
+  "size": 50902,
+  "md5Hash": "OoR83DDIg+fi1SfmdDEGQg==",
+  "crc32c": "4182208173"
+}

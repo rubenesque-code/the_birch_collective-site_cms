@@ -44,6 +44,7 @@ import type { MyDb } from "~/types/database";
 // □ AuthContext logic, along with firebase initauthstate, seems flawed. Probs need to extract initauthstate into its own context
 // □ need to have production values in env.local?
 // □ use zod in saving to db?
+// □ site header overflows. Visible if placeholders there, since they are long.
 // □ should be able to work out by aspect ratio of image container and aspect ratio of image natural dimensions whether can move up/down and/or left/right.
 // □ in revision.cx, on save success should use func input to update 'current db data'
 // □ UserEditableDataCx should be renamed - have other editable Cx e.g. new testimonial. Rename to e.g. page editable cx
@@ -70,6 +71,7 @@ import type { MyDb } from "~/types/database";
 // □ short main texts shouldn't go to double columns
 // □ apply e.g. responsive changes form frontend to this cms.
 // □ clean up firestore functs. Some unneccessary. Apply helpers.
+// □ ui feedback for e.g. image upload timeout.
 
 // STATE
 // □ could have a queryOne in state data e.g. for programmes/testimonials

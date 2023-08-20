@@ -87,8 +87,6 @@ const initAuthStateListener = ({
     } else {
       const isAdmin = await query.checkUserIsAdmin(user);
 
-      console.log("user:", user.email);
-
       if (isAdmin) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         onAuthenticated({ user: { email: user.email! } });

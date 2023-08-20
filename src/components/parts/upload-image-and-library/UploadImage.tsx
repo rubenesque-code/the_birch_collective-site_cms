@@ -1,12 +1,14 @@
-import { type ChangeEvent, useState, useMemo } from "react";
+import { useMemo, useState, type ChangeEvent } from "react";
 import { useMutation } from "react-query";
-import { AsyncOverlay } from "~/components/AsyncOverlay";
 
+import { AsyncOverlay } from "~/components/AsyncOverlay";
 import { Icon } from "~/components/icons";
-import { useToast } from "~/hooks";
-import { myFirebaseTransactions } from "~/my-firebase/transactions";
+
 import { ComponentAPI, ModalsVisibilityContext } from "./_state";
-import { NextImage, generateUid } from "~/lib/external-packages-rename";
+
+import { useToast } from "~/hooks";
+import { generateUid, NextImage } from "~/lib/external-packages-rename";
+import { myFirebaseTransactions } from "~/my-firebase/transactions";
 
 export const UploadImage = () => (
   <div className="relative w-[600px] max-w-[90vw] rounded-2xl bg-white p-6 text-left shadow-xl">
@@ -153,24 +155,28 @@ const ImageFileInput = ({
     e.preventDefault();
 
     const files = e.target.files;
+    console.log("files:", files);
 
     if (!files) {
       return;
     }
 
     const file = files[0];
+    console.log("file:", file);
 
     if (!file) {
       return;
     }
 
     const isImage = file.name.match(/.(jpg|jpeg|png|webp|avif|gif|tiff)$/i);
+    console.log("isImage:", isImage);
 
     if (!isImage) {
       return;
     }
 
     const isAcceptedImage = file.name.match(/.(jpg|jpeg|png|webp)$/i);
+    console.log("isAcceptedImage:", isAcceptedImage);
 
     if (!isAcceptedImage) {
       return;

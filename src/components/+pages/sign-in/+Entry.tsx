@@ -210,7 +210,7 @@ const PasswordInput = ({
         />
 
         <div
-          className="absolute right-xxs top-1/2 z-10 -translate-y-1/2 cursor-pointer rounded-lg border bg-white/60 px-xxs text-xs text-gray-500 transition-colors ease-in-out hover:bg-gray-100"
+          className="absolute right-xxs top-1/2 z-10 -translate-y-1/2 cursor-pointer rounded-lg border bg-white/30 px-xxs text-xs text-gray-500 transition-colors ease-in-out hover:bg-gray-100"
           onClick={() => setShowPassword(!passwordIsShowing)}
         >
           {passwordIsShowing ? "hide" : "show"}

@@ -5,6 +5,7 @@ import {
   type StorageReference,
 } from "firebase/storage";
 import { v4 as generateUId } from "uuid";
+
 import { wait } from "~/helpers/async";
 import { storage_file_system_names } from "~/my-firebase/_static-data/collections-and-docs";
 import { storage } from "~/my-firebase/client";
@@ -26,7 +27,8 @@ const pollImageCreation = async (input: {
   let url: undefined | string;
   const startTime = Date.now();
 
-  while (!url && Date.now() - startTime < 5001) {
+  // · 30000 = 30 seconds
+  while (!url && Date.now() - startTime < 30000) {
     await wait(500);
     imageIsCreated = await checkImageExists(input.ref);
     if (imageIsCreated) {
