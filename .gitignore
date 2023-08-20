@@ -38,4 +38,4 @@ next-env.d.ts
 # google
 secrets.json
 
-/pages/populate.tsx
+/src/pages/populate.tsx
