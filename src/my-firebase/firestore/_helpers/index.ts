@@ -1,15 +1,16 @@
 import {
-  type CollectionReference,
-  type DocumentData,
-  type DocumentReference,
   collection,
   doc,
   getDoc,
   getDocs,
+  type CollectionReference,
+  type DocumentData,
+  type DocumentReference,
 } from "firebase/firestore/lite";
 
-import { firestore } from "~/my-firebase/client";
 import { firestore_file_system_names } from "../../_static-data/collections-and-docs";
+
+import { firestore } from "~/my-firebase/client";
 
 export const getCollectionRef = (
   collectionName: keyof (typeof firestore_file_system_names)["collections"],
@@ -34,6 +35,7 @@ export function getDocRef<
 
 export async function getDocData(docRef: DocumentReference) {
   const docSnap = await getDoc(docRef);
+
   const data = docSnap.data();
 
   return data;
@@ -43,6 +45,7 @@ export async function getCollectionData(collectionRef: CollectionReference) {
   const querySnapshot = await getDocs(collectionRef);
 
   const data: DocumentData[] = [];
+
   querySnapshot.forEach((doc) => {
     const d = doc.data();
     data.push(d);

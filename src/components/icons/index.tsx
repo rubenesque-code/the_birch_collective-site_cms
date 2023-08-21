@@ -50,6 +50,7 @@ import {
   Moon,
   Mountains,
   OrangeSlice,
+  PaperPlaneTilt,
   PiggyBank,
   Plant,
   Plus,
@@ -82,6 +83,7 @@ const Icon = () => {
 export { Icon };
 
 Icon.Slides = Slideshow;
+Icon.EmailNotify = PaperPlaneTilt;
 Icon.Image = Image;
 Icon.Images = Images;
 Icon.Upload = Upload;

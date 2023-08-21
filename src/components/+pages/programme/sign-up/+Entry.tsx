@@ -1,5 +1,8 @@
+import EmailNotificationModal from "~/components/email-notification-modal/+Entry";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
+import CmsLayout from "~/components/layouts/Cms";
+
 import { UedCx } from "~/context/user-editable-data";
 
 const SignUp = () => {
@@ -12,7 +15,22 @@ const SignUp = () => {
   } = UedCx.Programme.use();
 
   return (
-    <div className="">
+    <div className="group/sign-up">
+      <CmsLayout.EditBar className="opacity-40 group-hover/sign-up:opacity-80 hover:!opacity-100">
+        <EmailNotificationModal
+          button={({ openModal }) => (
+            <CmsLayout.EditBar.Button
+              icon={<Icon.EmailNotify />}
+              text="Email"
+              onClick={openModal}
+              tooltip="Edit notified emails on sign up"
+            />
+          )}
+          currentEmails={signUp.notifyEmails}
+          onRemove={signUpAction.notifyEmails.remove}
+          onSelect={signUpAction.notifyEmails.add}
+        />
+      </CmsLayout.EditBar>
       <div className="text-center font-display text-5xl text-brandLightOrange">
         <TextInputForm
           localStateValue={signUp.heading}

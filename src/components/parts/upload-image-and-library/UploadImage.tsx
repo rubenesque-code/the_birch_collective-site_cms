@@ -1,4 +1,5 @@
 import { useMemo, useState, type ChangeEvent } from "react";
+import imageCompression from "browser-image-compression";
 import { useMutation } from "react-query";
 
 import { AsyncOverlay } from "~/components/AsyncOverlay";
@@ -36,14 +37,25 @@ const Form = () => {
 
   const toast = useToast();
 
-  const uploadMutation = useMutation(
-    (
-      input: Parameters<
-        (typeof myFirebaseTransactions)["uploadImageToStorageAndCreateFirestoreImage"]
-      >[0],
-    ) =>
-      myFirebaseTransactions.uploadImageToStorageAndCreateFirestoreImage(input),
-  );
+  const uploadMutation = useMutation(async (input: { firestoreId: string }) => {
+    if (!imageFile || !imageDimensions) {
+      return;
+    }
+
+    const optimisedImageFile = await imageCompression(imageFile, {
+      maxWidthOrHeight: 1200,
+      initialQuality: 0.8,
+    });
+
+    await myFirebaseTransactions.uploadImageToStorageAndCreateFirestoreImage({
+      file: optimisedImageFile,
+      firestoreId: input.firestoreId,
+      naturalDimensions: {
+        height: imageDimensions.naturalHeight,
+        width: imageDimensions.naturalWidth,
+      },
+    });
+  });
 
   const upload = () => {
     if (!imageFile || !imageDimensions) {
@@ -55,14 +67,8 @@ const Form = () => {
     toast.promise(
       () =>
         uploadMutation.mutateAsync(
-          {
-            firestoreId,
-            naturalDimensions: {
-              height: imageDimensions.naturalHeight,
-              width: imageDimensions.naturalWidth,
-            },
-            file: imageFile,
-          },
+          { firestoreId },
+
           {
             onSuccess() {
               onUpload({ dbImageId: firestoreId });

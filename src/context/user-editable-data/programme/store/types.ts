@@ -1,8 +1,9 @@
-import type { MyDb } from "~/types/database";
 import type {
   GenerateEntityNonArrActions,
   GenerateNonArrActions,
 } from "../../_helpers/types";
+
+import type { MyDb } from "~/types/database";
 import type { MyOmit } from "~/types/utilities";
 
 export type Store = {
@@ -14,6 +15,7 @@ export type Programme = MyOmit<MyDb["programme"], "summary">;
 export type Info = Programme["info"][number];
 export type Poster = Programme["posters"][number];
 export type Section = Programme["sections"][number];
+type SignUp = Programme["signUp"];
 type PhotoAlbumEntry = Programme["photoAlbum"]["entries"][number];
 
 export type PhotoAlbumEntryActionFields = MyOmit<
@@ -21,9 +23,12 @@ export type PhotoAlbumEntryActionFields = MyOmit<
   "id" | "index"
 >;
 
+export type SignUpActionFields = MyOmit<SignUp, "notifyEmails">;
+
 type InfoNonArrActions = GenerateEntityNonArrActions<Info>;
 type PosterNonArrActions = GenerateEntityNonArrActions<Poster>;
 type SectionNonArrActions = GenerateEntityNonArrActions<Section>;
+type SignUpNonArrActions = GenerateNonArrActions<SignUpActionFields>;
 
 type PhotoAlbumEntryNonArrActions =
   GenerateEntityNonArrActions<PhotoAlbumEntryActionFields>;
@@ -77,6 +82,13 @@ type ArrActions = {
       };
     };
   } & SectionNonArrActions;
+
+  signUp: {
+    notifyEmails: {
+      add: (arg0: string) => void;
+      remove: (arg0: string) => void;
+    };
+  } & SignUpNonArrActions;
 };
 
 type Actions = {

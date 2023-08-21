@@ -6,8 +6,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { Icon } from "~/components/icons";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 

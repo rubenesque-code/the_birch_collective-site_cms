@@ -38,7 +38,7 @@ const Headings = () => {
           localStateValue={programmes.heading}
           onSubmit={programmesAction.heading}
           input={{
-            placeholder: "Heading",
+            placeholder: "Programmes heading",
             styles: "font-bold tracking-wide text-center",
           }}
           tooltip="click to edit programmes heading"
@@ -49,7 +49,7 @@ const Headings = () => {
         <TextAreaForm
           localStateValue={programmes.subheading}
           textArea={{
-            placeholder: "Subheading",
+            placeholder: "Progarammes subheading",
             styles: "tracking-wide text-center",
           }}
           onSubmit={programmesAction.subheading}

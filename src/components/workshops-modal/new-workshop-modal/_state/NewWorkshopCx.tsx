@@ -44,6 +44,7 @@ export const createInitData = (input: { index: number }): Workshop => ({
     heading: "",
     buttonText: "",
     text: "",
+    notifyEmails: [],
   },
   subtitle: "",
   summary: {

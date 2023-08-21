@@ -16,7 +16,7 @@ const SignUpFormModal = ({
         button={button}
         panelContent={
           <div className="relative grid max-h-[70vh] w-[90vw] max-w-[1200px] place-items-center rounded-2xl border-4  border-orange bg-white p-xl text-left shadow-xl">
-            <SignUpForm />
+            <Slides />
           </div>
         }
       />
@@ -25,7 +25,3 @@ const SignUpFormModal = ({
 };
 
 export default SignUpFormModal;
-
-const SignUpForm = () => {
-  return <Slides />;
-};

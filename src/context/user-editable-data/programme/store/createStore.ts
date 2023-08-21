@@ -8,14 +8,15 @@ import type {
   OmitObjArrProps,
 } from "../../_helpers/types";
 import type {
-  Store,
   Info,
-  Section,
-  Poster,
   PhotoAlbumEntryActionFields,
+  Poster,
+  Section,
+  Store,
 } from "./types";
-import type { MyOmit } from "~/types/utilities";
+
 import { getReorderedEntities, sortByIndex } from "~/helpers/data/process";
+import type { MyOmit } from "~/types/utilities";
 
 // TODO: abstraction for delete (entity with index), order
 
@@ -599,6 +600,30 @@ export const createStore = (input: { initData: Store["data"] }) =>
           heading: nonArrAction("signUp.heading"),
 
           text: nonArrAction("signUp.text"),
+
+          notifyEmails: {
+            add: (input) =>
+              set(
+                produce((store: Store) => {
+                  store.data.signUp.notifyEmails.push(input);
+                }),
+              ),
+
+            remove: (input) =>
+              set(
+                produce((store: Store) => {
+                  const index = store.data.signUp.notifyEmails.findIndex(
+                    (email) => email === input,
+                  );
+
+                  if (index < 0) {
+                    return;
+                  }
+
+                  store.data.signUp.notifyEmails.splice(index, 1);
+                }),
+              ),
+          },
         },
 
         subtitle: nonArrAction("subtitle"),

@@ -63,6 +63,7 @@ export const createInitData = (input: { index: number }): Programme => ({
     buttonText: "",
     heading: "",
     text: "",
+    notifyEmails: [],
   },
   usePosters: true,
 });

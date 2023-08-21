@@ -187,22 +187,17 @@ const NewTestimonial = () => {
   return (
     <div className="relative w-[700px]">
       <span className="italic text-gray-300">optional</span>
-      <div className="group/testimonial-image relative aspect-square w-[160px] rounded-full">
+      <div className="group/testimonial-image relative aspect-[3/4] w-[220px]">
         <NewTestimonialMenu />
 
         <UserSelectedImageWrapper
           dbImageId={image.dbConnect.imageId}
           placeholderText=""
-          isCircle
         >
           {({ dbImageId }) => (
             <ConnectImage dbImageId={dbImageId}>
               {({ urls }) => (
-                <CustomisableImage
-                  urls={urls}
-                  position={image.position}
-                  isCircle
-                />
+                <CustomisableImage urls={urls} position={image.position} />
               )}
             </ConnectImage>
           )}

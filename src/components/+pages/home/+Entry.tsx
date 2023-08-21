@@ -25,6 +25,7 @@ import { myDb } from "~/my-firebase/firestore";
 import type { MyDb } from "~/types/database";
 
 // MUST DO
+// □ delete firestore images that came from now deleted storage image (when playing around with compression)
 
 // CHECK
 // □ check image blur up works
@@ -44,6 +45,7 @@ import type { MyDb } from "~/types/database";
 // □ AuthContext logic, along with firebase initauthstate, seems flawed. Probs need to extract initauthstate into its own context
 // □ need to have production values in env.local?
 // □ use zod in saving to db?
+// □ careersPage.careers.text is never used? Should be?
 // □ site header overflows. Visible if placeholders there, since they are long.
 // □ should be able to work out by aspect ratio of image container and aspect ratio of image natural dimensions whether can move up/down and/or left/right.
 // □ in revision.cx, on save success should use func input to update 'current db data'
@@ -96,6 +98,7 @@ const HomePage = () => (
                 <SiteHeader />
 
                 <BannerImage />
+
                 <SiteLayout.Section.Spacing>
                   <OrgHeadings />
                 </SiteLayout.Section.Spacing>

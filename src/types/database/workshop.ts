@@ -83,6 +83,8 @@ export type Workshop = {
     text: string;
 
     buttonText: string;
+
+    notifyEmails: string[];
   };
 
   summary: {

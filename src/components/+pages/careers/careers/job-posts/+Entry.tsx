@@ -1,9 +1,7 @@
+import React, { type ReactNode } from "react";
 import { Popover } from "@headlessui/react";
 import { produce } from "immer";
-import React, { type ReactNode } from "react";
-import { WarningPanel } from "~/components/WarningPanel";
 
-import { WithTooltip } from "~/components/WithTooltip";
 import CareersModal from "~/components/careers-modal/+Entry";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
@@ -11,6 +9,9 @@ import CmsLayout from "~/components/layouts/Cms";
 import ModalLayout from "~/components/layouts/Modal";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
+import { WarningPanel } from "~/components/WarningPanel";
+import { WithTooltip } from "~/components/WithTooltip";
+
 import { DbReadCx } from "~/context/db-data-read-only";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
@@ -97,13 +98,13 @@ const JobPosts = () => {
                 entry={pageEntry}
                 key={pageEntry.id}
               >
-                <ConnectVolunteerPosition>
+                <ConnectCareer>
                   {({ connectedCareer }) => (
                     <DbReadCx.Career.Provider career={connectedCareer}>
                       <JobPost />
                     </DbReadCx.Career.Provider>
                   )}
-                </ConnectVolunteerPosition>
+                </ConnectCareer>
               </DbReadCx.Pages.Careers.JobPost.Provider>
             ))}
           </div>
@@ -115,7 +116,7 @@ const JobPosts = () => {
 
 export default JobPosts;
 
-const ConnectVolunteerPosition = ({
+const ConnectCareer = ({
   children,
 }: {
   children: (arg0: { connectedCareer: MyDb["career"] }) => ReactNode;

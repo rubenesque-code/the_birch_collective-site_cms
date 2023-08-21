@@ -12,7 +12,7 @@ import { WarningPanel } from "~/components/WarningPanel";
 
 import CreateModal from "./create-modal/+Entry";
 
-import { ProfessionalTestimonialCx } from "~/context/entities/ProfessionalTestimonialCx";
+import { ParticipantTestimonialCx } from "~/context/entities";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
@@ -33,7 +33,7 @@ const ParticipantTestimonialsModal = ({
         header={
           <ModalLayout.UserEdit.Header>
             <ModalLayout.UserEdit.Header.Title>
-              Edit professional testimonials
+              Edit partcipant testimonials
             </ModalLayout.UserEdit.Header.Title>
           </ModalLayout.UserEdit.Header>
         }
@@ -47,7 +47,7 @@ export default ParticipantTestimonialsModal;
 const Testimonials = () => {
   const {
     store: { data: testimonials, actions },
-  } = UedCx.ProfessionalTestimonials.use();
+  } = UedCx.ParticipantTestimonials.use();
 
   const sorted = React.useMemo(
     () => deepSortByIndex(testimonials),
@@ -72,9 +72,9 @@ const Testimonials = () => {
           >
             {sorted.map((testimonial) => (
               <DndKit.Element elementId={testimonial.id} key={testimonial.id}>
-                <ProfessionalTestimonialCx.Provider testimonial={testimonial}>
+                <ParticipantTestimonialCx.Provider testimonial={testimonial}>
                   <Testimonial />
-                </ProfessionalTestimonialCx.Provider>
+                </ParticipantTestimonialCx.Provider>
               </DndKit.Element>
             ))}
           </DndKit.Context>
@@ -85,31 +85,25 @@ const Testimonials = () => {
 };
 
 const Testimonial = () => {
-  const { endorserName, endorserTitle, image, id, text } =
-    ProfessionalTestimonialCx.use();
+  const { endorserName, image, id, text } = ParticipantTestimonialCx.use();
 
   const {
     store: { actions },
-  } = UedCx.ProfessionalTestimonials.use();
+  } = UedCx.ParticipantTestimonials.use();
 
   return (
     <div className="group/testimonial relative">
       <TestimonialMenu />
-      <div className={`rounded-lg border p-sm `}>
-        <div className="relative aspect-square w-[100px] rounded-full">
+      <div className={`rounded-lg border p-sm`}>
+        <div className="relative aspect-[3/4] w-[160px]">
           <UserSelectedImageWrapper
-            dbImageId={image.dbConnections.imageId}
+            dbImageId={image.dbConnect.imageId}
             placeholderText="image"
-            isCircle
           >
             {({ dbImageId }) => (
               <ConnectImage dbImageId={dbImageId}>
                 {({ urls }) => (
-                  <CustomisableImage
-                    urls={urls}
-                    position={image.position}
-                    isCircle
-                  />
+                  <CustomisableImage urls={urls} position={image.position} />
                 )}
               </ConnectImage>
             )}
@@ -126,20 +120,6 @@ const Testimonial = () => {
               }
               input={{ placeholder: "Endorser name" }}
               tooltip="Click to edit endorser name"
-            />
-          </div>
-        </div>
-
-        <div className="mt-md">
-          <div className="text-sm text-gray-400">Endorser job title</div>
-          <div className="max-w-full overflow-x-auto ">
-            <TextInputForm
-              localStateValue={endorserTitle}
-              onSubmit={(inputValue) =>
-                actions.endorserTitle({ id, newVal: inputValue })
-              }
-              input={{ placeholder: "Endorser job title" }}
-              tooltip="Click to edit endorser job title"
             />
           </div>
         </div>
@@ -165,17 +145,17 @@ const Testimonial = () => {
 };
 
 const TestimonialMenu = () => {
-  const { id, image } = ProfessionalTestimonialCx.use();
+  const { id, image } = ParticipantTestimonialCx.use();
 
   const {
     store: { actions },
-  } = UedCx.ProfessionalTestimonials.use();
+  } = UedCx.ParticipantTestimonials.use();
 
   const toast = useToast();
 
   return (
     <ComponentMenu styles="right-1 top-1 group-hover/testimonial:opacity-40">
-      {image.dbConnections.imageId ? (
+      {image.dbConnect.imageId ? (
         <>
           <ComponentMenu.Image.PositionMenu
             position={image.position}

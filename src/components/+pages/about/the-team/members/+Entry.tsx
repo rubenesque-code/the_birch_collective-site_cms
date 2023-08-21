@@ -1,13 +1,16 @@
 import React from "react";
+
 import Accordion from "~/components/Accordion";
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import CmsLayout from "~/components/layouts/Cms";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+
+import MembersModal from "./members-modal/+Entry";
+
 import { AboutCx } from "~/context/entities/about";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
-import MembersModal from "./members-modal/+Entry";
 
 const Members = () => {
   const {
@@ -77,7 +80,7 @@ const Member = () => {
             name.length ? "text-brandGreen" : "text-gray-400"
           } `}
         >
-          {name.length ? name : "role"}
+          {name.length ? name : "name"}
         </div>
         <div
           className={`text-center text-lg ${

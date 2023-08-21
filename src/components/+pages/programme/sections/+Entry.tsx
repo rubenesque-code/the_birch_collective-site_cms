@@ -1,12 +1,19 @@
 import React from "react";
-import { IconSwith } from "~/components/IconSwitch";
-import { WarningPanel } from "~/components/WarningPanel";
+
 import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
+import { IconSwith } from "~/components/IconSwitch";
 import CmsLayout from "~/components/layouts/Cms";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
+import { WarningPanel } from "~/components/WarningPanel";
+
+import ColourModal from "./colour-modal/+Entry";
+import IconModal from "./icon-modal/+Entry";
+import NewSectionModal from "./new-section-modal/+Entry";
+import Preview from "./preview/+Entry";
+
 import { SectionCx } from "~/context/entities/programme/section";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
@@ -14,10 +21,6 @@ import { getIds } from "~/helpers/data/query";
 import { textColourSwith } from "~/helpers/data/switch-to-styles";
 import { useToast } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
-import ColourModal from "./colour-modal/+Entry";
-import IconModal from "./icon-modal/+Entry";
-import NewSectionModal from "./new-section-modal/+Entry";
-import Preview from "./preview/+Entry";
 
 const Sections = () => {
   const {
@@ -49,6 +52,7 @@ const Sections = () => {
           gap="xs"
         />
       </CmsLayout.EditBar>
+
       <div className="mt-md">
         {!sections.length ? (
           <p className="italic text-gray-600">
