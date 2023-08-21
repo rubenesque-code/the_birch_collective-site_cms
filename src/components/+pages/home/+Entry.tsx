@@ -42,6 +42,7 @@ import type { MyDb } from "~/types/database";
 
 // OTHER
 
+// □ On toggleable elements, can put toggle on actual element menu as well as top bar.
 // □ AuthContext logic, along with firebase initauthstate, seems flawed. Probs need to extract initauthstate into its own context
 // □ need to have production values in env.local?
 // □ use zod in saving to db?
