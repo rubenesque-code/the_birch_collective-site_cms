@@ -1,29 +1,29 @@
+import React from "react";
+import Link from "next/link";
+import { Leaf } from "@phosphor-icons/react";
 import ReactTextareaAutosize from "react-textarea-autosize";
+
+import { CustomisableImage } from "~/components/CustomisableImage";
+import { ConnectImage } from "~/components/DbImageWrapper";
+import { DndKit } from "~/components/dnd-kit";
+import { TextAreaForm, TextInputForm } from "~/components/forms";
+import { Icon } from "~/components/icons";
+import CmsLayout from "~/components/layouts/Cms";
+import { ComponentMenu } from "~/components/menus";
+import ProgrammesModal from "~/components/programmes-modal/+Entry";
+import { Modal } from "~/components/styled-bases";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { WarningPanel } from "~/components/WarningPanel";
+import { WithTooltip } from "~/components/WithTooltip";
 
 import { ProgrammeCx } from "~/context/entities";
 import { UedCx } from "~/context/user-editable-data";
-
-import CmsLayout from "~/components/layouts/Cms";
-import ProgrammesModal from "~/components/programmes-modal/+Entry";
-import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import React from "react";
 import { deepSortByIndex } from "~/helpers/data/process";
-import { DndKit } from "~/components/dnd-kit";
 import { getIds } from "~/helpers/data/query";
-import { ComponentMenu } from "~/components/menus";
-import { TextAreaForm, TextInputForm } from "~/components/forms";
+import { useToast } from "~/hooks";
 import { useFocused } from "~/hooks/useFocused";
 import { generateUid } from "~/lib/external-packages-rename";
-import { Icon } from "~/components/icons";
-import { WithTooltip } from "~/components/WithTooltip";
 import type { MyDb } from "~/types/database";
-import { Leaf } from "@phosphor-icons/react";
-import { Modal } from "~/components/styled-bases";
-import { WarningPanel } from "~/components/WarningPanel";
-import { useToast } from "~/hooks";
-import Link from "next/link";
 
 const ProgrammesList = () => (
   <div>
@@ -62,9 +62,11 @@ const Programmes = () => {
     <div className="grid grid-cols-1 gap-2xl">
       <DndKit.Context elementIds={getIds(sorted)} onReorder={actions.reorder}>
         {sorted.map((programme) => (
-          <ProgrammeCx.Provider programme={programme} key={programme.id}>
-            <Programme />
-          </ProgrammeCx.Provider>
+          <DndKit.Element elementId={programme.id} key={programme.id}>
+            <ProgrammeCx.Provider programme={programme}>
+              <Programme />
+            </ProgrammeCx.Provider>
+          </DndKit.Element>
         ))}
       </DndKit.Context>
     </div>

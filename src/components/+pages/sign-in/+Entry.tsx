@@ -199,7 +199,9 @@ const PasswordInput = ({
 
       <div className="relative">
         <input
-          className={`w-full rounded-md border border-gray-300 px-sm pb-1 pt-2 font-mono text-gray-700 outline-none focus:outline-none`}
+          className={`w-full rounded-md border border-gray-300 px-sm pb-1 pt-2 text-gray-700 outline-none focus:outline-none ${
+            passwordIsShowing ? "font-mono text-sm" : ""
+          }`}
           id={password_input_id}
           value={value}
           onChange={(e) => {
