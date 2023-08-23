@@ -1,11 +1,14 @@
 import { useState, type ReactElement } from "react";
 
-import { IconSwith } from "~/components/IconSwitch";
-import { WarningPanel } from "~/components/WarningPanel";
-import { WithTooltip } from "~/components/WithTooltip";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
+import { IconSwith } from "~/components/IconSwitch";
 import ModalLayout from "~/components/layouts/Modal";
 import { Modal } from "~/components/styled-bases";
+import { WarningPanel } from "~/components/WarningPanel";
+import { WithTooltip } from "~/components/WithTooltip";
+
+import { createInitData, NewSectionCx } from "./_state";
+
 import { UedCx } from "~/context/user-editable-data";
 import {
   bgColourSwith,
@@ -13,7 +16,6 @@ import {
 } from "~/helpers/data/switch-to-styles";
 import { useToast } from "~/hooks";
 import type { MyDb } from "~/types/database";
-import { NewSectionCx, createInitData } from "./_state";
 
 const NewSectionModal = ({
   button,
@@ -202,14 +204,14 @@ const NewSection = () => {
       </div>
       <div className="mt-sm">
         <div className="flex items-center gap-md text-sm text-gray-400">
-          <span>Subtitle</span>
+          <span>Description</span>
           <span className="italic text-gray-300">optional</span>
         </div>
-        <div className="font-medium">
+        <div className="">
           <TextAreaForm
             localStateValue={description || ""}
             onSubmit={actions.description}
-            textArea={{ placeholder: "Section subtitle" }}
+            textArea={{ placeholder: "Section description" }}
           />
         </div>
       </div>

@@ -26,6 +26,8 @@ import type { MyDb } from "~/types/database";
 
 // MUST DO
 // □ delete firestore images that came from now deleted storage image (when playing around with compression)
+// □ deploy panel
+// □ close window + change page (through address bar) warning
 
 // CHECK
 // □ check image blur up works
@@ -43,6 +45,7 @@ import type { MyDb } from "~/types/database";
 // OTHER
 
 // □ On toggleable elements, can put toggle on actual element menu as well as top bar.
+// □ Programmes + workshops - toggle info section?
 // □ AuthContext logic, along with firebase initauthstate, seems flawed. Probs need to extract initauthstate into its own context
 // □ need to have production values in env.local?
 // □ use zod in saving to db?

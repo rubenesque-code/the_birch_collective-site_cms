@@ -270,16 +270,16 @@ const Section = () => {
         />
       </div>
 
-      <div className="custom-prose prose mt-sm max-w-full font-medium">
+      <div className="custom-prose prose mt-sm max-w-full">
         <TextAreaForm
           localStateValue={description}
           textArea={{
-            placeholder: "Section subtitle (optional)",
+            placeholder: "Section description (optional)",
           }}
           onSubmit={(updatedValue) =>
             sectionAction.description({ id, updatedValue })
           }
-          tooltip="Click to edit subtitle"
+          tooltip="Click to edit description"
           key={undoKey}
         />
       </div>

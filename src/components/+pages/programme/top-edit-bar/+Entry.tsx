@@ -1,5 +1,6 @@
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
+
 import { UedCx } from "~/context/user-editable-data";
 import { useToast } from "~/hooks";
 
@@ -27,7 +28,7 @@ const TopEditBar = () => {
             </div>
           }
           onClick={() => {
-            actions.photoAlbum.use(!usePosters);
+            actions.usePosters(!usePosters);
 
             toast.neutral(usePosters ? "posters hidden" : "showing posters");
           }}

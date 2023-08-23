@@ -1,24 +1,26 @@
 import React from "react";
 
-import { IconSwith } from "~/components/IconSwitch";
-import { WarningPanel } from "~/components/WarningPanel";
 import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
+import { IconSwith } from "~/components/IconSwitch";
 import CmsLayout from "~/components/layouts/Cms";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
+import { WarningPanel } from "~/components/WarningPanel";
+
+import ColourModal from "./colour-modal/+Entry";
+import IconModal from "./icon-modal/+Entry";
+import NewSectionModal from "./new-section-modal/+Entry";
+import Preview from "./preview/+Entry";
+
+import { DbReadCx } from "~/context/db-data-read-only";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
 import { textColourSwith } from "~/helpers/data/switch-to-styles";
 import { useToast } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
-import ColourModal from "./colour-modal/+Entry";
-import IconModal from "./icon-modal/+Entry";
-import NewSectionModal from "./new-section-modal/+Entry";
-import Preview from "./preview/+Entry";
-import { DbReadCx } from "~/context/db-data-read-only";
 
 const Sections = () => {
   const {
@@ -276,16 +278,16 @@ const Section = () => {
         />
       </div>
 
-      <div className="custom-prose prose mt-sm max-w-full font-medium">
+      <div className="custom-prose prose mt-sm max-w-full">
         <TextAreaForm
           localStateValue={description}
           textArea={{
-            placeholder: "Section subtitle (optional)",
+            placeholder: "Section description (optional)",
           }}
           onSubmit={(updatedValue) =>
             sectionAction.description({ id, updatedValue })
           }
-          tooltip="Click to edit subtitle"
+          tooltip="Click to edit description"
           key={undoKey}
         />
       </div>

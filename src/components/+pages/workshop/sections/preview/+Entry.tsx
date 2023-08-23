@@ -1,7 +1,9 @@
-import Markdown from "markdown-to-jsx";
 import React from "react";
+import Markdown from "markdown-to-jsx";
+
 import { IconSwith } from "~/components/IconSwitch";
 import SiteLayout from "~/components/layouts/Site";
+
 import { SectionCx } from "~/context/entities/programme/section";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
@@ -30,7 +32,7 @@ const Preview = () => {
                 {section.title}
               </div>
               {section.description ? (
-                <div className="custom-prose prose mt-sm max-w-full font-medium">
+                <div className="custom-prose prose mt-sm max-w-full">
                   {section.description}
                 </div>
               ) : null}
