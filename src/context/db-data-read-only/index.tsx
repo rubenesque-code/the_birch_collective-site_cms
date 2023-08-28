@@ -15,6 +15,8 @@ DbReadCx.Career = Career;
 
 DbReadCx.Workshop = Workshop;
 
+DbReadCx.Image = Image;
+
 function Pages() {
   throw new Error(
     "Pages exists for naming purposes only and should not be used as a component",

@@ -10,6 +10,7 @@ const collections = {
   careers: "careers",
   workshops: "workshops",
   singles: "singles",
+  keywords: "keywords",
 } as const;
 
 const pages = {

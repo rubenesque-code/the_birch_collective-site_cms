@@ -28,6 +28,8 @@ import type { MyDb } from "~/types/database";
 // □ delete firestore images that came from now deleted storage image (when playing around with compression)
 // □ deploy panel
 // □ close window + change page (through address bar) warning
+// □ need to delete storage image when delete fb image on save
+// □ add images + keywords to each page. Maybe make abstraction for header, footer, labels, etc.
 
 // CHECK
 // □ check image blur up works
@@ -36,6 +38,7 @@ import type { MyDb } from "~/types/database";
 // □ remove unneeded users (ruben@virt....com) from firebase console
 
 // TO DO
+// □ go over connect image logic - don't need to fetch anymore since is all images fetched on page load. But do need to connect.
 
 // REFACTOR
 // □ abstraction for react-query onMutate, onSuccess, etc.?
@@ -157,14 +160,19 @@ export default HomePage;
 
 type DbData = {
   page: MyDb["pages"]["landing"];
-  "participant-testimonials": MyDb["participant-testimonial"][];
-  programmes: MyDb["programme"][];
-  supporters: MyDb["supporter"][];
-  partners: MyDb["partner"][];
+
   orgDetails: MyDb["singles"]["orgDetails"];
   linkLabels: MyDb["singles"]["linkLabels"];
   header: MyDb["singles"]["header"];
   footer: MyDb["singles"]["footer"];
+
+  images: MyDb["image"][];
+  keywords: MyDb["keyword"][];
+
+  "participant-testimonials": MyDb["participant-testimonial"][];
+  programmes: MyDb["programme"][];
+  supporters: MyDb["supporter"][];
+  partners: MyDb["partner"][];
 };
 
 const InitDbData = ({
@@ -178,6 +186,9 @@ const InitDbData = ({
   const headerQuery = useQuery("header", myDb.header.fetch);
   const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
   const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
+
+  const imagesQuery = useQuery("images", myDb.image.fetchAll);
+  const keywordsQuery = useQuery("keywords", myDb.keyword.fetchAll);
 
   const participantTestimonialsQuery = useQuery(
     "participant-testimonials",
@@ -196,6 +207,8 @@ const InitDbData = ({
     linkLabelsQuery.isLoading ||
     headerQuery.isLoading ||
     footerQuery.isLoading ||
+    imagesQuery.isLoading ||
+    keywordsQuery.isLoading ||
     orgDetailsQuery.isLoading
   ) {
     return <PageDataFetch.Loading />;
@@ -219,7 +232,11 @@ const InitDbData = ({
     footerQuery.isError ||
     !footerQuery.data ||
     orgDetailsQuery.isError ||
-    !orgDetailsQuery.data
+    !orgDetailsQuery.data ||
+    imagesQuery.isError ||
+    !imagesQuery.data ||
+    keywordsQuery.isError ||
+    !keywordsQuery.data
   ) {
     return <PageDataFetch.Error />;
   }
@@ -232,8 +249,10 @@ const InitDbData = ({
     header: headerQuery.data,
     footer: footerQuery.data,
 
-    "participant-testimonials": participantTestimonialsQuery.data,
+    images: imagesQuery.data,
+    keywords: keywordsQuery.data,
 
+    "participant-testimonials": participantTestimonialsQuery.data,
     programmes: programmesQuery.data,
     supporters: supportersQuery.data,
     partners: partnersQuery.data,
@@ -246,28 +265,30 @@ const UedProviders = ({
 }: {
   initDbData: DbData;
   children: ReactElement;
-}) => {
-  return (
-    <UedCx.Pages.Landing.Provider initData={initDbData.page}>
-      <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
-        <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
-          <UedCx.Header.Provider initData={initDbData.header}>
-            <UedCx.Footer.Provider initData={initDbData.footer}>
-              <UedCx.Programmes.Provider initData={initDbData.programmes}>
-                <UedCx.ParticipantTestimonials.Provider
-                  initData={initDbData["participant-testimonials"]}
-                >
-                  <UedCx.Supporters.Provider initData={initDbData.supporters}>
-                    <UedCx.Partners.Provider initData={initDbData.partners}>
-                      {children}
-                    </UedCx.Partners.Provider>
-                  </UedCx.Supporters.Provider>
-                </UedCx.ParticipantTestimonials.Provider>
-              </UedCx.Programmes.Provider>
-            </UedCx.Footer.Provider>
-          </UedCx.Header.Provider>
-        </UedCx.LinkLabels.Provider>
-      </UedCx.OrgDetails.Provider>
-    </UedCx.Pages.Landing.Provider>
-  );
-};
+}) => (
+  <UedCx.Pages.Landing.Provider initData={initDbData.page}>
+    <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
+      <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
+        <UedCx.Header.Provider initData={initDbData.header}>
+          <UedCx.Footer.Provider initData={initDbData.footer}>
+            <UedCx.Images.Provider initData={initDbData.images}>
+              <UedCx.Keywords.Provider initData={initDbData.keywords}>
+                <UedCx.Programmes.Provider initData={initDbData.programmes}>
+                  <UedCx.ParticipantTestimonials.Provider
+                    initData={initDbData["participant-testimonials"]}
+                  >
+                    <UedCx.Supporters.Provider initData={initDbData.supporters}>
+                      <UedCx.Partners.Provider initData={initDbData.partners}>
+                        {children}
+                      </UedCx.Partners.Provider>
+                    </UedCx.Supporters.Provider>
+                  </UedCx.ParticipantTestimonials.Provider>
+                </UedCx.Programmes.Provider>
+              </UedCx.Keywords.Provider>
+            </UedCx.Images.Provider>
+          </UedCx.Footer.Provider>
+        </UedCx.Header.Provider>
+      </UedCx.LinkLabels.Provider>
+    </UedCx.OrgDetails.Provider>
+  </UedCx.Pages.Landing.Provider>
+);

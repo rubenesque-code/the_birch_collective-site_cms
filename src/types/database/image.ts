@@ -12,4 +12,10 @@ export type Image = {
     large: string;
     blur: string;
   };
+  keywords: {
+    id: string;
+    dbConnections: {
+      keywordId: string;
+    };
+  }[];
 };

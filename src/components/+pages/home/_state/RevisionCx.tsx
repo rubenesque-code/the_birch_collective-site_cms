@@ -29,6 +29,9 @@ function Provider({
   const orgDetails = UedCx.OrgDetails.useRevision();
   const linkLabels = UedCx.LinkLabels.useRevision();
 
+  const { revision: images } = UedCx.Images.use();
+  const { revision: keywords } = UedCx.Keywords.use();
+
   const { revision: programmes } = UedCx.Programmes.use();
   const { revision: testimonials } = UedCx.ParticipantTestimonials.use();
   const { revision: supporters } = UedCx.Supporters.use();
@@ -36,10 +39,15 @@ function Provider({
 
   const revisionDataArr = [
     page,
+
     footer,
     header,
     linkLabels,
     orgDetails,
+
+    images,
+    keywords,
+
     programmes,
     testimonials,
     supporters,
@@ -66,13 +74,21 @@ function Provider({
           landingSaveMutation.mutateAsync(
             {
               page: { id: "landing-page", ...page.saveData },
+
               orgDetails: orgDetails.saveData,
-              testimonials: testimonials.saveData,
-              programmes: programmes.saveData,
-              supporters: supporters.saveData,
               linkLabels: linkLabels.saveData,
               header: header.saveData,
               footer: footer.saveData,
+
+              images: {
+                updated: images.saveData.updated,
+                deleted: images.saveData.deleted,
+              },
+              keywords: keywords.saveData,
+
+              testimonials: testimonials.saveData,
+              programmes: programmes.saveData,
+              supporters: supporters.saveData,
               partners: partners.saveData,
             },
             {

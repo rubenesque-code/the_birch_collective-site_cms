@@ -1,4 +1,18 @@
+import {
+  batchCreateCareer,
+  batchDeleteCareer,
+  batchUpdateCareer,
+} from "./mutate/careers";
+import { batchUpdateFooter, updateFooter } from "./mutate/footer";
+import { batchUpdateHeader, updateHeader } from "./mutate/header";
 import { createImage } from "./mutate/image";
+import {
+  batchCreateKeyword,
+  batchDeleteKeyword,
+  batchUpdateKeyword,
+} from "./mutate/keywords";
+import { batchUpdateLinkLabels, updateLinkLabels } from "./mutate/linkLabels";
+import { batchUpdateOrgDetails, updateOrgDetails } from "./mutate/orgDetails";
 import {
   batchUpdateAboutUsPage,
   batchUpdateCareersPage,
@@ -6,10 +20,15 @@ import {
   batchUpdateLandingPage,
   batchUpdateProgrammesPage,
   batchUpdateTestimonialsPage,
+  batchUpdateTheoryOfChangePage,
   batchUpdateVolunteerPositionsPage,
   batchUpdateWorkshopsPage,
-  batchUpdateTheoryOfChangePage,
 } from "./mutate/pages";
+import {
+  batchCreateParticipantTestimonial,
+  batchDeleteParticipantTestimonial,
+  batchUpdateParticipantTestimonial,
+} from "./mutate/participant-testimonial";
 import {
   batchCreatePartner,
   batchDeletePartner,
@@ -18,6 +37,11 @@ import {
   deletePartner,
   updatePartner,
 } from "./mutate/partner";
+import {
+  batchCreateProfessionalTestimonial,
+  batchDeleteProfessionalTestimonial,
+  batchUpdateProfessionalTestimonial,
+} from "./mutate/professional-testimonial";
 import {
   batchCreateProgramme,
   batchDeleteProgramme,
@@ -34,22 +58,6 @@ import {
   deleteSupporter,
   updateSupporter,
 } from "./mutate/supporter";
-
-import {
-  batchCreateParticipantTestimonial,
-  batchDeleteParticipantTestimonial,
-  batchUpdateParticipantTestimonial,
-} from "./mutate/participant-testimonial";
-
-import {
-  batchCreateCareer,
-  batchDeleteCareer,
-  batchUpdateCareer,
-} from "./mutate/careers";
-import { batchUpdateFooter, updateFooter } from "./mutate/footer";
-import { batchUpdateHeader, updateHeader } from "./mutate/header";
-import { batchUpdateLinkLabels, updateLinkLabels } from "./mutate/linkLabels";
-import { batchUpdateOrgDetails, updateOrgDetails } from "./mutate/orgDetails";
 import { aboutUsPageTransaction } from "./mutate/transactions/aboutUsPage";
 import { careersPageTransaction } from "./mutate/transactions/careersPage";
 import { donatePageTransaction } from "./mutate/transactions/donatePage";
@@ -57,6 +65,7 @@ import { landingPageTransaction } from "./mutate/transactions/landingPage";
 import { programmePageTransaction } from "./mutate/transactions/programmePage";
 import { programmesPageTransaction } from "./mutate/transactions/programmesPage";
 import { testimonialsPageTransaction } from "./mutate/transactions/testimonialsPage";
+import { theoryOfChangePageTransaction } from "./mutate/transactions/theory-of-change-page";
 import { volunteerPositionsPageTransaction } from "./mutate/transactions/volunteerPositionsPage";
 import { workshopPageTransaction } from "./mutate/transactions/workshopPage";
 import { workshopsPageTransaction } from "./mutate/transactions/workshopsPage";
@@ -75,13 +84,13 @@ import {
 } from "./mutate/workshops";
 import {
   fetchAboutUsPage,
-  fetchTheoryOfChangePage,
   fetchCareers,
   fetchCareersPage,
   fetchDonatePage,
   fetchFooter,
   fetchHeader,
   fetchImages,
+  fetchKeywords,
   fetchLandingPage,
   fetchLinkLabels,
   fetchOneCareer,
@@ -99,17 +108,12 @@ import {
   fetchProgrammesPage,
   fetchSupporters,
   fetchTestimonialsPage,
+  fetchTheoryOfChangePage,
   fetchVolunteerPositions,
   fetchVolunteerPositionsPage,
   fetchWorkshops,
   fetchWorkshopsPage,
 } from "./query";
-import {
-  batchCreateProfessionalTestimonial,
-  batchDeleteProfessionalTestimonial,
-  batchUpdateProfessionalTestimonial,
-} from "./mutate/professional-testimonial";
-import { theoryOfChangePageTransaction } from "./mutate/transactions/theory-of-change-page";
 
 export const myDb = {
   pages: {
@@ -228,6 +232,14 @@ export const myDb = {
       create: batchCreateProgramme,
       update: batchUpdateProgramme,
       delete: batchDeleteProgramme,
+    },
+  },
+  keyword: {
+    fetchAll: fetchKeywords,
+    batch: {
+      create: batchCreateKeyword,
+      update: batchUpdateKeyword,
+      delete: batchDeleteKeyword,
     },
   },
   supporter: {

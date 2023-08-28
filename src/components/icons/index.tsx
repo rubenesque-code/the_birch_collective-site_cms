@@ -43,7 +43,9 @@ import {
   Leaf,
   LinkedinLogo,
   List,
+  ListMagnifyingGlass,
   Lock,
+  MagnifyingGlass,
   Minus,
   Money,
   MonitorPlay,
@@ -136,6 +138,8 @@ Icon.Paid = Money;
 Icon.SignUp = HandPointing;
 Icon.Time = Clock;
 Icon.Lock = Lock;
+Icon.Search = MagnifyingGlass;
+Icon.Keyword = ListMagnifyingGlass;
 
 const AboutUsIcon = (
   props: MyOmit<ComponentProps<typeof FontAwesomeIcon>, "icon">,

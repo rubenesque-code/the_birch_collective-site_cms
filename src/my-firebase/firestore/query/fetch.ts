@@ -1,10 +1,11 @@
-import type { MyDb } from "~/types/database";
 import {
   getCollectionData,
   getCollectionRef,
   getDocData,
   getDocRef,
 } from "../_helpers";
+
+import type { MyDb } from "~/types/database";
 
 export const fetchLandingPage = async () => {
   const docRef = getDocRef("pages", "landing");
@@ -276,6 +277,16 @@ export const fetchFooter = async () => {
   const data = (await getDocData(
     docRef,
   )) as unknown as MyDb["singles"]["footer"];
+
+  return data;
+};
+
+export const fetchKeywords = async () => {
+  const collectionRef = getCollectionRef("keywords");
+
+  const data = (await getCollectionData(
+    collectionRef,
+  )) as unknown as MyDb["keyword"][];
 
   return data;
 };

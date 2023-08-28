@@ -1,7 +1,7 @@
-import { type ReactNode, type ReactElement } from "react";
+import { type ReactElement, type ReactNode } from "react";
+import { Menu } from "@headlessui/react";
 
 import { MyTransition } from "./MyTransition";
-import { Menu } from "@headlessui/react";
 
 export const MyMenu = ({
   button,
@@ -24,7 +24,7 @@ export const MyMenu = ({
         </Menu.Button>
         <MyTransition.ScaleAndOpacity>
           <Menu.Items
-            className={`absolute z-50  rounded-md bg-white shadow-xl focus:outline-none ${
+            className={`absolute z-50 rounded-md bg-white shadow-xl focus:outline-none ${
               styles?.itemsWrapper || ""
             }`}
           >
