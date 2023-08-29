@@ -1,23 +1,20 @@
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
-import { myDb } from "~/my-firebase/firestore";
-
-import { RevisionCx } from "./_state";
-
+import { PageFramework } from "~/components/frameworks";
+import SiteLayout from "~/components/layouts/Site";
 import { PageDataFetch } from "~/components/PageDataFetch";
 import CmsHeader from "~/components/parts/cms-header/+Entry";
-import SiteFooter from "~/components/parts/site-footer/+Entry";
-import SiteHeader from "~/components/parts/site-header/+Entry";
 
-import CmsLayout from "~/components/layouts/Cms";
-import SiteLayout from "~/components/layouts/Site";
-import { UedCx } from "~/context/user-editable-data";
-import type { MyDb } from "~/types/database";
+import { RevisionCx } from "./_state";
 import BannerImage from "./banner-image/+Entry";
 import Headings from "./headings/+Entry";
 import MainText from "./main-text/+Entry";
 import ProgrammesList from "./programmes-list/+Entry";
+
+import { UedCx } from "~/context/user-editable-data";
+import { myDb } from "~/my-firebase/firestore";
+import type { MyDb } from "~/types/database";
 
 const AboutPage = () => (
   <InitDbData>
@@ -25,21 +22,15 @@ const AboutPage = () => (
       <UedProviders initDbData={initDbData}>
         <RevisionCx.Provider>
           {(revisionState) => (
-            <CmsLayout.Body>
-              <CmsHeader
-                actions={revisionState.actions}
-                data={{ isChange: revisionState.data.isChange }}
-              />
-              <SiteLayout.Body>
-                <SiteHeader />
-                <PageSpecificContent />
-                <SiteLayout.Section.Spacing.Horizontal>
-                  <div className="mt-2xl pb-xl">
-                    <SiteFooter />
-                  </div>
-                </SiteLayout.Section.Spacing.Horizontal>
-              </SiteLayout.Body>
-            </CmsLayout.Body>
+            <PageFramework
+              cmsHeader={
+                <CmsHeader
+                  actions={revisionState.actions}
+                  data={{ isChange: revisionState.data.isChange }}
+                />
+              }
+              pageSpecificComponents={<PageSpecificComponents />}
+            />
           )}
         </RevisionCx.Provider>
       </UedProviders>
@@ -49,7 +40,7 @@ const AboutPage = () => (
 
 export default AboutPage;
 
-const PageSpecificContent = () => (
+const PageSpecificComponents = () => (
   <>
     <BannerImage />
     <div className="mt-xl">

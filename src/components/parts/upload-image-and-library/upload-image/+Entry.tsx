@@ -27,11 +27,6 @@ export const UploadImage = () => (
 );
 
 const Form = () => {
-  /*   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imageDimensions, setImageDimensions] = useState<{
-    naturalHeight: number;
-    naturalWidth: number;
-  } | null>(null); */
   const { data: newImageData } = NewImageCx.use();
 
   const { onUploadOrSelect: onUpload } = ComponentApi.use();
@@ -63,6 +58,7 @@ const Form = () => {
         height: newImageData.dimensions.naturalHeight,
         width: newImageData.dimensions.naturalWidth,
       },
+      keywords: newImageData.keywords,
     });
   });
 

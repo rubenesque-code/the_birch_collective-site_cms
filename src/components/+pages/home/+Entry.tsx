@@ -1,13 +1,12 @@
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
-import CmsLayout from "~/components/layouts/Cms";
+import { PageFramework } from "~/components/frameworks";
 import SiteLayout from "~/components/layouts/Site";
 import { PageDataFetch } from "~/components/PageDataFetch";
 import CmsHeader from "~/components/parts/cms-header/+Entry";
-import SiteFooter from "~/components/parts/site-footer/+Entry";
-import SiteHeader from "~/components/parts/site-header/+Entry";
 
+import { CommonData, type CommonDbData } from "../_containers";
 import { RevisionCx } from "./_state";
 import AboutUs from "./about-us/+Entry";
 import BannerImage from "./BannerImage";
@@ -48,6 +47,7 @@ import type { MyDb } from "~/types/database";
 // OTHER
 
 // □ On toggleable elements, can put toggle on actual element menu as well as top bar.
+// □ On images, make image name part of the entity + use for searches
 // □ Programmes + workshops - toggle info section?
 // □ AuthContext logic, along with firebase initauthstate, seems flawed. Probs need to extract initauthstate into its own context
 // □ need to have production values in env.local?
@@ -93,81 +93,71 @@ import type { MyDb } from "~/types/database";
 const HomePage = () => (
   <InitDbData>
     {(initDbData) => (
-      <UedProviders initDbData={initDbData}>
+      <UserEditProviders dbData={initDbData}>
         <RevisionCx.Provider>
           {(revisionState) => (
-            <CmsLayout.Body>
-              <CmsHeader
-                actions={revisionState.actions}
-                data={{ isChange: revisionState.data.isChange }}
-              />
-              <SiteLayout.Body>
-                <SiteHeader />
-
-                <BannerImage />
-
-                <SiteLayout.Section.Spacing>
-                  <OrgHeadings />
-                </SiteLayout.Section.Spacing>
-
-                <SiteLayout.Section.Spacing>
-                  <ParticipantTestimonials />
-                </SiteLayout.Section.Spacing>
-
-                <SiteLayout.Section.Spacing>
-                  <AboutUs />
-                </SiteLayout.Section.Spacing>
-
-                <SiteLayout.Section.Spacing>
-                  <Workshops />
-                </SiteLayout.Section.Spacing>
-
-                <SiteLayout.Section.Spacing>
-                  <Programmes />
-                </SiteLayout.Section.Spacing>
-
-                <SiteLayout.Section.Spacing.Vertical>
-                  <PhotoAlbum />
-                </SiteLayout.Section.Spacing.Vertical>
-
-                <SiteLayout.Section.Spacing>
-                  <SupportUs />
-                </SiteLayout.Section.Spacing>
-
-                <SiteLayout.Section.Spacing>
-                  <Partners />
-                </SiteLayout.Section.Spacing>
-
-                <SiteLayout.Section.Spacing>
-                  <Supporters />
-                </SiteLayout.Section.Spacing>
-
-                <SiteLayout.Section.Spacing.Horizontal>
-                  <div className="mt-2xl pb-xl">
-                    <SiteFooter />
-                  </div>
-                </SiteLayout.Section.Spacing.Horizontal>
-              </SiteLayout.Body>
-            </CmsLayout.Body>
+            <PageFramework
+              cmsHeader={
+                <CmsHeader
+                  actions={revisionState.actions}
+                  data={{ isChange: revisionState.data.isChange }}
+                />
+              }
+              pageSpecificComponents={<PageSpecificComponents />}
+            />
           )}
         </RevisionCx.Provider>
-      </UedProviders>
+      </UserEditProviders>
     )}
   </InitDbData>
 );
 
 export default HomePage;
 
-type DbData = {
+const PageSpecificComponents = () => (
+  <>
+    <BannerImage />
+
+    <SiteLayout.Section.Spacing>
+      <OrgHeadings />
+    </SiteLayout.Section.Spacing>
+
+    <SiteLayout.Section.Spacing>
+      <ParticipantTestimonials />
+    </SiteLayout.Section.Spacing>
+
+    <SiteLayout.Section.Spacing>
+      <AboutUs />
+    </SiteLayout.Section.Spacing>
+
+    <SiteLayout.Section.Spacing>
+      <Workshops />
+    </SiteLayout.Section.Spacing>
+
+    <SiteLayout.Section.Spacing>
+      <Programmes />
+    </SiteLayout.Section.Spacing>
+
+    <SiteLayout.Section.Spacing.Vertical>
+      <PhotoAlbum />
+    </SiteLayout.Section.Spacing.Vertical>
+
+    <SiteLayout.Section.Spacing>
+      <SupportUs />
+    </SiteLayout.Section.Spacing>
+
+    <SiteLayout.Section.Spacing>
+      <Partners />
+    </SiteLayout.Section.Spacing>
+
+    <SiteLayout.Section.Spacing>
+      <Supporters />
+    </SiteLayout.Section.Spacing>
+  </>
+);
+
+type PageDbData = {
   page: MyDb["pages"]["landing"];
-
-  orgDetails: MyDb["singles"]["orgDetails"];
-  linkLabels: MyDb["singles"]["linkLabels"];
-  header: MyDb["singles"]["header"];
-  footer: MyDb["singles"]["footer"];
-
-  images: MyDb["image"][];
-  keywords: MyDb["keyword"][];
 
   "participant-testimonials": MyDb["participant-testimonial"][];
   programmes: MyDb["programme"][];
@@ -175,28 +165,53 @@ type DbData = {
   partners: MyDb["partner"][];
 };
 
-const InitDbData = ({
-  children,
-}: {
-  children: (data: DbData) => ReactElement;
-}) => {
+type DbData = {
+  common: CommonDbData;
+
+  page: PageDbData;
+};
+
+const usePageDbDataInit = () => {
   const pageQuery = useQuery("landing", myDb.pages.landing.fetch);
-
-  const footerQuery = useQuery("footer", myDb.footer.fetch);
-  const headerQuery = useQuery("header", myDb.header.fetch);
-  const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
-  const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
-
-  const imagesQuery = useQuery("images", myDb.image.fetchAll);
-  const keywordsQuery = useQuery("keywords", myDb.keyword.fetchAll);
 
   const participantTestimonialsQuery = useQuery(
     "participant-testimonials",
     myDb["participant-testimonial"].fetchAll,
   );
+  const partnersQuery = useQuery("partners", myDb.partner.fetchAll);
   const programmesQuery = useQuery("programmes", myDb.programme.fetchAll);
   const supportersQuery = useQuery("supporters", myDb.supporter.fetchAll);
-  const partnersQuery = useQuery("partners", myDb.partner.fetchAll);
+
+  return {
+    pageQuery,
+    participantTestimonialsQuery,
+    partnersQuery,
+    programmesQuery,
+    supportersQuery,
+  };
+};
+
+const InitDbData = ({
+  children,
+}: {
+  children: (data: DbData) => ReactElement;
+}) => {
+  const {
+    footerQuery,
+    headerQuery,
+    imagesQuery,
+    keywordsQuery,
+    linkLabelsQuery,
+    orgDetailsQuery,
+  } = CommonData.useQueries();
+
+  const {
+    pageQuery,
+    participantTestimonialsQuery,
+    partnersQuery,
+    programmesQuery,
+    supportersQuery,
+  } = usePageDbDataInit();
 
   if (
     pageQuery.isLoading ||
@@ -242,53 +257,57 @@ const InitDbData = ({
   }
 
   return children({
-    page: pageQuery.data,
+    common: {
+      footer: footerQuery.data,
+      header: headerQuery.data,
+      images: imagesQuery.data,
+      keywords: keywordsQuery.data,
+      linkLabels: linkLabelsQuery.data,
+      orgDetails: orgDetailsQuery.data,
+    },
 
-    orgDetails: orgDetailsQuery.data,
-    linkLabels: linkLabelsQuery.data,
-    header: headerQuery.data,
-    footer: footerQuery.data,
-
-    images: imagesQuery.data,
-    keywords: keywordsQuery.data,
-
-    "participant-testimonials": participantTestimonialsQuery.data,
-    programmes: programmesQuery.data,
-    supporters: supportersQuery.data,
-    partners: partnersQuery.data,
+    page: {
+      page: pageQuery.data,
+      "participant-testimonials": participantTestimonialsQuery.data,
+      partners: partnersQuery.data,
+      programmes: programmesQuery.data,
+      supporters: supportersQuery.data,
+    },
   });
 };
 
-const UedProviders = ({
-  initDbData,
+const PageUserEditProviders = ({
+  children,
+  dbData,
+}: {
+  children: ReactElement;
+  dbData: PageDbData;
+}) => (
+  <UedCx.Pages.Landing.Provider initData={dbData.page}>
+    <UedCx.Programmes.Provider initData={dbData.programmes}>
+      <UedCx.ParticipantTestimonials.Provider
+        initData={dbData["participant-testimonials"]}
+      >
+        <UedCx.Supporters.Provider initData={dbData.supporters}>
+          <UedCx.Partners.Provider initData={dbData.partners}>
+            {children}
+          </UedCx.Partners.Provider>
+        </UedCx.Supporters.Provider>
+      </UedCx.ParticipantTestimonials.Provider>
+    </UedCx.Programmes.Provider>
+  </UedCx.Pages.Landing.Provider>
+);
+
+const UserEditProviders = ({
+  dbData,
   children,
 }: {
-  initDbData: DbData;
+  dbData: DbData;
   children: ReactElement;
 }) => (
-  <UedCx.Pages.Landing.Provider initData={initDbData.page}>
-    <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
-      <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
-        <UedCx.Header.Provider initData={initDbData.header}>
-          <UedCx.Footer.Provider initData={initDbData.footer}>
-            <UedCx.Images.Provider initData={initDbData.images}>
-              <UedCx.Keywords.Provider initData={initDbData.keywords}>
-                <UedCx.Programmes.Provider initData={initDbData.programmes}>
-                  <UedCx.ParticipantTestimonials.Provider
-                    initData={initDbData["participant-testimonials"]}
-                  >
-                    <UedCx.Supporters.Provider initData={initDbData.supporters}>
-                      <UedCx.Partners.Provider initData={initDbData.partners}>
-                        {children}
-                      </UedCx.Partners.Provider>
-                    </UedCx.Supporters.Provider>
-                  </UedCx.ParticipantTestimonials.Provider>
-                </UedCx.Programmes.Provider>
-              </UedCx.Keywords.Provider>
-            </UedCx.Images.Provider>
-          </UedCx.Footer.Provider>
-        </UedCx.Header.Provider>
-      </UedCx.LinkLabels.Provider>
-    </UedCx.OrgDetails.Provider>
-  </UedCx.Pages.Landing.Provider>
+  <CommonData.UserEditProviders dbData={dbData.common}>
+    <PageUserEditProviders dbData={dbData.page}>
+      {children}
+    </PageUserEditProviders>
+  </CommonData.UserEditProviders>
 );

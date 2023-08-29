@@ -1,29 +1,28 @@
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
-import { myDb } from "~/my-firebase/firestore";
-
-import { RevisionCx } from "./_state";
-
+import CmsLayout from "~/components/layouts/Cms";
+import SiteLayout from "~/components/layouts/Site";
 import { PageDataFetch } from "~/components/PageDataFetch";
 import CmsHeader from "~/components/parts/cms-header/+Entry";
 import SiteFooter from "~/components/parts/site-footer/+Entry";
 import SiteHeader from "~/components/parts/site-header/+Entry";
 
-import CmsLayout from "~/components/layouts/Cms";
-import SiteLayout from "~/components/layouts/Site";
-import { UedCx } from "~/context/user-editable-data";
-import { useDynamicRouteParams } from "~/hooks";
-import type { MyDb } from "~/types/database";
+import { RevisionCx } from "./_state";
 import BannerImage from "./banner-image/+Entry";
 import Headings from "./headings/+Entry";
 import Info from "./info/+Entry";
 import MainText from "./main-text/+Entry";
 import PhotoAlbum from "./photo-album/+Entry";
 import Sections from "./sections/+Entry";
+import SignUp from "./sign-up/+Entry";
 import Tickets from "./tickets/+Entry";
 import TopEditBar from "./top-edit-bar/+Entry";
-import SignUp from "./sign-up/+Entry";
+
+import { UedCx } from "~/context/user-editable-data";
+import { useDynamicRouteParams } from "~/hooks";
+import { myDb } from "~/my-firebase/firestore";
+import type { MyDb } from "~/types/database";
 
 const WorkshopPage = () => (
   <AwaitParams>
@@ -33,12 +32,12 @@ const WorkshopPage = () => (
           <UedProviders initDbData={initDbData}>
             <RevisionCx.Provider>
               {(revisionState) => (
-                <CmsLayout.Body>
+                <CmsLayout.Page>
                   <CmsHeader
                     actions={revisionState.actions}
                     data={{ isChange: revisionState.data.isChange }}
                   />
-                  <SiteLayout.Body>
+                  <SiteLayout.Page>
                     <SiteHeader />
                     <PageSpecificContent />
                     <SiteLayout.Section.Spacing.Horizontal>
@@ -46,8 +45,8 @@ const WorkshopPage = () => (
                         <SiteFooter />
                       </div>
                     </SiteLayout.Section.Spacing.Horizontal>
-                  </SiteLayout.Body>
-                </CmsLayout.Body>
+                  </SiteLayout.Page>
+                </CmsLayout.Page>
               )}
             </RevisionCx.Provider>
           </UedProviders>

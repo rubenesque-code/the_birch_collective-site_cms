@@ -11,9 +11,34 @@ function CmsLayout() {
 
 export default CmsLayout;
 
-const Body = ({ children }: { children: ReactNode }) => (
+const Page = ({ children }: { children: ReactNode }) => (
   <div className="flex h-screen w-screen flex-col overflow-hidden">
     {children}
+  </div>
+);
+
+CmsLayout.Page = Page;
+
+const Body = ({
+  children,
+  styles,
+}: {
+  children: ReactNode;
+  styles?: {
+    outer?: string;
+    inner?: string;
+  };
+}) => (
+  <div
+    className={`grid h-full flex-grow place-items-center overflow-y-auto overflow-x-hidden bg-gray-100 scrollbar-thin
+  ${styles?.outer || ""}`}
+  >
+    <div
+      className={`div w-screen max-w-[1200px] p-sm pr-md
+       ${styles?.inner || ""}`}
+    >
+      {children}
+    </div>
   </div>
 );
 

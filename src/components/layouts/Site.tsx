@@ -8,30 +8,15 @@ function SiteLayout() {
 
 export default SiteLayout;
 
-const Body = ({
+const Page = ({
   children,
-  styles,
+  className,
 }: {
   children: ReactNode;
-  styles?: {
-    outer?: string;
-    inner?: string;
-  };
-}) => (
-  <div
-    className={`grid h-full flex-grow place-items-center overflow-y-auto overflow-x-hidden bg-gray-100 scrollbar-thin
-  ${styles?.outer || ""}`}
-  >
-    <div
-      className={`div w-screen max-w-[1200px] p-sm pr-md
-       ${styles?.inner || ""}`}
-    >
-      <div className="bg-white">{children}</div>
-    </div>
-  </div>
-);
+  className?: string;
+}) => <div className={`h-full bg-white ${className || ""}`}>{children}</div>;
 
-SiteLayout.Body = Body;
+SiteLayout.Page = Page;
 
 const SectionHorizontalSpacing = ({ children }: { children: ReactNode }) => (
   <div className="px-4 xs:px-8 sm:px-12 md:px-16 lg:px-24">{children}</div>

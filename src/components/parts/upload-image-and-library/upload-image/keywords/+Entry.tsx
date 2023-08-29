@@ -11,8 +11,7 @@ import { getIds } from "~/helpers/data/query";
 import { fuzzySearch } from "~/helpers/fuzzy-search";
 import { strArrayDivergence } from "~/helpers/query-arr";
 import { generateUid } from "~/lib/external-packages-rename";
-
-// should probably have a new image store, as with new testimonials etc., which includes keywords functionality
+import type { MyDb } from "~/types/database";
 
 const Keywords = () => (
   <div className="">
@@ -46,14 +45,21 @@ const ImageKeywords = () => {
     store: { data: keywordStore },
   } = UedCx.Keywords.use();
 
-  const entries = newImageStore.data.keywords
-    .map((entry) => ({
-      id: entry.id,
-      connectedKeyword: keywordStore.find(
-        (keyword) => keyword.id === entry.dbConnections.keywordId,
-      ),
-    }))
-    .filter((entry) => entry.connectedKeyword);
+  const entries = (
+    newImageStore.data.keywords
+      .map((entry) => ({
+        id: entry.id,
+        connectedKeyword: keywordStore.find(
+          (keyword) => keyword.id === entry.dbConnections.keywordId,
+        ),
+      }))
+      .filter((entry) => entry.connectedKeyword) as {
+      id: string;
+      connectedKeyword: MyDb["keyword"];
+    }[]
+  ).sort((a, b) =>
+    a.connectedKeyword.text.localeCompare(b.connectedKeyword.text),
+  );
 
   return (
     <div className="">
@@ -66,12 +72,11 @@ const ImageKeywords = () => {
               className="group/keyword relative border-b border-transparent text-sm text-gray-500 transition-all duration-100 ease-in-out hover:border-gray-300"
               key={entry.id}
             >
-              {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
-              <span>{entry.connectedKeyword!.text}</span>
+              <span>{entry.connectedKeyword.text}</span>
 
               {i < entries.length - 1 ? "," : ""}
 
-              <WithTooltip text="remove keyword">
+              <WithTooltip text="remove">
                 <div
                   className="absolute right-0 top-0 -translate-y-full cursor-pointer rounded-full p-xxs text-xs opacity-0 transition-opacity duration-100 ease-in-out group-hover/keyword:opacity-100 hover:bg-gray-100 hover:text-my-alert-content"
                   onClick={() =>
@@ -196,14 +201,6 @@ const AddKeywordPanel = () => {
         >
           Press enter to submit
         </div>
-        {/* <div
-          className={`cursor-pointer rounded-md border px-xs py-xxs text-sm text-gray-500 transition-all duration-150 ease-in-out hover:bg-gray-100 ${
-            inputValue.length ? "opacity-100" : "opacity-0"
-          }`}
-          onClick={handleSubmit}
-        >
-          Submit
-        </div> */}
       </form>
 
       <SearchList inputValue={inputValue} />

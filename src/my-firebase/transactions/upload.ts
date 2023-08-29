@@ -1,14 +1,15 @@
 import { myDb } from "../firestore";
 import { myStorage } from "../storage";
 
-export const uploadImageToStorageAndCreateFirestoreImage = async (input: {
-  naturalDimensions: {
-    width: number;
-    height: number;
-  };
-  file: File;
-  firestoreId: string;
-}) => {
+import { type MyDb } from "~/types/database";
+import { type MyPick } from "~/types/utilities";
+
+export const uploadImageToStorageAndCreateFirestoreImage = async (
+  input: MyPick<MyDb["image"], "keywords" | "naturalDimensions"> & {
+    file: File;
+    firestoreId: string;
+  },
+) => {
   const storageImage =
     await myStorage.transactions.uploadImageAndFetchResizedImageData(
       input.file,
@@ -25,5 +26,6 @@ export const uploadImageToStorageAndCreateFirestoreImage = async (input: {
       blur: storageImage.blurImageURL,
       large: storageImage.largeImageURL,
     },
+    keywords: input.keywords,
   });
 };

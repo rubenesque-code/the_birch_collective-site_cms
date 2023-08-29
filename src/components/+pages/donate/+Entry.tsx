@@ -1,12 +1,10 @@
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
-import CmsLayout from "~/components/layouts/Cms";
+import { PageFramework } from "~/components/frameworks";
 import SiteLayout from "~/components/layouts/Site";
 import { PageDataFetch } from "~/components/PageDataFetch";
 import CmsHeader from "~/components/parts/cms-header/+Entry";
-import SiteFooter from "~/components/parts/site-footer/+Entry";
-import SiteHeader from "~/components/parts/site-header/+Entry";
 
 import { RevisionCx } from "./_state";
 import Banner from "./banner/+Entry";
@@ -23,21 +21,15 @@ const DonatePage = () => (
       <UedProviders initDbData={initDbData}>
         <RevisionCx.Provider>
           {(revisionState) => (
-            <CmsLayout.Body>
-              <CmsHeader
-                actions={revisionState.actions}
-                data={{ isChange: revisionState.data.isChange }}
-              />
-              <SiteLayout.Body>
-                <SiteHeader />
-                <PageSpecificContent />
-                <SiteLayout.Section.Spacing.Horizontal>
-                  <div className="mt-2xl pb-xl">
-                    <SiteFooter />
-                  </div>
-                </SiteLayout.Section.Spacing.Horizontal>
-              </SiteLayout.Body>
-            </CmsLayout.Body>
+            <PageFramework
+              cmsHeader={
+                <CmsHeader
+                  actions={revisionState.actions}
+                  data={{ isChange: revisionState.data.isChange }}
+                />
+              }
+              pageSpecificComponents={<PageSpecificComponents />}
+            />
           )}
         </RevisionCx.Provider>
       </UedProviders>
@@ -47,7 +39,7 @@ const DonatePage = () => (
 
 export default DonatePage;
 
-const PageSpecificContent = () => (
+const PageSpecificComponents = () => (
   <>
     <div className="relative">
       <Banner />

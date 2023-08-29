@@ -33,7 +33,7 @@ const ParticipantTestimonialsModal = ({
         header={
           <ModalLayout.UserEdit.Header>
             <ModalLayout.UserEdit.Header.Title>
-              Edit partcipant testimonials
+              Edit participant testimonials
             </ModalLayout.UserEdit.Header.Title>
           </ModalLayout.UserEdit.Header>
         }
