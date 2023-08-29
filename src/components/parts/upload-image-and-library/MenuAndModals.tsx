@@ -3,12 +3,13 @@ import { type ReactElement } from "react";
 import { Icon } from "~/components/icons";
 import { Modal, MyMenu } from "~/components/styled-bases";
 
-import { ComponentAPI, ModalsVisibilityContext } from "./_state";
+import { ComponentApi, ModalsVisibilityContext } from "./_state";
 import { ImageLibrary } from "./image-library";
 import { UploadImage } from "./upload-image/+Entry";
 
 export const MenuAndModals = () => {
-  const { styles, menuButton } = ComponentAPI.use();
+  const { styles, menuButton } = ComponentApi.use();
+
   const { uploadModal, imageLibrary: imageLibraryModal } =
     ModalsVisibilityContext.use();
 

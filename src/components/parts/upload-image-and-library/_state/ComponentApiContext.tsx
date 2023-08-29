@@ -31,13 +31,16 @@ const useThisContext = () => {
   return value;
 };
 
-const ComponentAPI = () => {
+const ComponentApi = () => {
   throw new Error(
     "ComponentAPI exists for naming purposes only and should not be used as a component",
   );
 };
 
-export { ComponentAPI, type ComponentAPIContextValue as ComponentAPIProps };
+export {
+  ComponentApi as ComponentApi,
+  type ComponentAPIContextValue as ComponentAPIProps,
+};
 
-ComponentAPI.Provider = Provider;
-ComponentAPI.use = useThisContext;
+ComponentApi.Provider = Provider;
+ComponentApi.use = useThisContext;

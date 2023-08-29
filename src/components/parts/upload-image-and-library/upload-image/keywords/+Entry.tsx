@@ -8,6 +8,7 @@ import { NewImageCx } from "../_state";
 
 import { UedCx } from "~/context/user-editable-data";
 import { getIds } from "~/helpers/data/query";
+import { fuzzySearch } from "~/helpers/fuzzy-search";
 import { strArrayDivergence } from "~/helpers/query-arr";
 import { generateUid } from "~/lib/external-packages-rename";
 
@@ -59,10 +60,10 @@ const ImageKeywords = () => {
       {!newImageStore.data.keywords.length ? (
         <p className="text-gray-400">None yet.</p>
       ) : (
-        <div className="flex items-center gap-sm">
+        <div className="flex flex-wrap items-center gap-x-sm gap-y-xs">
           {entries.map((entry, i) => (
             <div
-              className="group/keyword relative border-b border-transparent text-sm text-gray-500 transition-all duration-100 ease-in-out hover:border-gray-200"
+              className="group/keyword relative border-b border-transparent text-sm text-gray-500 transition-all duration-100 ease-in-out hover:border-gray-300"
               key={entry.id}
             >
               {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
@@ -113,20 +114,25 @@ const AddKeywordPanel = () => {
 
   const { store: keywordStore } = UedCx.Keywords.use();
 
+  const existingKeywordMatch = keywordStore.data.find(
+    (keyword) => keyword.text.toLowerCase() === inputValue.toLowerCase(),
+  );
+
+  const existingKeywordMatchIsAlreadyConnected = existingKeywordMatch
+    ? newImageStore.data.keywords.some(
+        (entry) => entry.dbConnections.keywordId === existingKeywordMatch.id,
+      )
+    : null;
+
+  const inputValueIsValid =
+    inputValue.length && !existingKeywordMatchIsAlreadyConnected;
+
   const handleSubmit = () => {
-    const existingKeywordMatch = keywordStore.data.find(
-      (keyword) => keyword.text.toLowerCase() === inputValue.toLowerCase(),
-    );
+    if (!inputValueIsValid) {
+      return;
+    }
 
     if (existingKeywordMatch) {
-      if (
-        newImageStore.data.keywords.some(
-          (entry) => entry.dbConnections.keywordId === existingKeywordMatch.id,
-        )
-      ) {
-        return;
-      }
-
       newImageStore.actions.keywords.add({
         id: generateUid(),
         dbConnections: { keywordId: existingKeywordMatch.id },
@@ -151,13 +157,25 @@ const AddKeywordPanel = () => {
 
   return (
     <div className="">
-      <div className="relative flex items-center gap-sm border-b px-2xl py-xs">
+      <form
+        className="relative flex items-center gap-sm border-b py-xs pl-2xl pr-xl"
+        onSubmit={(e) => {
+          e.preventDefault();
+
+          handleSubmit();
+        }}
+        onKeyDown={(e) => {
+          if (e.code === "Enter" || e.code === "Space") {
+            e.stopPropagation();
+          }
+        }}
+      >
         <div className="relative">
           <input
             className={`min-w-[220px] rounded-sm py-xxs text-gray-700 focus-within:bg-gray-50`}
             type="text"
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Search or add keyword..."
+            placeholder="Search for or add keyword..."
             value={inputValue}
             size={1}
             autoComplete="one-time-code"
@@ -170,28 +188,36 @@ const AddKeywordPanel = () => {
             <SearchOrAddIcon />
           </label>
         </div>
+
         <div
+          className={`text-xs text-gray-400 ${
+            inputValueIsValid ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          Press enter to submit
+        </div>
+        {/* <div
           className={`cursor-pointer rounded-md border px-xs py-xxs text-sm text-gray-500 transition-all duration-150 ease-in-out hover:bg-gray-100 ${
             inputValue.length ? "opacity-100" : "opacity-0"
           }`}
           onClick={handleSubmit}
         >
           Submit
-        </div>
-      </div>
+        </div> */}
+      </form>
 
-      <SearchList />
+      <SearchList inputValue={inputValue} />
     </div>
   );
 };
 
 const SearchOrAddIcon = () => (
-  <div className="relative text-gray-300">
+  <div className="relative text-gray-400">
     <span className="absolute -left-[1px] -top-[1px] -translate-x-full text-xs">
       <Icon.Create />
     </span>
 
-    <div className="h-[20px] w-[1px] rotate-45 bg-gray-200" />
+    <div className="h-[20px] w-[1px] rotate-45 bg-gray-300" />
 
     <span className="absolute -bottom-[1px] -right-[1px] translate-x-full text-xs">
       <Icon.Search />
@@ -199,7 +225,7 @@ const SearchOrAddIcon = () => (
   </div>
 );
 
-const SearchList = () => {
+const SearchList = ({ inputValue }: { inputValue: string }) => {
   const keywordStore = UedCx.Keywords.use();
 
   const newImageStore = NewImageCx.use();
@@ -207,11 +233,21 @@ const SearchList = () => {
   const unused = strArrayDivergence(
     getIds(keywordStore.store.data),
     newImageStore.data.keywords.map((k) => k.dbConnections.keywordId),
-  ).map(
-    (keywordId) =>
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      keywordStore.store.data.find((keyword) => keyword.id === keywordId)!,
-  );
+  )
+    .map(
+      (keywordId) =>
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        keywordStore.store.data.find((keyword) => keyword.id === keywordId)!,
+    )
+    .sort((a, b) => a.text.localeCompare(b.text));
+
+  const filteredByInputValue = !inputValue.length
+    ? unused
+    : fuzzySearch({
+        entities: unused,
+        keys: ["text"],
+        pattern: inputValue,
+      }).sort((a, b) => a.text.localeCompare(b.text));
 
   return (
     <div className="px-[4.5rem] py-sm">
@@ -219,9 +255,11 @@ const SearchList = () => {
         <p className="pl-md text-gray-400">None yet.</p>
       ) : !unused.length ? (
         <p className="pl-md text-gray-400">None unused.</p>
+      ) : !filteredByInputValue.length ? (
+        <p className="pl-md text-gray-400">No matches.</p>
       ) : (
-        <div className="flex flex-col items-start gap-xxxs">
-          {unused.map((keyword) => (
+        <div className="flex max-h-[200px] flex-col items-start gap-xs overflow-y-auto">
+          {filteredByInputValue.map((keyword) => (
             <WithTooltip text="Click to add keyword to image" key={keyword.id}>
               <div
                 className="cursor-pointer rounded-lg px-md text-gray-600 hover:bg-gray-100"

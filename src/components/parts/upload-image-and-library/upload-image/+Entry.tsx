@@ -5,7 +5,7 @@ import { useMutation } from "react-query";
 import { AsyncOverlay } from "~/components/AsyncOverlay";
 import { Icon } from "~/components/icons";
 
-import { ComponentAPI, ModalsVisibilityContext } from "../_state";
+import { ComponentApi, ModalsVisibilityContext } from "../_state";
 import { NewImageCx } from "./_state";
 import Keywords from "./keywords/+Entry";
 
@@ -34,7 +34,7 @@ const Form = () => {
   } | null>(null); */
   const { data: newImageData } = NewImageCx.use();
 
-  const { onUploadOrSelect: onUpload } = ComponentAPI.use();
+  const { onUploadOrSelect: onUpload } = ComponentApi.use();
 
   const {
     uploadModal: { close: closeThisModal },

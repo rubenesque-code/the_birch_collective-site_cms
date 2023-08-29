@@ -1,12 +1,15 @@
 import type { ReactElement } from "react";
 import { useQuery } from "react-query";
-import { myDb } from "~/my-firebase/firestore";
-import { ImagesContext } from "./_state";
-import type { MyDb } from "~/types/database";
-import { ComponentAPI, ModalsVisibilityContext } from "../_state";
-import { NextImage } from "~/lib/external-packages-rename";
+
 import { Icon } from "~/components/icons";
+
+import { ComponentApi, ModalsVisibilityContext } from "../_state";
+import { ImagesContext } from "./_state";
+
 import { useToast } from "~/hooks";
+import { NextImage } from "~/lib/external-packages-rename";
+import { myDb } from "~/my-firebase/firestore";
+import type { MyDb } from "~/types/database";
 
 export const ImageLibrary = ({ closeModal }: { closeModal: () => void }) => (
   <div className="relative flex h-[700px] max-h-[70vh] w-[90vw] max-w-[1200px] flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
@@ -74,7 +77,7 @@ const Images = () => {
 };
 
 const Image = ({ image }: { image: MyDb["image"] }) => {
-  const { onUploadOrSelect } = ComponentAPI.use();
+  const { onUploadOrSelect } = ComponentApi.use();
   const { imageLibrary } = ModalsVisibilityContext.use();
 
   const toast = useToast();

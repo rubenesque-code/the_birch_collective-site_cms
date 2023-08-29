@@ -2,19 +2,17 @@ import { Popover } from "@headlessui/react";
 
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+
 import { UedCx } from "~/context/user-editable-data";
 
 const BannerImage = () => {
   const {
     bannerImage: { dbConnections, position },
   } = UedCx.Pages.Landing.useData();
-  /*   const {
-    bannerImage: { dbConnections, position },
-  } = UserEditableDataCx.useData("page"); */
 
   return (
     <div className="group/bannerImage relative aspect-[21/9]">
@@ -31,6 +29,7 @@ const BannerImage = () => {
           </ConnectImage>
         )}
       </UserSelectedImageWrapper>
+
       <ImageInfo />
     </div>
   );

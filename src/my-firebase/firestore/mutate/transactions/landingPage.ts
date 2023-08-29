@@ -19,7 +19,7 @@ export const landingPageTransaction = async (input: {
 
   images: {
     updated: DocPartialWithId<MyDb["image"]>[];
-    deleted: string[];
+    // deleted: string[];
   };
   keywords: {
     updated: DocPartialWithId<MyDb["keyword"]>[];
@@ -65,6 +65,32 @@ export const landingPageTransaction = async (input: {
   }
   if (input.linkLabels) {
     myDb.linkLabels.batch.update(input.linkLabels, batch);
+  }
+
+  if (input.images.updated.length) {
+    input.images.updated.forEach((image) =>
+      myDb["image"].batch.update(image, batch),
+    );
+  }
+  /*   if (input.images.deleted.length) {
+    input.images.deleted.forEach((id) =>
+      myDb["image"].batch.delete(id, batch),
+    );
+  } */
+  if (input.keywords.created.length) {
+    input.keywords.created.forEach((keyword) =>
+      myDb["keyword"].batch.create(keyword, batch),
+    );
+  }
+  if (input.keywords.updated.length) {
+    input.keywords.updated.forEach((keyword) =>
+      myDb["keyword"].batch.update(keyword, batch),
+    );
+  }
+  if (input.keywords.deleted.length) {
+    input.keywords.deleted.forEach((id) =>
+      myDb["keyword"].batch.delete(id, batch),
+    );
   }
 
   if (input.testimonials.created.length) {

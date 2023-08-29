@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
-import { WithTooltip } from "../../WithTooltip";
+
 import { Icon } from "../../icons";
+import { WithTooltip } from "../../WithTooltip";
+
 import type { MyPick } from "~/types/utilities";
 
 type ButtonProps = {
@@ -56,13 +58,6 @@ const ImageButton = () => (
     <Icon.Image />
   </Button>
 );
-
-/* function Button() {
-   throw new Error(
-    "Button exists for naming purposes only and should not be used as a component",
-  ); 
-  
-} */
 
 Button.Image = ImageButton;
 Button.Delete = DeleteButton;

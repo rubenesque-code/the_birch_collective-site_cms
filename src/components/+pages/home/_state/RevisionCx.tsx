@@ -82,7 +82,7 @@ function Provider({
 
               images: {
                 updated: images.saveData.updated,
-                deleted: images.saveData.deleted,
+                // deleted: images.saveData.deleted,
               },
               keywords: keywords.saveData,
 
