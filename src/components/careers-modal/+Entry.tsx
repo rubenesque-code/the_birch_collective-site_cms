@@ -1,21 +1,21 @@
 import React, { type ReactElement } from "react";
 
-import { UedCx } from "~/context/user-editable-data";
-
-import { useToast } from "~/hooks";
-
-import { WarningPanel } from "~/components/WarningPanel";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import ModalLayout from "~/components/layouts/Modal";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
-import { CareerCx } from "~/context/entities";
-import { deepSortByIndex } from "~/helpers/data/process";
-import { getIds } from "~/helpers/data/query";
+import { WarningPanel } from "~/components/WarningPanel";
+
 import { DndKit } from "../dnd-kit";
 import { Icon } from "../icons";
 import { ComponentApiCx, type ContextApiCxProps } from "./_state";
 import { CreateModal } from "./create-modal/CreateModal";
+
+import { CareerCx } from "~/context/entities";
+import { UedCx } from "~/context/user-editable-data";
+import { deepSortByIndex } from "~/helpers/data/process";
+import { getIds } from "~/helpers/data/query";
+import { useToast } from "~/hooks";
 
 const CareersModal = ({
   button,
@@ -27,20 +27,20 @@ const CareersModal = ({
     <Modal.WithVisibilityProvider
       button={button}
       panelContent={({ closeModal }) => (
-        <ModalLayout.UserEdit
+        <ModalLayout.Standard
           body={<Content />}
           closeModal={closeModal}
           createEntityModal={<CreateModal />}
           header={
-            <ModalLayout.UserEdit.Header>
-              <ModalLayout.UserEdit.Header.Title>
+            <ModalLayout.Standard.Header>
+              <ModalLayout.Standard.Header.Title>
                 Add job post
-              </ModalLayout.UserEdit.Header.Title>
-              <ModalLayout.UserEdit.Header.Info>
+              </ModalLayout.Standard.Header.Title>
+              <ModalLayout.Standard.Header.Info>
                 Below fields are editable. Edit all fields from the careers
                 page.
-              </ModalLayout.UserEdit.Header.Info>
-            </ModalLayout.UserEdit.Header>
+              </ModalLayout.Standard.Header.Info>
+            </ModalLayout.Standard.Header>
           }
         />
       )}

@@ -24,11 +24,6 @@ import { myDb } from "~/my-firebase/firestore";
 import type { MyDb } from "~/types/database";
 
 // MUST DO
-// □ delete firestore images that came from now deleted storage image (when playing around with compression)
-// □ deploy panel
-// □ close window + change page (through address bar) warning
-// □ need to delete storage image when delete fb image on save
-// □ add images + keywords to each page. Maybe make abstraction for header, footer, labels, etc.
 
 // CHECK
 // □ check image blur up works
@@ -38,6 +33,10 @@ import type { MyDb } from "~/types/database";
 
 // TO DO
 // □ go over connect image logic - don't need to fetch anymore since is all images fetched on page load. But do need to connect.
+// □ need to delete storage image when delete fb image on save
+// □ images page
+// □ ability to edit image keywords
+// □ delete firestore images that came from now deleted storage image (when playing around with compression)
 
 // REFACTOR
 // □ abstraction for react-query onMutate, onSuccess, etc.?
@@ -47,6 +46,8 @@ import type { MyDb } from "~/types/database";
 // OTHER
 
 // □ On toggleable elements, can put toggle on actual element menu as well as top bar.
+// □ Should have cancel deploy button
+// □ Could poll for latest deploy data (take poll function from image upload)
 // □ On images, make image name part of the entity + use for searches
 // □ Programmes + workshops - toggle info section?
 // □ AuthContext logic, along with firebase initauthstate, seems flawed. Probs need to extract initauthstate into its own context

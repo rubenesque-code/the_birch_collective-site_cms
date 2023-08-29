@@ -1,23 +1,22 @@
 import React, { type ReactElement } from "react";
 
-import { UedCx } from "~/context/user-editable-data";
-
-import { deepSortByIndex } from "~/helpers/data/process";
-import { getIds } from "~/helpers/data/query";
-
-import { useToast } from "~/hooks";
-
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { WarningPanel } from "~/components/WarningPanel";
 import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import ModalLayout from "~/components/layouts/Modal";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
-import { ProfessionalTestimonialCx } from "~/context/entities/ProfessionalTestimonialCx";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { WarningPanel } from "~/components/WarningPanel";
+
 import CreateModal from "./create-modal/+Entry";
+
+import { ProfessionalTestimonialCx } from "~/context/entities/ProfessionalTestimonialCx";
+import { UedCx } from "~/context/user-editable-data";
+import { deepSortByIndex } from "~/helpers/data/process";
+import { getIds } from "~/helpers/data/query";
+import { useToast } from "~/hooks";
 
 const ProfessionalTestimonialsModal = ({
   button,
@@ -27,16 +26,16 @@ const ProfessionalTestimonialsModal = ({
   <Modal.WithVisibilityProvider
     button={button}
     panelContent={({ closeModal }) => (
-      <ModalLayout.UserEdit
+      <ModalLayout.Standard
         body={<Testimonials />}
         closeModal={closeModal}
         createEntityModal={<CreateModal />}
         header={
-          <ModalLayout.UserEdit.Header>
-            <ModalLayout.UserEdit.Header.Title>
+          <ModalLayout.Standard.Header>
+            <ModalLayout.Standard.Header.Title>
               Edit professional testimonials
-            </ModalLayout.UserEdit.Header.Title>
-          </ModalLayout.UserEdit.Header>
+            </ModalLayout.Standard.Header.Title>
+          </ModalLayout.Standard.Header>
         }
       />
     )}

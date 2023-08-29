@@ -1,7 +1,8 @@
 import type { ReactElement } from "react";
-import { WithTooltip } from "~/components/WithTooltip";
+
 import ModalLayout from "~/components/layouts/Modal";
 import { Modal } from "~/components/styled-bases";
+import { WithTooltip } from "~/components/WithTooltip";
 
 type Colour = "orange" | "brown" | "green";
 
@@ -15,7 +16,7 @@ const ColourModal = ({ button, currentColour, onSelect }: Props) => (
   <Modal.WithVisibilityProvider
     button={button}
     panelContent={({ closeModal }) => (
-      <ModalLayout.UserEdit
+      <ModalLayout.Standard
         body={
           <div className="flex items-center gap-lg">
             <WithTooltip text="click to make brown">
@@ -65,11 +66,11 @@ const ColourModal = ({ button, currentColour, onSelect }: Props) => (
         showCloseSection={false}
         styles={{ outerWrapper: "h-[140px]" }}
         header={
-          <ModalLayout.UserEdit.Header>
-            <ModalLayout.UserEdit.Header.Title>
+          <ModalLayout.Standard.Header>
+            <ModalLayout.Standard.Header.Title>
               Choose colour
-            </ModalLayout.UserEdit.Header.Title>
-          </ModalLayout.UserEdit.Header>
+            </ModalLayout.Standard.Header.Title>
+          </ModalLayout.Standard.Header>
         }
       />
     )}

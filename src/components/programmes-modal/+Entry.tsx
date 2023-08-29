@@ -1,25 +1,24 @@
 import React, { type ReactElement } from "react";
 
-import { UedCx } from "~/context/user-editable-data";
-
-import { deepSortByIndex } from "~/helpers/data/process";
-import { getIds } from "~/helpers/data/query";
-
-import { useToast } from "~/hooks";
-
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { WarningPanel } from "~/components/WarningPanel";
 import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import ModalLayout from "~/components/layouts/Modal";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
-import { ProgrammeCx } from "~/context/entities";
-import CreateModal from "./new-programme-modal/+Entry";
-import { ComponentApiCx, type ContextApiCxProps } from "./_state";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { WarningPanel } from "~/components/WarningPanel";
+
 import { Icon } from "../icons";
+import { ComponentApiCx, type ContextApiCxProps } from "./_state";
+import CreateModal from "./new-programme-modal/+Entry";
+
+import { ProgrammeCx } from "~/context/entities";
+import { UedCx } from "~/context/user-editable-data";
+import { deepSortByIndex } from "~/helpers/data/process";
+import { getIds } from "~/helpers/data/query";
+import { useToast } from "~/hooks";
 
 const ProgrammesModal = ({
   button,
@@ -31,20 +30,20 @@ const ProgrammesModal = ({
     <Modal.WithVisibilityProvider
       button={button}
       panelContent={({ closeModal }) => (
-        <ModalLayout.UserEdit
+        <ModalLayout.Standard
           body={<Programmes />}
           closeModal={closeModal}
           createEntityModal={<CreateModal />}
           header={
-            <ModalLayout.UserEdit.Header>
-              <ModalLayout.UserEdit.Header.Title>
+            <ModalLayout.Standard.Header>
+              <ModalLayout.Standard.Header.Title>
                 Edit programmes
-              </ModalLayout.UserEdit.Header.Title>
-              <ModalLayout.UserEdit.Header.Info>
+              </ModalLayout.Standard.Header.Title>
+              <ModalLayout.Standard.Header.Info>
                 Edit more in depth from the programmes page and each
                 programme&apos;s page
-              </ModalLayout.UserEdit.Header.Info>
-            </ModalLayout.UserEdit.Header>
+              </ModalLayout.Standard.Header.Info>
+            </ModalLayout.Standard.Header>
           }
         />
       )}

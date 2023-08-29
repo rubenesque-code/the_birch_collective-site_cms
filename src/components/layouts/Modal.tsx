@@ -1,4 +1,5 @@
 import type { ReactElement, ReactNode } from "react";
+
 import { Icon } from "../icons";
 
 function ModalLayout() {
@@ -9,7 +10,7 @@ function ModalLayout() {
 
 export default ModalLayout;
 
-const UserEdit = ({
+const Standard = ({
   createEntityModal,
   body,
   title,
@@ -57,7 +58,7 @@ const UserEdit = ({
   </div>
 );
 
-ModalLayout.UserEdit = UserEdit;
+ModalLayout.Standard = Standard;
 
 const Header = ({ children }: { children: ReactNode }) => (
   <div className="flex items-center justify-between border-b border-b-gray-200 pb-sm">
@@ -65,7 +66,7 @@ const Header = ({ children }: { children: ReactNode }) => (
   </div>
 );
 
-UserEdit.Header = Header;
+Standard.Header = Header;
 
 const HeaderTitle = ({ children }: { children: ReactNode }) => (
   <h3 className="leading-6">{children}</h3>

@@ -2,7 +2,7 @@ import { createContext, useContext, type ReactNode } from "react";
 import { useMutation } from "react-query";
 
 import { UedCx } from "~/context/user-editable-data";
-import { useToast } from "~/hooks";
+import { useLeavePageConfirm, useToast } from "~/hooks";
 import { myDb } from "~/my-firebase/firestore";
 
 // TODO: seperate stores for each data type?
@@ -31,6 +31,8 @@ function Provider({
   const linkLabels = UedCx.LinkLabels.useRevision();
   const orgDetails = UedCx.OrgDetails.useRevision();
 
+  const { revision: keywords } = UedCx.Keywords.use();
+
   const { revision: volunteerPositions } = UedCx.VolunteerPositions.use();
 
   const revisionDataArr = [
@@ -43,6 +45,8 @@ function Provider({
   ];
 
   const isChange = Boolean(revisionDataArr.find((data) => data.isChange));
+
+  useLeavePageConfirm({ runConfirmationOn: isChange });
 
   const ifChange = (arg0: () => void) => {
     if (!isChange) {
@@ -72,6 +76,8 @@ function Provider({
               linkLabels: linkLabels.saveData,
               header: header.saveData,
               footer: footer.saveData,
+
+              keywords: keywords.saveData,
 
               volunteerPositions: volunteerPositions.saveData,
             },

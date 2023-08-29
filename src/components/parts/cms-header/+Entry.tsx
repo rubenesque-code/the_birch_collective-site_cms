@@ -3,6 +3,7 @@ import { Modal, MyMenu } from "~/components/styled-bases";
 import UnsavedWarningPanel from "~/components/UnsavedWarningPanel";
 import { WithTooltip } from "~/components/WithTooltip";
 
+import DeployModal from "../deploy-modal/+Entry";
 import { ComponentApiCx, type ContextApiCxProps } from "./_state";
 import { RevisionButtons } from "./RevisionButtons";
 import { SideBarMenu } from "./SideBarMenu";
@@ -13,9 +14,26 @@ import fbAuth from "~/my-firebase/auth";
 const CmsHeader = (props: ContextApiCxProps) => (
   <ComponentApiCx.Provider {...props}>
     <div className="flex items-center justify-between border-b bg-gray-50 px-md py-sm">
-      <SideBarMenu />
+      <div className="flex items-center gap-3xl">
+        <SideBarMenu />
+
+        <DeployModal
+          button={({ openModal }) => (
+            <WithTooltip text="update site">
+              <div
+                className="cursor-pointer text-xl text-gray-300 transition-colors duration-75 ease-in-out hover:text-gray-500"
+                onClick={openModal}
+              >
+                <Icon.Deploy />
+              </div>
+            </WithTooltip>
+          )}
+        />
+      </div>
+
       <div className="flex items-center gap-2xl">
         <UserStatusMenu />
+
         <RevisionButtons />
       </div>
     </div>

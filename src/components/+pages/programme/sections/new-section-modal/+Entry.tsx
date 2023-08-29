@@ -119,9 +119,9 @@ const NewSectionModalContent = ({
     <div className="relative flex flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
       <div className="flex items-center justify-between border-b border-b-gray-200 pb-sm">
         <h3 className="leading-6">Add new section</h3>
-        <ModalLayout.UserEdit.Header.Info>
+        <ModalLayout.Standard.Header.Info>
           Add bullets after creation
-        </ModalLayout.UserEdit.Header.Info>
+        </ModalLayout.Standard.Header.Info>
       </div>
 
       <div className="mt-sm flex-grow overflow-y-auto">
@@ -260,7 +260,7 @@ const ColourModal = () => {
         </WithTooltip>
       )}
       panelContent={({ closeModal }) => (
-        <ModalLayout.UserEdit
+        <ModalLayout.Standard
           body={
             <div className="flex items-center gap-lg">
               <WithTooltip text="click to make brown">
@@ -354,7 +354,7 @@ const IconModal = () => {
         </WithTooltip>
       )}
       panelContent={({ closeModal }) => (
-        <ModalLayout.UserEdit
+        <ModalLayout.Standard
           body={
             <div className="mt-xs flex flex-wrap items-center gap-lg">
               {iconNames.map((iconName, i) => (
@@ -369,14 +369,14 @@ const IconModal = () => {
           showCloseSection={false}
           styles={{ outerWrapper: "h-[240px]" }}
           header={
-            <ModalLayout.UserEdit.Header>
-              <ModalLayout.UserEdit.Header.Title>
+            <ModalLayout.Standard.Header>
+              <ModalLayout.Standard.Header.Title>
                 Choose icon
-              </ModalLayout.UserEdit.Header.Title>
-              <ModalLayout.UserEdit.Header.Info>
+              </ModalLayout.Standard.Header.Title>
+              <ModalLayout.Standard.Header.Info>
                 The icon is the bullet point within the section
-              </ModalLayout.UserEdit.Header.Info>
-            </ModalLayout.UserEdit.Header>
+              </ModalLayout.Standard.Header.Info>
+            </ModalLayout.Standard.Header>
           }
         />
       )}

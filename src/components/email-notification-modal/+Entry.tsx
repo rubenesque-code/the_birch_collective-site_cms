@@ -30,7 +30,7 @@ const EmailNotificationModal = ({
   <Modal.WithVisibilityProvider
     button={button}
     panelContent={
-      <ModalLayout.UserEdit
+      <ModalLayout.Standard
         body={
           <div className="pb-lg">
             <h3 className="border-b pb-sm">Notified emails</h3>

@@ -1,8 +1,10 @@
 import type { ReactElement } from "react";
+
 import { IconSwith } from "~/components/IconSwitch";
-import { WithTooltip } from "~/components/WithTooltip";
 import ModalLayout from "~/components/layouts/Modal";
 import { Modal } from "~/components/styled-bases";
+import { WithTooltip } from "~/components/WithTooltip";
+
 import { textColourSwith } from "~/helpers/data/switch-to-styles";
 import type { MyDb } from "~/types/database";
 import type { MyOmit } from "~/types/utilities";
@@ -45,7 +47,7 @@ const IconModal = ({
     <Modal.WithVisibilityProvider
       button={button}
       panelContent={({ closeModal }) => (
-        <ModalLayout.UserEdit
+        <ModalLayout.Standard
           body={
             <div className="mt-xs flex flex-wrap items-center gap-lg">
               {iconNames.map((iconName, i) => (
@@ -63,14 +65,14 @@ const IconModal = ({
           showCloseSection={false}
           styles={{ outerWrapper: "h-[240px]" }}
           header={
-            <ModalLayout.UserEdit.Header>
-              <ModalLayout.UserEdit.Header.Title>
+            <ModalLayout.Standard.Header>
+              <ModalLayout.Standard.Header.Title>
                 Choose icon
-              </ModalLayout.UserEdit.Header.Title>
-              <ModalLayout.UserEdit.Header.Info>
+              </ModalLayout.Standard.Header.Title>
+              <ModalLayout.Standard.Header.Info>
                 The icon is the bullet point within the section
-              </ModalLayout.UserEdit.Header.Info>
-            </ModalLayout.UserEdit.Header>
+              </ModalLayout.Standard.Header.Info>
+            </ModalLayout.Standard.Header>
           }
         />
       )}

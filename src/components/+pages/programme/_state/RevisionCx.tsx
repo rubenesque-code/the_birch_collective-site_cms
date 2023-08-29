@@ -2,7 +2,7 @@ import { createContext, useContext, type ReactNode } from "react";
 import { useMutation } from "react-query";
 
 import { UedCx } from "~/context/user-editable-data";
-import { useToast } from "~/hooks";
+import { useLeavePageConfirm, useToast } from "~/hooks";
 import { myDb } from "~/my-firebase/firestore";
 
 type ContextValue = {
@@ -27,6 +27,8 @@ function Provider({
   const linkLabels = UedCx.LinkLabels.useRevision();
   const orgDetails = UedCx.OrgDetails.useRevision();
 
+  const { revision: keywords } = UedCx.Keywords.use();
+
   const {
     store: {
       data: { id },
@@ -37,6 +39,8 @@ function Provider({
   const revisionDataArr = [footer, header, linkLabels, orgDetails, programme];
 
   const isChange = Boolean(revisionDataArr.find((data) => data.isChange));
+
+  useLeavePageConfirm({ runConfirmationOn: isChange });
 
   const ifChange = (arg0: () => void) => {
     if (!isChange) {
@@ -55,11 +59,14 @@ function Provider({
         () =>
           saveMutation.mutateAsync(
             {
+              programme: { id, ...programme.saveData },
+
               orgDetails: orgDetails.saveData,
               linkLabels: linkLabels.saveData,
               header: header.saveData,
               footer: footer.saveData,
-              programme: { id, ...programme.saveData },
+
+              keywords: keywords.saveData,
             },
             {
               onSuccess() {

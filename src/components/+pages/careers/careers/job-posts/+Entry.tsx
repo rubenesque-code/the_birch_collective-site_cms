@@ -461,14 +461,14 @@ const DocLinkButtonLinkModal = () => {
       <Popover.Panel
         className={`absolute -top-md left-0 w-[500px] -translate-y-full rounded-xl bg-white p-lg shadow-xl`}
       >
-        <ModalLayout.UserEdit.Header>
-          <ModalLayout.UserEdit.Header.Title>
+        <ModalLayout.Standard.Header>
+          <ModalLayout.Standard.Header.Title>
             Edit doc link
-          </ModalLayout.UserEdit.Header.Title>
-          <ModalLayout.UserEdit.Header.Info>
+          </ModalLayout.Standard.Header.Title>
+          <ModalLayout.Standard.Header.Info>
             Paste in download link to document
-          </ModalLayout.UserEdit.Header.Info>
-        </ModalLayout.UserEdit.Header>
+          </ModalLayout.Standard.Header.Info>
+        </ModalLayout.Standard.Header>
         <div className="mt-md">
           <TextInputForm
             localStateValue={docLinkButton.link}

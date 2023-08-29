@@ -1,26 +1,25 @@
 import React, { type ReactElement } from "react";
 
-import { UedCx } from "~/context/user-editable-data";
-
-import { deepSortByIndex } from "~/helpers/data/process";
-import { getIds } from "~/helpers/data/query";
-
-import { useToast } from "~/hooks";
-
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { WarningPanel } from "~/components/WarningPanel";
 import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import ModalLayout from "~/components/layouts/Modal";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
-import CreateModal from "./new-workshop-modal/+Entry";
-import { ComponentApiCx, type ContextApiCxProps } from "./_state";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { WarningPanel } from "~/components/WarningPanel";
+
 import { Icon } from "../icons";
-import { DbReadCx } from "~/context/db-data-read-only";
 import { WithTooltip } from "../WithTooltip";
+import { ComponentApiCx, type ContextApiCxProps } from "./_state";
+import CreateModal from "./new-workshop-modal/+Entry";
+
+import { DbReadCx } from "~/context/db-data-read-only";
+import { UedCx } from "~/context/user-editable-data";
+import { deepSortByIndex } from "~/helpers/data/process";
+import { getIds } from "~/helpers/data/query";
+import { useToast } from "~/hooks";
 
 const WorkshopsModal = ({
   button,
@@ -32,20 +31,20 @@ const WorkshopsModal = ({
     <Modal.WithVisibilityProvider
       button={button}
       panelContent={({ closeModal }) => (
-        <ModalLayout.UserEdit
+        <ModalLayout.Standard
           body={<Workshops />}
           closeModal={closeModal}
           createEntityModal={<CreateModal />}
           header={
-            <ModalLayout.UserEdit.Header>
-              <ModalLayout.UserEdit.Header.Title>
+            <ModalLayout.Standard.Header>
+              <ModalLayout.Standard.Header.Title>
                 Edit workshops
-              </ModalLayout.UserEdit.Header.Title>
-              <ModalLayout.UserEdit.Header.Info>
+              </ModalLayout.Standard.Header.Title>
+              <ModalLayout.Standard.Header.Info>
                 Edit in depth from the workshops page and each workshop&apos;s
                 page
-              </ModalLayout.UserEdit.Header.Info>
-            </ModalLayout.UserEdit.Header>
+              </ModalLayout.Standard.Header.Info>
+            </ModalLayout.Standard.Header>
           }
         />
       )}

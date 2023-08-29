@@ -26,16 +26,16 @@ const ParticipantTestimonialsModal = ({
   <Modal.WithVisibilityProvider
     button={button}
     panelContent={({ closeModal }) => (
-      <ModalLayout.UserEdit
+      <ModalLayout.Standard
         body={<Testimonials />}
         closeModal={closeModal}
         createEntityModal={<CreateModal />}
         header={
-          <ModalLayout.UserEdit.Header>
-            <ModalLayout.UserEdit.Header.Title>
+          <ModalLayout.Standard.Header>
+            <ModalLayout.Standard.Header.Title>
               Edit participant testimonials
-            </ModalLayout.UserEdit.Header.Title>
-          </ModalLayout.UserEdit.Header>
+            </ModalLayout.Standard.Header.Title>
+          </ModalLayout.Standard.Header>
         }
       />
     )}

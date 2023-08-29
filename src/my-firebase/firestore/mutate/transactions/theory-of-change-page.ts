@@ -1,14 +1,22 @@
 import { writeBatch } from "firebase/firestore/lite";
 
+import { myDb } from "../..";
+
 import { firestore } from "~/my-firebase/client";
 import type { MyDb } from "~/types/database";
+import { type DocPartialWithId } from "~/types/database/_helpers";
 import type { MyPick } from "~/types/utilities";
-import { myDb } from "../..";
 
 type Page = MyDb["pages"]["theory-of-change"];
 
 export const theoryOfChangePageTransaction = async (input: {
   page: (MyPick<Page, "id"> & Partial<Page>) | null;
+
+  keywords: {
+    updated: DocPartialWithId<MyDb["keyword"]>[];
+    created: MyDb["keyword"][];
+    deleted: string[];
+  };
 
   orgDetails: Partial<MyDb["singles"]["orgDetails"]> | null;
   linkLabels: Partial<MyDb["singles"]["linkLabels"]> | null;
@@ -32,6 +40,22 @@ export const theoryOfChangePageTransaction = async (input: {
   }
   if (input.linkLabels) {
     myDb.linkLabels.batch.update(input.linkLabels, batch);
+  }
+
+  if (input.keywords.created.length) {
+    input.keywords.created.forEach((keyword) =>
+      myDb["keyword"].batch.create(keyword, batch),
+    );
+  }
+  if (input.keywords.updated.length) {
+    input.keywords.updated.forEach((keyword) =>
+      myDb["keyword"].batch.update(keyword, batch),
+    );
+  }
+  if (input.keywords.deleted.length) {
+    input.keywords.deleted.forEach((id) =>
+      myDb["keyword"].batch.delete(id, batch),
+    );
   }
 
   await batch.commit();

@@ -2,6 +2,7 @@ import type { ComponentProps } from "react";
 import { faCottonBureau } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  ArrowClockwise,
   ArrowCounterClockwise,
   ArrowDown,
   ArrowLineDown,
@@ -20,6 +21,7 @@ import {
   CaretUp,
   Check,
   Clock,
+  CloudArrowUp,
   DotsSixVertical,
   Download,
   FacebookLogo,
@@ -84,6 +86,9 @@ const Icon = () => {
 
 export { Icon };
 
+Icon.Loading = Spinner;
+Icon.Refresh = ArrowClockwise;
+Icon.Deploy = CloudArrowUp;
 Icon.Slides = Slideshow;
 Icon.EmailNotify = PaperPlaneTilt;
 Icon.Image = Image;

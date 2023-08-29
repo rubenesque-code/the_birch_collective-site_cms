@@ -1,18 +1,18 @@
 import { type ReactElement } from "react";
 
-import { UedCx } from "~/context/user-editable-data";
-
-import { useToast } from "~/hooks";
-
-import { WarningPanel } from "~/components/WarningPanel";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import ModalLayout from "~/components/layouts/Modal";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
-import { VolunteerPositionCx } from "~/context/entities/VolunteerPositionCx";
-import { CreateModal } from "./create-modal/CreateModal";
-import { ComponentApiCx, type ContextApiCxProps } from "./_state";
+import { WarningPanel } from "~/components/WarningPanel";
+
 import { Icon } from "../icons";
+import { ComponentApiCx, type ContextApiCxProps } from "./_state";
+import { CreateModal } from "./create-modal/CreateModal";
+
+import { VolunteerPositionCx } from "~/context/entities/VolunteerPositionCx";
+import { UedCx } from "~/context/user-editable-data";
+import { useToast } from "~/hooks";
 
 const VolunteerPositionsModal = ({
   button,
@@ -24,7 +24,7 @@ const VolunteerPositionsModal = ({
     <Modal.WithVisibilityProvider
       button={button}
       panelContent={({ closeModal }) => (
-        <ModalLayout.UserEdit
+        <ModalLayout.Standard
           body={<Content />}
           closeModal={closeModal}
           createEntityModal={<CreateModal />}

@@ -1,23 +1,22 @@
 import React, { type ReactElement } from "react";
 
-import { UedCx } from "~/context/user-editable-data";
-import { AboutCx } from "~/context/entities/about";
-
-import { deepSortByIndex } from "~/helpers/data/process";
-import { getIds } from "~/helpers/data/query";
-
-import { useToast } from "~/hooks";
-
 import { CustomisableImage } from "~/components/CustomisableImage";
 import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { Modal } from "~/components/styled-bases";
-import { CreateModal } from "./CreateModal";
-import ModalLayout from "~/components/layouts/Modal";
 import { DndKit } from "~/components/dnd-kit";
-import { ComponentMenu } from "~/components/menus";
-import { WarningPanel } from "~/components/WarningPanel";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
+import ModalLayout from "~/components/layouts/Modal";
+import { ComponentMenu } from "~/components/menus";
+import { Modal } from "~/components/styled-bases";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { WarningPanel } from "~/components/WarningPanel";
+
+import { CreateModal } from "./CreateModal";
+
+import { AboutCx } from "~/context/entities/about";
+import { UedCx } from "~/context/user-editable-data";
+import { deepSortByIndex } from "~/helpers/data/process";
+import { getIds } from "~/helpers/data/query";
+import { useToast } from "~/hooks";
 
 const MembersModal = ({
   button,
@@ -27,7 +26,7 @@ const MembersModal = ({
   <Modal.WithVisibilityProvider
     button={button}
     panelContent={({ closeModal }) => (
-      <ModalLayout.UserEdit
+      <ModalLayout.Standard
         body={<Members />}
         closeModal={closeModal}
         createEntityModal={<CreateModal />}
