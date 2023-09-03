@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
@@ -6,6 +7,7 @@ import SiteLayout from "~/components/layouts/Site";
 import { PageDataFetch } from "~/components/PageDataFetch";
 import CmsHeader from "~/components/parts/cms-header/+Entry";
 
+import { CommonData, type CommonDbData } from "../_containers";
 import { RevisionCx } from "./_state";
 import BannerImage from "./banner-image/+Entry";
 import Careers from "./careers/+Entry";
@@ -18,8 +20,8 @@ import type { MyDb } from "~/types/database";
 
 const CareersPage = () => (
   <InitDbData>
-    {(initDbData) => (
-      <UedProviders initDbData={initDbData}>
+    {(dbData) => (
+      <UserEditProviders dbData={dbData}>
         <RevisionCx.Provider>
           {(revisionState) => (
             <PageFramework
@@ -33,7 +35,7 @@ const CareersPage = () => (
             />
           )}
         </RevisionCx.Provider>
-      </UedProviders>
+      </UserEditProviders>
     )}
   </InitDbData>
 );
@@ -58,15 +60,27 @@ const PageSpecificComponents = () => (
   </>
 );
 
-type DbData = {
+type PageDbData = {
   page: MyDb["pages"]["careers"];
 
-  orgDetails: MyDb["singles"]["orgDetails"];
-  linkLabels: MyDb["singles"]["linkLabels"];
-  header: MyDb["singles"]["header"];
-  footer: MyDb["singles"]["footer"];
-
   careers: MyDb["career"][];
+};
+
+type DbData = {
+  page: PageDbData;
+
+  common: CommonDbData;
+};
+
+const usePageSpecificDbDataInit = () => {
+  const pageQuery = useQuery("careers-page", myDb.pages["career"].fetch);
+
+  const careersQuery = useQuery("careers", myDb["career"].fetchAll);
+
+  return {
+    pageQuery,
+    careersQuery,
+  };
 };
 
 const InitDbData = ({
@@ -74,73 +88,81 @@ const InitDbData = ({
 }: {
   children: (data: DbData) => ReactElement;
 }) => {
-  const pageQuery = useQuery("careers-page", myDb.pages["career"].fetch);
+  const { pageQuery, careersQuery } = usePageSpecificDbDataInit();
 
-  const footerQuery = useQuery("footer", myDb.footer.fetch);
-  const headerQuery = useQuery("header", myDb.header.fetch);
-  const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
-  const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
+  const {
+    footerQuery,
+    headerQuery,
+    imagesQuery,
+    keywordsQuery,
+    linkLabelsQuery,
+    orgDetailsQuery,
+  } = CommonData.useQueries();
 
-  const careersQuery = useQuery("careers", myDb["career"].fetchAll);
+  const queriesArr = [
+    ...[
+      footerQuery,
+      headerQuery,
+      imagesQuery,
+      keywordsQuery,
+      linkLabelsQuery,
+      orgDetailsQuery,
+    ],
+    ...[pageQuery, careersQuery],
+  ];
 
-  if (
-    pageQuery.isLoading ||
-    linkLabelsQuery.isLoading ||
-    headerQuery.isLoading ||
-    footerQuery.isLoading ||
-    orgDetailsQuery.isLoading ||
-    careersQuery.isLoading
-  ) {
+  if (queriesArr.some((query) => query.isLoading)) {
     return <PageDataFetch.Loading />;
   }
 
   if (
-    pageQuery.isError ||
-    !pageQuery.data ||
-    linkLabelsQuery.isError ||
-    !linkLabelsQuery.data ||
-    headerQuery.isError ||
-    !headerQuery.data ||
-    footerQuery.isError ||
-    !footerQuery.data ||
-    orgDetailsQuery.isError ||
-    !orgDetailsQuery.data ||
-    careersQuery.isError ||
-    !careersQuery.data
+    queriesArr.some((query) => query.isError) ||
+    queriesArr.some((query) => !query.data)
   ) {
     return <PageDataFetch.Error />;
   }
 
   return children({
-    page: pageQuery.data,
+    page: {
+      page: pageQuery.data!,
+      careers: careersQuery.data!,
+    },
 
-    orgDetails: orgDetailsQuery.data,
-    linkLabels: linkLabelsQuery.data,
-    header: headerQuery.data,
-    footer: footerQuery.data,
-
-    careers: careersQuery.data,
+    common: {
+      footer: footerQuery.data!,
+      header: headerQuery.data!,
+      images: imagesQuery.data!,
+      keywords: keywordsQuery.data!,
+      linkLabels: linkLabelsQuery.data!,
+      orgDetails: orgDetailsQuery.data!,
+    },
   });
 };
 
-const UedProviders = ({
-  initDbData,
+const PageUserEditProviders = ({
+  children,
+  dbData,
+}: {
+  children: ReactElement;
+  dbData: PageDbData;
+}) => (
+  <UedCx.Pages.Careers.Provider initData={dbData.page}>
+    <UedCx.Careers.Provider initData={dbData.careers}>
+      {children}
+    </UedCx.Careers.Provider>
+  </UedCx.Pages.Careers.Provider>
+);
+
+const UserEditProviders = ({
+  dbData,
   children,
 }: {
-  initDbData: DbData;
+  dbData: DbData;
   children: ReactElement;
 }) => (
-  <UedCx.Pages.Careers.Provider initData={initDbData.page}>
-    <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
-      <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
-        <UedCx.Header.Provider initData={initDbData.header}>
-          <UedCx.Footer.Provider initData={initDbData.footer}>
-            <UedCx.Careers.Provider initData={initDbData.careers}>
-              {children}
-            </UedCx.Careers.Provider>
-          </UedCx.Footer.Provider>
-        </UedCx.Header.Provider>
-      </UedCx.LinkLabels.Provider>
-    </UedCx.OrgDetails.Provider>
-  </UedCx.Pages.Careers.Provider>
+  <CommonData.UserEditProviders dbData={dbData.common}>
+    <PageUserEditProviders dbData={dbData.page}>
+      {children}
+    </PageUserEditProviders>
+  </CommonData.UserEditProviders>
 );

@@ -7,9 +7,10 @@ import {
 } from "react";
 import { useStore } from "zustand";
 
+import { createStore, type Store } from "./store";
+
 import { useDocRevisionData } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
-import { createStore, type Store } from "./store";
 
 type ContextValue = { store: Store } & {
   revision: {

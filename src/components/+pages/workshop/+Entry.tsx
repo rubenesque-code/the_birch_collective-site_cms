@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
@@ -8,6 +9,7 @@ import CmsHeader from "~/components/parts/cms-header/+Entry";
 import SiteFooter from "~/components/parts/site-footer/+Entry";
 import SiteHeader from "~/components/parts/site-header/+Entry";
 
+import { CommonData, type CommonDbData } from "../_containers";
 import { RevisionCx } from "./_state";
 import BannerImage from "./banner-image/+Entry";
 import Headings from "./headings/+Entry";
@@ -28,8 +30,8 @@ const WorkshopPage = () => (
   <AwaitParams>
     {({ paramId }) => (
       <InitDbData idParam={paramId}>
-        {(initDbData) => (
-          <UedProviders initDbData={initDbData}>
+        {(dbData) => (
+          <UserEditProviders dbData={dbData}>
             <RevisionCx.Provider>
               {(revisionState) => (
                 <CmsLayout.Page>
@@ -49,7 +51,7 @@ const WorkshopPage = () => (
                 </CmsLayout.Page>
               )}
             </RevisionCx.Provider>
-          </UedProviders>
+          </UserEditProviders>
         )}
       </InitDbData>
     )}
@@ -107,15 +109,6 @@ const PageSpecificContent = () => {
   );
 };
 
-type DbData = {
-  workshop: MyDb["workshop"];
-
-  orgDetails: MyDb["singles"]["orgDetails"];
-  linkLabels: MyDb["singles"]["linkLabels"];
-  header: MyDb["singles"]["header"];
-  footer: MyDb["singles"]["footer"];
-};
-
 const AwaitParams = ({
   children,
 }: {
@@ -130,6 +123,27 @@ const AwaitParams = ({
   return children({ paramId: params.idParam });
 };
 
+type PageDbData = {
+  page: MyDb["workshop"];
+};
+
+type DbData = {
+  common: CommonDbData;
+
+  page: PageDbData;
+};
+
+const usePageDbDataInit = (idParam: string) => {
+  const pageQuery = useQuery(
+    ["workshop", idParam],
+    async () => await myDb.workshop.fetchOne(idParam),
+  );
+
+  return {
+    pageQuery,
+  };
+};
+
 const InitDbData = ({
   children,
   idParam,
@@ -137,81 +151,80 @@ const InitDbData = ({
   children: (data: DbData) => ReactElement;
   idParam: string;
 }) => {
-  const workshopQuery = useQuery(
-    ["workshop", idParam],
-    async () => await myDb.workshop.fetchOne(idParam),
-  );
+  const { pageQuery } = usePageDbDataInit(idParam);
 
-  const footerQuery = useQuery("footer", myDb.footer.fetch);
-  const headerQuery = useQuery("header", myDb.header.fetch);
-  const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
-  const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
+  const {
+    footerQuery,
+    headerQuery,
+    imagesQuery,
+    keywordsQuery,
+    linkLabelsQuery,
+    orgDetailsQuery,
+  } = CommonData.useQueries();
 
-  if (
-    workshopQuery.isLoading ||
-    linkLabelsQuery.isLoading ||
-    headerQuery.isLoading ||
-    footerQuery.isLoading ||
-    orgDetailsQuery.isLoading ||
-    workshopQuery.isLoading
-  ) {
+  const queriesArr = [
+    ...[
+      footerQuery,
+      headerQuery,
+      imagesQuery,
+      keywordsQuery,
+      linkLabelsQuery,
+      orgDetailsQuery,
+    ],
+    ...[pageQuery],
+  ];
+
+  if (queriesArr.some((query) => query.isLoading)) {
     return <PageDataFetch.Loading />;
   }
 
-  if (workshopQuery.isError) {
-    return <PageDataFetch.Error />;
-  }
-
-  if (!workshopQuery.data) {
+  if (!pageQuery.data) {
     return <PageDataFetch.NotFound entityName="workshop" />;
   }
 
   if (
-    linkLabelsQuery.isError ||
-    !linkLabelsQuery.data ||
-    headerQuery.isError ||
-    !headerQuery.data ||
-    footerQuery.isError ||
-    !footerQuery.data ||
-    orgDetailsQuery.isError ||
-    !orgDetailsQuery.data ||
-    workshopQuery.isError ||
-    !workshopQuery.data
+    queriesArr.some((query) => query.isError) ||
+    queriesArr.some((query) => !query.data)
   ) {
     return <PageDataFetch.Error />;
   }
 
   return children({
-    workshop: workshopQuery.data,
+    page: { page: pageQuery.data },
 
-    orgDetails: orgDetailsQuery.data,
-    linkLabels: linkLabelsQuery.data,
-    header: headerQuery.data,
-    footer: footerQuery.data,
+    common: {
+      footer: footerQuery.data!,
+      header: headerQuery.data!,
+      images: imagesQuery.data!,
+      keywords: keywordsQuery.data!,
+      linkLabels: linkLabelsQuery.data!,
+      orgDetails: orgDetailsQuery.data!,
+    },
   });
 };
 
-const UedProviders = ({
-  initDbData,
+const PageUserEditProviders = ({
+  children,
+  dbData,
+}: {
+  children: ReactElement;
+  dbData: PageDbData;
+}) => (
+  <UedCx.Pages.Workshop.Provider initData={dbData.page}>
+    {children}
+  </UedCx.Pages.Workshop.Provider>
+);
+
+const UserEditProviders = ({
+  dbData,
   children,
 }: {
-  initDbData: DbData;
+  dbData: DbData;
   children: ReactElement;
-}) => {
-  return (
-    <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
-      <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
-        <UedCx.Header.Provider initData={initDbData.header}>
-          <UedCx.Footer.Provider initData={initDbData.footer}>
-            <UedCx.Pages.Workshop.Provider
-              initData={initDbData.workshop}
-              key={initDbData.workshop.id}
-            >
-              {children}
-            </UedCx.Pages.Workshop.Provider>
-          </UedCx.Footer.Provider>
-        </UedCx.Header.Provider>
-      </UedCx.LinkLabels.Provider>
-    </UedCx.OrgDetails.Provider>
-  );
-};
+}) => (
+  <CommonData.UserEditProviders dbData={dbData.common}>
+    <PageUserEditProviders dbData={dbData.page}>
+      {children}
+    </PageUserEditProviders>
+  </CommonData.UserEditProviders>
+);

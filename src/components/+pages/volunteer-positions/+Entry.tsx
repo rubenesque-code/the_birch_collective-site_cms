@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
@@ -6,6 +7,7 @@ import SiteLayout from "~/components/layouts/Site";
 import { PageDataFetch } from "~/components/PageDataFetch";
 import CmsHeader from "~/components/parts/cms-header/+Entry";
 
+import { CommonData, type CommonDbData } from "../_containers";
 import { RevisionCx } from "./_state";
 import BannerImage from "./banner-image/+Entry";
 import Heading from "./heading/+Entry";
@@ -18,8 +20,8 @@ import type { MyDb } from "~/types/database";
 
 const VolunteerPositionsPage = () => (
   <InitDbData>
-    {(initDbData) => (
-      <UedProviders initDbData={initDbData}>
+    {(dbData) => (
+      <UserEditProviders dbData={dbData}>
         <RevisionCx.Provider>
           {(revisionState) => (
             <PageFramework
@@ -33,7 +35,7 @@ const VolunteerPositionsPage = () => (
             />
           )}
         </RevisionCx.Provider>
-      </UedProviders>
+      </UserEditProviders>
     )}
   </InitDbData>
 );
@@ -58,15 +60,33 @@ const PageSpecificComponents = () => (
   </>
 );
 
-type DbData = {
+type PageDbData = {
   page: MyDb["pages"]["volunteer-positions"];
 
-  orgDetails: MyDb["singles"]["orgDetails"];
-  linkLabels: MyDb["singles"]["linkLabels"];
-  header: MyDb["singles"]["header"];
-  footer: MyDb["singles"]["footer"];
-
   volunteerPositions: MyDb["volunteer-position"][];
+};
+
+type DbData = {
+  common: CommonDbData;
+
+  page: PageDbData;
+};
+
+const usePageSpecificDbDataInit = () => {
+  const pageQuery = useQuery(
+    "volunteer-positions-page",
+    myDb.pages["volunteer-positions"].fetch,
+  );
+
+  const volunteerPositionsQuery = useQuery(
+    "volunteer-position",
+    myDb["volunteer-positions"].fetchAll,
+  );
+
+  return {
+    pageQuery,
+    volunteerPositionsQuery,
+  };
 };
 
 const InitDbData = ({
@@ -74,81 +94,81 @@ const InitDbData = ({
 }: {
   children: (data: DbData) => ReactElement;
 }) => {
-  const pageQuery = useQuery(
-    "volunteer-positions-page",
-    myDb.pages["volunteer-positions"].fetch,
-  );
+  const { pageQuery, volunteerPositionsQuery } = usePageSpecificDbDataInit();
 
-  const footerQuery = useQuery("footer", myDb.footer.fetch);
-  const headerQuery = useQuery("header", myDb.header.fetch);
-  const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
-  const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
+  const {
+    footerQuery,
+    headerQuery,
+    imagesQuery,
+    keywordsQuery,
+    linkLabelsQuery,
+    orgDetailsQuery,
+  } = CommonData.useQueries();
 
-  const volunteerPositionsQuery = useQuery(
-    "volunteer-position",
-    myDb["volunteer-positions"].fetchAll,
-  );
+  const queriesArr = [
+    ...[
+      footerQuery,
+      headerQuery,
+      imagesQuery,
+      keywordsQuery,
+      linkLabelsQuery,
+      orgDetailsQuery,
+    ],
+    ...[pageQuery, volunteerPositionsQuery],
+  ];
 
-  if (
-    pageQuery.isLoading ||
-    linkLabelsQuery.isLoading ||
-    headerQuery.isLoading ||
-    footerQuery.isLoading ||
-    orgDetailsQuery.isLoading ||
-    volunteerPositionsQuery.isLoading
-  ) {
+  if (queriesArr.some((query) => query.isLoading)) {
     return <PageDataFetch.Loading />;
   }
 
   if (
-    pageQuery.isError ||
-    !pageQuery.data ||
-    linkLabelsQuery.isError ||
-    !linkLabelsQuery.data ||
-    headerQuery.isError ||
-    !headerQuery.data ||
-    footerQuery.isError ||
-    !footerQuery.data ||
-    orgDetailsQuery.isError ||
-    !orgDetailsQuery.data ||
-    volunteerPositionsQuery.isError ||
-    !volunteerPositionsQuery.data
+    queriesArr.some((query) => query.isError) ||
+    queriesArr.some((query) => !query.data)
   ) {
     return <PageDataFetch.Error />;
   }
 
   return children({
-    page: pageQuery.data,
+    page: {
+      page: pageQuery.data!,
+      volunteerPositions: volunteerPositionsQuery.data!,
+    },
 
-    orgDetails: orgDetailsQuery.data,
-    linkLabels: linkLabelsQuery.data,
-    header: headerQuery.data,
-    footer: footerQuery.data,
-
-    volunteerPositions: volunteerPositionsQuery.data,
+    common: {
+      footer: footerQuery.data!,
+      header: headerQuery.data!,
+      images: imagesQuery.data!,
+      keywords: keywordsQuery.data!,
+      linkLabels: linkLabelsQuery.data!,
+      orgDetails: orgDetailsQuery.data!,
+    },
   });
 };
 
-const UedProviders = ({
-  initDbData,
+const PageUserEditProviders = ({
+  children,
+  dbData,
+}: {
+  children: ReactElement;
+  dbData: PageDbData;
+}) => (
+  <UedCx.Pages.VolunteerPositions.Provider initData={dbData.page}>
+    <UedCx.VolunteerPositions.Provider initData={dbData.volunteerPositions}>
+      {children}
+    </UedCx.VolunteerPositions.Provider>
+  </UedCx.Pages.VolunteerPositions.Provider>
+);
+
+const UserEditProviders = ({
+  dbData,
   children,
 }: {
-  initDbData: DbData;
+  dbData: DbData;
   children: ReactElement;
 }) => (
-  <UedCx.Pages.VolunteerPositions.Provider initData={initDbData.page}>
-    <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
-      <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
-        <UedCx.Header.Provider initData={initDbData.header}>
-          <UedCx.Footer.Provider initData={initDbData.footer}>
-            <UedCx.VolunteerPositions.Provider
-              initData={initDbData.volunteerPositions}
-            >
-              {children}
-            </UedCx.VolunteerPositions.Provider>
-          </UedCx.Footer.Provider>
-        </UedCx.Header.Provider>
-      </UedCx.LinkLabels.Provider>
-    </UedCx.OrgDetails.Provider>
-  </UedCx.Pages.VolunteerPositions.Provider>
+  <CommonData.UserEditProviders dbData={dbData.common}>
+    <PageUserEditProviders dbData={dbData.page}>
+      {children}
+    </PageUserEditProviders>
+  </CommonData.UserEditProviders>
 );

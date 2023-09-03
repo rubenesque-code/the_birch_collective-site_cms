@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
@@ -24,6 +25,7 @@ import { myDb } from "~/my-firebase/firestore";
 import type { MyDb } from "~/types/database";
 
 // MUST DO
+// □ donate succes page?
 
 // CHECK
 // □ check image blur up works
@@ -93,8 +95,8 @@ import type { MyDb } from "~/types/database";
 
 const HomePage = () => (
   <InitDbData>
-    {(initDbData) => (
-      <UserEditProviders dbData={initDbData}>
+    {(dbData) => (
+      <UserEditProviders dbData={dbData}>
         <RevisionCx.Provider>
           {(revisionState) => (
             <PageFramework
@@ -167,12 +169,12 @@ type PageDbData = {
 };
 
 type DbData = {
-  common: CommonDbData;
-
   page: PageDbData;
+
+  common: CommonDbData;
 };
 
-const usePageDbDataInit = () => {
+const usePageSpecificDbDataInit = () => {
   const pageQuery = useQuery("landing", myDb.pages.landing.fetch);
 
   const participantTestimonialsQuery = useQuery(
@@ -198,6 +200,14 @@ const InitDbData = ({
   children: (data: DbData) => ReactElement;
 }) => {
   const {
+    pageQuery,
+    participantTestimonialsQuery,
+    partnersQuery,
+    programmesQuery,
+    supportersQuery,
+  } = usePageSpecificDbDataInit();
+
+  const {
     footerQuery,
     headerQuery,
     imagesQuery,
@@ -206,73 +216,51 @@ const InitDbData = ({
     orgDetailsQuery,
   } = CommonData.useQueries();
 
-  const {
-    pageQuery,
-    participantTestimonialsQuery,
-    partnersQuery,
-    programmesQuery,
-    supportersQuery,
-  } = usePageDbDataInit();
+  const queriesArr = [
+    ...[
+      footerQuery,
+      headerQuery,
+      imagesQuery,
+      keywordsQuery,
+      linkLabelsQuery,
+      orgDetailsQuery,
+    ],
+    ...[
+      pageQuery,
+      participantTestimonialsQuery,
+      partnersQuery,
+      programmesQuery,
+      supportersQuery,
+    ],
+  ];
 
-  if (
-    pageQuery.isLoading ||
-    participantTestimonialsQuery.isLoading ||
-    programmesQuery.isLoading ||
-    supportersQuery.isLoading ||
-    partnersQuery.isLoading ||
-    linkLabelsQuery.isLoading ||
-    headerQuery.isLoading ||
-    footerQuery.isLoading ||
-    imagesQuery.isLoading ||
-    keywordsQuery.isLoading ||
-    orgDetailsQuery.isLoading
-  ) {
+  if (queriesArr.some((query) => query.isLoading)) {
     return <PageDataFetch.Loading />;
   }
 
   if (
-    pageQuery.isError ||
-    !pageQuery.data ||
-    participantTestimonialsQuery.isError ||
-    !participantTestimonialsQuery.data ||
-    programmesQuery.isError ||
-    !programmesQuery.data ||
-    supportersQuery.isError ||
-    !supportersQuery.data ||
-    partnersQuery.isError ||
-    !partnersQuery.data ||
-    linkLabelsQuery.isError ||
-    !linkLabelsQuery.data ||
-    headerQuery.isError ||
-    !headerQuery.data ||
-    footerQuery.isError ||
-    !footerQuery.data ||
-    orgDetailsQuery.isError ||
-    !orgDetailsQuery.data ||
-    imagesQuery.isError ||
-    !imagesQuery.data ||
-    keywordsQuery.isError ||
-    !keywordsQuery.data
+    queriesArr.some((query) => query.isError) ||
+    queriesArr.some((query) => !query.data)
   ) {
     return <PageDataFetch.Error />;
   }
 
   return children({
-    common: {
-      footer: footerQuery.data,
-      header: headerQuery.data,
-      images: imagesQuery.data,
-      keywords: keywordsQuery.data,
-      linkLabels: linkLabelsQuery.data,
-      orgDetails: orgDetailsQuery.data,
+    page: {
+      page: pageQuery.data!,
+      "participant-testimonials": participantTestimonialsQuery.data!,
+      partners: partnersQuery.data!,
+      programmes: programmesQuery.data!,
+      supporters: supportersQuery.data!,
     },
 
-    page: {
-      page: pageQuery.data,
-      "participant-testimonials": participantTestimonialsQuery.data,
-      partners: partnersQuery.data,
-      programmes: programmesQuery.data,
-      supporters: supportersQuery.data,
+    common: {
+      footer: footerQuery.data!,
+      header: headerQuery.data!,
+      images: imagesQuery.data!,
+      keywords: keywordsQuery.data!,
+      linkLabels: linkLabelsQuery.data!,
+      orgDetails: orgDetailsQuery.data!,
     },
   });
 };

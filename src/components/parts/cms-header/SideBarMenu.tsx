@@ -27,6 +27,7 @@ export const SideBarMenu = () => (
         <Menu.Button className="text-3xl text-gray-300 transition-colors duration-75 ease-in-out hover:text-gray-600">
           <Icon.HeaderMenu />
         </Menu.Button>
+
         <Transition
           show={open}
           as="div"
@@ -42,6 +43,7 @@ export const SideBarMenu = () => (
             <Content />
           </Menu.Items>
         </Transition>
+
         <Transition
           as="div"
           show={open}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
@@ -6,6 +7,7 @@ import SiteLayout from "~/components/layouts/Site";
 import { PageDataFetch } from "~/components/PageDataFetch";
 import CmsHeader from "~/components/parts/cms-header/+Entry";
 
+import { CommonData, type CommonDbData } from "../_containers";
 import { RevisionCx } from "./_state";
 import BannerImage from "./banner-image/+Entry";
 import Heading from "./headings/+Entry";
@@ -18,8 +20,8 @@ import type { MyDb } from "~/types/database";
 
 const WorkshopsPage = () => (
   <InitDbData>
-    {(initDbData) => (
-      <UedProviders initDbData={initDbData}>
+    {(dbData) => (
+      <UserEditProviders dbData={dbData}>
         <RevisionCx.Provider>
           {(revisionState) => (
             <PageFramework
@@ -29,18 +31,18 @@ const WorkshopsPage = () => (
                   data={{ isChange: revisionState.data.isChange }}
                 />
               }
-              pageSpecificComponents={<PageSpecificContent />}
+              pageSpecificComponents={<PageSpecificComponents />}
             />
           )}
         </RevisionCx.Provider>
-      </UedProviders>
+      </UserEditProviders>
     )}
   </InitDbData>
 );
 
 export default WorkshopsPage;
 
-const PageSpecificContent = () => (
+const PageSpecificComponents = () => (
   <>
     <BannerImage />
 
@@ -60,15 +62,27 @@ const PageSpecificContent = () => (
   </>
 );
 
-type DbData = {
+type PageSpecificDbData = {
   page: MyDb["pages"]["workshops"];
 
-  orgDetails: MyDb["singles"]["orgDetails"];
-  linkLabels: MyDb["singles"]["linkLabels"];
-  header: MyDb["singles"]["header"];
-  footer: MyDb["singles"]["footer"];
-
   workshops: MyDb["workshop"][];
+};
+
+type DbData = {
+  page: PageSpecificDbData;
+
+  common: CommonDbData;
+};
+
+const usePageDbDataInit = () => {
+  const pageQuery = useQuery("workshops-page", myDb.pages.workshops.fetch);
+
+  const workshopsQuery = useQuery("workshops", myDb.workshop.fetchAll);
+
+  return {
+    pageQuery,
+    workshopsQuery,
+  };
 };
 
 const InitDbData = ({
@@ -76,73 +90,81 @@ const InitDbData = ({
 }: {
   children: (data: DbData) => ReactElement;
 }) => {
-  const pageQuery = useQuery("workshops-page", myDb.pages.workshops.fetch);
+  const { pageQuery, workshopsQuery } = usePageDbDataInit();
 
-  const footerQuery = useQuery("footer", myDb.footer.fetch);
-  const headerQuery = useQuery("header", myDb.header.fetch);
-  const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
-  const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
+  const {
+    footerQuery,
+    headerQuery,
+    imagesQuery,
+    keywordsQuery,
+    linkLabelsQuery,
+    orgDetailsQuery,
+  } = CommonData.useQueries();
 
-  const workshopsQuery = useQuery("workshops", myDb.workshop.fetchAll);
+  const queriesArr = [
+    ...[
+      footerQuery,
+      headerQuery,
+      imagesQuery,
+      keywordsQuery,
+      linkLabelsQuery,
+      orgDetailsQuery,
+    ],
+    ...[pageQuery, workshopsQuery],
+  ];
 
-  if (
-    pageQuery.isLoading ||
-    linkLabelsQuery.isLoading ||
-    headerQuery.isLoading ||
-    footerQuery.isLoading ||
-    orgDetailsQuery.isLoading ||
-    workshopsQuery.isLoading
-  ) {
+  if (queriesArr.some((query) => query.isLoading)) {
     return <PageDataFetch.Loading />;
   }
 
   if (
-    pageQuery.isError ||
-    !pageQuery.data ||
-    linkLabelsQuery.isError ||
-    !linkLabelsQuery.data ||
-    headerQuery.isError ||
-    !headerQuery.data ||
-    footerQuery.isError ||
-    !footerQuery.data ||
-    orgDetailsQuery.isError ||
-    !orgDetailsQuery.data ||
-    workshopsQuery.isError ||
-    !workshopsQuery.data
+    queriesArr.some((query) => query.isError) ||
+    queriesArr.some((query) => !query.data)
   ) {
     return <PageDataFetch.Error />;
   }
 
   return children({
-    page: pageQuery.data,
-    orgDetails: orgDetailsQuery.data,
-    linkLabels: linkLabelsQuery.data,
-    header: headerQuery.data,
-    footer: footerQuery.data,
-    workshops: workshopsQuery.data,
+    page: {
+      page: pageQuery.data!,
+      workshops: workshopsQuery.data!,
+    },
+
+    common: {
+      footer: footerQuery.data!,
+      header: headerQuery.data!,
+      images: imagesQuery.data!,
+      keywords: keywordsQuery.data!,
+      linkLabels: linkLabelsQuery.data!,
+      orgDetails: orgDetailsQuery.data!,
+    },
   });
 };
 
-const UedProviders = ({
-  initDbData,
+const PageUserEditProviders = ({
+  children,
+  dbData,
+}: {
+  children: ReactElement;
+  dbData: PageSpecificDbData;
+}) => (
+  <UedCx.Pages.Workshops.Provider initData={dbData.page}>
+    <UedCx.Workshops.Provider initData={dbData.workshops}>
+      {children}
+    </UedCx.Workshops.Provider>
+  </UedCx.Pages.Workshops.Provider>
+);
+
+const UserEditProviders = ({
+  dbData,
   children,
 }: {
-  initDbData: DbData;
+  dbData: DbData;
   children: ReactElement;
-}) => {
-  return (
-    <UedCx.Pages.Workshops.Provider initData={initDbData.page}>
-      <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
-        <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
-          <UedCx.Header.Provider initData={initDbData.header}>
-            <UedCx.Footer.Provider initData={initDbData.footer}>
-              <UedCx.Workshops.Provider initData={initDbData.workshops}>
-                {children}
-              </UedCx.Workshops.Provider>
-            </UedCx.Footer.Provider>
-          </UedCx.Header.Provider>
-        </UedCx.LinkLabels.Provider>
-      </UedCx.OrgDetails.Provider>
-    </UedCx.Pages.Workshops.Provider>
-  );
-};
+}) => (
+  <CommonData.UserEditProviders dbData={dbData.common}>
+    <PageUserEditProviders dbData={dbData.page}>
+      {children}
+    </PageUserEditProviders>
+  </CommonData.UserEditProviders>
+);

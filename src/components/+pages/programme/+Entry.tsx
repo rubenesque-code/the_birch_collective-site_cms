@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
@@ -6,6 +7,7 @@ import SiteLayout from "~/components/layouts/Site";
 import { PageDataFetch } from "~/components/PageDataFetch";
 import CmsHeader from "~/components/parts/cms-header/+Entry";
 
+import { CommonData, type CommonDbData } from "../_containers";
 import { RevisionCx } from "./_state";
 import BannerImage from "./banner-image/+Entry";
 import Headings from "./headings/+Entry";
@@ -26,8 +28,8 @@ const AboutPage = () => (
   <AwaitParams>
     {({ paramId }) => (
       <InitDbData idParam={paramId}>
-        {(initDbData) => (
-          <UedProviders initDbData={initDbData}>
+        {(dbData) => (
+          <UserEditProviders dbData={dbData}>
             <RevisionCx.Provider>
               {(revisionState) => (
                 <PageFramework
@@ -41,7 +43,7 @@ const AboutPage = () => (
                 />
               )}
             </RevisionCx.Provider>
-          </UedProviders>
+          </UserEditProviders>
         )}
       </InitDbData>
     )}
@@ -105,12 +107,25 @@ const PageSpecificComponents = () => {
   );
 };
 
+type PageDbData = {
+  page: MyDb["programme"];
+};
+
 type DbData = {
-  programme: MyDb["programme"];
-  orgDetails: MyDb["singles"]["orgDetails"];
-  linkLabels: MyDb["singles"]["linkLabels"];
-  header: MyDb["singles"]["header"];
-  footer: MyDb["singles"]["footer"];
+  page: PageDbData;
+
+  common: CommonDbData;
+};
+
+const usePageSpecificDbDataInit = (idParam: string) => {
+  const pageQuery = useQuery(
+    ["programme", idParam],
+    async () => await myDb.programme.fetchOne(idParam),
+  );
+
+  return {
+    pageQuery,
+  };
 };
 
 const AwaitParams = ({
@@ -134,80 +149,82 @@ const InitDbData = ({
   children: (data: DbData) => ReactElement;
   idParam: string;
 }) => {
-  const programmeQuery = useQuery(
-    ["programme", idParam],
-    async () => await myDb.programme.fetchOne(idParam),
-  );
+  const { pageQuery } = usePageSpecificDbDataInit(idParam);
 
-  const footerQuery = useQuery("footer", myDb.footer.fetch);
-  const headerQuery = useQuery("header", myDb.header.fetch);
-  const linkLabelsQuery = useQuery("link-labels", myDb.linkLabels.fetch);
-  const orgDetailsQuery = useQuery("org-details", myDb.orgDetails.fetch);
+  const {
+    footerQuery,
+    headerQuery,
+    imagesQuery,
+    keywordsQuery,
+    linkLabelsQuery,
+    orgDetailsQuery,
+  } = CommonData.useQueries();
 
-  if (
-    programmeQuery.isLoading ||
-    linkLabelsQuery.isLoading ||
-    headerQuery.isLoading ||
-    footerQuery.isLoading ||
-    orgDetailsQuery.isLoading ||
-    programmeQuery.isLoading
-  ) {
+  const queriesArr = [
+    ...[
+      footerQuery,
+      headerQuery,
+      imagesQuery,
+      keywordsQuery,
+      linkLabelsQuery,
+      orgDetailsQuery,
+    ],
+    ...[pageQuery],
+  ];
+
+  if (queriesArr.some((query) => query.isLoading)) {
     return <PageDataFetch.Loading />;
   }
 
-  if (programmeQuery.isError) {
-    return <PageDataFetch.Error />;
-  }
-
-  if (!programmeQuery.data) {
+  if (!pageQuery.data) {
     return <PageDataFetch.NotFound entityName="programme" />;
   }
 
   if (
-    linkLabelsQuery.isError ||
-    !linkLabelsQuery.data ||
-    headerQuery.isError ||
-    !headerQuery.data ||
-    footerQuery.isError ||
-    !footerQuery.data ||
-    orgDetailsQuery.isError ||
-    !orgDetailsQuery.data ||
-    programmeQuery.isError ||
-    !programmeQuery.data
+    queriesArr.some((query) => query.isError) ||
+    queriesArr.some((query) => !query.data)
   ) {
     return <PageDataFetch.Error />;
   }
 
   return children({
-    programme: programmeQuery.data,
-    orgDetails: orgDetailsQuery.data,
-    linkLabels: linkLabelsQuery.data,
-    header: headerQuery.data,
-    footer: footerQuery.data,
+    page: {
+      page: pageQuery.data,
+    },
+
+    common: {
+      footer: footerQuery.data!,
+      header: headerQuery.data!,
+      images: imagesQuery.data!,
+      keywords: keywordsQuery.data!,
+      linkLabels: linkLabelsQuery.data!,
+      orgDetails: orgDetailsQuery.data!,
+    },
   });
 };
 
-const UedProviders = ({
-  initDbData,
+const PageUserEditProviders = ({
+  children,
+  dbData,
+}: {
+  children: ReactElement;
+  dbData: PageDbData;
+}) => (
+  <UedCx.Programme.Provider initData={dbData.page}>
+    {children}
+  </UedCx.Programme.Provider>
+);
+
+const UserEditProviders = ({
+  dbData,
   children,
 }: {
-  initDbData: DbData;
+  dbData: DbData;
   children: ReactElement;
-}) => {
-  return (
-    <UedCx.OrgDetails.Provider initData={initDbData.orgDetails}>
-      <UedCx.LinkLabels.Provider initData={initDbData.linkLabels}>
-        <UedCx.Header.Provider initData={initDbData.header}>
-          <UedCx.Footer.Provider initData={initDbData.footer}>
-            <UedCx.Programme.Provider
-              initData={initDbData.programme}
-              key={initDbData.programme.id}
-            >
-              {children}
-            </UedCx.Programme.Provider>
-          </UedCx.Footer.Provider>
-        </UedCx.Header.Provider>
-      </UedCx.LinkLabels.Provider>
-    </UedCx.OrgDetails.Provider>
-  );
-};
+}) => (
+  <CommonData.UserEditProviders dbData={dbData.common}>
+    <PageUserEditProviders dbData={dbData.page}>
+      {children}
+    </PageUserEditProviders>
+  </CommonData.UserEditProviders>
+);
