@@ -125,7 +125,7 @@ const InitDbData = ({
   return children({
     page: {
       page: pageQuery.data!,
-      careers: careersQuery.data!,
+      careers: careersQuery.data!.filter((career) => career.id !== "dummy"),
     },
 
     common: {
