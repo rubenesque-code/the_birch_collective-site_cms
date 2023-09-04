@@ -16,11 +16,16 @@ const DeployModal = ({
   button,
 }: {
   button: (arg0: { openModal: () => void }) => ReactElement;
-}) => <Modal.WithVisibilityProvider button={button} panelContent={<Panel />} />;
+}) => (
+  <Modal.WithVisibilityProvider
+    button={button}
+    panelContent={({ closeModal }) => <Panel closeModal={closeModal} />}
+  />
+);
 
 export default DeployModal;
 
-const Panel = () => (
+const Panel = ({ closeModal }: { closeModal: () => void }) => (
   <ModalLayout.Standard
     body={
       <div className="">
@@ -42,6 +47,7 @@ const Panel = () => (
       </div>
     }
     title="Upload changes"
+    closeModal={closeModal}
     styles={{ outerWrapper: "max-w-[600px] h-auto" }}
   />
 );

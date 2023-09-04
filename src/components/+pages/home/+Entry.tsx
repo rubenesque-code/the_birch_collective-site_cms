@@ -28,10 +28,7 @@ import type { MyDb } from "~/types/database";
 // □ donate succes page?
 
 // CHECK
-// □ check image blur up works
-// □ remove sheet url from .env.local
 // □ firestore + storage rules - open reads is unavoidable?
-// □ remove unneeded users (ruben@virt....com) from firebase console
 
 // TO DO
 // □ go over connect image logic - don't need to fetch anymore since is all images fetched on page load. But do need to connect.
@@ -90,8 +87,6 @@ import type { MyDb } from "~/types/database";
 
 // NEW SITE (if funding)
 // □ living wage employer section in about us
-
-// todo: Will have to remove undo keys from text-input/area form? Re-work revision daat? make an unod key context?
 
 const HomePage = () => (
   <InitDbData>

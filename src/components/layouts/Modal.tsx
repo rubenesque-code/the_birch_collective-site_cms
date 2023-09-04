@@ -44,7 +44,7 @@ const Standard = ({
       <div className="mt-sm">{createEntityModal}</div>
     ) : null}
     <div className="mt-sm flex-grow overflow-y-auto">{body}</div>
-    {showCloseSection ? (
+    {showCloseSection && closeModal ? (
       <div className="mt-xl">
         <button
           className="my-btn my-btn-neutral"

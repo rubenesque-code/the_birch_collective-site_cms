@@ -65,7 +65,7 @@ const LatestDeploy = () => {
             </span>
           </div>
         ) : !latestDeployQuery.data ? (
-          <div>Something went wrong...</div>
+          <p className="text-sm text-gray-600">Something went wrong...</p>
         ) : (
           <LatestDeployData data={latestDeployQuery.data} />
         )}
