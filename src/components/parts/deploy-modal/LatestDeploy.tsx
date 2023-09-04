@@ -11,7 +11,7 @@ import { vercel, type VercelDeploy } from "~/lib";
 const LatestDeploy = () => {
   const latestDeployQuery = useQuery(
     "latest-deploy",
-    vercel.fetchLatestDeploy,
+    async () => await vercel.fetchLatestDeploy(),
     {
       refetchOnMount: true,
       refetchOnWindowFocus: false,

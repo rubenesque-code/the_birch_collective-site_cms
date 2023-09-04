@@ -9,7 +9,7 @@
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSaltYm93oXWdRC4nKstg9rmY:password=password",
       "salt": "fakeSaltYm93oXWdRC4nKstg9rmY",
-      "passwordUpdatedAt": 1693652434266,
+      "passwordUpdatedAt": 1693827576885,
       "customAttributes": "{\"token\":{\"admin\": true}}",
       "providerUserInfo": [
         {
@@ -21,7 +21,7 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1693652434",
+      "validSince": "1693827576",
       "email": "a.ruben00001@gmail.com",
       "emailVerified": true,
       "disabled": false
@@ -29,12 +29,12 @@
     {
       "localId": "q7NH828YP4YYmjjoafTzSeqfTmSb",
       "createdAt": "1646825947196",
-      "lastLoginAt": "1693652656159",
+      "lastLoginAt": "1693826077802",
       "displayName": "",
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSalt1828Lb3ZqJELDlQJNi6O:password=password",
       "salt": "fakeSalt1828Lb3ZqJELDlQJNi6O",
-      "passwordUpdatedAt": 1693652434267,
+      "passwordUpdatedAt": 1693827576885,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -45,11 +45,10 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1693652434",
+      "validSince": "1693827576",
       "email": "admin@email.com",
       "emailVerified": true,
-      "disabled": false,
-      "lastRefreshAt": "2023-09-02T11:04:16.159Z"
+      "disabled": false
     }
   ]
 }

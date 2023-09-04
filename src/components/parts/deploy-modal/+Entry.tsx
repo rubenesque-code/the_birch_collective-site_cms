@@ -47,13 +47,16 @@ const Panel = () => (
 );
 
 const UploadButton = () => {
-  const latestDeployQuery = useQuery("latest-deploy", vercel.fetchLatestDeploy);
+  // · wait so that latest deploy refers to triggered deploy.
+  const latestDeployQuery = useQuery(
+    "latest-deploy",
+    async () => await vercel.fetchLatestDeploy({ wait: 1400 }),
+    { enabled: false },
+  );
 
   const deployMutation = useMutation(vercel.triggerDeploy, {
     onSettled() {
-      setTimeout(() => {
-        void latestDeployQuery.refetch();
-      }, 500);
+      void latestDeployQuery.refetch();
     },
   });
 

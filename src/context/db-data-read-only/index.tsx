@@ -1,5 +1,6 @@
 import { Career } from "./career";
 import { CareersPage } from "./careers-page";
+import { Image } from "./image";
 import { TheoryOfChangePage } from "./theory-of-change-page";
 import { Workshop } from "./workshop";
 

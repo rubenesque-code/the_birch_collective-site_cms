@@ -2,6 +2,8 @@
 
 import axios from "axios";
 
+import { wait } from "~/helpers/async";
+
 const headers = {
   Authorization: `Bearer ${process.env.NEXT_PUBLIC_VERCEL_AUTH_KEY!}`,
 };
@@ -19,7 +21,11 @@ export type VercelDeploy = {
   createdAt: number;
 };
 
-const fetchLatestDeploy = async () => {
+const fetchLatestDeploy = async (input?: { wait?: number }) => {
+  if (input?.wait) {
+    await wait(input.wait);
+  }
+
   const res = (await axios.get(
     `https://api.vercel.com/v8/projects/${process.env
       .NEXT_PUBLIC_VERCEL_FRONTEND_PROJECT_ID!}`,
