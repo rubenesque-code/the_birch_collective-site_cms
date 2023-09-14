@@ -2,12 +2,10 @@
 import { type ReactElement } from "react";
 import { useQuery } from "react-query";
 
-import CmsLayout from "~/components/layouts/Cms";
+import { PageFramework } from "~/components/frameworks";
 import SiteLayout from "~/components/layouts/Site";
 import { PageDataFetch } from "~/components/PageDataFetch";
 import CmsHeader from "~/components/parts/cms-header/+Entry";
-import SiteFooter from "~/components/parts/site-footer/+Entry";
-import SiteHeader from "~/components/parts/site-header/+Entry";
 
 import { CommonData, type CommonDbData } from "../_containers";
 import { RevisionCx } from "./_state";
@@ -34,21 +32,15 @@ const WorkshopPage = () => (
           <UserEditProviders dbData={dbData}>
             <RevisionCx.Provider>
               {(revisionState) => (
-                <CmsLayout.Page>
-                  <CmsHeader
-                    actions={revisionState.actions}
-                    data={{ isChange: revisionState.data.isChange }}
-                  />
-                  <SiteLayout.Page>
-                    <SiteHeader />
-                    <PageSpecificContent />
-                    <SiteLayout.Section.Spacing.Horizontal>
-                      <div className="mt-2xl pb-xl">
-                        <SiteFooter />
-                      </div>
-                    </SiteLayout.Section.Spacing.Horizontal>
-                  </SiteLayout.Page>
-                </CmsLayout.Page>
+                <PageFramework
+                  cmsHeader={
+                    <CmsHeader
+                      actions={revisionState.actions}
+                      data={{ isChange: revisionState.data.isChange }}
+                    />
+                  }
+                  pageSpecificComponents={<PageSpecificComponents />}
+                />
               )}
             </RevisionCx.Provider>
           </UserEditProviders>
@@ -60,7 +52,7 @@ const WorkshopPage = () => (
 
 export default WorkshopPage;
 
-const PageSpecificContent = () => {
+const PageSpecificComponents = () => {
   const {
     store: {
       data: { type, photoAlbum },

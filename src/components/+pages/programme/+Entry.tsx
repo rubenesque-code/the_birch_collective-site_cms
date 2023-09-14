@@ -24,7 +24,7 @@ import { useDynamicRouteParams } from "~/hooks";
 import { myDb } from "~/my-firebase/firestore";
 import type { MyDb } from "~/types/database";
 
-const AboutPage = () => (
+const ProgrammePage = () => (
   <AwaitParams>
     {({ paramId }) => (
       <InitDbData idParam={paramId}>
@@ -50,7 +50,7 @@ const AboutPage = () => (
   </AwaitParams>
 );
 
-export default AboutPage;
+export default ProgrammePage;
 
 const PageSpecificComponents = () => {
   const {
