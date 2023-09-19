@@ -4,13 +4,14 @@ import React, { useMemo } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { Icon } from "~/components/icons";
+import { ImagePlaceholder } from "~/components/ImagePlaceholder";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
-import { ImagePlaceholder } from "~/components/ImagePlaceholder";
 
 const Slides = () => {
   const [swiper, setSwiper] = React.useState<SwiperType | null>(null);
@@ -52,7 +53,7 @@ const Slides = () => {
                       placeholderText="photo album image"
                     >
                       {({ dbImageId }) => (
-                        <ConnectImage dbImageId={dbImageId}>
+                        <ConnectImage connectedImageId={dbImageId}>
                           {({ urls }) => (
                             <CustomisableImage
                               urls={urls}

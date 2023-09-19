@@ -1,15 +1,16 @@
 import "swiper/css";
 
-import React, { type ReactElement, useMemo } from "react";
+import React, { useMemo, type ReactElement } from "react";
+import { useMeasure } from "react-use";
 import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useMeasure } from "react-use";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
+import { Icon } from "~/components/icons";
 import { ImagePlaceholder } from "~/components/ImagePlaceholder";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { Icon } from "~/components/icons";
+
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 
@@ -59,7 +60,7 @@ const Slides = ({ heading }: { heading: ReactElement }) => {
                   >
                     {({ dbImageId }) =>
                       containerWidth && containerHeight ? (
-                        <ConnectImage dbImageId={dbImageId}>
+                        <ConnectImage connectedImageId={dbImageId}>
                           {({ urls, naturalDimensions }) => {
                             const aspectRatio =
                               naturalDimensions.width /

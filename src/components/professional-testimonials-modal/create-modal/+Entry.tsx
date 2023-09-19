@@ -1,16 +1,18 @@
 import { useState } from "react";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { WarningPanel } from "~/components/WarningPanel";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { WarningPanel } from "~/components/WarningPanel";
+
+import { CreateCx, createInitData } from "./_state";
+
 import { UedCx } from "~/context/user-editable-data";
 import { useToast } from "~/hooks";
-import { CreateCx, createInitData } from "./_state";
 
 const CreateModal = () => {
   const {
@@ -194,7 +196,7 @@ const NewTestimonial = () => {
           isCircle
         >
           {({ dbImageId }) => (
-            <ConnectImage dbImageId={dbImageId}>
+            <ConnectImage connectedImageId={dbImageId}>
               {({ urls }) => (
                 <CustomisableImage
                   urls={urls}

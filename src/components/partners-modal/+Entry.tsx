@@ -1,24 +1,26 @@
 import React, { type ReactElement } from "react";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { Modal } from "~/components/styled-bases";
-import { PartnerCx } from "~/context/entities";
-import { deepSortByIndex } from "~/helpers/data/process";
-import { getIds } from "~/helpers/data/query";
-import { useToast } from "~/hooks";
-import { WarningPanel } from "../WarningPanel";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+
 import { DndKit } from "../dnd-kit";
 import { TextInputForm } from "../forms";
 import { Icon } from "../icons";
 import { ComponentMenu } from "../menus";
-import { CreateModal } from "./CreateModal";
+import { WarningPanel } from "../WarningPanel";
 import {
   ComponentApiCx,
   type ContextValue as ComponentApiProps,
 } from "./_state";
+import { CreateModal } from "./CreateModal";
+
+import { PartnerCx } from "~/context/entities";
 import { UedCx } from "~/context/user-editable-data";
+import { deepSortByIndex } from "~/helpers/data/process";
+import { getIds } from "~/helpers/data/query";
+import { useToast } from "~/hooks";
 
 const PartnersModal = ({
   button,
@@ -111,7 +113,7 @@ const Partner = () => {
             placeholderText="partner image"
           >
             {({ dbImageId }) => (
-              <ConnectImage dbImageId={dbImageId}>
+              <ConnectImage connectedImageId={dbImageId}>
                 {({ urls }) => (
                   <CustomisableImage urls={urls} objectFit="contain" />
                 )}

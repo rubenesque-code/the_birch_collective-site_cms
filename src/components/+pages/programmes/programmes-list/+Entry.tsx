@@ -3,8 +3,8 @@ import Link from "next/link";
 import { Leaf } from "@phosphor-icons/react";
 import ReactTextareaAutosize from "react-textarea-autosize";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
 import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
@@ -134,7 +134,7 @@ const Programme = () => {
               placeholderText="summary image"
             >
               {({ dbImageId }) => (
-                <ConnectImage dbImageId={dbImageId}>
+                <ConnectImage connectedImageId={dbImageId}>
                   {({ urls }) => (
                     <CustomisableImage
                       urls={urls}

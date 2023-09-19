@@ -54,7 +54,7 @@ const CommonUserEditProviders = ({
     <UedCx.LinkLabels.Provider initData={dbData.linkLabels}>
       <UedCx.Header.Provider initData={dbData.header}>
         <UedCx.Footer.Provider initData={dbData.footer}>
-          <UedCx.Images.Provider initData={dbData.images}>
+          <UedCx.Images.Provider dbData={dbData.images}>
             <UedCx.Keywords.Provider initData={dbData.keywords}>
               {children}
             </UedCx.Keywords.Provider>

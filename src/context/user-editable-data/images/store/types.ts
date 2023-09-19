@@ -24,5 +24,7 @@ type ArrActions = {
 type Actions = {
   overWrite: (data: Data) => void;
 
+  add: (arg0: Image) => void;
+
   delete: (arg0: { id: string }) => void;
 } & ArrActions;

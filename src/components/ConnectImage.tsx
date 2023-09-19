@@ -1,9 +1,11 @@
 import { type ReactElement } from "react";
+import { useQuery } from "react-query";
 
 import { Icon } from "./icons";
-import { myDb } from "~/my-firebase/firestore";
-import { useQuery } from "react-query";
 import { Spinner } from "./Spinner";
+
+import { UedCx } from "~/context/user-editable-data";
+import { myDb } from "~/my-firebase/firestore";
 import type { MyDb } from "~/types/database";
 import type { MyPick } from "~/types/utilities";
 
@@ -11,17 +13,25 @@ type Props = {
   children: (
     arg0: MyPick<MyDb["image"], "naturalDimensions" | "urls">,
   ) => ReactElement;
-  dbImageId: string;
+  connectedImageId: string;
 };
 
-export const ConnectImage = ({ children, dbImageId }: Props) => {
-  const query = useQuery(
-    ["banner-image", dbImageId],
-    async () => await myDb.image.fetchOne(dbImageId),
-    {},
+export const ConnectImage = ({ children, connectedImageId }: Props) => {
+  const {
+    store: { data },
+  } = UedCx.Images.use();
+
+  const existingConnectedImage = data.find(
+    (image) => image.id === connectedImageId,
   );
 
-  if (query.isLoading) {
+  const imageQuery = useQuery(
+    ["image", connectedImageId],
+    async () => await myDb.image.fetchOne(connectedImageId),
+    { enabled: !existingConnectedImage },
+  );
+
+  if (imageQuery.isLoading) {
     return (
       <div className="absolute left-0 top-0 z-10 grid h-full w-full place-items-center rounded-2xl bg-white bg-opacity-70">
         <Spinner />
@@ -30,13 +40,19 @@ export const ConnectImage = ({ children, dbImageId }: Props) => {
     );
   }
 
-  if (!query.data) {
+  if (!existingConnectedImage && !imageQuery.data) {
     return <UnfoundFirestoreImage />;
   }
 
   return children({
-    urls: query.data.urls,
-    naturalDimensions: query.data.naturalDimensions,
+    urls: existingConnectedImage
+      ? existingConnectedImage.urls
+      : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        imageQuery.data!.urls,
+    naturalDimensions: existingConnectedImage
+      ? existingConnectedImage.naturalDimensions
+      : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        imageQuery.data!.naturalDimensions,
   });
 };
 

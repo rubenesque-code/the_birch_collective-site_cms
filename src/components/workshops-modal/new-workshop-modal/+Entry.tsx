@@ -1,17 +1,19 @@
 import { useState } from "react";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { WarningPanel } from "~/components/WarningPanel";
+import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
-import { useToast } from "~/hooks";
-import { NewWorkshopCx, createInitData } from "./_state";
-import { UedCx } from "~/context/user-editable-data";
-import { TextAreaForm, TextInputForm } from "~/components/forms";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { WarningPanel } from "~/components/WarningPanel";
 import { WithTooltip } from "~/components/WithTooltip";
+
+import { createInitData, NewWorkshopCx } from "./_state";
+
+import { UedCx } from "~/context/user-editable-data";
+import { useToast } from "~/hooks";
 
 // □ refactor
 
@@ -194,7 +196,7 @@ const NewWorkshop = () => {
           placeholderText="summary image"
         >
           {({ dbImageId }) => (
-            <ConnectImage dbImageId={dbImageId}>
+            <ConnectImage connectedImageId={dbImageId}>
               {({ urls }) => (
                 <CustomisableImage
                   urls={urls}

@@ -1,18 +1,18 @@
-import { Popover } from "@headlessui/react";
 import type { ReactElement } from "react";
+import { Popover } from "@headlessui/react";
+import livingWageLogo from "public/images/living-wage-logo.webp";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import TextInputPopoverPanel from "~/components/TextInputPopoverPanel";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
-
-import livingWageLogo from "public/images/living-wage-logo.webp";
-import { NextImage } from "~/lib/external-packages-rename";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { ComponentMenu } from "~/components/menus";
+import TextInputPopoverPanel from "~/components/TextInputPopoverPanel";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { WithTooltip } from "~/components/WithTooltip";
+
 import { UedCx } from "~/context/user-editable-data";
+import { NextImage } from "~/lib/external-packages-rename";
 
 // todo: block phone number + email through other means
 
@@ -250,7 +250,7 @@ const SecondColumn = () => {
           placeholderText="logo"
         >
           {({ dbImageId }) => (
-            <ConnectImage dbImageId={dbImageId}>
+            <ConnectImage connectedImageId={dbImageId}>
               {({ urls }) => <CustomisableImage urls={urls} />}
             </ConnectImage>
           )}

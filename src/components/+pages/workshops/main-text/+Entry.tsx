@@ -1,8 +1,8 @@
 import { Popover } from "@headlessui/react";
 import Markdown from "markdown-to-jsx";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
@@ -160,7 +160,7 @@ const AmyImage = () => {
         isCircle
       >
         {({ dbImageId }) => (
-          <ConnectImage dbImageId={dbImageId}>
+          <ConnectImage connectedImageId={dbImageId}>
             {({ urls }) => (
               <CustomisableImage
                 urls={urls}

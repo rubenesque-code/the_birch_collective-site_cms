@@ -25,13 +25,12 @@ import { myDb } from "~/my-firebase/firestore";
 import type { MyDb } from "~/types/database";
 
 // MUST DO
-// □ donate succes page?
+// □ donate success page
 
 // CHECK
 // □ firestore + storage rules - open reads is unavoidable?
 
 // TO DO
-// □ go over connect image logic - don't need to fetch anymore since is all images fetched on page load. But do need to connect.
 // □ need to delete storage image when delete fb image on save
 // □ images page
 // □ ability to edit image keywords

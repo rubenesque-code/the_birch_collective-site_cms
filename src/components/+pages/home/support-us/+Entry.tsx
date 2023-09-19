@@ -1,5 +1,5 @@
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { ComponentMenu } from "~/components/menus";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
@@ -64,7 +64,7 @@ const DonateImage = () => {
       placeholderText="donate image"
     >
       {({ dbImageId }) => (
-        <ConnectImage dbImageId={dbImageId}>
+        <ConnectImage connectedImageId={dbImageId}>
           {({ urls }) => (
             <CustomisableImage urls={urls} position={donate.image.position} />
           )}
@@ -193,7 +193,7 @@ const VolunteerImage = () => {
       placeholderText="volunteer image"
     >
       {({ dbImageId }) => (
-        <ConnectImage dbImageId={dbImageId}>
+        <ConnectImage connectedImageId={dbImageId}>
           {({ urls }) => (
             <CustomisableImage
               urls={urls}

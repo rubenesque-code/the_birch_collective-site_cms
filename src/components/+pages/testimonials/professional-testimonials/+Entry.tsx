@@ -1,15 +1,16 @@
-import { UedCx } from "~/context/user-editable-data";
-
-import { TextAreaForm, TextInputForm } from "~/components/forms";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import { CustomisableImage } from "~/components/CustomisableImage";
-import { deepSortByIndex } from "~/helpers/data/process";
 import React from "react";
-import { ProfessionalTestimonialCx } from "~/context/entities/ProfessionalTestimonialCx";
+
+import { ConnectImage } from "~/components/ConnectImage";
+import { CustomisableImage } from "~/components/CustomisableImage";
+import { DndKit } from "~/components/dnd-kit";
+import { TextAreaForm, TextInputForm } from "~/components/forms";
 import CmsLayout from "~/components/layouts/Cms";
 import ProfessionalTestimonialsModal from "~/components/professional-testimonials-modal/+Entry";
-import { DndKit } from "~/components/dnd-kit";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+
+import { ProfessionalTestimonialCx } from "~/context/entities/ProfessionalTestimonialCx";
+import { UedCx } from "~/context/user-editable-data";
+import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
 
 const ProfessionalTestimonials = () => {
@@ -138,7 +139,7 @@ const Testimonial = ({ align }: { align: "left" | "right" }) => {
             isCircle
           >
             {({ dbImageId }) => (
-              <ConnectImage dbImageId={dbImageId}>
+              <ConnectImage connectedImageId={dbImageId}>
                 {({ urls }) => (
                   <CustomisableImage
                     urls={urls}

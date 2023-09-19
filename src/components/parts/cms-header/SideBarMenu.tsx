@@ -86,6 +86,9 @@ const PageLinks = () => (
     <PageLink route="/theory-of-change" text="Theory of change" />
     <PageLink route="/volunteer-positions" text="Volunteer positions" />
     <Workshops />
+    <div className="mt-sm">
+      <PageLink route="/images" text="Images" />
+    </div>
   </div>
 );
 

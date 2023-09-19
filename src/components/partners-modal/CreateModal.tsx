@@ -1,16 +1,18 @@
 import { useState } from "react";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { WarningPanel } from "~/components/WarningPanel";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
-import { useToast } from "~/hooks";
-import { createInitData, NewPartnerCx } from "./_state";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { WarningPanel } from "~/components/WarningPanel";
+
 import { TextInputForm } from "../forms";
+import { createInitData, NewPartnerCx } from "./_state";
+
 import { UedCx } from "~/context/user-editable-data";
+import { useToast } from "~/hooks";
 
 export const CreateModal = () => {
   const {
@@ -185,7 +187,7 @@ const NewPartner = () => {
           placeholderText="partner image"
         >
           {({ dbImageId }) => (
-            <ConnectImage dbImageId={dbImageId}>
+            <ConnectImage connectedImageId={dbImageId}>
               {({ urls }) => (
                 <CustomisableImage urls={urls} objectFit="contain" />
               )}

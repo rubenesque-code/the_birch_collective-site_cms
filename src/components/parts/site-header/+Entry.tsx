@@ -1,10 +1,12 @@
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { TextInputForm } from "~/components/forms";
 import { ComponentMenu } from "~/components/menus";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+
 import AboutUs from "./AboutUs";
 import GetInvolved from "./GetInvolved";
+
 import { UedCx } from "~/context/user-editable-data";
 
 const SiteHeader = () => {
@@ -67,7 +69,7 @@ const LogoAndOrgName = () => {
           placeholderText="logo"
         >
           {({ dbImageId }) => (
-            <ConnectImage dbImageId={dbImageId}>
+            <ConnectImage connectedImageId={dbImageId}>
               {({ urls }) => <CustomisableImage urls={urls} />}
             </ConnectImage>
           )}

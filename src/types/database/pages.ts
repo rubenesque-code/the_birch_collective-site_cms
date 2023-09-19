@@ -129,6 +129,7 @@ type Landing = {
 
 type AboutUs = {
   id: "about-page";
+
   bannerImage: {
     dbConnections: {
       imageId: string | null;
@@ -138,18 +139,23 @@ type AboutUs = {
       y: number;
     };
   };
+
   heading: string;
   subheading: string;
   mainText: string;
+
   theTeam: {
     heading: string;
+
     text: string;
+
     members: {
       id: string;
       index: number;
       name: string;
       role: string;
       bio: string;
+
       image: {
         dbConnections: {
           imageId: string | null;

@@ -1,7 +1,8 @@
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { ComponentMenu } from "~/components/menus";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+
 import { UedCx } from "~/context/user-editable-data";
 
 const BannerImage = () => {
@@ -21,7 +22,7 @@ const BannerImage = () => {
         placeholderText="banner image"
       >
         {({ dbImageId }) => (
-          <ConnectImage dbImageId={dbImageId}>
+          <ConnectImage connectedImageId={dbImageId}>
             {({ urls }) => (
               <CustomisableImage urls={urls} position={position} />
             )}

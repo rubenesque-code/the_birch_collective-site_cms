@@ -1,8 +1,8 @@
 import React from "react";
 
 import Accordion from "~/components/Accordion";
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
 import CmsLayout from "~/components/layouts/Cms";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 
@@ -66,7 +66,7 @@ const Member = () => {
           isCircle
         >
           {({ dbImageId }) => (
-            <ConnectImage dbImageId={dbImageId}>
+            <ConnectImage connectedImageId={dbImageId}>
               {({ urls }) => (
                 <CustomisableImage urls={urls} objectFit="cover" isCircle />
               )}

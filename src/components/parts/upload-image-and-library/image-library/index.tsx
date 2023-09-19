@@ -1,32 +1,47 @@
-import type { ReactElement } from "react";
-import { useQuery } from "react-query";
-
 import { Icon } from "~/components/icons";
+import { SearchInput } from "~/components/SearchInput";
 
 import { ComponentApi, ModalsVisibilityContext } from "../_state";
-import { ImagesContext } from "./_state";
+import { SearchContext } from "./_state";
 
+import { UedCx } from "~/context/user-editable-data";
+import { fuzzySearch } from "~/helpers/fuzzy-search";
 import { useToast } from "~/hooks";
 import { NextImage } from "~/lib/external-packages-rename";
-import { myDb } from "~/my-firebase/firestore";
 import type { MyDb } from "~/types/database";
 
 export const ImageLibrary = ({ closeModal }: { closeModal: () => void }) => (
   <div className="relative flex h-[700px] max-h-[70vh] w-[90vw] max-w-[1200px] flex-col rounded-2xl bg-white p-6 text-left shadow-xl">
     <div className="flex items-center justify-between border-b border-b-gray-200 pb-sm">
       <h3 className="pb-xs leading-6">Image library</h3>
+
       <p className="flex items-center gap-xs text-sm text-gray-400">
         <span>
           <Icon.Info />
         </span>
+
         <span>Click on an image to add it the document</span>
       </p>
     </div>
-    <div className="mt-md flex-grow overflow-y-auto">
-      <ImagesQueryWrapper>
-        <Images />
-      </ImagesQueryWrapper>
-    </div>
+
+    <SearchContext.Provider>
+      {({ query, setQuery }) => (
+        <>
+          <div className="mt-md">
+            <SearchInput
+              inputValue={query}
+              setInputValue={setQuery}
+              placeholder="Search by keyword"
+            />
+          </div>
+
+          <div className="mt-md flex-grow overflow-y-auto">
+            <Images />
+          </div>
+        </>
+      )}
+    </SearchContext.Provider>
+
     <div className="mt-xl">
       <button
         className="my-btn my-btn-neutral"
@@ -39,34 +54,47 @@ export const ImageLibrary = ({ closeModal }: { closeModal: () => void }) => (
   </div>
 );
 
-const ImagesQueryWrapper = ({ children }: { children: ReactElement }) => {
-  const query = useQuery("images", myDb.image.fetchAll);
-
-  return (
-    <div>
-      {query.isLoading ? (
-        <p>Loading images...</p>
-      ) : query.isError || !query.data ? (
-        <p></p>
-      ) : (
-        <ImagesContext.Provider images={query.data}>
-          {children}
-        </ImagesContext.Provider>
-      )}
-    </div>
-  );
-};
+const processImages = (images: MyDb["image"][], keywords: MyDb["keyword"][]) =>
+  images.map(({ keywords: imageKeywords, ...restImage }) => ({
+    ...restImage,
+    keywords: imageKeywords
+      .map((imageKeyword) =>
+        keywords.find(
+          (keyword) => keyword.id === imageKeyword.dbConnections.keywordId,
+        ),
+      )
+      .flatMap((keyword) => (keyword ? [keyword.text] : [])),
+  }));
 
 const Images = () => {
-  const { images } = ImagesContext.use();
+  const {
+    store: { data: images },
+  } = UedCx.Images.use();
+  const {
+    store: { data: keywords },
+  } = UedCx.Keywords.use();
+
+  const imagesProcessed = processImages(images, keywords);
+
+  const { query } = SearchContext.use();
+
+  const filtered = !query.length
+    ? images
+    : fuzzySearch({
+        entities: imagesProcessed,
+        keys: ["keywords"],
+        pattern: query,
+      });
 
   return (
     <div>
       {!images.length ? (
         <p>No images yet.</p>
+      ) : !filtered.length ? (
+        <p>No images for search term.</p>
       ) : (
         <div className="grid grid-cols-3 gap-sm pr-2 xl:grid-cols-4">
-          {images.map((image) => (
+          {filtered.map((image) => (
             // eslint-disable-next-line jsx-a11y/alt-text
             <Image image={image} key={image.id} />
           ))}
@@ -76,7 +104,11 @@ const Images = () => {
   );
 };
 
-const Image = ({ image }: { image: MyDb["image"] }) => {
+const Image = ({
+  image,
+}: {
+  image: MyDb["image"] | ReturnType<typeof processImages>[number];
+}) => {
   const { onUploadOrSelect } = ComponentApi.use();
   const { imageLibrary } = ModalsVisibilityContext.use();
 

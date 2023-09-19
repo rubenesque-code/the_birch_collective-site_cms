@@ -29,23 +29,29 @@ const LatestDeploy = () => {
             <span className="text-sm text-gray-600">Last update</span>
           </h5>
 
-          <WithTooltip text="click to see how the deploy is doing">
-            <button
-              className={`text-xs text-gray-400 ${
-                latestDeployQuery.isFetching
-                  ? "cursor-auto opacity-40"
-                  : "opacity-100"
-              }`}
-              onClick={() => {
-                if (latestDeployQuery.isFetching) {
-                  return;
-                }
-                void latestDeployQuery.refetch();
-              }}
-            >
-              <Icon.Refresh />
-            </button>
-          </WithTooltip>
+          <div className="flex items-center gap-sm">
+            <WithTooltip text="click to see how the deploy is doing">
+              <button
+                className={`text-xs text-gray-400 ${
+                  latestDeployQuery.isFetching
+                    ? "cursor-auto opacity-40"
+                    : "opacity-100"
+                }`}
+                onClick={() => {
+                  if (latestDeployQuery.isFetching) {
+                    return;
+                  }
+                  void latestDeployQuery.refetch();
+                }}
+              >
+                <Icon.Refresh />
+              </button>
+            </WithTooltip>
+
+            <div className="flex items-center gap-xs text-xs text-gray-400">
+              <span>Click to see how the latest deploy is doing.</span>
+            </div>
+          </div>
         </div>
 
         <span

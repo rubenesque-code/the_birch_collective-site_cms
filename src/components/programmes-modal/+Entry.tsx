@@ -1,7 +1,7 @@
 import React, { type ReactElement } from "react";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
 import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import ModalLayout from "~/components/layouts/Modal";
@@ -107,7 +107,7 @@ const Programme = () => {
             placeholderText="summary image"
           >
             {({ dbImageId }) => (
-              <ConnectImage dbImageId={dbImageId}>
+              <ConnectImage connectedImageId={dbImageId}>
                 {({ urls }) => (
                   <CustomisableImage
                     urls={urls}

@@ -1,16 +1,18 @@
 import { useState } from "react";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { WarningPanel } from "~/components/WarningPanel";
+import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
-import { useToast } from "~/hooks";
-import { NewMemberCx, createInitData } from "./_state";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { WarningPanel } from "~/components/WarningPanel";
+
+import { createInitData, NewMemberCx } from "./_state";
+
 import { UedCx } from "~/context/user-editable-data";
-import { TextAreaForm, TextInputForm } from "~/components/forms";
+import { useToast } from "~/hooks";
 
 // □ refactor
 
@@ -203,7 +205,7 @@ const NewMember = () => {
           isCircle
         >
           {({ dbImageId }) => (
-            <ConnectImage dbImageId={dbImageId}>
+            <ConnectImage connectedImageId={dbImageId}>
               {({ urls }) => (
                 <CustomisableImage
                   urls={urls}

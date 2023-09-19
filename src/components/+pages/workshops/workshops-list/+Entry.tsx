@@ -1,20 +1,21 @@
-import { UedCx } from "~/context/user-editable-data";
-
-import Markdown from "markdown-to-jsx";
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
+import Markdown from "markdown-to-jsx";
+
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { WarningPanel } from "~/components/WarningPanel";
 import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { WarningPanel } from "~/components/WarningPanel";
 import WorkshopsModal from "~/components/workshops-modal/+Entry";
+
 import { DbReadCx } from "~/context/db-data-read-only";
+import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
 import { useToast } from "~/hooks";
@@ -243,7 +244,7 @@ const Workshop = () => {
                 placeholderText="summary image"
               >
                 {({ dbImageId }) => (
-                  <ConnectImage dbImageId={dbImageId}>
+                  <ConnectImage connectedImageId={dbImageId}>
                     {({ urls }) => (
                       <CustomisableImage
                         urls={urls}
@@ -371,7 +372,7 @@ const PreviewModal = () => {
                     placeholderText="summary image"
                   >
                     {({ dbImageId }) => (
-                      <ConnectImage dbImageId={dbImageId}>
+                      <ConnectImage connectedImageId={dbImageId}>
                         {({ urls }) => (
                           <CustomisableImage
                             urls={urls}

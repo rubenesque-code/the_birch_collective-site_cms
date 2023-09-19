@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/alt-text */
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 import { TextAreaForm } from "~/components/forms";
 import { ComponentMenu } from "~/components/menus";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+
 import { UedCx } from "~/context/user-editable-data";
 
 const Body = () => {
@@ -68,7 +69,7 @@ const Image = () => {
         placeholderText="banner image"
       >
         {({ dbImageId }) => (
-          <ConnectImage dbImageId={dbImageId}>
+          <ConnectImage connectedImageId={dbImageId}>
             {({ urls }) => (
               <CustomisableImage urls={urls} position={position} />
             )}

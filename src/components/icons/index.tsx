@@ -73,6 +73,7 @@ import {
   Upload,
   Warning,
   WarningCircle,
+  XCircle,
   XSquare,
 } from "@phosphor-icons/react";
 
@@ -86,6 +87,7 @@ const Icon = () => {
 
 export { Icon };
 
+Icon.XCircle = XCircle;
 Icon.Loading = Spinner;
 Icon.Refresh = ArrowClockwise;
 Icon.Deploy = CloudArrowUp;

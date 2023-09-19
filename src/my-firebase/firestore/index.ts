@@ -61,6 +61,7 @@ import {
 import { aboutUsPageTransaction } from "./mutate/transactions/aboutUsPage";
 import { careersPageTransaction } from "./mutate/transactions/careersPage";
 import { donatePageTransaction } from "./mutate/transactions/donatePage";
+import { imagesPageTransaction } from "./mutate/transactions/imagesPage";
 import { landingPageTransaction } from "./mutate/transactions/landingPage";
 import { programmePageTransaction } from "./mutate/transactions/programmePage";
 import { programmesPageTransaction } from "./mutate/transactions/programmesPage";
@@ -314,6 +315,7 @@ export const myDb = {
       workshop: workshopPageTransaction,
       workshops: workshopsPageTransaction,
       "theory-of-change": theoryOfChangePageTransaction,
+      images: imagesPageTransaction,
     },
   },
 };

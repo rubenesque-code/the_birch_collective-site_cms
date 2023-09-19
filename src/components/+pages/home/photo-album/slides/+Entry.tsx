@@ -4,8 +4,8 @@ import React, { useMemo } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
 import { Icon } from "~/components/icons";
 import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
 
@@ -42,7 +42,7 @@ const Slides = () => {
                   placeholderText="photo album image"
                 >
                   {({ dbImageId }) => (
-                    <ConnectImage dbImageId={dbImageId}>
+                    <ConnectImage connectedImageId={dbImageId}>
                       {({ urls }) => (
                         <CustomisableImage
                           urls={urls}

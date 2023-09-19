@@ -70,6 +70,9 @@ dependencies:
   react-date-range:
     specifier: ^1.4.0
     version: 1.4.0(date-fns@2.30.0)(react@18.2.0)
+  react-debounce-input:
+    specifier: ^3.3.0
+    version: 3.3.0(react@18.2.0)
   react-device-detect:
     specifier: ^2.2.3
     version: 2.2.3(react-dom@18.2.0)(react@18.2.0)
@@ -3446,6 +3449,10 @@ packages:
     resolution: {integrity: sha512-aVx8ztPv7/2ULbArGJ2Y42bG1mEQ5mGjpdvrbJcJFU3TbYybe+QlLS4pst9zV52ymy2in1KpFPiZnAOATxD4+Q==}
     dev: true
 
+  /lodash.debounce@4.0.8:
+    resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
+    dev: false
+
   /lodash.isplainobject@4.0.6:
     resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
     dev: true
@@ -4170,6 +4177,16 @@ packages:
       react: 18.2.0
       react-list: 0.8.17(react@18.2.0)
       shallow-equal: 1.2.1
+    dev: false
+
+  /react-debounce-input@3.3.0(react@18.2.0):
+    resolution: {integrity: sha512-VEqkvs8JvY/IIZvh71Z0TC+mdbxERvYF33RcebnodlsUZ8RSgyKe2VWaHXv4+/8aoOgXLxWrdsYs2hDhcwbUgA==}
+    peerDependencies:
+      react: ^15.3.0 || 16 || 17 || 18
+    dependencies:
+      lodash.debounce: 4.0.8
+      prop-types: 15.8.1
+      react: 18.2.0
     dev: false
 
   /react-device-detect@2.2.3(react-dom@18.2.0)(react@18.2.0):

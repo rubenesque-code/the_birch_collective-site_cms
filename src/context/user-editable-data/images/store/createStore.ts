@@ -18,6 +18,13 @@ export const createStore = (input: { initData: Store["data"] }) =>
             }),
           ),
 
+        add: (input) =>
+          set(
+            produce((store: Store) => {
+              store.data.push(input);
+            }),
+          ),
+
         delete: (input: { id: string }) =>
           set(
             produce((store: Store) => {

@@ -1,8 +1,8 @@
 import React, { type ReactNode } from "react";
 import { produce } from "immer";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
@@ -202,7 +202,7 @@ const Supporter = () => {
           placeholderText="supporter image"
         >
           {({ dbImageId }) => (
-            <ConnectImage dbImageId={dbImageId}>
+            <ConnectImage connectedImageId={dbImageId}>
               {({ urls }) => (
                 <CustomisableImage urls={urls} objectFit="contain" />
               )}

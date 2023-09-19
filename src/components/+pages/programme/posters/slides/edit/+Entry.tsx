@@ -1,15 +1,16 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { useMemo, type ReactElement } from "react";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
-import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
-import { WarningPanel } from "~/components/WarningPanel";
 import { DndKit } from "~/components/dnd-kit";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { ImageUploadAndLibrary } from "~/components/parts/upload-image-and-library";
 import { Modal } from "~/components/styled-bases";
+import { UserSelectedImageWrapper } from "~/components/UserSelectedImageWrapper";
+import { WarningPanel } from "~/components/WarningPanel";
+
 import { PosterCx } from "~/context/entities";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
@@ -141,7 +142,7 @@ const Poster = () => {
             placeholderText="background image"
           >
             {({ dbImageId }) => (
-              <ConnectImage dbImageId={dbImageId}>
+              <ConnectImage connectedImageId={dbImageId}>
                 {({ urls }) => (
                   <CustomisableImage urls={urls} objectFit="contain" />
                 )}

@@ -15,7 +15,7 @@ export const uploadImageToStorageAndCreateFirestoreImage = async (
       input.file,
     );
 
-  await myDb.image.create({
+  const newImage = {
     id: input.firestoreId,
     naturalDimensions: input.naturalDimensions,
     storageIds: {
@@ -27,5 +27,7 @@ export const uploadImageToStorageAndCreateFirestoreImage = async (
       large: storageImage.largeImageURL,
     },
     keywords: input.keywords,
-  });
+  };
+
+  await myDb.image.create(newImage);
 };

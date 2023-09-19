@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 
+import { ConnectImage } from "~/components/ConnectImage";
 import { CustomisableImage } from "~/components/CustomisableImage";
-import { ConnectImage } from "~/components/DbImageWrapper";
 import { Icon } from "~/components/icons";
 import { ImagePlaceholder } from "~/components/ImagePlaceholder";
 import CmsLayout from "~/components/layouts/Cms";
@@ -133,7 +133,7 @@ const TestimonialActual = () => {
           placeholderText="background image"
         >
           {({ dbImageId }) => (
-            <ConnectImage dbImageId={dbImageId}>
+            <ConnectImage connectedImageId={dbImageId}>
               {({ urls }) => (
                 <CustomisableImage urls={urls} position={image.position} />
               )}

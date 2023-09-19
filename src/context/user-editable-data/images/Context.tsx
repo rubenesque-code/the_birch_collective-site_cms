@@ -4,6 +4,8 @@ import { useStore } from "zustand";
 import { createStore } from "./store/createStore";
 import type { Store } from "./store/types";
 
+import { getIds } from "~/helpers/data/query";
+import { strArrayDivergence } from "~/helpers/query-arr";
 import { useDocsRevisionData } from "~/hooks";
 import { generateUid } from "~/lib/external-packages-rename";
 import type { MyDb } from "~/types/database";
@@ -27,21 +29,44 @@ const Context = React.createContext<ContextValue | null>(null);
 
 function Provider({
   children,
-  ...props
+  dbData,
 }: {
   children: React.ReactNode | ((args: ContextValue) => React.ReactNode);
-  initData: Store["data"];
+  dbData: Store["data"];
 }) {
-  const [initData, setInitData] = React.useState(props.initData);
+  const [initData, setInitData] = React.useState(dbData);
   const [undoKey, setUndoKey] = React.useState(generateUid());
 
   const storeRef = React.useRef<ReturnType<typeof createStore>>();
 
   if (!storeRef.current) {
-    storeRef.current = createStore({ initData: props.initData });
+    storeRef.current = createStore({ initData: dbData });
   }
 
   const store = useStore(storeRef.current, (store) => store);
+
+  React.useEffect(() => {
+    // · on add or delete image (followng query refresh)
+    if (dbData.length === initData.length) {
+      return;
+    }
+
+    if (dbData.length > initData.length) {
+      const newImageId = strArrayDivergence(getIds(dbData), getIds(initData));
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const newImage = dbData.find((image) => image.id === newImageId[0])!;
+
+      setInitData((prevData) => [...prevData, newImage]);
+
+      store.actions.add(newImage);
+    }
+
+    if (dbData.length < initData.length) {
+      //hanle deleet
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dbData]);
 
   const { isChange, saveData } = useDocsRevisionData({
     initData,
