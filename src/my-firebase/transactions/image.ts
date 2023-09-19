@@ -1,3 +1,6 @@
+import { deleteObject, ref as storageRef } from "firebase/storage";
+
+import { storage } from "../client";
 import { myDb } from "../firestore";
 import { myStorage } from "../storage";
 
@@ -30,4 +33,16 @@ export const uploadImageToStorageAndCreateFirestoreImage = async (
   };
 
   await myDb.image.create(newImage);
+};
+
+export const deleteImageFromFirestoreAndStorage = async (
+  input: MyPick<MyDb["image"], "id" | "storageIds">,
+) => {
+  await myDb.image.delete(input.id);
+
+  const blurRef = storageRef(storage, `resized/${input.storageIds.blur}`);
+  const largeRef = storageRef(storage, `resized/${input.storageIds.large}`);
+
+  await deleteObject(blurRef);
+  await deleteObject(largeRef);
 };

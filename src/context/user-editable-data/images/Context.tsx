@@ -51,18 +51,28 @@ function Provider({
       return;
     }
 
+    setInitData(dbData);
+
     if (dbData.length > initData.length) {
-      const newImageId = strArrayDivergence(getIds(dbData), getIds(initData));
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const newImage = dbData.find((image) => image.id === newImageId[0])!;
+      const newImageIds = strArrayDivergence(getIds(dbData), getIds(initData));
 
-      setInitData((prevData) => [...prevData, newImage]);
+      newImageIds.forEach((id) => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const newImage = dbData.find((image) => image.id === id)!;
 
-      store.actions.add(newImage);
+        store.actions.add(newImage);
+      });
     }
 
     if (dbData.length < initData.length) {
-      //hanle deleet
+      const removedImageIds = strArrayDivergence(
+        getIds(initData),
+        getIds(dbData),
+      );
+
+      removedImageIds.forEach((id) => {
+        store.actions.delete({ id });
+      });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

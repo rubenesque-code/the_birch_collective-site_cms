@@ -18,15 +18,13 @@ const Upload = () => {
     <Modal.WithVisibilityProvider
       button={({ openModal }) => (
         <div
-          className={`group inline-flex cursor-pointer items-center gap-4 rounded-md border px-2 py-2 pr-md text-sm text-gray-500 hover:bg-gray-100`}
+          className={`group inline-flex cursor-pointer items-center gap-sm rounded-md border px-xs py-2 pr-md text-sm text-gray-500 hover:bg-gray-100`}
           onClick={openModal}
         >
-          <div className="flex items-center gap-4">
-            <span className="text-gray-400">
-              <Icon.Upload />
-            </span>
-            <span className="whitespace-nowrap">Upload new</span>
-          </div>
+          <span className="text-gray-400">
+            <Icon.Upload />
+          </span>
+          <span className="whitespace-nowrap">Upload new</span>
         </div>
       )}
       panelContent={({ closeModal }) => (
@@ -97,7 +95,6 @@ const Form = ({ closeModal }: { closeModal: () => void }) => {
 
           {
             async onSuccess() {
-              console.log("--------------------------");
               await queryClient.invalidateQueries("images");
               await queryClient.fetchQuery("images");
             },

@@ -5,7 +5,7 @@ import {
 } from "./mutate/careers";
 import { batchUpdateFooter, updateFooter } from "./mutate/footer";
 import { batchUpdateHeader, updateHeader } from "./mutate/header";
-import { batchUpdateImage, createImage } from "./mutate/image";
+import { batchUpdateImage, createImage, deleteImage } from "./mutate/image";
 import {
   batchCreateKeyword,
   batchDeleteKeyword,
@@ -204,6 +204,7 @@ export const myDb = {
   },
   image: {
     create: createImage,
+    delete: deleteImage,
     fetchOne: fetchOneImage,
     fetchAll: fetchImages,
     batch: {

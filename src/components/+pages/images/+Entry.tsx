@@ -6,9 +6,9 @@ import CmsLayout from "~/components/layouts/Cms";
 import { PageDataFetch } from "~/components/PageDataFetch";
 import CmsHeader from "~/components/parts/cms-header/+Entry";
 
-import { RevisionCx, SearchCx } from "./_state";
+import { FiltersCx, RevisionCx } from "./_state";
 import ImageGrid from "./image-grid/+Entry";
-import Search from "./search/+Entry";
+import Filters from "./search/+Entry";
 import Upload from "./upload/+Entry";
 
 import { UedCx } from "~/context/user-editable-data";
@@ -27,9 +27,7 @@ const HomePage = () => (
                 data={{ isChange: revisionState.data.isChange }}
               />
 
-              <div className="h-full flex-grow  overflow-y-auto overflow-x-hidden px-lg pt-lg scrollbar-thin">
-                <PageSpecificComponents />
-              </div>
+              <PageSpecificComponents />
             </CmsLayout.Page>
           )}
         </RevisionCx.Provider>
@@ -41,19 +39,21 @@ const HomePage = () => (
 export default HomePage;
 
 const PageSpecificComponents = () => (
-  <SearchCx.Provider>
-    <>
-      <Upload />
-
-      <div className="mt-lg">
-        <Search />
+  <FiltersCx.Provider>
+    <div className="relative flex h-full flex-col gap-lg px-sm pt-lg">
+      <div className="px-sm">
+        <Upload />
       </div>
 
-      <div className="mt-lg">
+      <div className="px-sm">
+        <Filters />
+      </div>
+
+      <div className="flex-grow overflow-y-auto px-sm scrollbar-thin">
         <ImageGrid />
       </div>
-    </>
-  </SearchCx.Provider>
+    </div>
+  </FiltersCx.Provider>
 );
 
 type DbData = {
@@ -67,7 +67,6 @@ const InitDbData = ({
   children: (data: DbData) => ReactElement;
 }) => {
   const imagesQuery = useQuery("images", myDb.image.fetchAll);
-  console.log("imagesQuery:", imagesQuery.data);
   const keywordsQuery = useQuery("keywords", myDb.keyword.fetchAll);
 
   const landingPageQuery = useQuery("landing-page", myDb.pages.landing.fetch);

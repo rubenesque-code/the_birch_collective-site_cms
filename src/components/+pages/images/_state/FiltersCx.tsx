@@ -1,8 +1,12 @@
 import React from "react";
 
+type ImageType = "all" | "used" | "unused";
+
 type ContextValue = {
   query: string;
   setQuery: (value: string) => void;
+  imageType: ImageType;
+  setImageType: (type: ImageType) => void;
 };
 
 const Context = React.createContext<ContextValue | null>(null);
@@ -13,10 +17,13 @@ const Provider = ({
   children: React.ReactElement | ((args: ContextValue) => React.ReactElement);
 }) => {
   const [query, setQuery] = React.useState("");
+  const [imageType, setImageType] = React.useState<ImageType>("all");
 
   const contextValue: ContextValue = {
     query,
     setQuery,
+    imageType,
+    setImageType,
   };
 
   return (
@@ -34,13 +41,13 @@ const useContext = () => {
   return value;
 };
 
-const SearchCx = () => {
+const FiltersCx = () => {
   throw new Error(
     "SearhContext exists for naming purposes only and should not be used as a component",
   );
 };
 
-export { SearchCx };
+export { FiltersCx };
 
-SearchCx.Provider = Provider;
-SearchCx.use = useContext;
+FiltersCx.Provider = Provider;
+FiltersCx.use = useContext;
