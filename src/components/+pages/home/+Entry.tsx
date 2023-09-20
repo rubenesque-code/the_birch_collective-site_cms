@@ -32,8 +32,7 @@ import type { MyDb } from "~/types/database";
 
 // TO DO
 // □ need to delete storage image when delete fb image on save
-// □ images page
-// □ ability to edit image keywords
+// □ ability to edit keywords
 // □ delete firestore images that came from now deleted storage image (when playing around with compression)
 
 // REFACTOR

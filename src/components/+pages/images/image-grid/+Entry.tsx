@@ -21,16 +21,20 @@ import { myFirebaseTransactions } from "~/my-firebase/transactions";
 import type { MyDb } from "~/types/database";
 
 const processImages = (images: MyDb["image"][], keywords: MyDb["keyword"][]) =>
-  images.map(({ keywords: imageKeywords, ...restImage }) => ({
-    ...restImage,
-    keywords: imageKeywords
-      .map((imageKeyword) =>
-        keywords.find(
-          (keyword) => keyword.id === imageKeyword.dbConnections.keywordId,
-        ),
-      )
-      .flatMap((keyword) => (keyword ? [keyword.text] : [])),
-  }));
+  images.map((image) => {
+    const { keywords: imageKeywords, ...restImage } = image;
+
+    return {
+      ...restImage,
+      keywords: imageKeywords
+        .map((imageKeyword) =>
+          keywords.find(
+            (keyword) => keyword.id === imageKeyword.dbConnections.keywordId,
+          ),
+        )
+        .flatMap((keyword) => (keyword ? [keyword.text] : [])),
+    };
+  });
 
 const ImageGrid = () => {
   const {

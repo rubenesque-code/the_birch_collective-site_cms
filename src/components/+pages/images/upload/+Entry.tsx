@@ -13,35 +13,33 @@ import { useToast } from "~/hooks";
 import { generateUid, NextImage } from "~/lib";
 import { myFirebaseTransactions } from "~/my-firebase/transactions";
 
-const Upload = () => {
-  return (
-    <Modal.WithVisibilityProvider
-      button={({ openModal }) => (
-        <div
-          className={`group inline-flex cursor-pointer items-center gap-sm rounded-md border px-xs py-2 pr-md text-sm text-gray-500 hover:bg-gray-100`}
-          onClick={openModal}
-        >
-          <span className="text-gray-400">
-            <Icon.Upload />
-          </span>
-          <span className="whitespace-nowrap">Upload new</span>
+const Upload = () => (
+  <Modal.WithVisibilityProvider
+    button={({ openModal }) => (
+      <div
+        className={`group inline-flex cursor-pointer items-center gap-sm rounded-md border px-sm py-2 text-sm text-gray-500 hover:bg-gray-100`}
+        onClick={openModal}
+      >
+        <span className="text-gray-400">
+          <Icon.Upload />
+        </span>
+        <span className="whitespace-nowrap">Upload new</span>
+      </div>
+    )}
+    panelContent={({ closeModal }) => (
+      <div className="relative w-[600px] max-w-[90vw] rounded-2xl bg-white p-6 text-left shadow-xl">
+        <h3 className="border-b-base-300 text-base-content border-b pb-sm leading-6">
+          Upload Image
+        </h3>
+        <div className="mt-md">
+          <NewImageCx.Provider>
+            <Form closeModal={closeModal} />
+          </NewImageCx.Provider>
         </div>
-      )}
-      panelContent={({ closeModal }) => (
-        <div className="relative w-[600px] max-w-[90vw] rounded-2xl bg-white p-6 text-left shadow-xl">
-          <h3 className="border-b-base-300 text-base-content border-b pb-sm leading-6">
-            Upload Image
-          </h3>
-          <div className="mt-md">
-            <NewImageCx.Provider>
-              <Form closeModal={closeModal} />
-            </NewImageCx.Provider>
-          </div>
-        </div>
-      )}
-    />
-  );
-};
+      </div>
+    )}
+  />
+);
 
 export default Upload;
 

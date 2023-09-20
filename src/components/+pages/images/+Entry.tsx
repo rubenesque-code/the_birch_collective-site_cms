@@ -15,7 +15,7 @@ import { UedCx } from "~/context/user-editable-data";
 import { myDb } from "~/my-firebase/firestore";
 import type { MyDb } from "~/types/database";
 
-const HomePage = () => (
+const ImagesPage = () => (
   <InitDbData>
     {(dbData) => (
       <UserEditProviders dbData={dbData}>
@@ -36,11 +36,11 @@ const HomePage = () => (
   </InitDbData>
 );
 
-export default HomePage;
+export default ImagesPage;
 
 const PageSpecificComponents = () => (
   <FiltersCx.Provider>
-    <div className="relative flex h-full flex-col gap-lg px-sm pt-lg">
+    <div className="relative flex h-[calc(100vh-64.8px)] max-h-full flex-grow flex-col gap-lg px-sm pb-lg pt-lg">
       <div className="px-sm">
         <Upload />
       </div>
@@ -49,7 +49,7 @@ const PageSpecificComponents = () => (
         <Filters />
       </div>
 
-      <div className="flex-grow overflow-y-auto px-sm scrollbar-thin">
+      <div className="max-h-full flex-grow overflow-y-auto px-sm pb-xl scrollbar-thin">
         <ImageGrid />
       </div>
     </div>

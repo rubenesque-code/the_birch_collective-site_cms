@@ -23,14 +23,14 @@ export const SearchInput = ({
     </label>
 
     <div className="relative w-full max-w-[500px]">
-      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-sm text-gray-400">
         <Icon.Search />
       </div>
 
       <DebounceInput
         type="text"
         id={inputId}
-        className="border-base-300 block w-full rounded-md border px-xs py-xs pl-10 text-sm text-gray-900 outline-none transition-colors focus-within:bg-gray-50"
+        className="border-base-300 block w-full rounded-md border px-xs py-xs pl-xl text-sm text-gray-900 outline-none transition-colors focus-within:bg-gray-50"
         placeholder={placeholder}
         value={inputValue}
         onChange={(e) => {
