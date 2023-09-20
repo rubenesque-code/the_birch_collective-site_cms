@@ -118,7 +118,7 @@ const Testimonial = () => {
 
         <div className="mt-md">
           <div className="text-sm text-gray-400">Endorser name</div>
-          <div className="max-w-full overflow-x-auto ">
+          <div className="max-w-full overflow-x-auto">
             <TextInputForm
               localStateValue={endorserName}
               onSubmit={(inputValue) =>
@@ -132,7 +132,7 @@ const Testimonial = () => {
 
         <div className="mt-md">
           <div className="text-sm text-gray-400">Endorser job title</div>
-          <div className="max-w-full overflow-x-auto ">
+          <div className="max-w-full overflow-x-auto">
             <TextInputForm
               localStateValue={endorserTitle}
               onSubmit={(inputValue) =>

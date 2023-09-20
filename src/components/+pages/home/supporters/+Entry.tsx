@@ -33,7 +33,7 @@ const Headings = () => {
 
   return (
     <div className="">
-      <div className="text-center font-display text-6xl text-brandOrange">
+      <div className="overflow-x-auto text-center font-display text-6xl text-brandOrange">
         <TextInputForm
           localStateValue={supporters.heading}
           onSubmit={supportersAction.heading}

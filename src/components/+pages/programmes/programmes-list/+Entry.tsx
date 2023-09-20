@@ -147,7 +147,7 @@ const Programme = () => {
           </div>
         </div>
         <div className="flex-grow">
-          <div className="font-display text-5xl text-brandOrange">
+          <div className="overflow-x-auto font-display text-5xl text-brandOrange">
             <TextInputForm
               localStateValue={title}
               input={{

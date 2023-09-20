@@ -1,4 +1,5 @@
 import { TextInputForm } from "~/components/forms";
+
 import { UedCx } from "~/context/user-editable-data";
 
 const Heading = () => {
@@ -12,7 +13,7 @@ const Heading = () => {
 
   return (
     <div className="">
-      <div className="text-center font-display text-7xl text-displayGreen">
+      <div className="overflow-x-auto text-center font-display text-7xl text-displayGreen">
         <TextInputForm
           localStateValue={heading}
           input={{

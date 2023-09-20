@@ -1,6 +1,8 @@
 import { TextInputForm } from "~/components/forms";
-import { UedCx } from "~/context/user-editable-data";
+
 import Positions from "./positions/+Entry";
+
+import { UedCx } from "~/context/user-editable-data";
 
 const Opportunities = () => (
   <div>
@@ -25,7 +27,7 @@ const Heading = () => {
   } = UedCx.Pages.VolunteerPositions.use();
 
   return (
-    <div className="text-center font-display text-6xl text-brandOrange">
+    <div className="overflow-x-auto text-center font-display text-6xl text-brandOrange">
       <TextInputForm
         localStateValue={heading}
         onSubmit={opportunitiesAction.heading}

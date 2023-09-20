@@ -108,7 +108,7 @@ const Headings = () => {
             key={undoKey}
           />
         </div>
-        <div className="mt-sm text-6xl font-bold text-white">
+        <div className="mt-sm overflow-x-auto text-6xl font-bold text-white">
           <TextInputForm
             localStateValue={heading}
             input={{

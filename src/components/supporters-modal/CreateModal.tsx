@@ -203,7 +203,7 @@ const NewSupporter = () => {
 
       <div className="mt-md">
         <div className="text-sm text-gray-400">Name</div>
-        <div className="font-medium">
+        <div className="overflow-x-auto font-medium">
           <TextInputForm
             localStateValue={newSupporter.name}
             onSubmit={actions.title.update}

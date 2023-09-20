@@ -254,7 +254,7 @@ const Section = () => {
       </CmsLayout.EditBar>
 
       <div
-        className={`mt-sm font-display text-6xl font-bold tracking-wide ${textColourSwith(
+        className={`mt-sm overflow-x-auto font-display text-6xl font-bold tracking-wide ${textColourSwith(
           colour,
         )}`}
       >

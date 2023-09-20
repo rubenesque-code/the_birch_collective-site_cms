@@ -154,7 +154,7 @@ const Testimonial = ({ align }: { align: "left" | "right" }) => {
         </div>
 
         <div>
-          <div className="text-xl text-brandGreen">
+          <div className="overflow-x-auto text-xl text-brandGreen">
             <TextInputForm
               localStateValue={endorserName}
               onSubmit={(inputValue) =>
@@ -165,7 +165,7 @@ const Testimonial = ({ align }: { align: "left" | "right" }) => {
             />
           </div>
           <div
-            className={`mt-xxs  text-lg text-brandBrown ${
+            className={`mt-xxs overflow-x-auto text-lg text-brandBrown ${
               align === "right" ? "text-right" : ""
             }`}
           >

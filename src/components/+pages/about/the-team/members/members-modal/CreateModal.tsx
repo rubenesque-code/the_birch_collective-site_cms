@@ -221,7 +221,7 @@ const NewMember = () => {
 
       <div className="mt-md">
         <div className="text-sm text-gray-400">Name</div>
-        <div className="font-medium">
+        <div className="overflow-x-auto font-medium">
           <TextInputForm
             localStateValue={name}
             onSubmit={actions.name}
@@ -231,7 +231,7 @@ const NewMember = () => {
       </div>
       <div className="mt-md">
         <div className="text-sm text-gray-400">Role</div>
-        <div className="font-medium">
+        <div className="overflow-x-auto font-medium">
           <TextInputForm
             localStateValue={role}
             onSubmit={actions.role}

@@ -75,7 +75,7 @@ const VolunteerPosition = () => {
       <PositionMenu />
       <div className={`rounded-lg border p-sm `}>
         <div className="">
-          <div className="text-center font-display text-3xl text-brandOrange">
+          <div className="overflow-x-auto text-center font-display text-3xl text-brandOrange">
             <TextInputForm
               localStateValue={name}
               input={{

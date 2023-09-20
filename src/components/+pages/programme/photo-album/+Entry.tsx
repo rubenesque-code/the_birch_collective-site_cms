@@ -1,9 +1,11 @@
+import { TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
+
 import Slides from "./slides/+Entry";
 import { EditModal } from "./slides/edit/+Entry";
+
 import { UedCx } from "~/context/user-editable-data";
-import { TextInputForm } from "~/components/forms";
 
 const PhotoAlbum = () => {
   return (
@@ -31,7 +33,7 @@ const Heading = () => {
   } = UedCx.Programme.use();
 
   return (
-    <div className="mb-sm font-display text-2xl text-brandBrown">
+    <div className="mb-sm overflow-x-auto font-display text-2xl text-brandBrown">
       <TextInputForm
         localStateValue={photoAlbum.heading}
         input={{

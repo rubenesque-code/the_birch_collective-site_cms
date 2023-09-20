@@ -88,7 +88,7 @@ const TextOverlay = () => {
 
   return (
     <div className="absolute bottom-0 right-0 min-w-fit translate-y-xl bg-brandRed p-6 pr-12 text-white md:-bottom-10 md:w-1/3 md:translate-y-0 md:p-12">
-      <div className="text-left font-display text-6xl font-bold tracking-wide text-white">
+      <div className="overflow-x-auto text-left font-display text-6xl font-bold tracking-wide text-white">
         <TextInputForm
           localStateValue={textOverlay.heading}
           onSubmit={textOverlayAction.heading}

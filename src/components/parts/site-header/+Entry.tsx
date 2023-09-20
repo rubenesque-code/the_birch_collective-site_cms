@@ -76,7 +76,7 @@ const LogoAndOrgName = () => {
         </UserSelectedImageWrapper>
         <LogoMenu />
       </div>
-      <div className="font-display text-3xl font-bold tracking-wider text-display lg:text-4xl xl:text-6xl">
+      <div className="overflow-x-auto overflow-y-hidden font-display text-3xl font-bold tracking-wider text-display lg:text-4xl xl:text-6xl">
         <TextInputForm
           localStateValue={name}
           onSubmit={orgDetailsAction.name}

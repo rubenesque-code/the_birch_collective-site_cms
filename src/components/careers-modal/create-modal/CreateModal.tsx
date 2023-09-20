@@ -1,12 +1,14 @@
 import { useState } from "react";
 
-import { WarningPanel } from "~/components/WarningPanel";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { Modal } from "~/components/styled-bases";
+import { WarningPanel } from "~/components/WarningPanel";
+
+import { createInitData, NewCareerCx } from "./_state";
+
 import { UedCx } from "~/context/user-editable-data";
 import { useToast } from "~/hooks";
-import { NewCareerCx, createInitData } from "./_state";
 
 export const CreateModal = () => {
   const {
@@ -174,7 +176,7 @@ const NewJobPost = () => {
   return (
     <div className="relative w-[600px]">
       <div className="text-sm text-gray-500">Title</div>
-      <div className="mt-xxxs font-medium">
+      <div className="mt-xxxs overflow-x-auto font-medium">
         <TextInputForm
           localStateValue={title}
           onSubmit={actions.title}
@@ -187,7 +189,7 @@ const NewJobPost = () => {
           <span>Closing date</span>
           <span className="italic text-gray-400">optional</span>
         </div>
-        <div className="mt-xxxs font-medium">
+        <div className="mt-xxxs overflow-x-auto font-medium">
           <TextInputForm
             localStateValue={closingDate}
             onSubmit={actions.closingDate}

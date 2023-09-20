@@ -1,8 +1,10 @@
 import { Popover } from "@headlessui/react";
-import TextInputPopoverPanel from "~/components/TextInputPopoverPanel";
-import { WithTooltip } from "~/components/WithTooltip";
+
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
+import TextInputPopoverPanel from "~/components/TextInputPopoverPanel";
+import { WithTooltip } from "~/components/WithTooltip";
+
 import { UedCx } from "~/context/user-editable-data";
 
 const Tickets = () => {
@@ -16,7 +18,7 @@ const Tickets = () => {
 
   return (
     <div className="">
-      <div className="font-display text-3xl font-bold tracking-wider text-brandGreen">
+      <div className="overflow-x-auto font-display text-3xl font-bold tracking-wider text-brandGreen">
         <TextInputForm
           localStateValue={tickets.heading}
           input={{
@@ -40,7 +42,7 @@ const Tickets = () => {
         />
       </div>
 
-      <div className="mt-md inline-flex cursor-pointer items-center gap-sm rounded-lg bg-brandGreen px-sm py-xs text-white">
+      <div className="mt-md inline-flex cursor-pointer items-center gap-sm overflow-x-auto rounded-lg bg-brandGreen px-sm py-xs text-white">
         <TextInputForm
           localStateValue={tickets.signUpButton.text}
           input={{

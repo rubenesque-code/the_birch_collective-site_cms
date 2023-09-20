@@ -210,7 +210,7 @@ const NewWorkshop = () => {
 
       <div className="mt-md">
         <div className="text-sm text-gray-500">Title</div>
-        <div className="font-medium">
+        <div className="overflow-x-auto font-medium">
           <TextInputForm
             localStateValue={title}
             onSubmit={newWorkshopAction.title}
@@ -238,7 +238,7 @@ const NewWorkshop = () => {
           <span>Subtitle</span>
           <span className="italic text-gray-400">optional</span>
         </div>
-        <div className="">
+        <div className="overflow-x-auto">
           <TextInputForm
             localStateValue={subtitle}
             onSubmit={newWorkshopAction.subtitle}

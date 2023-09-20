@@ -1,4 +1,5 @@
 import { TextInputForm } from "~/components/forms";
+
 import { UedCx } from "~/context/user-editable-data";
 
 const Heading = () => {
@@ -11,7 +12,7 @@ const Heading = () => {
   } = UedCx.Pages.Careers.use();
 
   return (
-    <div className="font-display text-7xl text-displayGreen">
+    <div className="overflow-x-auto font-display text-7xl text-displayGreen">
       <TextInputForm
         localStateValue={heading}
         input={{

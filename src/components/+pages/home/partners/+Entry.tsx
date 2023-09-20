@@ -33,7 +33,7 @@ const Headings = () => {
 
   return (
     <div className="">
-      <div className="text-center font-display text-6xl text-brandOrange">
+      <div className="overflow-x-auto text-center font-display text-6xl text-brandOrange">
         <TextInputForm
           localStateValue={partners.heading}
           onSubmit={partnersAction.heading}
@@ -170,7 +170,7 @@ const ConnectPartner = ({
 };
 
 const UnfoundPartner = () => (
-  <div className="group/partner relative flex aspect-video flex-col items-center overflow-auto rounded-md border-2 border-my-alert-content bg-gray-50 p-sm">
+  <div className="group/partner relative flex aspect-video flex-col items-center overflow-x-auto rounded-md border-2 border-my-alert-content bg-gray-50 p-sm">
     <PartnerMenu />
     <div className="text-5xl text-gray-500">
       <Icon.Partner weight="light" />

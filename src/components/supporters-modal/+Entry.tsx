@@ -136,7 +136,7 @@ const Supporter = () => {
         </div>
         <div className="mt-md">
           <div className="text-sm text-gray-400">Link</div>
-          <div className="overflow-auto font-medium">
+          <div className="overflow-x-auto font-medium">
             <TextInputForm
               localStateValue={url}
               onSubmit={(inputValue) => actions.url({ id, newVal: inputValue })}

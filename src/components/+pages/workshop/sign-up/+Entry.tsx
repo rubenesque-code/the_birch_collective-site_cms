@@ -32,7 +32,7 @@ const SignUp = () => {
         />
       </CmsLayout.EditBar>
 
-      <div className="text-center font-display text-5xl text-brandLightOrange">
+      <div className="overflow-x-auto text-center font-display text-5xl text-brandLightOrange">
         <TextInputForm
           localStateValue={signUp.heading}
           input={{
@@ -64,16 +64,18 @@ const SignUp = () => {
             <Icon.SignUp />
           </div>
 
-          <TextInputForm
-            localStateValue={signUp.buttonText}
-            input={{
-              placeholder: "Sign up form button text",
-              styles: "tracking-wide font-bold",
-            }}
-            onSubmit={signUpAction.buttonText}
-            tooltip="Click to edit sign up form button text"
-            key={undoKey}
-          />
+          <div className="overflow-x-auto">
+            <TextInputForm
+              localStateValue={signUp.buttonText}
+              input={{
+                placeholder: "Sign up form button text",
+                styles: "tracking-wide font-bold",
+              }}
+              onSubmit={signUpAction.buttonText}
+              tooltip="Click to edit sign up form button text"
+              key={undoKey}
+            />
+          </div>
         </div>
       </div>
     </div>

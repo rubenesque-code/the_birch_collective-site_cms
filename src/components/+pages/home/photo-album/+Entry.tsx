@@ -48,7 +48,7 @@ const Heading = () => {
   const { photoAlbum: photoAlbumAction } = UedCx.Pages.Landing.useAction();
 
   return (
-    <div className="flex items-center justify-end gap-xs">
+    <div className="flex items-center justify-end gap-xs overflow-x-auto">
       <TextInputForm
         localStateValue={heading}
         onSubmit={photoAlbumAction.heading}

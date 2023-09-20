@@ -1,8 +1,9 @@
 import { Popover } from "@headlessui/react";
 
-import { WithTooltip } from "~/components/WithTooltip";
 import { TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
+import { WithTooltip } from "~/components/WithTooltip";
+
 import { UedCx } from "~/context/user-editable-data";
 
 const GetInvolved = () => {
@@ -52,7 +53,7 @@ const PanelContent = () => {
 
   return (
     <div>
-      <div className="font-display text-4xl font-bold tracking-wide text-displayGreen">
+      <div className="overflow-x-auto font-display text-4xl font-bold tracking-wide text-displayGreen">
         <TextInputForm
           localStateValue={header.getInvolved.popover.heading}
           onSubmit={headerAction.getInvolved.popover.heading}
@@ -63,7 +64,7 @@ const PanelContent = () => {
           tooltip="Click to edit get involved menu heading"
         />
       </div>
-      <div className="mt-2 text-lg">
+      <div className="mt-2 overflow-x-auto text-lg">
         <TextInputForm
           localStateValue={header.getInvolved.popover.subheading}
           onSubmit={headerAction.getInvolved.popover.subheading}
@@ -89,7 +90,7 @@ const PanelLinks = () => {
         <div className="grid place-items-center text-lg text-displayGreen">
           <Icon.CaretRight weight="bold" />
         </div>
-        <div className="text-lg uppercase tracking-wide">
+        <div className="overflow-x-auto text-lg uppercase tracking-wide">
           <TextInputForm
             localStateValue={linkLabels.donate}
             onSubmit={linkLabelAction.donate}
@@ -106,7 +107,7 @@ const PanelLinks = () => {
         <div className="grid place-items-center text-lg text-displayGreen">
           <Icon.CaretRight weight="bold" />
         </div>
-        <div className="text-lg uppercase tracking-wide">
+        <div className="overflow-x-auto text-lg uppercase tracking-wide">
           <TextInputForm
             localStateValue={linkLabels.volunteer}
             onSubmit={linkLabelAction.volunteer}
@@ -123,7 +124,7 @@ const PanelLinks = () => {
         <div className="grid place-items-center text-lg text-displayGreen">
           <Icon.CaretRight weight="bold" />
         </div>
-        <div className="text-lg uppercase tracking-wide">
+        <div className="overflow-x-auto text-lg uppercase tracking-wide">
           <TextInputForm
             localStateValue={linkLabels.careers}
             onSubmit={linkLabelAction.careers}

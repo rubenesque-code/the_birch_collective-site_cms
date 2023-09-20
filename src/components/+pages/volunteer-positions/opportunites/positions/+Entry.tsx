@@ -1,12 +1,14 @@
 import React, { type ReactNode } from "react";
+
 import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
 import { ComponentMenu } from "~/components/menus";
 import VolunteerPositionsModal from "~/components/volunteer-positions-modal/+Entry";
-import { VolunteerPositionCx } from "~/context/entities/VolunteerPositionCx";
+
 import { VolunteerPositionsPageCx } from "~/context/entities/volunteer-positions-page";
+import { VolunteerPositionCx } from "~/context/entities/VolunteerPositionCx";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
 import { getIds } from "~/helpers/data/query";
@@ -180,7 +182,7 @@ const Position = () => {
   return (
     <div className="group/position">
       <PositionMenu />
-      <div className="text-center font-display text-3xl text-brandOrange">
+      <div className="overflow-x-auto text-center font-display text-3xl text-brandOrange">
         <TextInputForm
           localStateValue={name}
           input={{

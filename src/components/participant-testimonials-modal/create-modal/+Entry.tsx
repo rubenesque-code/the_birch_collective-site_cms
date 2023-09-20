@@ -206,7 +206,7 @@ const NewTestimonial = () => {
 
       <div className="mt-md">
         <div className="text-sm text-gray-500">Endorser name</div>
-        <div className="font-medium">
+        <div className="overflow-x-auto font-medium">
           <TextInputForm
             localStateValue={endorserName}
             onSubmit={newTestimonialAction.endorserName}

@@ -1,10 +1,12 @@
 import React from "react";
-import { WarningPanel } from "~/components/WarningPanel";
+
 import { DndKit } from "~/components/dnd-kit";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
 import { Modal } from "~/components/styled-bases";
+import { WarningPanel } from "~/components/WarningPanel";
+
 import { InfoEntryCx } from "~/context/entities/programme";
 import { UedCx } from "~/context/user-editable-data";
 import { deepSortByIndex } from "~/helpers/data/process";
@@ -54,16 +56,20 @@ const Entry = () => {
     <div className="group/entry relative flex items-start gap-xs">
       <div className="relative font-bold">
         <EntryDeleteButton />
-        <TextInputForm
-          localStateValue={title}
-          input={{
-            placeholder: "Info title",
-          }}
-          onSubmit={(updatedValue) => infoAction.title({ id, updatedValue })}
-          tooltip="Click to edit info title"
-          key={undoKey}
-        />
+
+        <div className="overflow-x-auto">
+          <TextInputForm
+            localStateValue={title}
+            input={{
+              placeholder: "Info title",
+            }}
+            onSubmit={(updatedValue) => infoAction.title({ id, updatedValue })}
+            tooltip="Click to edit info title"
+            key={undoKey}
+          />
+        </div>
       </div>
+
       <div className="w-full text-gray-800">
         <TextAreaForm
           localStateValue={text}

@@ -25,7 +25,7 @@ const Heading = () => {
 
   return (
     <div className="">
-      <div className="text-center font-display text-6xl text-brandGreen">
+      <div className="overflow-x-auto text-center font-display text-6xl text-brandGreen">
         <TextInputForm
           localStateValue={supportUs.heading}
           onSubmit={supportUsActions.heading}
@@ -133,7 +133,7 @@ const DonateButton = () => {
   } = UedCx.Pages.Landing.useAction();
 
   return (
-    <div className="absolute bottom-0 left-0 flex cursor-pointer items-center gap-sm rounded-sm bg-brandGreen px-4 py-2 text-lg font-bold tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">
+    <div className="absolute bottom-0 left-0 flex cursor-pointer items-center gap-sm overflow-x-auto rounded-sm bg-brandGreen px-4 py-2 text-lg font-bold tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">
       <TextInputForm
         localStateValue={buttonText}
         onSubmit={buttonTextAction}
@@ -265,7 +265,7 @@ const VolunteerButton = () => {
   } = UedCx.Pages.Landing.useAction();
 
   return (
-    <div className="absolute bottom-0 left-0 flex cursor-pointer items-center gap-sm rounded-sm bg-brandGreen px-4 py-2 text-lg font-bold tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">
+    <div className="absolute bottom-0 left-0 flex cursor-pointer items-center gap-sm overflow-x-auto rounded-sm bg-brandGreen px-4 py-2 text-lg font-bold tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">
       <TextInputForm
         localStateValue={buttonText}
         onSubmit={buttonTextAction}

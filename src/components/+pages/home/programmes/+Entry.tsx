@@ -33,7 +33,7 @@ const Headings = () => {
 
   return (
     <div className="">
-      <div className="text-center font-display text-6xl text-brandOrange">
+      <div className="overflow-x-auto text-center font-display text-6xl text-brandOrange">
         <TextInputForm
           localStateValue={programmes.heading}
           onSubmit={programmesAction.heading}
@@ -204,7 +204,7 @@ const Programme = () => {
   return (
     <div className="group/programme relative flex flex-col items-center p-sm">
       <ProgrammeMenu />
-      <div className="w-full text-center font-display text-3xl font-bold tracking-wider text-brandLightOrange">
+      <div className="w-full overflow-x-auto text-center font-display text-3xl font-bold tracking-wider text-brandLightOrange">
         <TextInputForm
           localStateValue={title}
           onSubmit={(inputValue) =>
@@ -287,7 +287,7 @@ const GoToPageButton = () => {
   const { undoKey } = UedCx.Pages.Landing.useRevision();
 
   return (
-    <div className="flex cursor-pointer items-center gap-sm rounded-sm bg-brandOrange px-4 py-2 text-lg font-bold uppercase tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">
+    <div className="flex cursor-pointer items-center gap-sm overflow-x-auto rounded-sm bg-brandOrange px-4 py-2 text-lg font-bold uppercase tracking-wide text-white sm:gap-2 sm:px-5 sm:py-3 sm:text-xl">
       <TextInputForm
         localStateValue={buttonText}
         onSubmit={programmesAction.buttonText}

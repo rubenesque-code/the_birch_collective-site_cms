@@ -198,7 +198,7 @@ const NewPartner = () => {
 
       <div className="mt-md">
         <div className="text-sm text-gray-400">Name</div>
-        <div className="font-medium">
+        <div className="overflow-x-auto font-medium">
           <TextInputForm
             localStateValue={newPartner.name}
             onSubmit={actions.title.update}
@@ -208,7 +208,7 @@ const NewPartner = () => {
       </div>
       <div className="mt-md">
         <div className="text-sm text-gray-400">Link</div>
-        <div className="font-medium">
+        <div className="overflow-x-auto font-medium">
           <TextInputForm
             localStateValue={newPartner.url}
             onSubmit={actions.url.update}

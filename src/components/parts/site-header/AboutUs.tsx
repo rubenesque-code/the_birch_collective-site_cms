@@ -1,8 +1,9 @@
 import { Popover } from "@headlessui/react";
 
-import { WithTooltip } from "~/components/WithTooltip";
 import { TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
+import { WithTooltip } from "~/components/WithTooltip";
+
 import { UedCx } from "~/context/user-editable-data";
 
 const AboutUs = () => {
@@ -52,7 +53,7 @@ const PanelContent = () => {
 
   return (
     <div>
-      <div className="font-display text-4xl text-displayGreen">
+      <div className="overflow-x-auto font-display text-4xl text-displayGreen">
         <TextInputForm
           localStateValue={header.aboutUs.popover.heading}
           onSubmit={headerAction.aboutUs.popover.heading}
@@ -63,7 +64,7 @@ const PanelContent = () => {
           tooltip="Click to edit about us menu heading"
         />
       </div>
-      <div className="mt-2 text-lg">
+      <div className="mt-2 overflow-x-auto text-lg">
         <TextInputForm
           localStateValue={header.aboutUs.popover.subheading}
           onSubmit={headerAction.aboutUs.popover.subheading}
@@ -89,7 +90,7 @@ const PanelLinks = () => {
         <div className="grid place-items-center text-lg text-displayGreen">
           <Icon.CaretRight weight="bold" />
         </div>
-        <div className="text-lg">
+        <div className="overflow-x-auto text-lg">
           <TextInputForm
             localStateValue={linkLabels.aboutUs}
             onSubmit={linkLabelAction.aboutUs}
@@ -106,7 +107,7 @@ const PanelLinks = () => {
         <div className="grid place-items-center text-lg text-displayGreen">
           <Icon.CaretRight weight="bold" />
         </div>
-        <div className="text-lg uppercase tracking-wide">
+        <div className="overflow-x-auto text-lg uppercase tracking-wide">
           <TextInputForm
             localStateValue={linkLabels.meetTheTeam}
             onSubmit={linkLabelAction.meetTheTeam}
@@ -123,7 +124,7 @@ const PanelLinks = () => {
         <div className="grid place-items-center text-lg text-displayGreen">
           <Icon.CaretRight weight="bold" />
         </div>
-        <div className="text-lg uppercase tracking-wide">
+        <div className="overflow-x-auto text-lg uppercase tracking-wide">
           <TextInputForm
             localStateValue={linkLabels.getInTouch}
             onSubmit={linkLabelAction.getInTouch}
@@ -140,7 +141,7 @@ const PanelLinks = () => {
         <div className="grid place-items-center text-lg text-displayGreen">
           <Icon.CaretRight weight="bold" />
         </div>
-        <div className="text-lg uppercase tracking-wide">
+        <div className="overflow-x-auto text-lg uppercase tracking-wide">
           <TextInputForm
             localStateValue={linkLabels.theoryOfChange}
             onSubmit={linkLabelAction.theoryOfChange}
@@ -157,7 +158,7 @@ const PanelLinks = () => {
         <div className="grid place-items-center text-lg text-displayGreen">
           <Icon.CaretRight weight="bold" />
         </div>
-        <div className="text-lg uppercase tracking-wide">
+        <div className="overflow-x-auto text-lg uppercase tracking-wide">
           <TextInputForm
             localStateValue={linkLabels.testimonials}
             onSubmit={linkLabelAction.testimonials}

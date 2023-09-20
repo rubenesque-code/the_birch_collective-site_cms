@@ -133,7 +133,7 @@ const PageLinks = () => {
 
   return (
     <div className="flex max-w-[500px] flex-wrap items-center gap-x-lg gap-y-md">
-      <div className="font-medium text-brandGreen">
+      <div className="overflow-x-auto font-medium text-brandGreen">
         <TextInputForm
           localStateValue={programmes}
           onSubmit={linkLabelsAction.programmes}
@@ -141,7 +141,7 @@ const PageLinks = () => {
           tooltip="Click to edit programmes link text"
         />
       </div>
-      <div className="font-medium text-brandGreen">
+      <div className="overflow-x-auto font-medium text-brandGreen">
         <TextInputForm
           localStateValue={workshops}
           onSubmit={linkLabelsAction.workshops}
@@ -149,7 +149,7 @@ const PageLinks = () => {
           tooltip="Click to edit workshops link text"
         />
       </div>
-      <div className="font-medium text-brandGreen">
+      <div className="overflow-x-auto font-medium text-brandGreen">
         <TextInputForm
           localStateValue={donate}
           onSubmit={linkLabelsAction.donate}
@@ -157,7 +157,7 @@ const PageLinks = () => {
           tooltip="Click to edit donate link text"
         />
       </div>
-      <div className="font-medium text-brandGreen">
+      <div className="overflow-x-auto font-medium text-brandGreen">
         <TextInputForm
           localStateValue={volunteer}
           onSubmit={linkLabelsAction.volunteer}
@@ -165,7 +165,7 @@ const PageLinks = () => {
           tooltip="Click to edit volunteer link text"
         />
       </div>
-      <div className="font-medium text-brandGreen">
+      <div className="overflow-x-auto font-medium text-brandGreen">
         <TextInputForm
           localStateValue={aboutUs}
           onSubmit={linkLabelsAction.aboutUs}
@@ -174,7 +174,7 @@ const PageLinks = () => {
         />
       </div>
 
-      <div className="font-medium text-brandGreen">
+      <div className="overflow-x-auto font-medium text-brandGreen">
         <TextInputForm
           localStateValue={theoryOfChange}
           onSubmit={linkLabelsAction.theoryOfChange}
@@ -185,7 +185,7 @@ const PageLinks = () => {
           tooltip="Click to edit theory of change link text"
         />
       </div>
-      <div className="font-medium text-brandGreen">
+      <div className="overflow-x-auto font-medium text-brandGreen">
         <TextInputForm
           localStateValue={testimonials}
           onSubmit={linkLabelsAction.testimonials}
@@ -287,7 +287,7 @@ const BottomRow = () => {
 
   return (
     <div className="flex items-center gap-lg">
-      <div className="text-brandGreen">
+      <div className="overflow-x-auto text-brandGreen">
         <TextInputForm
           localStateValue={contact.phoneNumber}
           onSubmit={contactAction.phoneNumber}
@@ -295,7 +295,7 @@ const BottomRow = () => {
           tooltip="Click to edit phone number"
         />
       </div>
-      <div className="text-brandGreen">
+      <div className="overflow-x-auto text-brandGreen">
         <TextInputForm
           localStateValue={contact.email}
           onSubmit={contactAction.email}
@@ -303,7 +303,7 @@ const BottomRow = () => {
           tooltip="Click to edit email"
         />
       </div>
-      <div className="text-brandGreen">
+      <div className="overflow-x-auto text-brandGreen">
         <TextInputForm
           localStateValue={footer.message}
           onSubmit={footerAction.message}

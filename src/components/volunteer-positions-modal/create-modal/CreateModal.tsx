@@ -1,12 +1,14 @@
 import { useState } from "react";
 
-import { WarningPanel } from "~/components/WarningPanel";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { Modal } from "~/components/styled-bases";
+import { WarningPanel } from "~/components/WarningPanel";
+
+import { createInitData, NewPositionCx } from "./_state";
+
 import { UedCx } from "~/context/user-editable-data";
 import { useToast } from "~/hooks";
-import { NewPositionCx, createInitData } from "./_state";
 
 // □ refactor
 
@@ -174,7 +176,7 @@ const NewPosition = () => {
   return (
     <div className="relative w-[500px]">
       <div className="text-sm text-gray-400">Name</div>
-      <div className="font-medium">
+      <div className="overflow-x-auto font-medium">
         <TextInputForm
           localStateValue={name}
           onSubmit={actions.name}

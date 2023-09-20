@@ -210,7 +210,7 @@ const NewProgramme = () => {
 
       <div className="mt-md">
         <div className="text-sm text-gray-400">Title</div>
-        <div className="font-medium">
+        <div className="overflow-x-auto font-medium">
           <TextInputForm
             localStateValue={title}
             onSubmit={newProgrammeAction.title}
@@ -220,7 +220,7 @@ const NewProgramme = () => {
       </div>
       <div className="mt-md">
         <div className="text-sm text-gray-400">Subtitle</div>
-        <div className="font-medium">
+        <div className="overflow-x-auto font-medium">
           <TextInputForm
             localStateValue={subtitle}
             onSubmit={newProgrammeAction.subtitle}

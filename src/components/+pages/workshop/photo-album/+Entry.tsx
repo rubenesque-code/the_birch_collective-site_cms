@@ -1,9 +1,11 @@
+import { TextInputForm } from "~/components/forms";
 import { Icon } from "~/components/icons";
 import { ComponentMenu } from "~/components/menus";
+
 import Slides from "./slides/+Entry";
 import { EditModal } from "./slides/edit/+Entry";
+
 import { UedCx } from "~/context/user-editable-data";
-import { TextInputForm } from "~/components/forms";
 
 const PhotoAlbum = () => {
   const {
@@ -32,7 +34,7 @@ const PhotoAlbum = () => {
         <div className="relative h-[400px] overflow-visible">
           <Slides
             heading={
-              <div className="text-sm text-gray-500">
+              <div className="overflow-x-auto text-sm text-gray-500">
                 <TextInputForm
                   localStateValue={photoAlbum.heading}
                   input={{

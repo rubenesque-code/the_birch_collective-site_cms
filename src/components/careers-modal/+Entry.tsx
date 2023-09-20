@@ -95,7 +95,7 @@ const Career = () => {
       <div className={`rounded-lg border p-sm`}>
         <div className="">
           <div className="border-b border-gray-300 pb-sm">
-            <div className="font-medium">
+            <div className="overflow-x-auto font-medium">
               <TextInputForm
                 localStateValue={title}
                 input={{
@@ -113,7 +113,7 @@ const Career = () => {
                 </span>
                 <div className="flex gap-xs">
                   <span>closes, </span>
-                  <span>
+                  <span className="overflow-x-auto">
                     <TextInputForm
                       localStateValue={closingDate}
                       input={{

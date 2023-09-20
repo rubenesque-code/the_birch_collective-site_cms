@@ -1,6 +1,8 @@
 import { TextAreaForm, TextInputForm } from "~/components/forms";
-import { UedCx } from "~/context/user-editable-data";
+
 import Members from "./members/+Entry";
+
+import { UedCx } from "~/context/user-editable-data";
 
 const TheTeam = () => (
   <div>
@@ -26,7 +28,7 @@ const Headings = () => {
 
   return (
     <div>
-      <div className="text-center font-display text-4xl font-bold text-brandOrange sm:text-5xl md:text-6xl">
+      <div className="overflow-x-auto text-center font-display text-4xl font-bold text-brandOrange sm:text-5xl md:text-6xl">
         <TextInputForm
           localStateValue={heading}
           onSubmit={theTeamActions.heading}
@@ -35,7 +37,7 @@ const Headings = () => {
           key={undoKey}
         />
       </div>
-      <div className="custom-prose prose mt-lg w-full max-w-full">
+      <div className="custom-prose prose mt-lg w-full max-w-full overflow-x-auto">
         <TextAreaForm
           localStateValue={text}
           textArea={{

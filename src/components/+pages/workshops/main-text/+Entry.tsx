@@ -63,7 +63,7 @@ const AboutAmy = () => {
 
   return (
     <div>
-      <h3 className="font-display text-2xl text-brandGreen">
+      <h3 className="overflow-x-auto font-display text-2xl text-brandGreen">
         <TextInputForm
           localStateValue={aboutAmy.heading}
           input={{
@@ -89,7 +89,7 @@ const AboutAmy = () => {
             />
           </div>
           <div className="mt-sm flex items-center gap-md">
-            <div className="custom-prose prose max-w-full">
+            <div className="custom-prose prose max-w-full overflow-x-auto">
               <TextInputForm
                 localStateValue={aboutAmy.followOnInstaText}
                 input={{

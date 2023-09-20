@@ -194,7 +194,7 @@ const NewSection = () => {
     <div className="relative w-[700px]">
       <div className="mt-sm">
         <div className="text-sm text-gray-400">Title</div>
-        <div className="font-medium">
+        <div className="overflow-x-auto font-medium">
           <TextInputForm
             localStateValue={title}
             onSubmit={actions.title}

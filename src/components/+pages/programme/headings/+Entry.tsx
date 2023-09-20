@@ -1,4 +1,5 @@
 import { TextAreaForm, TextInputForm } from "~/components/forms";
+
 import { UedCx } from "~/context/user-editable-data";
 
 const Headings = () => {
@@ -24,7 +25,7 @@ const Headings = () => {
           key={undoKey}
         />
       </div>
-      <div className="font-display text-5xl font-bold tracking-wide text-displayGreen md:text-7xl">
+      <div className="overflow-x-auto font-display text-5xl font-bold tracking-wide text-displayGreen md:text-7xl">
         <TextInputForm
           localStateValue={title}
           input={{

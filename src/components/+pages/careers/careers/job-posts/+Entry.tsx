@@ -208,7 +208,7 @@ const JobPost = () => {
 
       <div className="mt-sm">
         <div className="border-b border-gray-300 pb-sm">
-          <div className="text-lg font-medium">
+          <div className="overflow-x-auto text-lg font-medium">
             <TextInputForm
               localStateValue={title}
               input={{
@@ -227,7 +227,7 @@ const JobPost = () => {
               </span>
               <div className="flex gap-xs">
                 <span>closes, </span>
-                <span>
+                <span className="overflow-x-auto">
                   <TextInputForm
                     localStateValue={closingDate}
                     input={{
@@ -369,7 +369,7 @@ const DocLinkButton = () => {
 
       <DocLinkButtonLinkModal />
 
-      <span className="text-gray-600">
+      <span className="overflow-x-auto text-gray-600">
         <TextInputForm
           localStateValue={docLinkButton.text}
           input={{
@@ -469,7 +469,7 @@ const DocLinkButtonLinkModal = () => {
             Paste in download link to document
           </ModalLayout.Standard.Header.Info>
         </ModalLayout.Standard.Header>
-        <div className="mt-md">
+        <div className="mt-md overflow-x-auto">
           <TextInputForm
             localStateValue={docLinkButton.link}
             input={{

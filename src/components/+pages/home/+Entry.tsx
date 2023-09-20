@@ -31,9 +31,7 @@ import type { MyDb } from "~/types/database";
 // □ firestore + storage rules - open reads is unavoidable?
 
 // TO DO
-// □ need to delete storage image when delete fb image on save
-// □ ability to edit keywords
-// □ delete firestore images that came from now deleted storage image (when playing around with compression)
+// □ ability to edit keywords.
 
 // REFACTOR
 // □ abstraction for react-query onMutate, onSuccess, etc.?
@@ -44,6 +42,7 @@ import type { MyDb } from "~/types/database";
 
 // □ On toggleable elements, can put toggle on actual element menu as well as top bar.
 // □ Should have cancel deploy button
+// □ Keywords should be called "search tags"?
 // □ Could poll for latest deploy data (take poll function from image upload)
 // □ On images, make image name part of the entity + use for searches
 // □ Programmes + workshops - toggle info section?
