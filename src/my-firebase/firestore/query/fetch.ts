@@ -65,6 +65,16 @@ export const fetchDonatePage = async () => {
   return data;
 };
 
+export const fetchDonateSuccessPage = async () => {
+  const docRef = getDocRef("pages", "donateSuccess");
+
+  const data = (await getDocData(
+    docRef,
+  )) as unknown as MyDb["pages"]["donate-success"];
+
+  return data;
+};
+
 export const fetchVolunteerPositionsPage = async () => {
   const docRef = getDocRef("pages", "volunteerPositions");
 

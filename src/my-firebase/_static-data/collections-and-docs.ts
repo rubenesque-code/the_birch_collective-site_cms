@@ -18,6 +18,7 @@ const pages = {
   aboutUs: "aboutUs",
   programmes: "programmes",
   donate: "donate",
+  "donate-success": "donateSuccess",
   ["volunteer-positions"]: "volunteerPositions",
   careers: "careers",
   workshops: "workshops",

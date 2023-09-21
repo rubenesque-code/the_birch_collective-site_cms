@@ -1,6 +1,8 @@
 import { type WriteBatch } from "firebase/firestore/lite";
-import type { MyDb } from "~/types/database";
+
 import { getDocRef } from "../_helpers";
+
+import type { MyDb } from "~/types/database";
 
 export const batchUpdateLandingPage = (
   data: Partial<MyDb["pages"]["landing"]>,
@@ -43,6 +45,15 @@ export const batchUpdateDonatePage = (
   batch: WriteBatch,
 ) => {
   const docRef = getDocRef("pages", "donate");
+
+  batch.update(docRef, data);
+};
+
+export const batchUpdateDonateSuccessPage = (
+  data: Partial<MyDb["pages"]["donate-success"]>,
+  batch: WriteBatch,
+) => {
+  const docRef = getDocRef("pages", "donateSuccess");
 
   batch.update(docRef, data);
 };

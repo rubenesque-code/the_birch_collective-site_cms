@@ -3,6 +3,7 @@ export type Pages = {
   aboutUs: AboutUs;
   programmes: Programmes;
   donate: Donate;
+  "donate-success": DonateSuccess;
   ["volunteer-positions"]: VolunteerPositions;
   careers: Careers;
   workshops: Workshops;
@@ -397,4 +398,35 @@ type TheoryOfChange = {
 
     description: string | null;
   }[];
+};
+
+type DonateSuccess = {
+  id: "donate-success-page";
+
+  bannerImage: {
+    dbConnections: {
+      imageId: string | null;
+    };
+    position: {
+      x: number;
+      y: number;
+    };
+  };
+
+  heading: string;
+  subheading: string;
+
+  body: {
+    heading: string;
+    text: string;
+    image: {
+      dbConnections: {
+        imageId: string | null;
+      };
+      position: {
+        x: number;
+        y: number;
+      };
+    };
+  };
 };

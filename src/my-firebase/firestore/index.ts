@@ -17,6 +17,7 @@ import {
   batchUpdateAboutUsPage,
   batchUpdateCareersPage,
   batchUpdateDonatePage,
+  batchUpdateDonateSuccessPage,
   batchUpdateLandingPage,
   batchUpdateProgrammesPage,
   batchUpdateTestimonialsPage,
@@ -61,6 +62,7 @@ import {
 import { aboutUsPageTransaction } from "./mutate/transactions/aboutUsPage";
 import { careersPageTransaction } from "./mutate/transactions/careersPage";
 import { donatePageTransaction } from "./mutate/transactions/donatePage";
+import { donateSuccessPageTransaction } from "./mutate/transactions/donateSuccessPage";
 import { imagesPageTransaction } from "./mutate/transactions/imagesPage";
 import { landingPageTransaction } from "./mutate/transactions/landingPage";
 import { programmePageTransaction } from "./mutate/transactions/programmePage";
@@ -88,6 +90,7 @@ import {
   fetchCareers,
   fetchCareersPage,
   fetchDonatePage,
+  fetchDonateSuccessPage,
   fetchFooter,
   fetchHeader,
   fetchImages,
@@ -154,6 +157,13 @@ export const myDb = {
         update: batchUpdateDonatePage,
       },
     },
+    "donate-success": {
+      fetch: fetchDonateSuccessPage,
+      batch: {
+        update: batchUpdateDonateSuccessPage,
+      },
+    },
+
     ["volunteer-positions"]: {
       fetch: fetchVolunteerPositionsPage,
       batch: {
@@ -311,6 +321,7 @@ export const myDb = {
       programmes: programmesPageTransaction,
       programme: programmePageTransaction,
       donate: donatePageTransaction,
+      "donate-success": donateSuccessPageTransaction,
       ["volunteer-positions"]: volunteerPositionsPageTransaction,
       careers: careersPageTransaction,
       workshop: workshopPageTransaction,
