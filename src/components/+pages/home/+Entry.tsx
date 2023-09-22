@@ -38,9 +38,8 @@ import type { MyDb } from "~/types/database";
 // □ abstraction for unfound entity: e.g. image, programme, supporter.
 
 // OTHER
-
 // □ On toggleable elements, can put toggle on actual element menu as well as top bar.
-// □ Should have cancel deploy button
+// □ Cancel deploy button
 // □ Keywords should be called "search tags"?
 // □ Could poll for latest deploy data (take poll function from image upload)
 // □ On images, make image name part of the entity + use for searches
