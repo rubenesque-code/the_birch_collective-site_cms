@@ -25,7 +25,6 @@ import { myDb } from "~/my-firebase/firestore";
 import type { MyDb } from "~/types/database";
 
 // MUST DO
-// □ donate success page
 
 // CHECK
 // □ firestore + storage rules - open reads is unavoidable?
