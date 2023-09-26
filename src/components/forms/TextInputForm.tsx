@@ -1,10 +1,10 @@
-import DOMPurify from "dompurify";
 import { useRef, useState } from "react";
+import DOMPurify from "dompurify";
 import { useMeasure } from "react-use";
 
-import type { MyPick } from "~/types/utilities";
-
 import { WithTooltip } from "../WithTooltip";
+
+import type { MyPick } from "~/types/utilities";
 
 type Props = {
   localStateValue: string | null;
@@ -14,10 +14,6 @@ type Props = {
 };
 
 export const TextInputForm = (props: Props) => {
-  return <ActualComponent {...props} />;
-};
-
-const ActualComponent = (props: Props) => {
   const [inputValue, setInputValue] = useState(props.localStateValue || "");
   const [inputIsFocused, setInputIsFocused] = useState(false);
 
@@ -96,7 +92,7 @@ const Input = ({
   return (
     <>
       <div
-        className={`relative h-full rounded-sm transition-colors duration-75 ease-in-out ${
+        className={`relative h-full overflow-y-hidden rounded-sm transition-colors duration-75 ease-in-out ${
           isFocused ? "bg-gray-100" : ""
         }`}
       >
@@ -107,7 +103,7 @@ const Input = ({
           {value.length ? value : placeholder}
         </p>
         <input
-          className={`z-10 bg-transparent outline-none ${styles} ${
+          className={`z-10 overflow-y-hidden bg-transparent outline-none ${styles} ${
             isFocused ? "pl-1 text-gray-800" : ""
           }`}
           value={value}

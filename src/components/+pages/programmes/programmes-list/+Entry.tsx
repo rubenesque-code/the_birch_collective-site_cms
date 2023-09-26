@@ -53,33 +53,34 @@ export default ProgrammesList;
 
 const Programmes = () => {
   const {
-    store: { data: programmes, actions },
+    store: { data: programmes },
   } = UedCx.Programmes.use();
 
   const sorted = React.useMemo(() => deepSortByIndex(programmes), [programmes]);
 
   return (
     <div className="grid grid-cols-1 gap-2xl">
-      <DndKit.Context elementIds={getIds(sorted)} onReorder={actions.reorder}>
-        {sorted.map((programme) => (
-          <DndKit.Element elementId={programme.id} key={programme.id}>
-            <ProgrammeCx.Provider programme={programme}>
-              <Programme />
-            </ProgrammeCx.Provider>
-          </DndKit.Element>
-        ))}
-      </DndKit.Context>
+      {sorted.map((programme) => (
+        <ProgrammeCx.Provider programme={programme} key={programme.id}>
+          <Programme />
+        </ProgrammeCx.Provider>
+      ))}
     </div>
   );
 };
 
 const Programme = () => {
-  const { id, subtitle, summary, title } = ProgrammeCx.use();
+  const { id, subtitle, summary, title, index } = ProgrammeCx.use();
 
   const {
-    store: { actions },
+    store: { actions, data: programmes },
     revision: { undoKey },
   } = UedCx.Programmes.use();
+
+  const programmesSorted = React.useMemo(
+    () => deepSortByIndex(programmes),
+    [programmes],
+  );
 
   const toast = useToast();
 
@@ -94,7 +95,42 @@ const Programme = () => {
             />
           </Link>
         </div>
-        <div>
+
+        <div className="flex items-center gap-sm">
+          <ComponentMenu.Button
+            onClick={() => {
+              const nextProgramme = programmesSorted[index + 1];
+
+              if (!nextProgramme) {
+                return;
+              }
+
+              actions.reorder({ activeId: id, overId: nextProgramme.id });
+            }}
+            tooltip="move programme down"
+            styles={{ button: "text-gray-500 hover:text-gray-600" }}
+          >
+            <Icon.ArrowDown />
+          </ComponentMenu.Button>
+
+          <ComponentMenu.Button
+            onClick={() => {
+              const prevProgramme = programmesSorted[index - 1];
+
+              if (!prevProgramme) {
+                return;
+              }
+
+              actions.reorder({ activeId: id, overId: prevProgramme.id });
+            }}
+            tooltip="move programme up"
+            styles={{ button: "text-gray-500 hover:text-gray-600" }}
+          >
+            <Icon.ArrowUp />
+          </ComponentMenu.Button>
+
+          <ComponentMenu.Divider />
+
           <Modal.WithVisibilityProvider
             button={({ openModal }) => (
               <ComponentMenu.Button.Delete
