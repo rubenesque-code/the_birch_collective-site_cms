@@ -1,20 +1,21 @@
 import { createContext, useContext, type ReactNode } from "react";
+
 import type { MyDb } from "~/types/database";
 
-type Programme = MyDb["pages"]["landing"]["programmes"]["entries"][number];
+type Entry = MyDb["pages"]["landing"]["programmes"]["entries"][number];
 
-type ContextValue = Programme;
+type ContextValue = Entry;
 
 const Context = createContext<ContextValue | null>(null);
 
 function Provider({
   children,
-  programme,
+  entry,
 }: {
   children: ReactNode | ((args: ContextValue) => ReactNode);
-  programme: Programme;
+  entry: Entry;
 }) {
-  const value: ContextValue = programme;
+  const value: ContextValue = entry;
 
   return (
     <Context.Provider value={value}>

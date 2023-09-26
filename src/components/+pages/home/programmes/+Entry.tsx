@@ -96,6 +96,7 @@ const EntriesSection = () => {
         return programmeA.index - programmeB.index;
       });
     });
+
     return sorted;
   }, [entries, programmes]);
 
@@ -134,11 +135,8 @@ const EntriesSection = () => {
         </div>
       ) : (
         <div className="mt-lg grid grid-cols-2 gap-sm">
-          {entriesSorted.map((programme) => (
-            <LandingCx.Programme.Provider
-              programme={programme}
-              key={programme.id}
-            >
+          {entriesSorted.map((entry) => (
+            <LandingCx.Programme.Provider entry={entry} key={entry.id}>
               <ConnectProgramme>
                 {({ connectedProgramme }) => (
                   <ProgrammeCx.Provider programme={connectedProgramme}>

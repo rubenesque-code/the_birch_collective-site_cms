@@ -18,7 +18,7 @@ import { UedCx } from "~/context/user-editable-data";
 import { myDb } from "~/my-firebase/firestore";
 import type { MyDb } from "~/types/database";
 
-const AboutPage = () => (
+const ProgrammesPage = () => (
   <InitDbData>
     {(dbData) => (
       <UserEditProviders dbData={dbData}>
@@ -40,19 +40,22 @@ const AboutPage = () => (
   </InitDbData>
 );
 
-export default AboutPage;
+export default ProgrammesPage;
 
 const PageSpecificComponents = () => (
   <>
     <BannerImage />
+
     <div className="mt-xl">
       <SiteLayout.Section.Spacing.Horizontal>
         <Headings />
       </SiteLayout.Section.Spacing.Horizontal>
     </div>
+
     <SiteLayout.Section.Spacing>
       <MainText />
     </SiteLayout.Section.Spacing>
+
     <SiteLayout.Section.Spacing>
       <ProgrammesList />
     </SiteLayout.Section.Spacing>
