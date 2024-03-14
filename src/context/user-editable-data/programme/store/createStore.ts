@@ -601,6 +601,10 @@ export const createStore = (input: { initData: Store["data"] }) =>
 
           text: nonArrAction("signUp.text"),
 
+          type: nonArrAction("signUp.type"),
+
+          downloadLink: nonArrAction("signUp.downloadLink"),
+
           notifyEmails: {
             add: (input) =>
               set(

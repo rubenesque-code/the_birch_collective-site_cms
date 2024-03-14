@@ -1,3 +1,5 @@
+import type { RichSection } from "./_common";
+
 export type Programme = {
   id: string;
 
@@ -49,13 +51,15 @@ export type Programme = {
     heading: string;
   };
 
-  sections: {
-    id: string;
+  sections: RichSection[];
 
-    index: number;
-
-    bullets: {
-      icon:
+  /*   sections: {
+      id: string;
+  
+      index: number;
+  
+      bullets: {
+        icon:
         | "leaf"
         | "tree"
         | "orange"
@@ -72,23 +76,23 @@ export type Programme = {
         | "star"
         | "tipi"
         | "sun";
-
-      type: "text" | "text-and-title";
-
-      entries: {
-        id: string;
-        index: number;
-        text: string;
-        title: string | null;
-      }[];
-    };
-
-    colour: "brown" | "green" | "orange";
-
-    title: string;
-
-    description: string | null;
-  }[];
+  
+        type: "text" | "text-and-title";
+  
+        entries: {
+          id: string;
+          index: number;
+          text: string;
+          title: string | null;
+        }[];
+      };
+  
+      colour: "brown" | "green" | "orange";
+  
+      title: string;
+  
+      description: string | null;
+    }[]; */
 
   signUp: {
     heading: string;
@@ -98,6 +102,10 @@ export type Programme = {
     buttonText: string;
 
     notifyEmails: string[];
+
+    downloadLink: string | null;
+
+    type: "online-form" | "download-sheet";
   };
 
   subtitle: string;
@@ -121,3 +129,5 @@ export type Programme = {
 
   title: string;
 };
+
+// https://docs.google.com/document/d/1l26Vhkwv2NwyYpRTzWNLkdBJAG1Swvwz/export?format=docx

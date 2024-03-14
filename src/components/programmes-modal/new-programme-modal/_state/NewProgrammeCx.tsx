@@ -64,6 +64,8 @@ export const createInitData = (input: { index: number }): Programme => ({
     heading: "",
     text: "",
     notifyEmails: [],
+    downloadLink: null,
+    type: "online-form",
   },
   usePosters: true,
 });

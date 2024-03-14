@@ -63,6 +63,10 @@ const TopEditBar = () => {
           }
         />
       </div>
+
+      <p className="text-sm italic text-gray-400">
+        Optional elements. Click to change.
+      </p>
     </CmsLayout.EditBar>
   );
 };
