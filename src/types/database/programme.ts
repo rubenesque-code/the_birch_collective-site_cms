@@ -129,5 +129,3 @@ export type Programme = {
 
   title: string;
 };
-
-// https://docs.google.com/document/d/1l26Vhkwv2NwyYpRTzWNLkdBJAG1Swvwz/export?format=docx

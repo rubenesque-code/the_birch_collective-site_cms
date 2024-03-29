@@ -4,6 +4,7 @@ import { produce } from "immer";
 
 import CareersModal from "~/components/careers-modal/+Entry";
 import { TextAreaForm, TextInputForm } from "~/components/forms";
+import { GoogleDocDownloadLinkInstructionsModal } from "~/components/google-doc-download-instructions-modal";
 import { Icon } from "~/components/icons";
 import CmsLayout from "~/components/layouts/Cms";
 import ModalLayout from "~/components/layouts/Modal";
@@ -62,9 +63,19 @@ const JobPosts = () => {
 
   const toast = useToast();
 
+  const [modalIsOpen, setModalIsOpen] = React.useState(false);
+
+  // https://docs.google.com/document/d/1X5C5RqqOTVsgDGDp_n2WYmmx97VnZXum/export?format=pdf
+
   return (
     <div>
-      <CmsLayout.EditBar>
+      <CmsLayout.EditBar
+        className={`${
+          !modalIsOpen
+            ? "opacity-40 group-hover/sign-up:opacity-80 hover:!opacity-100"
+            : "opacity-100"
+        } `}
+      >
         <CareersModal
           button={({ openModal }) => (
             <CmsLayout.EditBar.Button
@@ -85,6 +96,19 @@ const JobPosts = () => {
           usedCareerIds={pageEntries.map(
             (entry) => entry.dbConnections.careerId,
           )}
+        />
+
+        <GoogleDocDownloadLinkInstructionsModal
+          button={
+            <CmsLayout.EditBar.Button
+              icon={<Icon.Info />}
+              text="Create Link Instructions"
+              tooltip="How to create a download link from Google Docs"
+            />
+          }
+          onClose={() => setModalIsOpen(false)}
+          onOpen={() => setModalIsOpen(true)}
+          position="right"
         />
       </CmsLayout.EditBar>
 
