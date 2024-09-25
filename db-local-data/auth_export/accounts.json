@@ -9,7 +9,7 @@
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSaltYm93oXWdRC4nKstg9rmY:password=password",
       "salt": "fakeSaltYm93oXWdRC4nKstg9rmY",
-      "passwordUpdatedAt": 1711725464205,
+      "passwordUpdatedAt": 1711729009701,
       "customAttributes": "{\"token\":{\"admin\": true}}",
       "providerUserInfo": [
         {
@@ -21,7 +21,7 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1711725464",
+      "validSince": "1711729009",
       "email": "a.ruben00001@gmail.com",
       "emailVerified": true,
       "disabled": false
@@ -34,7 +34,7 @@
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSalt1828Lb3ZqJELDlQJNi6O:password=password",
       "salt": "fakeSalt1828Lb3ZqJELDlQJNi6O",
-      "passwordUpdatedAt": 1711725464206,
+      "passwordUpdatedAt": 1711729009702,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -45,11 +45,10 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1711725464",
+      "validSince": "1711729009",
       "email": "admin@email.com",
       "emailVerified": true,
-      "disabled": false,
-      "lastRefreshAt": "2024-03-29T15:30:10.745Z"
+      "disabled": false
     }
   ]
 }

@@ -19,6 +19,7 @@ const allEmails = [
   "amy@thebirchcollective.co.uk",
   "ro@thebirchcollective.co.uk",
   "tim@thebirchcollective.co.uk",
+  "james@thebirchcollective.co.uk",
 ];
 
 const EmailNotificationModal = ({

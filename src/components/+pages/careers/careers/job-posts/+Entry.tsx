@@ -65,8 +65,6 @@ const JobPosts = () => {
 
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
 
-  // https://docs.google.com/document/d/1X5C5RqqOTVsgDGDp_n2WYmmx97VnZXum/export?format=pdf
-
   return (
     <div>
       <CmsLayout.EditBar
