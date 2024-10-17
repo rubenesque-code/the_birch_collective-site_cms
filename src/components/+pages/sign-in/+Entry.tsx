@@ -68,6 +68,7 @@ const SignInForm = () => {
         }
 
         const isAdmin = await fbFunctions.auth.checkIsAdmin(email);
+        console.log("isAdmin:", isAdmin);
 
         if (!isAdmin) {
           setShowCredentialsError(true);
@@ -79,6 +80,7 @@ const SignInForm = () => {
           email,
           password,
         });
+        console.log("signInRes:", signInRes);
 
         if (signInRes === "invalid") {
           setShowCredentialsError(true);

@@ -293,6 +293,7 @@ const JobPost = () => {
                 actions.docLinksText({ id, updatedValue })
               }
               tooltip="edit doc links text (optional)"
+              submitOnBlur
               key={undoKey}
             />
           </div>

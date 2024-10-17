@@ -1,9 +1,10 @@
-import DOMPurify from "dompurify";
 import { useState } from "react";
+import DOMPurify from "dompurify";
 import ReactTextareaAutosize from "react-textarea-autosize";
 
-import type { MyPick } from "~/types/utilities";
 import { WithTooltip } from "../WithTooltip";
+
+import type { MyPick } from "~/types/utilities";
 
 // todo: if have y overflow (it's set on parent of this component), tooltip follows position of top of this component which is overflowed so looks funny.
 
@@ -24,10 +25,6 @@ const ActualComponent = (props: Props) => {
   const [inputIsFocused, setInputIsFocused] = useState(false);
 
   const handleSubmit = () => {
-    if (!inputValue.length) {
-      return;
-    }
-
     const clean = DOMPurify.sanitize(inputValue);
 
     props.onSubmit(clean);
@@ -41,7 +38,9 @@ const ActualComponent = (props: Props) => {
 
         handleSubmit();
       }}
-      onBlur={handleSubmit}
+      onBlur={() => {
+        handleSubmit();
+      }}
     >
       <WithTooltip
         text={props.tooltip || ""}
