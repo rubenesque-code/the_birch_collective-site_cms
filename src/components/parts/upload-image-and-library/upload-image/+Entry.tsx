@@ -14,7 +14,7 @@ import { generateUid, NextImage } from "~/lib/external-packages-rename";
 import { myFirebaseTransactions } from "~/my-firebase/transactions";
 
 export const UploadImage = () => (
-  <div className="relative w-[600px] max-w-[90vw] rounded-2xl bg-white p-6 text-left shadow-xl">
+  <div className="relative max-h-[90vh] w-[600px] max-w-[90vw] overflow-auto rounded-2xl bg-white p-6 text-left shadow-xl">
     <h3 className="border-b-base-300 text-base-content border-b pb-sm leading-6">
       Upload Image
     </h3>
